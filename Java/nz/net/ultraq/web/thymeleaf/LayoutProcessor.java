@@ -1,6 +1,9 @@
 
 package nz.net.ultraq.web.thymeleaf;
 
+import static nz.net.ultraq.web.thymeleaf.FragmentProcessor.ATTRIBUTE_NAME_FRAGMENT;
+import static nz.net.ultraq.web.thymeleaf.LayoutDialect.LAYOUT_PREFIX;
+
 import org.thymeleaf.Arguments;
 import org.thymeleaf.Template;
 import org.thymeleaf.TemplateProcessingParameters;
@@ -8,6 +11,7 @@ import org.thymeleaf.dom.Element;
 import org.thymeleaf.dom.Node;
 import org.thymeleaf.processor.ProcessorResult;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,11 +26,11 @@ import java.util.List;
  */
 public class LayoutProcessor extends AbstractProcessor {
 
-	private static final String ATTRIBUTE_NAME_DECORATOR = "decorator";
-
 	private static final String HTML_ELEMENT_HEAD  = "head";
 	private static final String HTML_ELEMENT_TITLE = "title";
 	private static final String HTML_ELEMENT_BODY  = "body";
+
+	static final String ATTRIBUTE_NAME_DECORATOR = "decorator";
 
 	/**
 	 * Constructor, sets this processor to work on the 'decorator' attribute.
@@ -48,16 +52,16 @@ public class LayoutProcessor extends AbstractProcessor {
 	 */
 	private void decorateBody(Arguments arguments, Element decoratorbody, Element pagebody) {
 
-		List<Node> pagefragments = pagebody.getChildren();
+		// Gather all fragment parts from the page and store for later use
+		ArrayList<Node> pagefragments = new ArrayList<>();
+		findFragments(pagefragments, pagebody);
+		arguments.getContext().getVariables().put(CONTEXT_VAR_FRAGMENTS, pagefragments);
 
-		// Copy the layout's BODY into the page's BODY
+		// Copy the decorator BODY into the page BODY
 		pagebody.clearChildren();
 		for (Node node: decoratorbody.getChildren()) {
 			pagebody.addChild(node.cloneNode(null, true));
 		}
-
-		// Store the page fragments for later use
-		arguments.getContext().getVariables().put(CONTEXT_VAR_FRAGMENTS, pagefragments);
 	}
 
 	/**
@@ -72,20 +76,35 @@ public class LayoutProcessor extends AbstractProcessor {
 	private void decorateHead(Element decoratorhead, Element pagehead) {
 
 		Element pagetitle = findElement(pagehead, HTML_ELEMENT_TITLE);
-		pagehead.removeChild(pagetitle);
-
-		// Insert the decorator's HEAD elements into the page's HEAD section
-		for (Node decoratornode: decoratorhead.getChildren()) {
-
-			// Skip copying the decorator's TITLE element if the page already has one
-			if (pagetitle != null && decoratornode instanceof Element &&
-				((Element)decoratornode).getOriginalName().equals(HTML_ELEMENT_TITLE)) {
-				continue;
-			}
-			pagehead.insertChild(0, decoratornode);
+		if (pagetitle != null) {
+			pagehead.removeChild(pagetitle);
 		}
 
-		pagehead.insertChild(0, pagetitle);
+		// Find the first element position (this allows whitespace to preceed the HEAD element)
+		int firstelement = 0;
+		for (Node node: decoratorhead.getChildren()) {
+			if (node instanceof Element) {
+				break;
+			}
+			firstelement++;
+		}
+
+		// Insert the decorator's HEAD elements into the page's HEAD section
+		List<Node> decoratorheadelements = decoratorhead.getChildren();
+		for (int i = decoratorheadelements.size() - 1; i >= 0; i--) {
+			Node decoratorheadelement = decoratorheadelements.get(i);
+
+			// Skip copying the decorator's TITLE element if the page already has one
+			if (pagetitle != null && decoratorheadelement instanceof Element &&
+				((Element)decoratorheadelement).getOriginalName().equals(HTML_ELEMENT_TITLE)) {
+				continue;
+			}
+			pagehead.insertChild(firstelement, decoratorheadelement.cloneNode(null, true));
+		}
+
+		if (pagetitle != null) {
+			pagehead.insertChild(firstelement, pagetitle);
+		}
 	}
 
 	/**
@@ -108,6 +127,24 @@ public class LayoutProcessor extends AbstractProcessor {
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * Recursive search for all <tt>layout:fragment</tt> elements.
+	 * 
+	 * @param fragments List of all fragments found.
+	 * @param element	Node to initiate the search from.
+	 */
+	private void findFragments(ArrayList<Node> fragments, Element element) {
+
+		for (Element child: element.getElementChildren()) {
+			if (child.hasAttribute(LAYOUT_PREFIX + ":" + ATTRIBUTE_NAME_FRAGMENT)) {
+				fragments.add(child);
+			}
+			if (child.hasChildren()) {
+				findFragments(fragments, child);
+			}
+		}
 	}
 
 	/**

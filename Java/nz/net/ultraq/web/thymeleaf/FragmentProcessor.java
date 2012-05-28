@@ -12,14 +12,14 @@ import org.thymeleaf.standard.expression.StandardExpressionProcessor;
 import java.util.List;
 
 /**
- * Processor for the 'template:fragment' attribute, includes or replaces the
- * content of the fragment into the fragment placeholder in the layout page.
+ * Processor for the 'layout:fragment' attribute, replaces the content and tag
+ * of the decorator fragment with those of the same name from the content page.
  * 
  * @author Emanuel Rabina
  */
 public class FragmentProcessor extends AbstractProcessor {
 
-	private static final String ATTRIBUTE_NAME_FRAGMENT = "fragment";
+	static final String ATTRIBUTE_NAME_FRAGMENT = "fragment";
 
 	/**
 	 * Constructor, sets this processor to work on the 'fragment' attribute.
@@ -30,20 +30,20 @@ public class FragmentProcessor extends AbstractProcessor {
 	}
 
 	/**
-	 * Return the fragment with the matching name from the list of page
+	 * Return the fragment with the matching name from the list of gathered page
 	 * fragments.
 	 * 
 	 * @param arguments
 	 * @param attributename Name of the attribute on which the fragment name
 	 * 						resides.
-	 * @param fragments
 	 * @param fragmentname	Name of the fragment to look for.
 	 * @return Element with the given fragment, or <tt>null</tt> if no match
 	 * 		   could be found.
 	 */
-	private Element findFragment(Arguments arguments, String attributename,
-		List<Node> fragments, String fragmentname) {
+	@SuppressWarnings("unchecked")
+	private Element findFragment(Arguments arguments, String attributename, String fragmentname) {
 
+		List<Node> fragments = (List<Node>)arguments.getContext().getVariables().get(CONTEXT_VAR_FRAGMENTS);
 		for (Node fragment: fragments) {
 			if (fragment instanceof Element) {
 				Element fragmentel = (Element)fragment;
@@ -69,7 +69,6 @@ public class FragmentProcessor extends AbstractProcessor {
 	 * @return Processing result
 	 */
 	@Override
-	@SuppressWarnings("unchecked")
 	protected ProcessorResult processAttribute(Arguments arguments, Element element, String attributeName) {
 
 		// Skip processing already-processed fragments
@@ -78,16 +77,14 @@ public class FragmentProcessor extends AbstractProcessor {
 			return ProcessorResult.OK;
 		}
 
-		// Locate the page fragment that corresponds to this layout fragment
+		// Locate the page fragment that corresponds to this decorator fragment
 		FragmentSelection fragmentselection = StandardExpressionProcessor.parseFragmentSelection(
 				arguments, fragmentattribute.getValue());
 		Element pagefragment = findFragment(arguments, attributeName,
-				(List<Node>)arguments.getContext().getVariables().get(CONTEXT_VAR_FRAGMENTS),
 				fragmentselection.getTemplateName().toString());
 
+		// Replace the decorator fragment with the page fragment
 		if (pagefragment != null) {
-
-			// Replace the layout fragment with the page fragment
 			Element pagefragmentclone = (Element)pagefragment.cloneNode(null, true);
 			pagefragmentclone.removeAttribute(attributeName);
 

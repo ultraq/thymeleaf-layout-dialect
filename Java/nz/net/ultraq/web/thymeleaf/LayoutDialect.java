@@ -8,14 +8,15 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Dialect for making use of template/layout decorator pages to simplify page
- * development with Thymeleaf.
+ * Dialect for making use of template/layout decorator pages with Thymeleaf.
  * 
  * @author Emanuel Rabina
  */
 public class LayoutDialect extends AbstractDialect {
 
-	private static final String LAYOUT_PREFIX = "layout";
+	public static final String LAYOUT_NAMESPACE = "http://www.ultraq.net.nz/web/thymeleaf/layout";
+
+	static final String LAYOUT_PREFIX = "layout";
 
 	/**
 	 * Return the layout prefix.
