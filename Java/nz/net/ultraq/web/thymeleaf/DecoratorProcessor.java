@@ -24,7 +24,7 @@ import java.util.List;
  * 
  * @author Emanuel Rabina
  */
-public class LayoutProcessor extends AbstractProcessor {
+public class DecoratorProcessor extends AbstractProcessor {
 
 	private static final String HTML_ELEMENT_HEAD  = "head";
 	private static final String HTML_ELEMENT_TITLE = "title";
@@ -35,7 +35,7 @@ public class LayoutProcessor extends AbstractProcessor {
 	/**
 	 * Constructor, sets this processor to work on the 'decorator' attribute.
 	 */
-	public LayoutProcessor() {
+	public DecoratorProcessor() {
 
 		super(ATTRIBUTE_NAME_DECORATOR);
 	}
