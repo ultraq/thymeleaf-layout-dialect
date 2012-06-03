@@ -35,7 +35,7 @@ public class LayoutDialect extends AbstractDialect {
 	@Override
 	public Set<IProcessor> getProcessors() {
 
-		HashSet<IProcessor> processors = new HashSet<>();
+		HashSet<IProcessor> processors = new HashSet<IProcessor>();
 		processors.add(new DecoratorProcessor());
 		processors.add(new FragmentProcessor());
 		return processors;

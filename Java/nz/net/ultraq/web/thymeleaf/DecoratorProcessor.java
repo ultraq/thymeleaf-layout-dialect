@@ -53,7 +53,7 @@ public class DecoratorProcessor extends AbstractProcessor {
 	private void decorateBody(Arguments arguments, Element decoratorbody, Element pagebody) {
 
 		// Gather all fragment parts from the page and store for later use
-		ArrayList<Node> pagefragments = new ArrayList<>();
+		ArrayList<Node> pagefragments = new ArrayList<Node>();
 		findFragments(pagefragments, pagebody);
 		arguments.getContext().getVariables().put(CONTEXT_VAR_FRAGMENTS, pagefragments);
 
