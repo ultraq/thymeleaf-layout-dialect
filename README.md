@@ -17,7 +17,7 @@ Requirements
 Installation
 ------------
 
-1. Download a copy of of the pre-compiled JAR from [the Downloads section](thymeleaf-layout-dialect)
+1. Download a copy of of the pre-compiled JAR from [the Downloads section](thymeleaf-layout-dialect/downloads)
    or build the project from the source code here on GitHub.
 2. Place the JAR in the `WEB-INF/lib` directory of your web application.
 
