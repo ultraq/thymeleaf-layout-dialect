@@ -58,8 +58,8 @@ Create a page that will contain a layout that will be shared between pages.
 Often this will be a template that contains a page header, navigation, a footer,
 and a spot where your page content will go.
 
-`Layout.html`
-
+	Layout.html
+	
 	<html>
 	  <head>
 	    <title>Layout page</title>
@@ -83,8 +83,8 @@ are candidates for replacement by matching fragments in the content pages.
 
 Now, create some content pages.
 
-`Content1.html`
-
+	Content1.html
+	
 	<html layout:decorator="Layout.html">
 	  <head>
 	    <title>Content page 1</title>
@@ -123,7 +123,7 @@ Thymeleaf to process `Content1.html`, the resulting page will looks like this:
 	   </section>
 	   <footer>
 	     <p>My footer</p>
-	     <p>Custom footer here</p>
+	     <p>This is some footer content from content page 1</p>
 	   </footer>  
 	  </body>
 	</html>
@@ -139,7 +139,7 @@ have to match all of them in your content pages, nor do you need to specify a
 content-specific title if you really don't need to.  Here's an example that only
 replaces the custom paragraph in the decorator's footer:
 
-`Content2.html`
+	Content2.html
 
 	<html layout:decorator="Layout.html">
 	  <head></head>
@@ -163,7 +163,7 @@ it's not needed.  The resulting page will look like this:
 	   <section layout:fragment="content"></section>
 	   <footer>
 	     <p>My footer</p>
-	     <p layout:fragment="custom-footer">This is some footer content from content page 2</p>
+	     <p>This is some footer content from content page 2</p>
 	   </footer>  
 	  </body>
 	</html>
