@@ -60,7 +60,8 @@ and a spot where your page content will go.
 
 	Layout.html
 	
-	<html>
+	<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
 	  <head>
 	    <title>Layout page</title>
 	    <script src="common-script.js"></script>
@@ -85,7 +86,9 @@ Now, create some content pages.
 
 	Content1.html
 	
-	<html layout:decorator="Layout.html">
+	<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	  layout:decorator="Layout.html">
 	  <head>
 	    <title>Content page 1</title>
 	    <script src="content-script.js"></script>
@@ -108,7 +111,7 @@ if you wish to do static templating of the content page which is one of the
 reasons one uses Thymeleaf in the first place :)  Anyway, once you tell
 Thymeleaf to process `Content1.html`, the resulting page will looks like this:
 
-	<html>
+	<html xmlns="http://www.w3.org/1999/xhtml">
 	  <head>
 	    <title>Content page 1</title>
 	    <script src="common-script.js"></script>
@@ -140,8 +143,10 @@ content-specific title if you really don't need to.  Here's an example that only
 replaces the custom paragraph in the decorator's footer:
 
 	Content2.html
-
-	<html layout:decorator="Layout.html">
+	
+	<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	  layout:decorator="Layout.html">
 	  <head></head>
 	  <body>
 	    <p layout:fragment="custom-footer">This is some footer content from content page 2</p>
@@ -151,7 +156,7 @@ replaces the custom paragraph in the decorator's footer:
 This time the `layout:fragment` isn't in a `<footer>` element, just to show that
 it's not needed.  The resulting page will look like this:
 
-	<html>
+	<html xmlns="http://www.w3.org/1999/xhtml">
 	  <head>
 	    <title>Layout page</title>
 	    <script src="common-script.js"></script>
