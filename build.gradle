@@ -1,20 +1,24 @@
 
 /**
  * Gradle build script for the Thymeleaf Layout Dialect.  Builds the project,
- * source distributions, and fakes a Maven-able JAR for use with Maven
- * repositories.
+ * source distributions, and a JAR that can be used in a Maven repository.
+ * 
+ * @author Emanuel Rabina
  */
 
 apply plugin: 'java'
 apply plugin: 'maven'
 
-//project.name          = 'Thymeleaf Layout Dialect'
-project.description   = 'A new dialect for Thymeleaf that allows you to use layout/decorator pages to style your content, similar to how SiteMesh works.'
-project.group         = 'nz.net.ultraq.web.thymeleaf'
-project.ext.artifact  = 'thymeleaf-layout-dialect'
-project.version       = '1.0.1'
+//project.name              = 'Thymeleaf Layout Dialect'
+project.ext.author        = 'Emanuel Rabina'
+project.ext.authorWebsite = 'http://www.ultraq.net.nz/'
+project.description       = 'A new dialect for Thymeleaf that allows you to use layout/decorator pages to style your content, similar to how SiteMesh works.'
+project.group             = 'nz.net.ultraq.web.thymeleaf'
+project.ext.artifact      = 'thymeleaf-layout-dialect'
+project.archivesBaseName  = project.artifact
+project.version           = '1.0.1'
 project.sourceCompatibility = '1.6'
-//project.targetCompabitility = '1.6'
+project.targetCompabitility = '1.6'
 
 repositories {
 	mavenCentral()
@@ -29,18 +33,91 @@ sourceSets {
 		java {
 			srcDir 'Java'
 		}
+		output.classesDir = 'Classes'
 	}
 }
 
+/**
+ * Create a list of all immediate dependencies.
+ * 
+ * @return Comma-seperated list of dependencies.
+ */
+def listDependencies() {
+	def deps = '';
+	configurations.compile.dependencies.each {
+		deps += "${it.name}-${it.version}.jar, "
+	}
+	return !deps.isEmpty() ? deps.substring(0, deps.length() - 2) : deps;
+}
+
+/**
+ * Write the pom files included in the JAR for distribution to a Maven
+ * repository.
+ */
+task writePoms << {
+	pom {
+		project {
+			name        project.name
+			description project.description
+			artifactId  project.artifact
+			url         "https://github.com/ultraq/${project.artifact}"
+			organization {
+				name project.author
+				url  project.authorWebsite
+			}
+			scm {
+				url                 "scm:git:git@github.com:ultraq/${project.artifact}.git"
+				connection          "scm:git:git@github.com:ultraq/${project.artifact}.git"
+				developerConnection "scm:git:git@github.com:ultraq/${project.artifact}.git"
+			}
+		}
+	}.writeTo("${project.mavenPomDir}/pom.xml")
+
+	new File("${project.mavenPomDir}/pom.properties").withWriter { out ->
+		out.println "version=${project.version}"
+		out.println "groupId=${project.group}"
+		out.println "artifactId=${project.artifact}"
+	}
+}
+
+/**
+ * Create the JAR file.
+ */
+jar {
+	dependsOn writePoms
+	destinationDir = file('.')
+	manifest {
+		attributes(
+			'Class-Path': listDependencies(),
+			'Implementation-Title':   project.name,
+			'Implementation-Version': project.version,
+			'Implementation-Vendor':  project.author,
+			'Implementation-URL':     project.authorWebsite + 'projects/' + project.artifact + '/'
+		)
+	}
+	metaInf {
+		from("${project.mavenPomDir}")
+		into("maven/${project.group}/${project.artifact}")
+	}
+}
+/*
 install {
 	repositories.mavenInstaller {
 		pom.project {
 			name        project.name
 			description project.description
 			artifactId  project.artifact
-			build {
-				
+			url         'https://github.com/ultraq/' + project.artifact
+			organization {
+				name project.author
+				url  project.authorWebsite
+			}
+			scm {
+				url                 'scm:git:git@github.com:ultraq/' + project.artifact + '.git'
+				connection          'scm:git:git@github.com:ultraq/' + project.artifact + '.git'
+				developerConnection 'scm:git:git@github.com:ultraq/' + project.artifact + '.git'
 			}
 		}
 	}
 }
+*/
