@@ -1,0 +1,39 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>nz.net.ultraq.web.thymeleaf</groupId>
+  <artifactId>thymeleaf-layout-dialect</artifactId>
+  <version>1.0.1</version>
+  <name>Thymeleaf Layout Dialect</name>
+  <description>A new dialect for Thymeleaf that allows you to use layout/decorator pages to style your content, similar to how SiteMesh works.</description>
+  <build>
+    <sourceDirectory>Java</sourceDirectory>
+    <outputDirectory>Classes</outputDirectory>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.3.2</version>
+        <configuration>
+          <source>1.6</source>
+          <target>1.6</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <url>https://github.com/ultraq/thymeleaf-layout-dialect</url>
+  <dependencies>
+  	<dependency>
+  		<groupId>org.thymeleaf</groupId>
+  		<artifactId>thymeleaf</artifactId>
+  		<version>2.0.8</version>
+  	</dependency>
+  </dependencies>
+  <organization>
+  	<name>Emanuel Rabina</name>
+  	<url>http://www.ultraq.net.nz/</url>
+  </organization>
+  <scm>
+  	<url>scm:git:git@github.com:ultraq/thymeleaf-layout-dialect.git</url>
+  	<connection>scm:git:git@github.com:ultraq/thymeleaf-layout-dialect.git</connection>
+  	<developerConnection>scm:git:git@github.com:ultraq/thymeleaf-layout-dialect.git</developerConnection>
+  </scm>
+</project>
