@@ -1,16 +1,20 @@
 
 /**
- * Gradle build script for the Thymeleaf Layout Dialect.  Builds the project,
- * source distributions, and a JAR that can be used in a Maven repository.
+ * Gradle build script for the Thymeleaf Layout Dialect.  Creates the standalone
+ * download file as per the old Ant build script, and all artifacts necessary
+ * to deploy to a Maven repository.
  * 
  * @author Emanuel Rabina
  */
 
 apply plugin: 'java'
 apply plugin: 'maven'
+apply plugin: 'signing'
 
+project.defaultTasks 'bundle'
 //project.name              = 'Thymeleaf Layout Dialect'
 project.ext.author        = 'Emanuel Rabina'
+project.ext.authorEmail   = 'emanuelrabina@gmail.com'
 project.ext.authorWebsite = 'http://www.ultraq.net.nz/'
 project.description       = 'A new dialect for Thymeleaf that allows you to use layout/decorator pages to style your content, similar to how SiteMesh works.'
 project.group             = 'nz.net.ultraq.web.thymeleaf'
@@ -18,7 +22,7 @@ project.ext.artifact      = 'thymeleaf-layout-dialect'
 project.archivesBaseName  = project.artifact
 project.version           = '1.0.1'
 project.sourceCompatibility = '1.6'
-project.targetCompabitility = '1.6'
+//project.targetCompabitility = '1.6'
 
 repositories {
 	mavenCentral()
@@ -37,6 +41,10 @@ sourceSets {
 	}
 }
 
+// =============================================================================
+// Project support tasks
+// =============================================================================
+
 /**
  * Create a list of all immediate dependencies.
  * 
@@ -51,29 +59,122 @@ def listDependencies() {
 }
 
 /**
- * Write the pom files included in the JAR for distribution to a Maven
- * repository.
+ * Synchronize dependency JARs to the Libraries directory.
  */
-task writePoms << {
+task syncDependencies(type: Sync) {
+	from configurations.compile
+	into 'Libraries'
+}
+
+/**
+ * Reconfigure the JAR task to create a manifest file with some extra
+ * information, as well as include the pom files needed for Maven.
+ */
+jar {
+//	dependsOn 'writePoms'
+	manifest {
+		attributes(
+			'Class-Path':             listDependencies(),
+			'Implementation-Title':   project.name,
+			'Implementation-Version': project.version,
+			'Implementation-Vendor':  project.author,
+			'Implementation-URL':     project.authorWebsite + 'projects/' + project.artifact + '/'
+		)
+	}
+//	metaInf {
+//		from("${project.mavenPomDir}")
+//		into("maven/${project.group}/${project.artifact}")
+//		include('pom.*')
+//	}
+}
+
+/**
+ * Create the source file archive (ZIP).
+ */
+task sourcesZip(type: Zip) {
+	from sourceSets.main.allSource
+	destinationDir = file("${project.buildDir}/src")
+	classifier = 'src'
+}
+
+/**
+ * Creates the distribution archive for standalone downloads, a ZIP file
+ * containing: the project JAR, source ZIP, folder containing all required
+ * dependencies, and the license and readme files.
+ */
+task bundle(
+	description: 'Create the overall distribution archive',
+	dependsOn: [jar, javadoc, sourcesZip],
+	type: Zip) {
+
+	archiveName = "${project.name} ${project.version}.zip"
+
+	from(project.libsDir) {
+		include "${project.artifact}-${project.version}.jar"
+	}
+	from('Libraries') {
+		into 'Libraries'
+	}
+	from("${project.buildDir}/src")
+	from("${project.docsDir}/javadoc") {
+		into 'Javadoc'
+	}
+}
+
+// =============================================================================
+// Maven tasks
+// =============================================================================
+
+/**
+ * Generate the pom.xml file.
+ */
+def generatePom() {
 	pom {
 		project {
+			artifactId  project.artifact
+			packaging   'jar'
 			name        project.name
 			description project.description
-			artifactId  project.artifact
 			url         "https://github.com/ultraq/${project.artifact}"
-			organization {
-				name project.author
-				url  project.authorWebsite
+			licenses {
+				license {
+					name         'The Apache Software License, Version 2.0'
+					url          'http://www.apache.org/licenses/LICENSE-2.0.txt'
+					distribution 'repo'
+				}
 			}
 			scm {
 				url                 "scm:git:git@github.com:ultraq/${project.artifact}.git"
 				connection          "scm:git:git@github.com:ultraq/${project.artifact}.git"
 				developerConnection "scm:git:git@github.com:ultraq/${project.artifact}.git"
 			}
+			developers {
+				developer {
+					id    'emanuelrabina'
+					name  project.author
+					email project.authorEmail
+					url   project.authorWebsite
+					roles {
+						role 'author'
+						role 'developer'
+					}
+					timezone '+12'
+				}
+			}
 		}
-	}.writeTo("${project.mavenPomDir}/pom.xml")
+	}
+}
 
-	new File("${project.mavenPomDir}/pom.properties").withWriter { out ->
+/**
+ * Write the pom files included in the JAR for distribution to a Maven
+ * repository.
+ */
+task writePoms << {
+	generatePom().writeTo("${project.mavenPomDir}/pom.xml")
+
+	file("${project.mavenPomDir}/pom.properties").withWriter { out ->
+//		out.println '#Generated by Gradle'
+//		out.println '#' + new Date().format('EEE MMM dd HH:mm:ss zzz yyyy')
 		out.println "version=${project.version}"
 		out.println "groupId=${project.group}"
 		out.println "artifactId=${project.artifact}"
@@ -81,43 +182,72 @@ task writePoms << {
 }
 
 /**
- * Create the JAR file.
+ * Create the source file archive (JAR).
  */
-jar {
-	dependsOn writePoms
-	destinationDir = file('.')
-	manifest {
-		attributes(
-			'Class-Path': listDependencies(),
-			'Implementation-Title':   project.name,
-			'Implementation-Version': project.version,
-			'Implementation-Vendor':  project.author,
-			'Implementation-URL':     project.authorWebsite + 'projects/' + project.artifact + '/'
-		)
-	}
-	metaInf {
-		from("${project.mavenPomDir}")
-		into("maven/${project.group}/${project.artifact}")
-	}
+task sourcesJar(type: Jar, dependsOn: classes) {
+	classifier = 'sources'
+	from sourceSets.main.allSource
 }
-/*
+
+/**
+ * Create the javadoc archive.
+ */
+task javadocJar(type: Jar, dependsOn: javadoc) {
+	classifier = 'javadoc'
+	from javadoc.destinationDir
+}
+
+/**
+ * Include source and javadoc JARs as part of the release.
+ */
+artifacts {
+	archives sourcesJar
+	archives javadocJar
+}
+
+/**
+ * Sign all JARs for Maven central.
+ */
+signing {
+	sign configurations.archives
+}
+
+/**
+ * Used for testing, upload everything to the local repository.
+ */
 install {
-	repositories.mavenInstaller {
-		pom.project {
-			name        project.name
-			description project.description
-			artifactId  project.artifact
-			url         'https://github.com/ultraq/' + project.artifact
-			organization {
-				name project.author
-				url  project.authorWebsite
-			}
-			scm {
-				url                 'scm:git:git@github.com:ultraq/' + project.artifact + '.git'
-				connection          'scm:git:git@github.com:ultraq/' + project.artifact + '.git'
-				developerConnection 'scm:git:git@github.com:ultraq/' + project.artifact + '.git'
-			}
+	repositories.mavenDeployer {
+		configuration = configurations.archives
+		repository(url: 'file:///D:/Temp/RepoTest/')
+//		pom.withXml { provider ->
+//			def builder = provider.asString()
+//			builder.length = 0
+//			builder << file("${project.mavenPomDir}/pom.xml").getText("utf-8")
+//		}
+		pom = generatePom()
+		beforeDeployment { MavenDeployment deployment ->
+			signing.signPom(deployment)
 		}
 	}
 }
-*/
+
+/**
+ * Upload everything to Maven central.
+ */
+uploadArchives {
+	repositories.mavenDeployer {
+		configuration = configurations.archives
+		repository(url: 'https://oss.sonatype.org/service/local/staging/deploy/maven2/') {
+			authentication(userName: sonatypeUsername, password: sonatypePassword)
+		}
+//		pom.withXml { provider ->
+//			def builder = provider.asString()
+//			builder.length = 0
+//			builder << file("${project.mavenPomDir}/pom.xml").getText("utf-8")
+//		}
+		pom = generatePom()
+		beforeDeployment { MavenDeployment deployment ->
+			signing.signPom(deployment)
+		}
+	}
+}
