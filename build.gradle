@@ -119,6 +119,11 @@ task bundle(
 	from("${project.docsDir}/javadoc") {
 		into 'Javadoc'
 	}
+	from('.') {
+		include 'LICENSE.txt'
+		include 'README.md'
+	}
+	into project.name
 }
 
 // =============================================================================
