@@ -17,9 +17,17 @@ Requirements
 Installation
 ------------
 
+### Standalone distribution
 1. Download a copy of of the pre-compiled JAR from [the Downloads section](thymeleaf-layout-dialect/downloads)
    or build the project from the source code here on GitHub.
 2. Place the JAR in the `WEB-INF/lib` directory of your web application.
+
+### For Maven and Maven-compatible dependency managers
+Add a dependency to your project with the following Maven co-ordinates:
+
+ - GroupId: `nz.net.ultraq.web.thymeleaf`
+ - ArtifactId: `thymeleaf-layout-dialect`
+ - Version: `1.0.1`
 
 
 Usage
@@ -70,7 +78,9 @@ and a spot where your page content will go.
 	    <header>
 	      <h1>My website</h1>
 	   </header>
-	   <section layout:fragment="content"></section>
+	   <section layout:fragment="content">
+	     <p>Page content goes here</p>
+	   </section>
 	   <footer>
 	     <p>My footer</p>
 	     <p layout:fragment="custom-footer">Custom footer here</p>
@@ -165,7 +175,9 @@ it's not needed.  The resulting page will look like this:
 	    <header>
 	      <h1>My website</h1>
 	   </header>
-	   <section layout:fragment="content"></section>
+	   <section>
+	     <p>Page content goes here</p>
+	   </section>
 	   <footer>
 	     <p>My footer</p>
 	     <p>This is some footer content from content page 2</p>
@@ -177,4 +189,18 @@ So if your content pages don't specify any `<title>` element, or any fragment
 replacements, the result will use whatever is in the decorator page.  This
 allows you to create defaults in your decorator pages that can be replaced only
 if you feel the need to replace them.
+
+
+Changelog
+---------
+
+### 1.0.1
+ - Switched from Ant to Gradle as a build tool and to generate Maven-compatible
+   artifacts.
+ - Resolved [Issue #1](thymeleaf-layout-dialect/issues/1) to appease the
+   Mavenites amongst you :)  Project is now being served from Maven Central,
+   co-ordinates added to [installation](#installation) instructions.
+
+### 1.0
+ - Initial release.
 
