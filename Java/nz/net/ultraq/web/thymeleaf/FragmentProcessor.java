@@ -9,8 +9,6 @@ import org.thymeleaf.processor.ProcessorResult;
 import org.thymeleaf.standard.expression.FragmentSelection;
 import org.thymeleaf.standard.expression.StandardExpressionProcessor;
 
-import java.util.List;
-
 /**
  * Processor for the 'layout:fragment' attribute, replaces the content and tag
  * of the decorator fragment with those of the same name from the content page.
@@ -40,11 +38,9 @@ public class FragmentProcessor extends AbstractProcessor {
 	 * @return Element with the given fragment, or <tt>null</tt> if no match
 	 * 		   could be found.
 	 */
-	@SuppressWarnings("unchecked")
 	private Element findFragment(Arguments arguments, String attributename, String fragmentname) {
 
-		List<Node> fragments = (List<Node>)arguments.getContext().getVariables().get(CONTEXT_VAR_FRAGMENTS);
-		for (Node fragment: fragments) {
+		for (Node fragment: getPageFragments(arguments)) {
 			if (fragment instanceof Element) {
 				Element fragmentel = (Element)fragment;
 				if (fragmentel.hasAttribute(attributename)) {

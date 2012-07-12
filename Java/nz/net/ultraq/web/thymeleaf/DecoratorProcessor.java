@@ -8,10 +8,11 @@ import org.thymeleaf.Arguments;
 import org.thymeleaf.Template;
 import org.thymeleaf.TemplateProcessingParameters;
 import org.thymeleaf.dom.Element;
+import org.thymeleaf.dom.NestableNode;
 import org.thymeleaf.dom.Node;
+import org.thymeleaf.dom.Text;
 import org.thymeleaf.processor.ProcessorResult;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,6 +27,9 @@ import java.util.List;
  */
 public class DecoratorProcessor extends AbstractProcessor {
 
+	private static final String LINE_SEPARATOR = System.getProperty("line.separator");
+
+	private static final String HTML_ELEMENT_HTML  = "html";
 	private static final String HTML_ELEMENT_HEAD  = "head";
 	private static final String HTML_ELEMENT_TITLE = "title";
 	private static final String HTML_ELEMENT_BODY  = "body";
@@ -48,14 +52,26 @@ public class DecoratorProcessor extends AbstractProcessor {
 	 * 
 	 * @param arguments
 	 * @param decoratorbody Decorator's BODY element.
-	 * @param pagebody		Page's BODY element.
+	 * @param pagehtml		Page's HTML element.
 	 */
-	private void decorateBody(Arguments arguments, Element decoratorbody, Element pagebody) {
+	private void decorateBody(Arguments arguments, Element decoratorbody, Element pagehtml) {
+
+		// If the decorator has no BODY, then we don't need to do anything
+		if (decoratorbody == null) {
+			return;
+		}
+
+		Element pagebody = findElement(pagehtml, HTML_ELEMENT_BODY);
+
+		// If the page has no BODY, we can just copy over the decorator BODY
+		if (pagebody == null) {
+			insertAsLastItem(pagehtml, new Text(LINE_SEPARATOR));
+			insertAsLastItem(pagehtml, decoratorbody.cloneNode(null, true));
+			return;
+		}
 
 		// Gather all fragment parts from the page and store for later use
-		ArrayList<Node> pagefragments = new ArrayList<Node>();
-		findFragments(pagefragments, pagebody);
-		arguments.getContext().getVariables().put(CONTEXT_VAR_FRAGMENTS, pagefragments);
+		findFragments(getPageFragments(arguments), pagebody);
 
 		// Copy the decorator BODY into the page BODY
 		pagebody.clearChildren();
@@ -71,22 +87,27 @@ public class DecoratorProcessor extends AbstractProcessor {
 	 * page ones.
 	 * 
 	 * @param decoratorhead Decorator's HTML HEAD element.
-	 * @param pagehead		Page's HTML HEAD element.
+	 * @param pagehtml		Page's HTML element.
 	 */
-	private void decorateHead(Element decoratorhead, Element pagehead) {
+	private void decorateHead(Element decoratorhead, Element pagehtml) {
+
+		// If the decorator has no HEAD, then we don't need to do anything
+		if (decoratorhead == null) {
+			return;
+		}
+
+		Element pagehead = findElement(pagehtml, HTML_ELEMENT_HEAD);
+
+		// If the page has no HEAD, we can just copy over the decorator HEAD
+		if (pagehead == null) {
+			insertAsFirstItem(pagehtml, new Text(LINE_SEPARATOR));
+			insertAsFirstItem(pagehtml, decoratorhead.cloneNode(null, true));
+			return;
+		}
 
 		Element pagetitle = findElement(pagehead, HTML_ELEMENT_TITLE);
 		if (pagetitle != null) {
 			pagehead.removeChild(pagetitle);
-		}
-
-		// Find the first element position (this allows whitespace to preceed the HEAD element)
-		int firstelement = 0;
-		for (Node node: decoratorhead.getChildren()) {
-			if (node instanceof Element) {
-				break;
-			}
-			firstelement++;
 		}
 
 		// Insert the decorator's HEAD elements into the page's HEAD section
@@ -99,11 +120,12 @@ public class DecoratorProcessor extends AbstractProcessor {
 				((Element)decoratorheadelement).getOriginalName().equals(HTML_ELEMENT_TITLE)) {
 				continue;
 			}
-			pagehead.insertChild(firstelement, decoratorheadelement.cloneNode(null, true));
+			insertAsFirstItem(pagehead, decoratorheadelement.cloneNode(null, true));
 		}
 
+		// Put the TITLE back at the top of HEAD
 		if (pagetitle != null) {
-			pagehead.insertChild(firstelement, pagetitle);
+			insertAsFirstItem(pagehead, pagetitle);
 		}
 	}
 
@@ -135,7 +157,7 @@ public class DecoratorProcessor extends AbstractProcessor {
 	 * @param fragments List of all fragments found.
 	 * @param element	Node to initiate the search from.
 	 */
-	private void findFragments(ArrayList<Node> fragments, Element element) {
+	private void findFragments(List<Node> fragments, Element element) {
 
 		for (Element child: element.getElementChildren()) {
 			if (child.hasAttribute(LAYOUT_PREFIX + ":" + ATTRIBUTE_NAME_FRAGMENT)) {
@@ -144,6 +166,52 @@ public class DecoratorProcessor extends AbstractProcessor {
 			if (child.hasChildren()) {
 				findFragments(fragments, child);
 			}
+		}
+	}
+
+	/**
+	 * Insert a node before other nodes in a node group, not including any
+	 * initial whitespace so that things end-up nicely indented.
+	 * 
+	 * @param nodegroup Node group to insert into.
+	 * @param node		Node to insert.
+	 */
+	private void insertAsFirstItem(NestableNode nodegroup, Node node) {
+
+		if (nodegroup.hasChildren()) {
+			Node firstnode = nodegroup.getFirstChild();
+			if (firstnode instanceof Text) {
+				nodegroup.insertAfter(firstnode, node);
+			}
+			else {
+				nodegroup.insertBefore(firstnode, node);
+			}
+		}
+		else {
+			nodegroup.addChild(node);
+		}
+	}
+
+	/**
+	 * Insert a node after other nodes in a node group, not including any final
+	 * whitespace so that things end-up nicely indented.
+	 * 
+	 * @param nodegroup Node group to insert into.
+	 * @param node		Node to insert.
+	 */
+	private void insertAsLastItem(NestableNode nodegroup, Node node) {
+
+		if (nodegroup.hasChildren()) {
+			Node lastnode = nodegroup.getChildren().get(nodegroup.numChildren() - 1);
+			if (lastnode instanceof Text) {
+				nodegroup.insertBefore(lastnode, node);
+			}
+			else {
+				nodegroup.insertAfter(lastnode, node);
+			}
+		}
+		else {
+			nodegroup.addChild(node);
 		}
 	}
 
@@ -159,19 +227,25 @@ public class DecoratorProcessor extends AbstractProcessor {
 	@Override
 	protected ProcessorResult processAttribute(Arguments arguments, Element element, String attributeName) {
 
+		if (!element.getOriginalName().equals(HTML_ELEMENT_HTML)) {
+			throw new IllegalArgumentException("layout:decorator attribute must appear in an <html> root element of your content page");
+		}
+
 		// Locate the decorator page
 		String decoratorname = element.getAttributeValue(attributeName);
 		Template decorator = arguments.getTemplateRepository().getTemplate(new TemplateProcessingParameters(
 				arguments.getConfiguration(), decoratorname, arguments.getContext()));
 		Element decoratorhtmlelement = decorator.getDocument().getFirstElementChild();
 
+		if (decoratorhtmlelement == null || !decoratorhtmlelement.getOriginalName().equals(HTML_ELEMENT_HTML)) {
+			throw new IllegalArgumentException("Decorator page " + decoratorname + " must have an <html> root element");
+		}
+
 		// Decorate the HEAD element of the page with the HEAD of the decorator
-		decorateHead(findElement(decoratorhtmlelement, HTML_ELEMENT_HEAD),
-				findElement(element, HTML_ELEMENT_HEAD));
+		decorateHead(findElement(decoratorhtmlelement, HTML_ELEMENT_HEAD), element);
 
 		// Decorate the BODY of the page, putting fragments in the correct place
-		decorateBody(arguments, findElement(decoratorhtmlelement, HTML_ELEMENT_BODY),
-				findElement(element, HTML_ELEMENT_BODY));
+		decorateBody(arguments, findElement(decoratorhtmlelement, HTML_ELEMENT_BODY), element);
 
 		// Remove the decorator attribute
 		element.removeAttribute(attributeName);
