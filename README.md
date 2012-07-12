@@ -23,11 +23,11 @@ Installation
 2. Place the JAR in the `WEB-INF/lib` directory of your web application.
 
 ### For Maven and Maven-compatible dependency managers
-Add a dependency to your project with the following Maven co-ordinates:
+Add a dependency to your project with the following co-ordinates:
 
  - GroupId: `nz.net.ultraq.web.thymeleaf`
  - ArtifactId: `thymeleaf-layout-dialect`
- - Version: `1.0.1`
+ - Version: `1.0.2`
 
 
 Usage
@@ -157,7 +157,6 @@ replaces the custom paragraph in the decorator's footer:
 	<html xmlns="http://www.w3.org/1999/xhtml"
 	  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
 	  layout:decorator="Layout.html">
-	  <head></head>
 	  <body>
 	    <p layout:fragment="custom-footer">This is some footer content from content page 2</p>
 	  </body>
@@ -193,6 +192,11 @@ if you feel the need to replace them.
 
 Changelog
 ---------
+
+### 1.0.2
+ - Resolved [Issue #2](thymeleaf-layout-dialect/issues/2), allowing decorator
+   and content pages to contain just a `<head>` section, or just a `<body>`
+   section, or neither section, or some other combination between pages.
 
 ### 1.0.1
  - Switched from Ant to Gradle as a build tool and to generate Maven-compatible

@@ -20,7 +20,7 @@ project.description       = 'A new dialect for Thymeleaf that allows you to use 
 project.group             = 'nz.net.ultraq.web.thymeleaf'
 project.ext.artifact      = 'thymeleaf-layout-dialect'
 project.archivesBaseName  = project.artifact
-project.version           = '1.0.1'
+project.version           = '1.0.2'
 project.sourceCompatibility = '1.6'
 //project.targetCompabitility = '1.6'
 
@@ -68,7 +68,7 @@ def generatePom() {
 			packaging     'jar'
 			name          project.name
 			description   project.description
-			url           "https://github.com/ultraq/${project.artifact}"
+			url           "${project.authorWebsite}projects/${project.artifact}/"
 			inceptionYear '2012'
 			licenses {
 				license {
@@ -141,7 +141,7 @@ jar {
 			'Implementation-Title':   project.name,
 			'Implementation-Version': project.version,
 			'Implementation-Vendor':  project.author,
-			'Implementation-URL':     project.authorWebsite + 'projects/' + project.artifact + '/'
+			'Implementation-URL':     "${project.authorWebsite}projects/${project.artifact}/"
 		)
 	}
 	metaInf {
@@ -166,7 +166,7 @@ task sourcesZip(type: Zip) {
  * dependencies, and the license and readme files.
  */
 task bundle(
-	description: 'Create the overall distribution archive',
+	description: 'Create the overall distribution archive (default task)',
 	dependsOn: [/*syncDependencies,*/ jar, javadoc, sourcesZip],
 	type: Zip) {
 
