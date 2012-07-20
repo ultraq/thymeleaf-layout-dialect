@@ -3,15 +3,15 @@ Thymeleaf Layout Dialect
 ========================
 
 A new dialect for Thymeleaf that allows you to use layout/decorator pages to
-style your content.  If you've ever used SiteMesh 2, then the concepts of this
-library will be very familiar to you.
+style your content.  If you've ever used SiteMesh 2 or JSF with Facelets, then
+the concepts of this library will be very familiar to you.
 
 
 Requirements
 ------------
 
  - Java 6
- - Thymeleaf 2.0 (2.0.8 and its dependencies included)
+ - Thymeleaf 2.0 (2.0.10 and its dependencies included)
 
 
 Installation
@@ -27,7 +27,7 @@ Add a dependency to your project with the following co-ordinates:
 
  - GroupId: `nz.net.ultraq.web.thymeleaf`
  - ArtifactId: `thymeleaf-layout-dialect`
- - Version: `1.0.2`
+ - Version: `1.0.3`
 
 
 Usage
@@ -43,24 +43,35 @@ Add the Layout dialect to your existing Thymeleaf template engine, eg:
 	templateengine.setTemplateResolver(templateresolver);
 	templateengine.addDialect(new LayoutDialect());		// This line here
 
-This will introduce 2 new attributes that you can use in your pages:
-`layout:decorator` and `layout:fragment`.
+This will introduce 3 new attributes that you can use in your pages:
+`layout:decorator`, `layout:include`, and `layout:fragment`.
 
 ### layout:decorator
-Used only in content pages and declared in the `<html>` tag, specifies the
-location of the decorator page to apply to the content page.  The mechanism for
-resolving decorator pages is the same as that used by Thymeleaf to resolve
-`th:fragment` and `th:substituteby` pages.
+Used only in content pages and declared in the `<html>` tag, this attribute
+specifies the location of the decorator page to apply to the content page.  The
+mechanism for resolving decorator pages is the same as that used by Thymeleaf to
+resolve `th:fragment` and `th:substituteby` pages.
+Check out the [Decorators and fragments](#decorators-and-fragments) example for
+how to apply a decorator to all your content pages.
+
+### layout:include
+Similar to Thymeleaf's `th:include`, but allows the passing of entire element
+fragments to the specified page.  Useful if you have some HTML that you want to
+reuse, but whose contents are too complex to determine or construct with context
+variables alone.
+Check out the [Includes and fragments](#includes-and-fragments) example for how
+to pass elements between your pages.
 
 ### layout:fragment
-Used in both content and decorator pages.  When in a content page, specifies
-sections of the page that will replace those found in the decorator page with a
-matching name.  When used in a decorator page, specifies sections of the page
-that will be replaced by those found in the content page with a matching name.
+The glue that holds everything together: in the context of a content page, maps
+content page elements to those in a decorator; in the context of an include,
+maps content page elements to those in the included page.
 
 
-Example
--------
+Examples
+--------
+
+### Decorators and fragments
 
 Create a page that will contain a layout that will be shared between pages.
 Often this will be a template that contains a page header, navigation, a footer,
@@ -190,8 +201,124 @@ allows you to create defaults in your decorator pages that can be replaced only
 if you feel the need to replace them.
 
 
+### Includes and fragments
+
+Say you have some HTML or structure that you find repeating over and over and
+want to make into its own page.  An example of this might be a modal panel
+consisting of several HTML elements and CSS classes to create the illusion
+of a new window within your web application:
+
+	Modal.html
+	
+	<html xmlns="http://www.w3.org/1999/xhtml">
+	
+	  <body th:fragment="modal">
+	
+	    <div class="modal-container" style="display:none;">
+	      <section class="modal">
+	        <header>
+	          <h1>My Modal</h1>
+	          <div class="modal-close">
+	            <a href="#close">Close</a>
+	          </div>
+	        </header>
+	        <div class="modal-content">
+	        </div>
+	      </section>
+	    </div>
+	
+	  </body>
+	
+	</html>
+
+You find you can turn some things into variables like the header so that pages
+including `Modal.html` can set their own name, maybe even add some `id`
+attributes whose values can also be set by variables that you pass to the page.
+You continue making your modal code as generic as possible, but then you get to
+the question of filling-in the content of your modal panel, and that's where you
+start to hit brick walls.
+
+Some of the pages use a modal that includes a simple message, others want to use
+the modal to hold something more complex like a form with some input fields.
+The possibilities for your modal become endless but to support your imagination
+you find yourself having to create multiple modal structures for each use case,
+repeating the same HTML code to maintain the same look-and-feel, breaking the
+[DRY principle](http://en.wikipedia.org/wiki/Don%27t_repeat_yourself) in the
+process.
+
+The main thing holding you back from reusing this structure is the inability to
+pass HTML elements to your included page.  That's where `layout:include` comes
+in.  It works exactly like `th:include` does, but by specifying and implementing
+fragments much like with content/decorator page examples, you can create a
+common modal structure that can respond to the use case of the page including
+it.
+
+Here's an updated modal page, made more generic and using the `layout:fragment`
+attribute to define a replaceable modal content section:
+
+	Modal2.html
+	
+	<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+	  
+	  <body th:fragment="modal">
+	
+	    <div th:id="${modalId} + '-container'" class="modal-container" style="display:none;">
+	      <section th:id="${modalId}" class="modal">
+	        <header>
+	          <h1 th:text="${modalHeader}">My Modal</h1>
+	          <div class="modal-close">
+	            <a href="#close">Close</a>
+	          </div>
+	        </header>
+	        <div class="modal-content" layout:fragment="modal-content">
+	        </div>
+	      </section>
+	    </div>
+	
+	  </body>
+	
+	</html>
+
+Now you can include the page using the `layout:include` attribute and implement
+the `modal-content` fragment however you need by creating a fragment of the same
+name _within the include tag_:
+
+	Content.html
+	
+	<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	  layout:decorator="Layout.html">
+	
+	  ...
+	
+	  <div layout:include="Modal2.html" th:with="modalId='my-modal', modalHeader='My Modal Header'">
+	    <div th:fragment="modal-content">
+	      <p>My modal message!</p>
+	    </div>
+	  </div>
+
+	  ...
+
+	</html>
+
+Just like with the content/decorator example, the `layout:fragment` in the page
+you're including will be replaced by the element with the matching fragment
+name, in this case, the entire 
+
+
+
+
+
 Changelog
 ---------
+
+### 1.0.3
+ - Added a `layout:include` attribute which works like `th:include` but allows
+   for the passing of element fragments to the included page.
+ - Updated Thymeleaf dependency from version 2.0.8 to 2.0.10.
 
 ### 1.0.2
  - Resolved [Issue #2](thymeleaf-layout-dialect/issues/2), allowing decorator

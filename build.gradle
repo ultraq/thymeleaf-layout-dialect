@@ -20,7 +20,7 @@ project.description       = 'A new dialect for Thymeleaf that allows you to use 
 project.group             = 'nz.net.ultraq.web.thymeleaf'
 project.ext.artifact      = 'thymeleaf-layout-dialect'
 project.archivesBaseName  = project.artifact
-project.version           = '1.0.2'
+project.version           = '1.0.3'
 project.sourceCompatibility = '1.6'
 //project.targetCompabitility = '1.6'
 
@@ -29,7 +29,7 @@ repositories {
 }
 
 dependencies {
-	compile 'org.thymeleaf:thymeleaf:2.0.8'
+	compile 'org.thymeleaf:thymeleaf:2.0.10'
 }
 
 sourceSets {
@@ -100,11 +100,11 @@ def generatePom() {
 }
 
 /**
- * Synchronize dependency JARs to the Libraries directory.
+ * Download dependency JARs.
  */
-task syncDependencies(type: Sync) {
+task downloadDependencies(type: Sync) {
 	from configurations.compile
-	into 'Libraries'
+	into "${project.buildDir}/dependencies"
 }
 
 /**
@@ -167,7 +167,7 @@ task sourcesZip(type: Zip) {
  */
 task bundle(
 	description: 'Create the overall distribution archive (default task)',
-	dependsOn: [/*syncDependencies,*/ jar, javadoc, sourcesZip],
+	dependsOn: [downloadDependencies, jar, javadoc, sourcesZip],
 	type: Zip) {
 
 	archiveName = "${project.name} ${project.version}.zip"
@@ -175,7 +175,7 @@ task bundle(
 	from(project.libsDir) {
 		include "${project.artifact}-${project.version}.jar"
 	}
-	from('Libraries') {
+	from("${project.buildDir}/dependencies") {
 		into 'Libraries'
 	}
 	from("${project.buildDir}/src")

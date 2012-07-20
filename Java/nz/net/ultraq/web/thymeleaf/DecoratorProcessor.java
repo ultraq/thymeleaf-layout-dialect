@@ -1,9 +1,6 @@
 
 package nz.net.ultraq.web.thymeleaf;
 
-import static nz.net.ultraq.web.thymeleaf.FragmentProcessor.ATTRIBUTE_NAME_FRAGMENT;
-import static nz.net.ultraq.web.thymeleaf.LayoutDialect.LAYOUT_PREFIX;
-
 import org.thymeleaf.Arguments;
 import org.thymeleaf.Template;
 import org.thymeleaf.TemplateProcessingParameters;
@@ -71,7 +68,7 @@ public class DecoratorProcessor extends AbstractProcessor {
 		}
 
 		// Gather all fragment parts from the page and store for later use
-		findFragments(getPageFragments(arguments), pagebody);
+		findFragments(getFragmentList(arguments), pagebody);
 
 		// Copy the decorator BODY into the page BODY
 		pagebody.clearChildren();
@@ -149,24 +146,6 @@ public class DecoratorProcessor extends AbstractProcessor {
 			}
 		}
 		return null;
-	}
-
-	/**
-	 * Recursive search for all <tt>layout:fragment</tt> elements.
-	 * 
-	 * @param fragments List of all fragments found.
-	 * @param element	Node to initiate the search from.
-	 */
-	private void findFragments(List<Node> fragments, Element element) {
-
-		for (Element child: element.getElementChildren()) {
-			if (child.hasAttribute(LAYOUT_PREFIX + ":" + ATTRIBUTE_NAME_FRAGMENT)) {
-				fragments.add(child);
-			}
-			if (child.hasChildren()) {
-				findFragments(fragments, child);
-			}
-		}
 	}
 
 	/**

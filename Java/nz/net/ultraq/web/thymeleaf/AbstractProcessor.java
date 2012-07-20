@@ -1,8 +1,12 @@
 
 package nz.net.ultraq.web.thymeleaf;
 
+import static nz.net.ultraq.web.thymeleaf.FragmentProcessor.ATTRIBUTE_NAME_FRAGMENT;
+import static nz.net.ultraq.web.thymeleaf.LayoutDialect.LAYOUT_PREFIX;
+
 import org.thymeleaf.Arguments;
 import org.thymeleaf.context.VariablesMap;
+import org.thymeleaf.dom.Element;
 import org.thymeleaf.dom.Node;
 import org.thymeleaf.processor.attr.AbstractAttrProcessor;
 
@@ -30,14 +34,32 @@ public abstract class AbstractProcessor extends AbstractAttrProcessor {
 	}
 
 	/**
-	 * Return the list of page fragments to process in the decorator and content
-	 * pages.
+	 * Recursive search for all <tt>layout:fragment</tt> elements.
+	 * 
+	 * @param fragments List of all fragments found.
+	 * @param element	Node to initiate the search from.
+	 */
+	protected void findFragments(List<Node> fragments, Element element) {
+
+		for (Element child: element.getElementChildren()) {
+			if (child.hasAttribute(LAYOUT_PREFIX + ":" + ATTRIBUTE_NAME_FRAGMENT)) {
+				fragments.add(child);
+			}
+			if (child.hasChildren()) {
+				findFragments(fragments, child);
+			}
+		}
+	}
+
+	/**
+	 * Return the list of layout fragments present in content, decorator, and
+	 * included pages.
 	 * 
 	 * @param arguments
 	 * @return List of page fragments for processing.
 	 */
 	@SuppressWarnings("unchecked")
-	protected List<Node> getPageFragments(Arguments arguments) {
+	protected List<Node> getFragmentList(Arguments arguments) {
 
 		VariablesMap<String,Object> variables = arguments.getContext().getVariables();
 		List<Node> pagefragments = (List<Node>)variables.get(CONTEXT_VAR_FRAGMENTS);

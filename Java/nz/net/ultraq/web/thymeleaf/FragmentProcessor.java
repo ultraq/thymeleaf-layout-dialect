@@ -40,7 +40,7 @@ public class FragmentProcessor extends AbstractProcessor {
 	 */
 	private Element findFragment(Arguments arguments, String attributename, String fragmentname) {
 
-		for (Node fragment: getPageFragments(arguments)) {
+		for (Node fragment: getFragmentList(arguments)) {
 			if (fragment instanceof Element) {
 				Element fragmentel = (Element)fragment;
 				if (fragmentel.hasAttribute(attributename)) {
