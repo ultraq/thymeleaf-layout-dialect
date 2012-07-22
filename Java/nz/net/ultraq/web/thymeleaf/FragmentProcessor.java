@@ -1,13 +1,11 @@
 
 package nz.net.ultraq.web.thymeleaf;
 
+import static nz.net.ultraq.web.thymeleaf.LayoutDialect.LAYOUT_PREFIX;
+
 import org.thymeleaf.Arguments;
-import org.thymeleaf.dom.Attribute;
 import org.thymeleaf.dom.Element;
-import org.thymeleaf.dom.Node;
 import org.thymeleaf.processor.ProcessorResult;
-import org.thymeleaf.standard.expression.FragmentSelection;
-import org.thymeleaf.standard.expression.StandardExpressionProcessor;
 
 /**
  * Processor for the 'layout:fragment' attribute, replaces the content and tag
@@ -18,6 +16,9 @@ import org.thymeleaf.standard.expression.StandardExpressionProcessor;
 public class FragmentProcessor extends AbstractProcessor {
 
 	static final String ATTRIBUTE_NAME_FRAGMENT = "fragment";
+	static final String ATTRIBUTE_NAME_FRAGMENT_FULL = LAYOUT_PREFIX + ":" + ATTRIBUTE_NAME_FRAGMENT;
+
+	static final String FRAGMENT_NAME_PREFIX = "fragment-name::";
 
 	/**
 	 * Constructor, sets this processor to work on the 'fragment' attribute.
@@ -25,34 +26,6 @@ public class FragmentProcessor extends AbstractProcessor {
 	public FragmentProcessor() {
 
 		super(ATTRIBUTE_NAME_FRAGMENT);
-	}
-
-	/**
-	 * Return the fragment with the matching name from the list of gathered page
-	 * fragments.
-	 * 
-	 * @param arguments
-	 * @param attributename Name of the attribute on which the fragment name
-	 * 						resides.
-	 * @param fragmentname	Name of the fragment to look for.
-	 * @return Element with the given fragment, or <tt>null</tt> if no match
-	 * 		   could be found.
-	 */
-	private Element findFragment(Arguments arguments, String attributename, String fragmentname) {
-
-		for (Node fragment: getFragmentList(arguments)) {
-			if (fragment instanceof Element) {
-				Element fragmentel = (Element)fragment;
-				if (fragmentel.hasAttribute(attributename)) {
-					FragmentSelection fragmentselection = StandardExpressionProcessor.parseFragmentSelection(
-							arguments, fragmentel.getAttributeValue(attributename));
-					if (fragmentselection.getTemplateName().toString().equals(fragmentname)) {
-						return fragmentel;
-					}
-				}
-			}
-		}
-		return null;
 	}
 
 	/**
@@ -67,25 +40,16 @@ public class FragmentProcessor extends AbstractProcessor {
 	@Override
 	protected ProcessorResult processAttribute(Arguments arguments, Element element, String attributeName) {
 
-		// Skip processing already-processed fragments
-		Attribute fragmentattribute = element.getAttributeFromNormalizedName(attributeName);
-		if (fragmentattribute == null) {
-			return ProcessorResult.OK;
-		}
+		// Locate the page fragment that corresponds to this decorator/include fragment
+		String fragmentname = element.getAttributeValue(attributeName);
+		Element pagefragment = (Element)arguments.getLocalVariable(FRAGMENT_NAME_PREFIX + fragmentname);
 
-		// Locate the page fragment that corresponds to this decorator fragment
-		FragmentSelection fragmentselection = StandardExpressionProcessor.parseFragmentSelection(
-				arguments, fragmentattribute.getValue());
-		Element pagefragment = findFragment(arguments, attributeName,
-				fragmentselection.getTemplateName().toString());
-
-		// Replace the decorator fragment with the page fragment
+		// Replace the decorator/include fragment with the page fragment
 		if (pagefragment != null) {
-			Element pagefragmentclone = (Element)pagefragment.cloneNode(null, true);
-			pagefragmentclone.removeAttribute(attributeName);
+			pagefragment.removeAttribute(attributeName);
 
 			element.clearChildren();
-			element.addChild(pagefragmentclone);
+			element.addChild(pagefragment);
 			element.getParent().extractChild(element);
 		}
 		else {

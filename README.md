@@ -214,15 +214,16 @@ of a new window within your web application:
 	
 	  <body th:fragment="modal">
 	
-	    <div class="modal-container" style="display:none;">
-	      <section class="modal">
+	    <div id="modal-container" class="modal-container" style="display:none;">
+	      <section id="modal" class="modal">
 	        <header>
 	          <h1>My Modal</h1>
-	          <div class="modal-close">
+	          <div id="close-modal" class="modal-close">
 	            <a href="#close">Close</a>
 	          </div>
 	        </header>
-	        <div class="modal-content">
+	        <div id="modal-content" class="modal-content">
+	          <p>My modal content</p>
 	        </div>
 	      </section>
 	    </div>
@@ -231,16 +232,15 @@ of a new window within your web application:
 	
 	</html>
 
-You find you can turn some things into variables like the header so that pages
-including `Modal.html` can set their own name, maybe even add some `id`
-attributes whose values can also be set by variables that you pass to the page.
-You continue making your modal code as generic as possible, but then you get to
-the question of filling-in the content of your modal panel, and that's where you
-start to hit brick walls.
+You find you can turn some things into variables like the header and IDs so that
+pages including `Modal.html` can set their own name/IDs.  You continue making
+your modal code as generic as possible, but then you get to the question of
+filling-in the content of your modal panel, and that's where you start to hit
+brick walls.
 
 Some of the pages use a modal that includes a simple message, others want to use
 the modal to hold something more complex like a form with some input fields.
-The possibilities for your modal become endless but to support your imagination
+The possibilities for your modal become endless, but to support your imagination
 you find yourself having to create multiple modal structures for each use case,
 repeating the same HTML code to maintain the same look-and-feel, breaking the
 [DRY principle](http://en.wikipedia.org/wiki/Don%27t_repeat_yourself) in the
@@ -250,8 +250,7 @@ The main thing holding you back from reusing this structure is the inability to
 pass HTML elements to your included page.  That's where `layout:include` comes
 in.  It works exactly like `th:include` does, but by specifying and implementing
 fragments much like with content/decorator page examples, you can create a
-common modal structure that can respond to the use case of the page including
-it.
+common structure that can respond to the use case of the page including it.
 
 Here's an updated modal page, made more generic and using the `layout:fragment`
 attribute to define a replaceable modal content section:
@@ -261,18 +260,21 @@ attribute to define a replaceable modal content section:
 	<html xmlns="http://www.w3.org/1999/xhtml"
 	  xmlns:th="http://www.thymeleaf.org"
 	  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
-	  
-	  <body th:fragment="modal">
+	
+	  <body layout:fragment="modal">
 	
 	    <div th:id="${modalId} + '-container'" class="modal-container" style="display:none;">
 	      <section th:id="${modalId}" class="modal">
 	        <header>
 	          <h1 th:text="${modalHeader}">My Modal</h1>
-	          <div class="modal-close">
+	          <div th:id="'close-' + ${modalId}" class="modal-close">
 	            <a href="#close">Close</a>
 	          </div>
 	        </header>
-	        <div class="modal-content" layout:fragment="modal-content">
+	        <div th:id="${modalId} + '-content'" class="modal-content">
+	          <div layout:fragment="modal-content">
+	            <p>My modal content</p>
+	          </div>
 	        </div>
 	      </section>
 	    </div>
@@ -289,27 +291,58 @@ name _within the include tag_:
 	
 	<html xmlns="http://www.w3.org/1999/xhtml"
 	  xmlns:th="http://www.thymeleaf.org"
-	  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-	  layout:decorator="Layout.html">
+	  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
 	
 	  ...
 	
-	  <div layout:include="Modal2.html" th:with="modalId='my-modal', modalHeader='My Modal Header'">
-	    <div th:fragment="modal-content">
-	      <p>My modal message!</p>
-	    </div>
+	  <div layout:include="Modal2.html" th:with="modalId='message', modalHeader='Message'">
+	    <p th:fragment="modal-content">Message goes here!</p>
 	  </div>
-
+	
 	  ...
-
+	
 	</html>
 
 Just like with the content/decorator example, the `layout:fragment` in the page
 you're including will be replaced by the element with the matching fragment
-name, in this case, the entire 
+name.  In this case, the entire `modal-content` of `Modal2.html` will include
+the custom paragraph above.  Here's the result:
 
+	<html xmlns="http://www.w3.org/1999/xhtml">
+	
+	  ...
+	
+	  <div>
+	    <div id="message-container" class="modal-container" style="display:none;">
+	      <section id="message" class="modal">
+	        <header>
+	          <h1>Message</h1>
+	          <div id="close-message" class="modal-close">
+	            <a href="#close">Close</a>
+	          </div>
+	        </header>
+	        <div id="message-content" class="modal-content">
+	          <p>Message goes here!</p>
+	        </div>
+	      </section>
+	    </div>
+	  </div>
+	
+	  ...
+	
+	</html>
 
+The custom message defined in the page including `Modal2.html` was made a part
+of the contents of the modal.  Fragments in the context of an included page work
+the same as they do when used in the context of a decorator: if the fragment
+isn't defined in your page, then it won't override whatever is in the included
+page, allowing you to create defaults in your included page.
 
+(And yeah, there's an extra `<div>` up there, the one that was used to make the
+`layout:include` declaration.  You might want to add a `th:remove="tag"`
+attribute to that so it gets stripped from the final result.  Look out for a
+`layout:substituteby` attribute (equivalent of a `th:substituteby` that allows
+for passing of fragment elements) in future versions.)
 
 
 Changelog

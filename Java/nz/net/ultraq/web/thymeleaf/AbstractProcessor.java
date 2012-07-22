@@ -1,17 +1,16 @@
 
 package nz.net.ultraq.web.thymeleaf;
 
-import static nz.net.ultraq.web.thymeleaf.FragmentProcessor.ATTRIBUTE_NAME_FRAGMENT;
-import static nz.net.ultraq.web.thymeleaf.LayoutDialect.LAYOUT_PREFIX;
+import static nz.net.ultraq.web.thymeleaf.FragmentProcessor.ATTRIBUTE_NAME_FRAGMENT_FULL;
+import static nz.net.ultraq.web.thymeleaf.FragmentProcessor.FRAGMENT_NAME_PREFIX;
+import static nz.net.ultraq.web.thymeleaf.IncludeProcessor.ATTRIBUTE_NAME_INCLUDE_FULL;
 
-import org.thymeleaf.Arguments;
-import org.thymeleaf.context.VariablesMap;
 import org.thymeleaf.dom.Element;
-import org.thymeleaf.dom.Node;
 import org.thymeleaf.processor.attr.AbstractAttrProcessor;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Common code for the layout processors.
@@ -19,8 +18,6 @@ import java.util.List;
  * @author Emanuel Rabina
  */
 public abstract class AbstractProcessor extends AbstractAttrProcessor {
-
-	private static final String CONTEXT_VAR_FRAGMENTS = "fragments";
 
 	/**
 	 * Subclass constructor, set the attribute name that this processor will
@@ -34,40 +31,37 @@ public abstract class AbstractProcessor extends AbstractAttrProcessor {
 	}
 
 	/**
-	 * Recursive search for all <tt>layout:fragment</tt> elements.
+	 * Find and return all fragments within the given elements without delving
+	 * into <tt>layout:include</tt> elements.
 	 * 
-	 * @param fragments List of all fragments found.
-	 * @param element	Node to initiate the search from.
+	 * @param elements
+	 * @return Map of prefixed fragment names and their fragment elements.
 	 */
-	protected void findFragments(List<Node> fragments, Element element) {
+	protected Map<String,Object> findFragments(List<Element> elements) {
 
-		for (Element child: element.getElementChildren()) {
-			if (child.hasAttribute(LAYOUT_PREFIX + ":" + ATTRIBUTE_NAME_FRAGMENT)) {
-				fragments.add(child);
-			}
-			if (child.hasChildren()) {
-				findFragments(fragments, child);
-			}
-		}
+		HashMap<String,Object> fragments = new HashMap<String,Object>();
+		findFragments(fragments, elements);
+		return fragments;
 	}
 
 	/**
-	 * Return the list of layout fragments present in content, decorator, and
-	 * included pages.
+	 * Recursive search for all fragment elements without delving into
+	 * <tt>layout:include</tt> elements.
 	 * 
-	 * @param arguments
-	 * @return List of page fragments for processing.
+	 * @param fragments
+	 * @param elements
 	 */
-	@SuppressWarnings("unchecked")
-	protected List<Node> getFragmentList(Arguments arguments) {
+	private void findFragments(HashMap<String,Object> fragments, List<Element> elements) {
 
-		VariablesMap<String,Object> variables = arguments.getContext().getVariables();
-		List<Node> pagefragments = (List<Node>)variables.get(CONTEXT_VAR_FRAGMENTS);
-		if (pagefragments == null) {
-			pagefragments = new ArrayList<Node>();
-			variables.put(CONTEXT_VAR_FRAGMENTS, pagefragments);
+		for (Element element: elements) {
+			String fragmentname = element.getAttributeValue(ATTRIBUTE_NAME_FRAGMENT_FULL);
+			if (fragmentname != null) {
+				fragments.put(FRAGMENT_NAME_PREFIX + fragmentname, element);
+			}
+			if (!element.hasAttribute(ATTRIBUTE_NAME_INCLUDE_FULL)) {
+				findFragments(fragments, element.getElementChildren());
+			}
 		}
-		return pagefragments;
 	}
 
 	/**

@@ -1,6 +1,8 @@
 
 package nz.net.ultraq.web.thymeleaf;
 
+import static nz.net.ultraq.web.thymeleaf.LayoutDialect.LAYOUT_PREFIX;
+
 import org.thymeleaf.Arguments;
 import org.thymeleaf.Template;
 import org.thymeleaf.TemplateProcessingParameters;
@@ -10,7 +12,9 @@ import org.thymeleaf.dom.Node;
 import org.thymeleaf.dom.Text;
 import org.thymeleaf.processor.ProcessorResult;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Processor for the 'layout:decorator' attribute.  Locates the page identified
@@ -32,6 +36,7 @@ public class DecoratorProcessor extends AbstractProcessor {
 	private static final String HTML_ELEMENT_BODY  = "body";
 
 	static final String ATTRIBUTE_NAME_DECORATOR = "decorator";
+	static final String ATTRIBUTE_NAME_DECORATOR_FULL = LAYOUT_PREFIX + ":" + ATTRIBUTE_NAME_DECORATOR;
 
 	/**
 	 * Constructor, sets this processor to work on the 'decorator' attribute.
@@ -43,19 +48,19 @@ public class DecoratorProcessor extends AbstractProcessor {
 
 	/**
 	 * Decorate the BODY part of the page.  This is effectively a replacement of
-	 * the page's BODY elements with those of the decorator's, putting back only
-	 * the page elements specified by <tt>layout:fragment</tt> into the places
-	 * specified by the decorator.
+	 * the page's BODY elements with those of the decorator's.  All page
+	 * fragments are returned for later use when encountering a
+	 * <tt>layout:fragment</tt> element in the replaced elements.
 	 * 
-	 * @param arguments
 	 * @param decoratorbody Decorator's BODY element.
 	 * @param pagehtml		Page's HTML element.
+	 * @return Map of page fragments in the content page.
 	 */
-	private void decorateBody(Arguments arguments, Element decoratorbody, Element pagehtml) {
+	private Map<String,Object> decorateBody(Element decoratorbody, Element pagehtml) {
 
 		// If the decorator has no BODY, then we don't need to do anything
 		if (decoratorbody == null) {
-			return;
+			return new HashMap<String,Object>();
 		}
 
 		Element pagebody = findElement(pagehtml, HTML_ELEMENT_BODY);
@@ -64,17 +69,19 @@ public class DecoratorProcessor extends AbstractProcessor {
 		if (pagebody == null) {
 			insertAsLastItem(pagehtml, new Text(LINE_SEPARATOR));
 			insertAsLastItem(pagehtml, decoratorbody.cloneNode(null, true));
-			return;
+			return new HashMap<String,Object>();
 		}
 
 		// Gather all fragment parts from the page and store for later use
-		findFragments(getFragmentList(arguments), pagebody);
+		Map<String,Object> fragments = findFragments(pagebody.getElementChildren());
 
 		// Copy the decorator BODY into the page BODY
 		pagebody.clearChildren();
 		for (Node node: decoratorbody.getChildren()) {
 			pagebody.addChild(node.cloneNode(null, true));
 		}
+
+		return fragments;
 	}
 
 	/**
@@ -211,24 +218,29 @@ public class DecoratorProcessor extends AbstractProcessor {
 		}
 
 		// Locate the decorator page
-		String decoratorname = element.getAttributeValue(attributeName);
+		String decoratorpath = element.getAttributeValue(attributeName);
 		Template decorator = arguments.getTemplateRepository().getTemplate(new TemplateProcessingParameters(
-				arguments.getConfiguration(), decoratorname, arguments.getContext()));
-		Element decoratorhtmlelement = decorator.getDocument().getFirstElementChild();
+				arguments.getConfiguration(), decoratorpath, arguments.getContext()));
 
+		Element decoratorhtmlelement = decorator.getDocument().getFirstElementChild();
 		if (decoratorhtmlelement == null || !decoratorhtmlelement.getOriginalName().equals(HTML_ELEMENT_HTML)) {
-			throw new IllegalArgumentException("Decorator page " + decoratorname + " must have an <html> root element");
+			throw new IllegalArgumentException("Decorator page " + decorator.getTemplateName() + " must have an <html> root element");
 		}
 
-		// Decorate the HEAD element of the page with the HEAD of the decorator
+		// Decorate the HEAD element of the page
 		decorateHead(findElement(decoratorhtmlelement, HTML_ELEMENT_HEAD), element);
 
-		// Decorate the BODY of the page, putting fragments in the correct place
-		decorateBody(arguments, findElement(decoratorhtmlelement, HTML_ELEMENT_BODY), element);
+		// Decorate the BODY of the page
+		Map<String,Object> fragments = decorateBody(findElement(decoratorhtmlelement, HTML_ELEMENT_BODY),
+				element);
 
 		// Remove the decorator attribute
 		element.removeAttribute(attributeName);
 
+		// Scope the page fragments to this element
+		if (!fragments.isEmpty()) {
+			return ProcessorResult.setLocalVariables(fragments);
+		}
 		return ProcessorResult.OK;
 	}
 }
