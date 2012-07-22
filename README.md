@@ -3,8 +3,9 @@ Thymeleaf Layout Dialect
 ========================
 
 A new dialect for Thymeleaf that allows you to use layout/decorator pages to
-style your content.  If you've ever used SiteMesh 2 or JSF with Facelets, then
-the concepts of this library will be very familiar to you.
+style your content, as well as pass entire fragment elements to included pages
+to increase code reuse.  If you've ever used SiteMesh 2 or JSF with Facelets,
+then the concepts of this library will be very familiar to you.
 
 
 Requirements
@@ -37,7 +38,6 @@ Add the Layout dialect to your existing Thymeleaf template engine, eg:
 
 	ServletContextTemplateResolver templateresolver = new ServletContextTemplateResolver();
 	templateresolver.setTemplateMode("HTML5");
-	templateresolver.setPrefix("/");
 
 	templateengine = new TemplateEngine();
 	templateengine.setTemplateResolver(templateresolver);
@@ -52,11 +52,11 @@ specifies the location of the decorator page to apply to the content page.  The
 mechanism for resolving decorator pages is the same as that used by Thymeleaf to
 resolve `th:fragment` and `th:substituteby` pages.
 Check out the [Decorators and fragments](#decorators-and-fragments) example for
-how to apply a decorator to all your content pages.
+how to apply a decorator to your content pages.
 
 ### layout:include
 Similar to Thymeleaf's `th:include`, but allows the passing of entire element
-fragments to the specified page.  Useful if you have some HTML that you want to
+fragments to the included page.  Useful if you have some HTML that you want to
 reuse, but whose contents are too complex to determine or construct with context
 variables alone.
 Check out the [Includes and fragments](#includes-and-fragments) example for how
@@ -204,15 +204,15 @@ if you feel the need to replace them.
 ### Includes and fragments
 
 Say you have some HTML or structure that you find repeating over and over and
-want to make into its own page.  An example of this might be a modal panel
-consisting of several HTML elements and CSS classes to create the illusion
-of a new window within your web application:
+want to make into its own page that you include from several places.  An example
+of this might be a modal panel consisting of several HTML elements and CSS
+classes to create the illusion of a new window within your web application:
 
 	Modal.html
 	
 	<html xmlns="http://www.w3.org/1999/xhtml">
 	
-	  <body th:fragment="modal">
+	  <body>
 	
 	    <div id="modal-container" class="modal-container" style="display:none;">
 	      <section id="modal" class="modal">
@@ -235,25 +235,25 @@ of a new window within your web application:
 You find you can turn some things into variables like the header and IDs so that
 pages including `Modal.html` can set their own name/IDs.  You continue making
 your modal code as generic as possible, but then you get to the question of
-filling-in the content of your modal panel, and that's where you start to hit
-brick walls.
+filling-in the content of your modal panel, and that's where you start to reach
+some limitations.
 
 Some of the pages use a modal that includes a simple message, others want to use
-the modal to hold something more complex like a form with some input fields.
-The possibilities for your modal become endless, but to support your imagination
-you find yourself having to create multiple modal structures for each use case,
-repeating the same HTML code to maintain the same look-and-feel, breaking the
-[DRY principle](http://en.wikipedia.org/wiki/Don%27t_repeat_yourself) in the
-process.
+the modal to hold something more complex like a form to accept user input. The
+possibilities for your modal become endless, but to support your imagination you
+find yourself having to copy this modal structure into each page and vary the
+contents for each use case, repeating the same HTML code to maintain the same
+look-and-feel, breaking the [DRY principle](http://en.wikipedia.org/wiki/Don%27t_repeat_yourself)
+in the process.
 
-The main thing holding you back from reusing this structure is the inability to
-pass HTML elements to your included page.  That's where `layout:include` comes
-in.  It works exactly like `th:include` does, but by specifying and implementing
+The main thing holding you back from proper reuse is the inability to pass HTML
+elements to your included page.  That's where `layout:include` comes in.  It
+works exactly like `th:include` does, but by specifying and implementing
 fragments much like with content/decorator page examples, you can create a
 common structure that can respond to the use case of the page including it.
 
-Here's an updated modal page, made more generic and using the `layout:fragment`
-attribute to define a replaceable modal content section:
+Here's an updated modal page, made more generic using Thymeleaf and the
+`layout:fragment` attribute to define a replaceable modal content section:
 
 	Modal2.html
 	
@@ -285,7 +285,7 @@ attribute to define a replaceable modal content section:
 
 Now you can include the page using the `layout:include` attribute and implement
 the `modal-content` fragment however you need by creating a fragment of the same
-name _within the include tag_:
+name _within the include element_:
 
 	Content.html
 	
@@ -303,7 +303,7 @@ name _within the include tag_:
 	
 	</html>
 
-Just like with the content/decorator example, the `layout:fragment` in the page
+Just like with the content/decorator example, the `layout:fragment` of the page
 you're including will be replaced by the element with the matching fragment
 name.  In this case, the entire `modal-content` of `Modal2.html` will include
 the custom paragraph above.  Here's the result:
