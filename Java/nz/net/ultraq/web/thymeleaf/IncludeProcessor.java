@@ -52,22 +52,23 @@ public class IncludeProcessor extends AbstractContentProcessor {
 		List<Node> includefragments = fragmentandtarget.extractFragment(arguments.getConfiguration(),
 				arguments.getContext(), arguments.getTemplateRepository());
 
-		// Gather all fragment parts from the scope of the include and store for later use
+		element.removeAttribute(attributeName);
+
+		// Gather all fragment parts within the include element
 		Map<String,Object> pagefragments = findFragments(element.getElementChildren());
 
-		// Place the include page fragment into this element and replace it
-		if (includefragments != null && !includefragments.isEmpty()) {
-			Element fragment = (Element)includefragments.get(0);
-			element.clearChildren();
-			for (Node node: fragment.getChildren()) {
-				element.addChild(node.cloneNode(null, true));
+		// Replace the children of this element with those of the include page fragments
+		element.clearChildren();
+		if (includefragments != null) {
+			for (Node includefragment: includefragments) {
+				Element includefragmentelement = (Element)includefragment;
+				for (Node includefragmentchild: includefragmentelement.getChildren()) {
+					element.addChild(includefragmentchild);
+				}
 			}
 		}
 
-		// Remove the include attribute
-		element.removeAttribute(attributeName);
-
-		// Scope the page fragments to this element
+		// Scope any fragments for the inlude page to this element
 		if (!pagefragments.isEmpty()) {
 			return ProcessorResult.setLocalVariables(pagefragments);
 		}

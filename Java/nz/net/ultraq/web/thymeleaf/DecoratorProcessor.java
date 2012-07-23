@@ -6,11 +6,12 @@ import static nz.net.ultraq.web.thymeleaf.LayoutDialect.LAYOUT_PREFIX;
 import org.thymeleaf.Arguments;
 import org.thymeleaf.Template;
 import org.thymeleaf.TemplateProcessingParameters;
-import org.thymeleaf.dom.Attribute;
 import org.thymeleaf.dom.Element;
 import org.thymeleaf.dom.Node;
 import org.thymeleaf.dom.Text;
+import org.thymeleaf.fragment.FragmentAndTarget;
 import org.thymeleaf.processor.ProcessorResult;
+import org.thymeleaf.standard.fragment.StandardFragmentProcessor;
 
 import java.util.Map;
 
@@ -60,9 +61,8 @@ public class DecoratorProcessor extends AbstractContentProcessor {
 			return;
 		}
 
+		// If the decorator has no BODY, we can just copy the page BODY
 		Element decoratorbody = findElement(decoratorhtml, HTML_ELEMENT_BODY);
-
-		// If the decorator has no BODY, we can just insert the page BODY
 		if (decoratorbody == null) {
 			decoratorhtml.addChild(pagebody);
 			decoratorhtml.addChild(new Text(LINE_SEPARATOR));
@@ -87,9 +87,8 @@ public class DecoratorProcessor extends AbstractContentProcessor {
 			return;
 		}
 
+		// If the decorator has no HEAD, then we can just copy the page HEAD
 		Element decoratorhead = findElement(decoratorhtml, HTML_ELEMENT_HEAD);
-
-		// If the decorator has no HEAD, then we can just insert the page HEAD
 		if (decoratorhead == null) {
 			decoratorhtml.insertChild(0, new Text(LINE_SEPARATOR));
 			decoratorhtml.insertChild(1, pagehead);
@@ -141,24 +140,6 @@ public class DecoratorProcessor extends AbstractContentProcessor {
 	}
 
 	/**
-	 * Pull the attributes and child contents of the decorator element into the
-	 * content element, merging attributes as necessary (content attributes take
-	 * precedence).
-	 * 
-	 * @param contentelement
-	 * @param decoratorelement
-	 */
-	private static void pullDecoratorContent(Element contentelement, Element decoratorelement) {
-
-		for (Attribute contentattribute: contentelement.getAttributeMap().values()) {
-			decoratorelement.setAttribute(contentattribute.getOriginalName(), contentattribute.getValue());
-		}
-		contentelement.clearChildren();
-		contentelement.addChild(decoratorelement);
-		contentelement.getParent().extractChild(contentelement);
-	}
-
-	/**
 	 * Locates the decorator page specified by the layout attribute and applies
 	 * it to the current page being processed.
 	 * 
@@ -176,9 +157,11 @@ public class DecoratorProcessor extends AbstractContentProcessor {
 		}
 
 		// Locate the decorator page, ensure it has an HTML root element
-		String decoratorpath = element.getAttributeValue(attributeName);
+		FragmentAndTarget fragmentandtarget = StandardFragmentProcessor.computeStandardFragmentSpec(
+				arguments.getConfiguration(), arguments, element.getAttributeValue(attributeName),
+				null, null);
 		Template decorator = arguments.getTemplateRepository().getTemplate(new TemplateProcessingParameters(
-				arguments.getConfiguration(), decoratorpath, arguments.getContext()));
+				arguments.getConfiguration(), fragmentandtarget.getTemplateName(), arguments.getContext()));
 		Element decoratorhtmlelement = decorator.getDocument().getFirstElementChild();
 		if (decoratorhtmlelement == null || !decoratorhtmlelement.getOriginalName().equals(HTML_ELEMENT_HTML)) {
 			throw new IllegalArgumentException("Decorator page " + decorator.getTemplateName() + " must have an <html> root element");
@@ -188,24 +171,20 @@ public class DecoratorProcessor extends AbstractContentProcessor {
 		// template resolution above returned a clone of the decorator page.  The following
 		// functions operate on the decorator directly.
 
-		mergeAttributes(findElement(element, HTML_ELEMENT_HTML), decoratorhtmlelement);
+		element.removeAttribute(attributeName);
 		decorateHead(decoratorhtmlelement, findElement(element, HTML_ELEMENT_HEAD));
 		decorateBody(decoratorhtmlelement, findElement(element, HTML_ELEMENT_BODY));
 
-		// Gather all fragment parts from this page and store for later use.  These will
-		// be used to decorate the BODY as Thymeleaf encounters the fragment placeholders.
+		// Gather all fragment parts from this page and scope to the HTML element.  These
+		// will be used to decorate the BODY as Thymeleaf encounters the fragment placeholders.
 		Map<String,Object> fragments = findFragments(element.getElementChildren());
+		if (!fragments.isEmpty()) {
+			decoratorhtmlelement.setAllNodeLocalVariables(fragments);
+		}
 
 		// Pull the decorator page into this document
-		pullDecoratorContent(element, decoratorhtmlelement);
+		pullTargetContent(element, decoratorhtmlelement);
 
-		// Remove the decorator attribute
-		element.removeAttribute(attributeName);
-
-		// Scope the page fragments to this element
-		if (!fragments.isEmpty()) {
-			return ProcessorResult.setLocalVariables(fragments);
-		}
 		return ProcessorResult.OK;
 	}
 }

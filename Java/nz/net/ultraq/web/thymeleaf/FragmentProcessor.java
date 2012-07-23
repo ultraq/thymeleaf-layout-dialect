@@ -52,17 +52,12 @@ public class FragmentProcessor extends AbstractProcessor {
 		// Locate the page fragment that corresponds to this decorator/include fragment
 		String fragmentname = element.getAttributeValue(attributeName);
 		Element pagefragment = (Element)arguments.getLocalVariable(FRAGMENT_NAME_PREFIX + fragmentname);
+		element.removeAttribute(attributeName);
 
 		// Replace the decorator/include fragment with the page fragment
 		if (pagefragment != null) {
 			pagefragment.removeAttribute(attributeName);
-
-			element.clearChildren();
-			element.addChild(pagefragment);
-			element.getParent().extractChild(element);
-		}
-		else {
-			element.removeAttribute(attributeName);
+			pullTargetContent(element, pagefragment);
 		}
 
 		return ProcessorResult.OK;
