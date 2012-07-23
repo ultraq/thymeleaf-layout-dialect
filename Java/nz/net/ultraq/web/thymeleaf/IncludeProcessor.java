@@ -21,7 +21,7 @@ import java.util.Map;
  * 
  * @author Emanuel Rabina
  */
-public class IncludeProcessor extends AbstractProcessor {
+public class IncludeProcessor extends AbstractContentProcessor {
 
 	static final String ATTRIBUTE_NAME_INCLUDE = "include";
 	static final String ATTRIBUTE_NAME_INCLUDE_FULL = LAYOUT_PREFIX + ":" + ATTRIBUTE_NAME_INCLUDE;

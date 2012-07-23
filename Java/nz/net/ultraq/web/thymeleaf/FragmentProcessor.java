@@ -29,6 +29,15 @@ public class FragmentProcessor extends AbstractProcessor {
 	}
 
 	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public final int getPrecedence() {
+
+		return 1;
+	}
+
+	/**
 	 * Includes or replaces the content of fragments into the corresponding
 	 * fragment placeholder.
 	 * 
