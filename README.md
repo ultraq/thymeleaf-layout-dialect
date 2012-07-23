@@ -342,7 +342,7 @@ page, allowing you to create defaults in your included page.
 `layout:include` declaration.  You might want to add a `th:remove="tag"`
 attribute to that so it gets stripped from the final result.  Look out for a
 `layout:substituteby` attribute (equivalent of a `th:substituteby` that allows
-for passing of fragment elements) in future versions.)
+for passing of fragment elements) in future versions!)
 
 
 Changelog
@@ -352,6 +352,9 @@ Changelog
  - Added a `layout:include` attribute which works like `th:include` but allows
    for the passing of element fragments to the included page.
  - Updated Thymeleaf dependency from version 2.0.8 to 2.0.10.
+ - Resolved [Issue #3](thymeleaf-layout-dialect/issues/3), allowing `th:with`
+   local variable declarations made in the decorator page to be visible in
+   content pages during processing.
 
 ### 1.0.2
  - Resolved [Issue #2](thymeleaf-layout-dialect/issues/2), allowing decorator
