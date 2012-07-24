@@ -2,10 +2,10 @@
 Thymeleaf Layout Dialect
 ========================
 
-A new dialect for Thymeleaf that allows you to use layout/decorator pages to
-style your content, as well as pass entire fragment elements to included pages
-to increase code reuse.  If you've ever used SiteMesh 2 or JSF with Facelets,
-then the concepts of this library will be very familiar to you.
+A dialect for Thymeleaf that allows you to use layout/decorator templates to
+style your content, as well as pass entire fragment elements to included pages,
+all to help reduce code reuse.  If you've ever used SiteMesh 2 or JSF with
+Facelets, then the concepts of this library will be very familiar to you.
 
 
 Requirements
@@ -295,7 +295,7 @@ name _within the include element_:
 	
 	  ...
 	
-	  <div layout:include="Modal2.html" th:with="modalId='message', modalHeader='Message'">
+	  <div layout:include="Modal2.html" th:with="modalId='message', modalHeader='Message'" th:remove="tag">
 	    <p th:fragment="modal-content">Message goes here!</p>
 	  </div>
 	
@@ -312,20 +312,18 @@ the custom paragraph above.  Here's the result:
 	
 	  ...
 	
-	  <div>
-	    <div id="message-container" class="modal-container" style="display:none;">
-	      <section id="message" class="modal">
-	        <header>
-	          <h1>Message</h1>
-	          <div id="close-message" class="modal-close">
-	            <a href="#close">Close</a>
-	          </div>
-	        </header>
-	        <div id="message-content" class="modal-content">
-	          <p>Message goes here!</p>
+	  <div id="message-container" class="modal-container" style="display:none;">
+	    <section id="message" class="modal">
+	      <header>
+	        <h1>Message</h1>
+	        <div id="close-message" class="modal-close">
+	          <a href="#close">Close</a>
 	        </div>
-	      </section>
-	    </div>
+	      </header>
+	      <div id="message-content" class="modal-content">
+	        <p>Message goes here!</p>
+	      </div>
+	    </section>
 	  </div>
 	
 	  ...
@@ -337,12 +335,6 @@ of the contents of the modal.  Fragments in the context of an included page work
 the same as they do when used in the context of a decorator: if the fragment
 isn't defined in your page, then it won't override whatever is in the included
 page, allowing you to create defaults in your included page.
-
-(And yeah, there's an extra `<div>` up there, the one that was used to make the
-`layout:include` declaration.  You might want to add a `th:remove="tag"`
-attribute to that so it gets stripped from the final result.  Look out for a
-`layout:substituteby` attribute (equivalent of a `th:substituteby` that allows
-for passing of fragment elements) in future versions!)
 
 
 Changelog

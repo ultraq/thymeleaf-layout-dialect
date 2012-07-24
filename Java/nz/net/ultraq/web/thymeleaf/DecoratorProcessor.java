@@ -6,6 +6,7 @@ import static nz.net.ultraq.web.thymeleaf.LayoutDialect.LAYOUT_PREFIX;
 import org.thymeleaf.Arguments;
 import org.thymeleaf.Template;
 import org.thymeleaf.TemplateProcessingParameters;
+import org.thymeleaf.dom.Document;
 import org.thymeleaf.dom.Element;
 import org.thymeleaf.dom.Node;
 import org.thymeleaf.dom.Text;
@@ -186,6 +187,7 @@ public class DecoratorProcessor extends AbstractContentProcessor {
 		if (element.getOriginalName().equals(HTML_ELEMENT_HTML)) {
 			mergeAttributes(element, decoratorhtmlelement);
 		}
+		((Document)element.getParent()).setDocType(((Document)decoratorhtmlelement.getParent()).getDocType());
 		pullTargetContent(element, decoratorhtmlelement);
 
 		return ProcessorResult.OK;
