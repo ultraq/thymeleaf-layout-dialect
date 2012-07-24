@@ -4,7 +4,7 @@ Thymeleaf Layout Dialect
 
 A dialect for Thymeleaf that allows you to use layout/decorator templates to
 style your content, as well as pass entire fragment elements to included pages,
-all to help reduce code reuse.  If you've ever used SiteMesh 2 or JSF with
+all to help improve code reuse.  If you've ever used SiteMesh 2 or JSF with
 Facelets, then the concepts of this library will be very familiar to you.
 
 
@@ -12,7 +12,7 @@ Requirements
 ------------
 
  - Java 6
- - Thymeleaf 2.0 (2.0.10 and its dependencies included)
+ - Thymeleaf 2.0.11+ (2.0.11 and its dependencies included)
 
 
 Installation
@@ -47,7 +47,8 @@ This will introduce 3 new attributes that you can use in your pages:
 `layout:decorator`, `layout:include`, and `layout:fragment`.
 
 ### layout:decorator
-Used only in content pages and declared in the `<html>` tag, this attribute
+Used in your content pages and declared in the root tag (usually `<html>`, but
+as of Thymeleaf 2.0.10 this is no longer a restriction), this attribute
 specifies the location of the decorator page to apply to the content page.  The
 mechanism for resolving decorator pages is the same as that used by Thymeleaf to
 resolve `th:fragment` and `th:substituteby` pages.
@@ -60,7 +61,7 @@ fragments to the included page.  Useful if you have some HTML that you want to
 reuse, but whose contents are too complex to determine or construct with context
 variables alone.
 Check out the [Includes and fragments](#includes-and-fragments) example for how
-to pass elements between your pages.
+to pass HTML code to the pages you want to include.
 
 ### layout:fragment
 The glue that holds everything together: in the context of a content page, maps
@@ -79,6 +80,7 @@ and a spot where your page content will go.
 
 	Layout.html
 	
+	<!DOCTYPE html>
 	<html xmlns="http://www.w3.org/1999/xhtml"
 	  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
 	  <head>
@@ -107,6 +109,7 @@ Now, create some content pages.
 
 	Content1.html
 	
+	<!DOCTYPE html>
 	<html xmlns="http://www.w3.org/1999/xhtml"
 	  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
 	  layout:decorator="Layout.html">
@@ -124,14 +127,15 @@ Now, create some content pages.
 	  </body>
 	</html>
 
-The `layout:decorator` in the `<html>` tag of the content page says which
-decorator page to apply this this content page.  Also, the content page defines
-both the `content` and `custom-footer` fragments.  The `custom-footer` fragment
-is within a `<footer>` element, which isn't really necessary, but might be handy
-if you wish to do static templating of the content page which is one of the
-reasons one uses Thymeleaf in the first place :)  Anyway, once you tell
+The `layout:decorator` in the `<html>` tag says which decorator page to apply to
+this content page.  Also, the content page defines its own title and a script,
+as well as both the `content` and `custom-footer` fragments.  The `custom-footer`
+fragment is within a `<footer>` element, which isn't really necessary, but might
+be handy if you wish to do static templating of the content page which is one of
+the reasons one uses Thymeleaf in the first place :)  Anyway, once you tell
 Thymeleaf to process `Content1.html`, the resulting page will looks like this:
 
+	<!DOCTYPE html>
 	<html xmlns="http://www.w3.org/1999/xhtml">
 	  <head>
 	    <title>Content page 1</title>
@@ -154,28 +158,25 @@ Thymeleaf to process `Content1.html`, the resulting page will looks like this:
 
 The content page was 'decorated' by the elements of `Layout.html`, the result
 being a combination of the decorator page, plus the fragments of the content
-page (`<head>` elements from both pages, the `<title>` element from the content
-page, all elements from the decorator, but replaced by all content page
-fragments where specified).
+page (`<head>` elements from both pages with the `<title>` element from the
+content page taking place of the decorator's, all elements from the decorator,
+but replaced by all content page fragments where specified).
 
-When you specify `layout:fragment` attributes in your decorator page, you don't
-have to match all of them in your content pages, nor do you need to specify a
-content-specific title if you really don't need to.  Here's an example that only
-replaces the custom paragraph in the decorator's footer:
+Say you just want to replace _only_ the footer of your decorator page with the
+absolute minimum of HTML code:
 
 	Content2.html
 	
-	<html xmlns="http://www.w3.org/1999/xhtml"
-	  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-	  layout:decorator="Layout.html">
-	  <body>
-	    <p layout:fragment="custom-footer">This is some footer content from content page 2</p>
-	  </body>
-	</html>
+	<p layout:decorator="Layout.html" layout:fragment="custom-footer">
+	  This is some footer text from content page 2.
+	</p>
 
-This time the `layout:fragment` isn't in a `<footer>` element, just to show that
-it's not needed.  The resulting page will look like this:
+And that's all you need!  The full-HTML-page restriction of Thymeleaf was lifted
+from version 2.0.10, so now you can do things like the above.  The `<p>` tag
+acts as both root element and fragment definition, resulting in a page that will
+look like this:
 
+	<!DOCTYPE html>
 	<html xmlns="http://www.w3.org/1999/xhtml">
 	  <head>
 	    <title>Layout page</title>
@@ -190,26 +191,31 @@ it's not needed.  The resulting page will look like this:
 	   </section>
 	   <footer>
 	     <p>My footer</p>
-	     <p>This is some footer content from content page 2</p>
+	     <p>
+	       This is some footer text from content page 2.
+	     </p>
 	   </footer>  
 	  </body>
 	</html>
 
-So if your content pages don't specify any `<title>` element, or any fragment
-replacements, the result will use whatever is in the decorator page.  This
-allows you to create defaults in your decorator pages that can be replaced only
-if you feel the need to replace them.
+You can think of the decorator page as your parent template that will get
+filled-up or overwritten by your content pages (child templates), but only if
+your content pages choose to fill-up/overwrite the parent.  This way the
+decorator acts as a sort of 'default', with your content pages acting as
+implementations on top of your default.
 
 
 ### Includes and fragments
 
 Say you have some HTML or structure that you find repeating over and over and
-want to make into its own page that you include from several places.  An example
-of this might be a modal panel consisting of several HTML elements and CSS
-classes to create the illusion of a new window within your web application:
+want to make into its own page that you include from several places to reduce
+code duplication.  An example of this might be a modal panel consisting of
+several HTML elements and CSS classes to create the illusion of a new window
+within your web application:
 
 	Modal.html
 	
+	<!DOCTYPE html>
 	<html xmlns="http://www.w3.org/1999/xhtml">
 	
 	  <body>
@@ -248,15 +254,16 @@ in the process.
 
 The main thing holding you back from proper reuse is the inability to pass HTML
 elements to your included page.  That's where `layout:include` comes in.  It
-works exactly like `th:include` does, but by specifying and implementing
-fragments much like with content/decorator page examples, you can create a
-common structure that can respond to the use case of the page including it.
+works exactly like `th:include`, but by specifying and implementing fragments
+much like with content/decorator page examples, you can create a common
+structure that can respond to the use case of the page including it.
 
 Here's an updated modal page, made more generic using Thymeleaf and the
 `layout:fragment` attribute to define a replaceable modal content section:
 
 	Modal2.html
 	
+	<!DOCTYPE html>
 	<html xmlns="http://www.w3.org/1999/xhtml"
 	  xmlns:th="http://www.thymeleaf.org"
 	  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
@@ -285,10 +292,11 @@ Here's an updated modal page, made more generic using Thymeleaf and the
 
 Now you can include the page using the `layout:include` attribute and implement
 the `modal-content` fragment however you need by creating a fragment of the same
-name _within the include element_:
+name _within the include element_ of the calling page:
 
 	Content.html
 	
+	<!DOCTYPE html>
 	<html xmlns="http://www.w3.org/1999/xhtml"
 	  xmlns:th="http://www.thymeleaf.org"
 	  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
@@ -305,9 +313,10 @@ name _within the include element_:
 
 Just like with the content/decorator example, the `layout:fragment` of the page
 you're including will be replaced by the element with the matching fragment
-name.  In this case, the entire `modal-content` of `Modal2.html` will include
-the custom paragraph above.  Here's the result:
+name.  In this case, the entire `modal-content` of `Modal2.html` will be
+replaced by the custom paragraph above.  Here's the result:
 
+	<!DOCTYPE html>
 	<html xmlns="http://www.w3.org/1999/xhtml">
 	
 	  ...
@@ -343,10 +352,15 @@ Changelog
 ### 1.0.3
  - Added a `layout:include` attribute which works like `th:include` but allows
    for the passing of element fragments to the included page.
- - Updated Thymeleaf dependency from version 2.0.8 to 2.0.10.
+ - Updated Thymeleaf dependency from version 2.0.8 to 2.0.11 due to a
+   required API change in 2.0.11.
  - Resolved [Issue #3](thymeleaf-layout-dialect/issues/3), allowing `th:with`
    local variable declarations made in the decorator page to be visible in
    content pages during processing.
+ - Resolved [Issue #4](thymeleaf-layout-dialect/issues/4), removing the
+   restriction that the `layout:decorator` tag appear in an HTML element since
+   Thymeleaf 2.0.10 relaxed that restriction too (tag must still appear in the
+   root element of your page however).
 
 ### 1.0.2
  - Resolved [Issue #2](thymeleaf-layout-dialect/issues/2), allowing decorator

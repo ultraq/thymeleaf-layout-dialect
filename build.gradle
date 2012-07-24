@@ -16,20 +16,21 @@ project.defaultTasks 'bundle'
 project.ext.author        = 'Emanuel Rabina'
 project.ext.authorEmail   = 'emanuelrabina@gmail.com'
 project.ext.authorWebsite = 'http://www.ultraq.net.nz/'
-project.description       = 'A new dialect for Thymeleaf that allows you to use layout/decorator pages to style your content, similar to how SiteMesh works.'
+project.description       = 'A dialect for Thymeleaf that allows you to use layout/decorator templates to style your content.'
 project.group             = 'nz.net.ultraq.web.thymeleaf'
 project.ext.artifact      = 'thymeleaf-layout-dialect'
 project.archivesBaseName  = project.artifact
-project.version           = '1.0.3'
+project.version           = '1.0.3-SNAPSHOT'
 project.sourceCompatibility = '1.6'
 //project.targetCompabitility = '1.6'
 
 repositories {
+	mavenLocal()
 	mavenCentral()
 }
 
 dependencies {
-	compile 'org.thymeleaf:thymeleaf:2.0.10'
+	compile 'org.thymeleaf:thymeleaf:2.0.11-SNAPSHOT'
 }
 
 sourceSets {
