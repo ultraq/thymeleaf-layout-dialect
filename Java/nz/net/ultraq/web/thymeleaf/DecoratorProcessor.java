@@ -177,12 +177,15 @@ public class DecoratorProcessor extends AbstractContentProcessor {
 
 		// Gather all fragment parts from this page and scope to the HTML element.  These
 		// will be used to decorate the BODY as Thymeleaf encounters the fragment placeholders.
-		Map<String,Object> fragments = findFragments(element.getElementChildren());
+		Map<String,Object> fragments = findFragments(element.getParent().getElementChildren());
 		if (!fragments.isEmpty()) {
 			decoratorhtmlelement.setAllNodeLocalVariables(fragments);
 		}
 
 		// Pull the decorator page into this document
+		if (element.getOriginalName().equals(HTML_ELEMENT_HTML)) {
+			mergeAttributes(element, decoratorhtmlelement);
+		}
 		pullTargetContent(element, decoratorhtmlelement);
 
 		return ProcessorResult.OK;

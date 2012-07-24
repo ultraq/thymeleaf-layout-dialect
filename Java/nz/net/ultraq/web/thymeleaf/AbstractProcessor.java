@@ -63,8 +63,6 @@ public abstract class AbstractProcessor extends AbstractAttrProcessor {
 	 */
 	protected static void pullTargetContent(Element contentelement, Element targetelement) {
 
-		mergeAttributes(contentelement, targetelement);
-
 		// Clone target element without processing information to make Thymeleaf reprocesses it
 		contentelement.clearChildren();
 		contentelement.addChild(targetelement.cloneNode(null, false));

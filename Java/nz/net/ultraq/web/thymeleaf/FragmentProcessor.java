@@ -57,6 +57,7 @@ public class FragmentProcessor extends AbstractProcessor {
 		// Replace the decorator/include fragment with the page fragment
 		if (pagefragment != null) {
 			pagefragment.removeAttribute(attributeName);
+			mergeAttributes(element, pagefragment);
 			pullTargetContent(element, pagefragment);
 		}
 
