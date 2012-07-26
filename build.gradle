@@ -20,9 +20,8 @@ project.description       = 'A dialect for Thymeleaf that allows you to use layo
 project.group             = 'nz.net.ultraq.web.thymeleaf'
 project.ext.artifact      = 'thymeleaf-layout-dialect'
 project.archivesBaseName  = project.artifact
-project.version           = '1.0.3-SNAPSHOT'
+project.version           = '1.0.3'
 project.sourceCompatibility = '1.6'
-//project.targetCompabitility = '1.6'
 
 repositories {
 	mavenLocal()
@@ -30,7 +29,7 @@ repositories {
 }
 
 dependencies {
-	compile 'org.thymeleaf:thymeleaf:2.0.11-SNAPSHOT'
+	compile 'org.thymeleaf:thymeleaf:2.0.11'
 }
 
 sourceSets {

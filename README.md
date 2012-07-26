@@ -352,8 +352,6 @@ Changelog
 ### 1.0.3
  - Added a `layout:include` attribute which works like `th:include` but allows
    for the passing of element fragments to the included page.
- - Updated Thymeleaf dependency from version 2.0.8 to 2.0.11 due to a
-   required API change in 2.0.11.
  - Resolved [Issue #3](thymeleaf-layout-dialect/issues/3), allowing `th:with`
    local variable declarations made in the decorator page to be visible in
    content pages during processing.
@@ -361,6 +359,8 @@ Changelog
    restriction that the `layout:decorator` tag appear in an HTML element since
    Thymeleaf 2.0.10 relaxed that restriction too (tag must still appear in the
    root element of your page however).
+ - Updated Thymeleaf dependency from version 2.0.8 to 2.0.11 for the above issue
+   due to a required API change in 2.0.11.
 
 ### 1.0.2
  - Resolved [Issue #2](thymeleaf-layout-dialect/issues/2), allowing decorator

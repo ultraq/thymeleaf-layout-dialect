@@ -187,7 +187,10 @@ public class DecoratorProcessor extends AbstractContentProcessor {
 		if (element.getOriginalName().equals(HTML_ELEMENT_HTML)) {
 			mergeAttributes(element, decoratorhtmlelement);
 		}
-		((Document)element.getParent()).setDocType(((Document)decoratorhtmlelement.getParent()).getDocType());
+		Document decoratordocument = (Document)decoratorhtmlelement.getParent();
+		if (decoratordocument.hasDocType()) {
+			((Document)element.getParent()).setDocType(decoratordocument.getDocType());
+		}
 		pullTargetContent(element, decoratorhtmlelement);
 
 		return ProcessorResult.OK;
