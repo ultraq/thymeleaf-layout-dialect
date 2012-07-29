@@ -230,7 +230,7 @@ signing {
 install {
 	repositories.mavenDeployer {
 		configuration = configurations.archives
-		repository(url: 'file:///D:/Temp/RepoTest/')
+		repository(url: 'file:///' + System.properties['user.home'] + '/.m2/repository/')
 		pom = generatePom()
 		beforeDeployment { MavenDeployment deployment ->
 			signing.signPom(deployment)
