@@ -11,22 +11,21 @@ apply plugin: 'java'
 apply from: 'https://raw.github.com/ultraq/gradle-support/master/java-support.gradle'
 apply plugin: 'maven'
 apply from: 'https://raw.github.com/ultraq/gradle-support/master/maven-support.gradle'
-apply from: 'https://raw.github.com/ultraq/gradle-support/master/project.gradle'
+apply from: 'https://raw.github.com/ultraq/gradle-support/master/bundle.gradle'
 
-//project.name              = 'Thymeleaf Layout Dialect'
-project.description       = 'A dialect for Thymeleaf that allows you to use layout/decorator templates to style your content.'
+//project.name        = 'Thymeleaf Layout Dialect'
+project.description = 'A dialect for Thymeleaf that allows you to use layout/decorator templates to style your content.'
 project.sourceCompatibility = '1.6'
 
 project.group    = 'nz.net.ultraq.web.thymeleaf'
 project.artifact = 'thymeleaf-layout-dialect'
+project.version  = '1.0.3'
 project.website  = "http://www.ultraq.net.nz/projects/${project.artifact}/"
 project.year     = '2012'
-project.version  = '1.0.3'
 
 project.author        = 'Emanuel Rabina'
 project.authorEmail   = 'emanuelrabina@gmail.com'
 project.authorWebsite = 'http://www.ultraq.net.nz/'
-
 
 repositories {
 	mavenLocal()
