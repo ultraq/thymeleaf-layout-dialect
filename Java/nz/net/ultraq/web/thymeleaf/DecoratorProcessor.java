@@ -153,7 +153,7 @@ public class DecoratorProcessor extends AbstractContentProcessor {
 	protected ProcessorResult processAttribute(Arguments arguments, Element element, String attributeName) {
 
 		// Ensure the decorator attribute is in the root element of the document
-		if (!element.hasParent()) {
+		if (!(element.getParent() instanceof Document)) {
 			throw new IllegalArgumentException("layout:decorator attribute must appear in the root element of your content page");
 		}
 
