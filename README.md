@@ -28,7 +28,7 @@ Add a dependency to your project with the following co-ordinates:
 
  - GroupId: `nz.net.ultraq.web.thymeleaf`
  - ArtifactId: `thymeleaf-layout-dialect`
- - Version: `1.0.3`
+ - Version: `1.0.4`
 
 
 Usage
@@ -348,6 +348,10 @@ page, allowing you to create defaults in your included page.
 
 Changelog
 ---------
+
+### 1.0.4
+ - Fixed enforcing of `layout:decorator` element being in the root element,
+   leading to a better error message if this attribute is found elsewhere.
 
 ### 1.0.3
  - Added a `layout:include` attribute which works like `th:include` but allows
