@@ -29,7 +29,6 @@ project.authorWebsite = 'http://www.ultraq.net.nz/'
 
 repositories {
 	mavenCentral()
-	mavenLocal()
 }
 
 dependencies {
