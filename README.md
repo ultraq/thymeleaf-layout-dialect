@@ -19,9 +19,9 @@ Installation
 ------------
 
 ### Standalone distribution
-1. Download a copy of of the pre-compiled JAR from [the Downloads section](thymeleaf-layout-dialect/downloads)
-   or build the project from the source code here on GitHub.
-2. Place the JAR in the `WEB-INF/lib` directory of your web application.
+Download a copy of of the pre-compiled JAR from [the Downloads section](thymeleaf-layout-dialect/downloads),
+placing it in the `WEB-INF/lib` directory of your web application, or build the
+project from the source code here on GitHub.
 
 ### For Maven and Maven-compatible dependency managers
 Add a dependency to your project with the following co-ordinates:
@@ -352,6 +352,9 @@ Changelog
 ### 1.0.4
  - Fixed enforcing of `layout:decorator` element being in the root element,
    leading to a better error message if this attribute is found elsewhere.
+ - Fixed the resulting JAR which didn't recreate the proper Maven metadata in
+   the manifest section, might have caused it to not be picked up by tools like
+   m2eclipse.
 
 ### 1.0.3
  - Added a `layout:include` attribute which works like `th:include` but allows
