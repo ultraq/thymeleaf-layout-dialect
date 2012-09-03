@@ -133,7 +133,7 @@ as well as both the `content` and `custom-footer` fragments.  The `custom-footer
 fragment is within a `<footer>` element, which isn't really necessary, but might
 be handy if you wish to do static templating of the content page which is one of
 the reasons one uses Thymeleaf in the first place :)  Anyway, once you tell
-Thymeleaf to process `Content1.html`, the resulting page will looks like this:
+Thymeleaf to process `Content1.html`, the resulting page will look like this:
 
 	<!DOCTYPE html>
 	<html xmlns="http://www.w3.org/1999/xhtml">
