@@ -12,7 +12,7 @@ Requirements
 ------------
 
  - Java 6
- - Thymeleaf 2.0.11+ (2.0.11 and its dependencies included)
+ - Thymeleaf 2.0.12+ (2.0.13 and its dependencies included)
 
 
 Installation
@@ -303,7 +303,7 @@ name _within the include element_ of the calling page:
 	
 	  ...
 	
-	  <div layout:include="Modal2.html" th:with="modalId='message', modalHeader='Message'" th:remove="tag">
+	  <div layout:include="Modal2.html :: modal" th:with="modalId='message', modalHeader='Message'" th:remove="tag">
 	    <p th:fragment="modal-content">Message goes here!</p>
 	  </div>
 	
@@ -355,6 +355,9 @@ Changelog
  - Fixed the resulting JAR which didn't recreate the proper Maven metadata in
    the manifest section, might have caused it to not be picked up by tools like
    m2eclipse.
+ - Resolved [Issue #7](thymeleaf-layout-dialect/issues/7), which caused a `ClassCastException`
+   for cases when `th:include` was used to include entire pages.
+ - Updated Thymeleaf dependency from version 2.0.11 to 2.0.12.
 
 ### 1.0.3
  - Added a `layout:include` attribute which works like `th:include` but allows

@@ -48,7 +48,7 @@ public class IncludeProcessor extends AbstractContentProcessor {
 		// Locate the page and fragment to include
 		FragmentAndTarget fragmentandtarget = StandardFragmentProcessor.computeStandardFragmentSpec(
 				arguments.getConfiguration(), arguments, element.getAttributeValue(attributeName),
-				null, ATTRIBUTE_NAME_FRAGMENT_FULL);
+				null, ATTRIBUTE_NAME_FRAGMENT_FULL, true);
 		List<Node> includefragments = fragmentandtarget.extractFragment(arguments.getConfiguration(),
 				arguments.getContext(), arguments.getTemplateRepository());
 
@@ -61,10 +61,7 @@ public class IncludeProcessor extends AbstractContentProcessor {
 		element.clearChildren();
 		if (includefragments != null) {
 			for (Node includefragment: includefragments) {
-				Element includefragmentelement = (Element)includefragment;
-				for (Node includefragmentchild: includefragmentelement.getChildren()) {
-					element.addChild(includefragmentchild);
-				}
+				element.addChild(includefragment);
 			}
 		}
 
