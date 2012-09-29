@@ -20,7 +20,7 @@ project.sourceCompatibility = '1.6'
 
 project.group    = 'nz.net.ultraq.web.thymeleaf'
 project.artifact = 'thymeleaf-layout-dialect'
-project.version  = '1.0.4-SNAPSHOT'
+project.version  = '1.0.4'
 project.website  = "http://www.ultraq.net.nz/programming/${project.artifact}/"
 project.year     = '2012'
 
