@@ -160,7 +160,7 @@ public class DecoratorProcessor extends AbstractContentProcessor {
 		// Locate the decorator page, ensure it has an HTML root element
 		FragmentAndTarget fragmentandtarget = StandardFragmentProcessor.computeStandardFragmentSpec(
 				arguments.getConfiguration(), arguments, element.getAttributeValue(attributeName),
-				null, null);
+				null, null, false);
 		Template decorator = arguments.getTemplateRepository().getTemplate(new TemplateProcessingParameters(
 				arguments.getConfiguration(), fragmentandtarget.getTemplateName(), arguments.getContext()));
 		Element decoratorhtmlelement = decorator.getDocument().getFirstElementChild();

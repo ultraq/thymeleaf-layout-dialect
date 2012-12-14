@@ -7,12 +7,15 @@ style your content, as well as pass entire fragment elements to included pages,
 all to help improve code reuse.  If you've ever used SiteMesh 2 or JSF with
 Facelets, then the concepts of this library will be very familiar to you.
 
+Current version: 1.0.5
+Released: December 2012
+
 
 Requirements
 ------------
 
  - Java 6
- - Thymeleaf 2.0.12+ (2.0.13 and its dependencies included)
+ - Thymeleaf 2.0.12+ (2.0.14 and its dependencies included)
 
 
 Installation
@@ -28,7 +31,7 @@ Add a dependency to your project with the following co-ordinates:
 
  - GroupId: `nz.net.ultraq.web.thymeleaf`
  - ArtifactId: `thymeleaf-layout-dialect`
- - Version: `1.0.4`
+ - Version: `1.0.5`
 
 
 Usage
@@ -349,6 +352,16 @@ page, allowing you to create defaults in your included page.
 Changelog
 ---------
 
+### 1.0.5
+ - Added options to have the content's `<title>` extend the layout's `<title>`
+   (append the title to either side of the layout's title), instead of
+   overriding it.
+ - Made code emit a warning to the logs if the `layout:fragment` element was in
+   the `<title>` element (I keep seeing people doing this, even though it's not
+   required since the dialect automatically takes the content `<title>` over the
+   layout `<title>`).
+ - Updated Thymeleaf dependency from version 2.0.13 to 2.0.14.
+
 ### 1.0.4
  - Fixed enforcing of `layout:decorator` element being in the root element,
    leading to a better error message if this attribute is found elsewhere.
@@ -357,7 +370,7 @@ Changelog
    m2eclipse.
  - Resolved [Issue #7](thymeleaf-layout-dialect/issues/7), which caused a `ClassCastException`
    for cases when `th:include` was used to include entire pages.
- - Updated Thymeleaf dependency from version 2.0.11 to 2.0.12.
+ - Updated Thymeleaf dependency from version 2.0.11 to 2.0.13.
 
 ### 1.0.3
  - Added a `layout:include` attribute which works like `th:include` but allows

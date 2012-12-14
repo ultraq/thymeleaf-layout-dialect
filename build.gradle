@@ -20,7 +20,7 @@ project.sourceCompatibility = '1.6'
 
 project.group    = 'nz.net.ultraq.web.thymeleaf'
 project.artifact = 'thymeleaf-layout-dialect'
-project.version  = '1.0.4'
+project.version  = '1.0.5-SNAPSHOT'
 project.website  = "http://www.ultraq.net.nz/programming/${project.artifact}/"
 project.year     = '2012'
 
@@ -33,5 +33,5 @@ repositories {
 }
 
 dependencies {
-	compile 'org.thymeleaf:thymeleaf:2.0.13'
+	compile 'org.thymeleaf:thymeleaf:2.0.14'
 }
