@@ -1,7 +1,7 @@
 
 package nz.net.ultraq.web.thymeleaf;
 
-import static nz.net.ultraq.web.thymeleaf.FragmentProcessor.ATTRIBUTE_NAME_FRAGMENT_FULL;
+import static nz.net.ultraq.web.thymeleaf.FragmentProcessor.PROCESSOR_NAME_FRAGMENT_FULL;
 import static nz.net.ultraq.web.thymeleaf.LayoutDialect.LAYOUT_PREFIX;
 
 import org.thymeleaf.Arguments;
@@ -23,15 +23,15 @@ import java.util.Map;
  */
 public class IncludeProcessor extends AbstractContentProcessor {
 
-	static final String ATTRIBUTE_NAME_INCLUDE = "include";
-	static final String ATTRIBUTE_NAME_INCLUDE_FULL = LAYOUT_PREFIX + ":" + ATTRIBUTE_NAME_INCLUDE;
+	static final String PROCESSOR_NAME_INCLUDE = "include";
+	static final String PROCESSOR_NAME_INCLUDE_FULL = LAYOUT_PREFIX + ":" + PROCESSOR_NAME_INCLUDE;
 
 	/**
 	 * Constructor, sets this processor to work on the 'include' attribute.
 	 */
 	public IncludeProcessor() {
 
-		super(ATTRIBUTE_NAME_INCLUDE);
+		super(PROCESSOR_NAME_INCLUDE);
 	}
 
 	/**
@@ -48,7 +48,7 @@ public class IncludeProcessor extends AbstractContentProcessor {
 		// Locate the page and fragment to include
 		FragmentAndTarget fragmentandtarget = StandardFragmentProcessor.computeStandardFragmentSpec(
 				arguments.getConfiguration(), arguments, element.getAttributeValue(attributeName),
-				null, ATTRIBUTE_NAME_FRAGMENT_FULL, true);
+				null, PROCESSOR_NAME_FRAGMENT_FULL, true);
 		List<Node> includefragments = fragmentandtarget.extractFragment(arguments.getConfiguration(),
 				arguments.getContext(), arguments.getTemplateRepository());
 

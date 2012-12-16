@@ -21,8 +21,8 @@ public class FragmentProcessor extends AbstractProcessor {
 
 	private static final String HTML_ELEMENT_TITLE = "title";
 
-	static final String ATTRIBUTE_NAME_FRAGMENT = "fragment";
-	static final String ATTRIBUTE_NAME_FRAGMENT_FULL = LAYOUT_PREFIX + ":" + ATTRIBUTE_NAME_FRAGMENT;
+	static final String PROCESSOR_NAME_FRAGMENT = "fragment";
+	static final String PROCESSOR_NAME_FRAGMENT_FULL = LAYOUT_PREFIX + ":" + PROCESSOR_NAME_FRAGMENT;
 
 	static final String FRAGMENT_NAME_PREFIX = "fragment-name::";
 
@@ -31,7 +31,7 @@ public class FragmentProcessor extends AbstractProcessor {
 	 */
 	public FragmentProcessor() {
 
-		super(ATTRIBUTE_NAME_FRAGMENT);
+		super(PROCESSOR_NAME_FRAGMENT);
 	}
 
 	/**

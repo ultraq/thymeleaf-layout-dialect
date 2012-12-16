@@ -35,15 +35,20 @@ public class DecoratorProcessor extends AbstractContentProcessor {
 	private static final String HTML_ELEMENT_TITLE = "title";
 	private static final String HTML_ELEMENT_BODY  = "body";
 
-	static final String ATTRIBUTE_NAME_DECORATOR = "decorator";
-	static final String ATTRIBUTE_NAME_DECORATOR_FULL = LAYOUT_PREFIX + ":" + ATTRIBUTE_NAME_DECORATOR;
+	private static final String EXTEND_TITLE_LEFT  = "left";
+	private static final String EXTEND_TITLE_RIGHT = "right";
+
+	static final String PROCESSOR_NAME_DECORATOR = "decorator";
+	static final String PROCESSOR_NAME_DECORATOR_FULL = LAYOUT_PREFIX + ":" + PROCESSOR_NAME_DECORATOR;
+
+	private String extendtitle;
 
 	/**
 	 * Constructor, sets this processor to work on the 'decorator' attribute.
 	 */
 	public DecoratorProcessor() {
 
-		super(ATTRIBUTE_NAME_DECORATOR);
+		super(PROCESSOR_NAME_DECORATOR);
 	}
 
 	/**
@@ -101,10 +106,26 @@ public class DecoratorProcessor extends AbstractContentProcessor {
 		Element pagetitle = findElement(pagehead, HTML_ELEMENT_TITLE);
 		if (pagetitle != null) {
 			pagehead.removeChild(pagetitle);
+
 			Element decoratortitle = findElement(decoratorhead, HTML_ELEMENT_TITLE);
 			if (decoratortitle != null) {
 				decoratorhead.insertBefore(decoratortitle, pagetitle);
 				decoratorhead.removeChild(decoratortitle);
+
+				// If configured, include the decorator title text in the final title
+				if (extendtitle != null) {
+					if (!pagetitle.hasChildren()) {
+						pagetitle.addChild(new Text(""));
+					}
+					Text titletextnode = (Text)pagetitle.getFirstChild();
+					String decoratortitletext = decoratortitle.hasChildren() ?
+							((Text)decoratortitle.getFirstChild()).getContent() : "";
+					String pagetitletext = titletextnode.getContent();
+					titletextnode.setContent(
+							extendtitle.equals(EXTEND_TITLE_LEFT) ? pagetitletext + decoratortitletext :
+							extendtitle.equals(EXTEND_TITLE_RIGHT) ? decoratortitletext + pagetitletext :
+							"");
+				}
 			}
 			else {
 				decoratorhead.insertChild(0, new Text(LINE_SEPARATOR));
@@ -194,5 +215,19 @@ public class DecoratorProcessor extends AbstractContentProcessor {
 		pullTargetContent(element, decoratorhtmlelement);
 
 		return ProcessorResult.OK;
+	}
+
+	/**
+	 * Set the title extension mode for the dialect.
+	 * 
+	 * @param extendtitle Specifies on which side of the layout's title to
+	 * 					  append the content's title.  One of "left" or "right".
+	 * 					  If the value is neither "left" nor "right", then the
+	 * 					  mode will be set to none.
+	 */
+	void setExtendTitle(String extendtitle) {
+
+		this.extendtitle = extendtitle.equals(EXTEND_TITLE_LEFT) || extendtitle.equals(EXTEND_TITLE_RIGHT) ?
+				extendtitle : null;
 	}
 }
