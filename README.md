@@ -7,8 +7,8 @@ style your content, as well as pass entire fragment elements to included pages,
 all to help improve code reuse.  If you've ever used SiteMesh 2 or JSF with
 Facelets, then the concepts of this library will be very familiar to you.
 
-Current version: 1.0.5
-Released: December 2012
+ - Current version: 1.0.5
+ - Released: December 2012
 
 
 Requirements
