@@ -93,14 +93,14 @@ and a spot where your page content will go.
 	  <body>
 	    <header>
 	      <h1>My website</h1>
-	   </header>
-	   <section layout:fragment="content">
-	     <p>Page content goes here</p>
-	   </section>
-	   <footer>
-	     <p>My footer</p>
-	     <p layout:fragment="custom-footer">Custom footer here</p>
-	   </footer>  
+	    </header>
+	    <section layout:fragment="content">
+	      <p>Page content goes here</p>
+	    </section>
+	    <footer>
+	      <p>My footer</p>
+	      <p layout:fragment="custom-footer">Custom footer here</p>
+	    </footer>  
 	  </body>
 	</html>
 
@@ -148,14 +148,14 @@ Thymeleaf to process `Content1.html`, the resulting page will look like this:
 	  <body>
 	    <header>
 	      <h1>My website</h1>
-	   </header>
-	   <section>
-	     <p>This is a paragraph from content page 1</p>
-	   </section>
-	   <footer>
-	     <p>My footer</p>
-	     <p>This is some footer content from content page 1</p>
-	   </footer>  
+	    </header>
+	    <section>
+	      <p>This is a paragraph from content page 1</p>
+	    </section>
+	    <footer>
+	      <p>My footer</p>
+	      <p>This is some footer content from content page 1</p>
+	    </footer>  
 	  </body>
 	</html>
 
@@ -188,16 +188,16 @@ look like this:
 	  <body>
 	    <header>
 	      <h1>My website</h1>
-	   </header>
-	   <section>
-	     <p>Page content goes here</p>
-	   </section>
-	   <footer>
-	     <p>My footer</p>
-	     <p>
-	       This is some footer text from content page 2.
-	     </p>
-	   </footer>  
+	    </header>
+	    <section>
+	      <p>Page content goes here</p>
+	    </section>
+	    <footer>
+	      <p>My footer</p>
+	      <p>
+	        This is some footer text from content page 2.
+	      </p>
+	    </footer>  
 	  </body>
 	</html>
 
