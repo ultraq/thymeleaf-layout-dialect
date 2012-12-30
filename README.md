@@ -91,8 +91,8 @@ that can be replaced by sections in the content page, which share the same name.
 
 ### layout:title-pattern
 Allows for greater control of the resulting `<title>` element by specifying a
-pattern with some special tokens.  This can be used to extend the layout's title
-with the content's one, instead of simply overriding it.
+pattern with some special tokens.  This can be used to extend the decorator's
+title with the content's one, instead of simply overriding it.
 Check out the [Title pattern](#title-pattern) example for how to create a
 configurable title pattern.
 
@@ -447,7 +447,7 @@ Changelog
  - Made code emit a warning to the logs if the `layout:fragment` element was in
    the `<title>` element (I keep seeing people doing this, even though it's not
    required since the dialect automatically takes the content `<title>` over the
-   layout `<title>`).
+   decorator `<title>`).
  - Resolved [Issue #10](thymeleaf-layout-dialect/issues/10), so that content
    outside the decorator page's `<html>` element (like IE conditional comments)
    are included in the resulting page.
