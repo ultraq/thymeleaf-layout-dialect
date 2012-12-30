@@ -86,9 +86,8 @@ Check out the [Includes and fragments](#includes-and-fragments) example for how
 to pass HTML code to the pages you want to include.
 
 ### layout:fragment
-The glue that holds everything together: in the context of a content page, maps
-content page elements to those in a decorator; in the context of an include,
-maps content page elements to those in the included page.
+The glue that holds everything together; it marks sections in the decorator page
+that can be replaced by sections in the content page, which share the same name.
 
 ### layout:title-pattern
 Allows for greater control of the resulting `<title>` element by specifying a
@@ -381,8 +380,8 @@ Given that the layout dialect automatically overrides the decorator page's `titl
 element with that found in the content page, you might find yourself repeating
 parts of the title found in the decorator page, especially if you like to create
 breadcrumbs or retain the name of the website in the page title.  The `layout:title-pattern`
-attribute can save you the trouble of repeating the decorator title by
-introducing a basic pattern and some special tokens.
+attribute can save you the trouble of repeating the decorator title by using
+some special tokens in a pattern of how you want your title to appear.
 
 Here's an example:
 
@@ -401,10 +400,10 @@ Here's an example:
 	
 	</html>
 
-The `layout:title-pattern` attribute is a simple string with 2 special tokens:
-`$DECORATOR_TITLE` and `$CONTENT_TITLE`.  Each token will be replaced by their
-respective titles in the resulting page.  So, if you had the following content
-page:
+The `layout:title-pattern` attribute is a simple string that recognizes 2
+special tokens: `$DECORATOR_TITLE` and `$CONTENT_TITLE`.  Each token will be
+replaced by their respective titles in the resulting page.  So, if you had the
+following content page:
 
 	Content.html
 	
@@ -458,8 +457,8 @@ Changelog
  - Fixed enforcing of `layout:decorator` element being in the root element,
    leading to a better error message if this attribute is found elsewhere.
  - Fixed the resulting JAR which didn't recreate the proper Maven metadata in
-   the manifest section, might have caused it to not be picked up by tools like
-   m2eclipse.
+   the manifest section and might have caused it to not be picked up by tools
+   like m2eclipse.
  - Resolved [Issue #7](thymeleaf-layout-dialect/issues/7), which caused a `ClassCastException`
    for cases when `th:include` was used to include entire pages.
  - Updated Thymeleaf dependency from version 2.0.11 to 2.0.13.
