@@ -33,5 +33,5 @@ repositories {
 }
 
 dependencies {
-	compile 'org.thymeleaf:thymeleaf:2.0.14'
+	compile 'org.thymeleaf:thymeleaf:2.0.15'
 }

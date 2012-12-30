@@ -61,8 +61,8 @@ Or, for those using Spring configuration files:
 	      <bean class="org.thymeleaf.spring3.dialect.SpringStandardDialect"/>
 	      <bean class="nz.net.ultraq.web.thymeleaf.LayoutDialect"/>
 	    </set>
-	
-	  </property>		
+	  </property>
+			
 	</bean>
 
 This will introduce 4 new attributes that you can use in your pages:
@@ -92,10 +92,10 @@ maps content page elements to those in the included page.
 
 ### layout:title-pattern
 Allows for greater control of the resulting `<title>` element by specifying a
-simple pattern that it should take.  This can be used to extend the layout's
-title with the content's one, instead of simply overriding it.
+pattern with some special tokens.  This can be used to extend the layout's title
+with the content's one, instead of simply overriding it.
 Check out the [Title pattern](#title-pattern) example for how to create a
-configurable title.
+configurable title pattern.
 
 
 Examples
@@ -380,7 +380,7 @@ page, allowing you to create defaults in your included page.
 Given that the layout dialect automatically overrides the decorator page's `title`
 element with that found in the content page, you might find yourself repeating
 parts of the title found in the decorator page, especially if you like to create
-breadcrumbs, or retain the name of the website, in the page title.  The `layout:title-pattern`
+breadcrumbs or retain the name of the website in the page title.  The `layout:title-pattern`
 attribute can save you the trouble of repeating the decorator title by
 introducing a basic pattern and some special tokens.
 
@@ -394,7 +394,7 @@ Here's an example:
 	  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
 	
 	<head>
-	  <title layout:title-pattern="%DECORATOR_TITLE - %CONTENT_TITLE">My website</title>
+	  <title layout:title-pattern="$DECORATOR_TITLE - $CONTENT_TITLE">My website</title>
 	</head>
 	
 	...
@@ -402,9 +402,9 @@ Here's an example:
 	</html>
 
 The `layout:title-pattern` attribute is a simple string with 2 special tokens:
-`%DECORATOR_TITLE` and `%CONTENT_TITLE`.  Each token will be replaced by their
+`$DECORATOR_TITLE` and `$CONTENT_TITLE`.  Each token will be replaced by their
 respective titles in the resulting page.  So, if you had the following content
-page...
+page:
 
 	Content.html
 	
@@ -421,15 +421,15 @@ page...
 	
 	</html>
 
-...then the resulting page would be:
+The resulting page would be:
 
 	<!DOCTYPE html>
 	<html xmlns="http://www.w3.org/1999/xhtml">
-	<head>
-	  <title>My website - My blog</title>
-	</head>
+	  <head>
+	    <title>My website - My blog</title>
+	  </head>
 	
-	...
+	  ...
 	
 	</html>
 
@@ -449,6 +449,9 @@ Changelog
    the `<title>` element (I keep seeing people doing this, even though it's not
    required since the dialect automatically takes the content `<title>` over the
    layout `<title>`).
+ - Resolved [Issue #10](thymeleaf-layout-dialect/issues/10), so that content
+   outside the decorator page's `<html>` element (like IE conditional comments)
+   are included in the resulting page.
  - Updated Thymeleaf dependency from version 2.0.13 to 2.0.15.
 
 ### 1.0.4

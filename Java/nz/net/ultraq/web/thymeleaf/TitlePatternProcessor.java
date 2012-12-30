@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package nz.net.ultraq.web.thymeleaf;
 
 import static nz.net.ultraq.web.thymeleaf.LayoutDialect.LAYOUT_PREFIX;
@@ -36,8 +37,8 @@ public class TitlePatternProcessor extends AbstractProcessor {
 
 	private static final Logger logger = LoggerFactory.getLogger(TitlePatternProcessor.class);
 
-	private static final String PARAM_TITLE_DECORATOR = "%DECORATOR_TITLE";
-	private static final String PARAM_TITLE_CONTENT   = "%CONTENT_TITLE";
+	private static final String PARAM_TITLE_DECORATOR = "$DECORATOR_TITLE";
+	private static final String PARAM_TITLE_CONTENT   = "$CONTENT_TITLE";
 
 	static final String PROCESSOR_NAME_TITLEPATTERN      = "title-pattern";
 	static final String PROCESSOR_NAME_TITLEPATTERN_FULL = LAYOUT_PREFIX + ":" + PROCESSOR_NAME_TITLEPATTERN;

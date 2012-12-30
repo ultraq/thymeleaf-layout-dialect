@@ -34,8 +34,6 @@ public class FragmentProcessor extends AbstractProcessor {
 
 	private static final Logger logger = LoggerFactory.getLogger(FragmentProcessor.class);
 
-	private static final String HTML_ELEMENT_TITLE = "title";
-
 	static final String PROCESSOR_NAME_FRAGMENT = "fragment";
 	static final String PROCESSOR_NAME_FRAGMENT_FULL = LAYOUT_PREFIX + ":" + PROCESSOR_NAME_FRAGMENT;
 

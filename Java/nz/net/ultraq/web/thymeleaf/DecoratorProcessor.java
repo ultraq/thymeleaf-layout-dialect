@@ -189,6 +189,7 @@ public class DecoratorProcessor extends AbstractContentProcessor {
 			logger.error("layout:decorator attribute must appear in the root element of your content page");
 			throw new IllegalArgumentException("layout:decorator attribute must appear in the root element of your content page");
 		}
+		Document document = (Document)element.getParent();
 
 		// Locate the decorator page, ensure it has an HTML root element
 		FragmentAndTarget fragmentandtarget = StandardFragmentProcessor.computeStandardFragmentSpec(
@@ -211,7 +212,7 @@ public class DecoratorProcessor extends AbstractContentProcessor {
 
 		// Gather all fragment parts from this page and scope to the HTML element.  These
 		// will be used to decorate the BODY as Thymeleaf encounters the fragment placeholders.
-		Map<String,Object> fragments = findFragments(element.getParent().getElementChildren());
+		Map<String,Object> fragments = findFragments(document.getElementChildren());
 		if (!fragments.isEmpty()) {
 			decoratorhtmlelement.setAllNodeLocalVariables(fragments);
 		}
@@ -221,8 +222,21 @@ public class DecoratorProcessor extends AbstractContentProcessor {
 			mergeAttributes(element, decoratorhtmlelement);
 		}
 		Document decoratordocument = (Document)decoratorhtmlelement.getParent();
-		if (decoratordocument.hasDocType()) {
-			((Document)element.getParent()).setDocType(decoratordocument.getDocType());
+		if (decoratordocument.hasDocType() && !document.hasDocType()) {
+			document.setDocType(decoratordocument.getDocType());
+		}
+		boolean beforehtml = true;
+		for (Node externalnode: decoratordocument.getChildren()) {
+			if (externalnode.equals(decoratorhtmlelement)) {
+				beforehtml = false;
+				continue;
+			}
+			if (beforehtml) {
+				document.insertBefore(element, externalnode);
+			}
+			else {
+				document.insertAfter(element, externalnode);
+			}
 		}
 		pullTargetContent(element, decoratorhtmlelement);
 
