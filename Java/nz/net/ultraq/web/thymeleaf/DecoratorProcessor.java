@@ -17,10 +17,15 @@
 package nz.net.ultraq.web.thymeleaf;
 
 import static nz.net.ultraq.web.thymeleaf.LayoutDialect.LAYOUT_PREFIX;
+import static nz.net.ultraq.web.thymeleaf.TitlePatternProcessor.DECORATOR_TITLE_NAME;
+import static nz.net.ultraq.web.thymeleaf.TitlePatternProcessor.PROCESSOR_NAME_TITLEPATTERN_FULL;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.thymeleaf.Arguments;
 import org.thymeleaf.Template;
 import org.thymeleaf.TemplateProcessingParameters;
+import org.thymeleaf.dom.Attribute;
 import org.thymeleaf.dom.Document;
 import org.thymeleaf.dom.Element;
 import org.thymeleaf.dom.Node;
@@ -29,6 +34,7 @@ import org.thymeleaf.fragment.FragmentAndTarget;
 import org.thymeleaf.processor.ProcessorResult;
 import org.thymeleaf.standard.fragment.StandardFragmentProcessor;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -45,18 +51,10 @@ public class DecoratorProcessor extends AbstractContentProcessor {
 
 	private static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
-	private static final String HTML_ELEMENT_HTML  = "html";
-	private static final String HTML_ELEMENT_HEAD  = "head";
-	private static final String HTML_ELEMENT_TITLE = "title";
-	private static final String HTML_ELEMENT_BODY  = "body";
-
-	private static final String EXTEND_TITLE_LEFT  = "left";
-	private static final String EXTEND_TITLE_RIGHT = "right";
+	private static final Logger logger = LoggerFactory.getLogger(DecoratorProcessor.class);
 
 	static final String PROCESSOR_NAME_DECORATOR = "decorator";
 	static final String PROCESSOR_NAME_DECORATOR_FULL = LAYOUT_PREFIX + ":" + PROCESSOR_NAME_DECORATOR;
-
-	private String extendtitle;
 
 	/**
 	 * Constructor, sets this processor to work on the 'decorator' attribute.
@@ -121,25 +119,23 @@ public class DecoratorProcessor extends AbstractContentProcessor {
 		Element pagetitle = findElement(pagehead, HTML_ELEMENT_TITLE);
 		if (pagetitle != null) {
 			pagehead.removeChild(pagetitle);
-
 			Element decoratortitle = findElement(decoratorhead, HTML_ELEMENT_TITLE);
 			if (decoratortitle != null) {
 				decoratorhead.insertBefore(decoratortitle, pagetitle);
 				decoratorhead.removeChild(decoratortitle);
 
-				// If configured, include the decorator title text in the final title
-				if (extendtitle != null) {
-					if (!pagetitle.hasChildren()) {
-						pagetitle.addChild(new Text(""));
+				// For title pattern processing, save the decorator's title so it can be retrieved later
+				if (decoratortitle.hasChildren()) {
+					HashMap<String,Object> decoratortitlemap = new HashMap<String,Object>();
+					decoratortitlemap.put(DECORATOR_TITLE_NAME, ((Text)decoratortitle.getFirstChild()).getContent());
+					pagetitle.setAllNodeLocalVariables(decoratortitlemap);
+
+					// Let the content pattern override the decorator pattern
+					Attribute contenttitlepattern = pagetitle.getAttributeMap().get(PROCESSOR_NAME_TITLEPATTERN_FULL);
+					mergeAttributes(decoratortitle, pagetitle);
+					if (contenttitlepattern != null) {
+						pagetitle.setAttribute(PROCESSOR_NAME_TITLEPATTERN_FULL, contenttitlepattern.getValue());
 					}
-					Text titletextnode = (Text)pagetitle.getFirstChild();
-					String decoratortitletext = decoratortitle.hasChildren() ?
-							((Text)decoratortitle.getFirstChild()).getContent() : "";
-					String pagetitletext = titletextnode.getContent();
-					titletextnode.setContent(
-							extendtitle.equals(EXTEND_TITLE_LEFT) ? pagetitletext + decoratortitletext :
-							extendtitle.equals(EXTEND_TITLE_RIGHT) ? decoratortitletext + pagetitletext :
-							"");
 				}
 			}
 			else {
@@ -190,6 +186,7 @@ public class DecoratorProcessor extends AbstractContentProcessor {
 
 		// Ensure the decorator attribute is in the root element of the document
 		if (!(element.getParent() instanceof Document)) {
+			logger.error("layout:decorator attribute must appear in the root element of your content page");
 			throw new IllegalArgumentException("layout:decorator attribute must appear in the root element of your content page");
 		}
 
@@ -230,19 +227,5 @@ public class DecoratorProcessor extends AbstractContentProcessor {
 		pullTargetContent(element, decoratorhtmlelement);
 
 		return ProcessorResult.OK;
-	}
-
-	/**
-	 * Set the title extension mode for the dialect.
-	 * 
-	 * @param extendtitle Specifies on which side of the layout's title to
-	 * 					  append the content's title.  One of "left" or "right".
-	 * 					  If the value is neither "left" nor "right", then the
-	 * 					  mode will be set to none.
-	 */
-	void setExtendTitle(String extendtitle) {
-
-		this.extendtitle = extendtitle.equals(EXTEND_TITLE_LEFT) || extendtitle.equals(EXTEND_TITLE_RIGHT) ?
-				extendtitle : null;
 	}
 }

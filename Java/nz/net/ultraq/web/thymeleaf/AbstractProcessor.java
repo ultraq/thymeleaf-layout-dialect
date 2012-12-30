@@ -31,6 +31,11 @@ public abstract class AbstractProcessor extends AbstractAttrProcessor {
 
 	private static final String TH_WITH = StandardDialect.PREFIX + ":" + StandardWithAttrProcessor.ATTR_NAME;
 
+	protected static final String HTML_ELEMENT_HTML  = "html";
+	protected static final String HTML_ELEMENT_HEAD  = "head";
+	protected static final String HTML_ELEMENT_TITLE = "title";
+	protected static final String HTML_ELEMENT_BODY  = "body";
+
 	/**
 	 * Subclass constructor, set the attribute name that this processor will
 	 * respond to.
@@ -43,7 +48,8 @@ public abstract class AbstractProcessor extends AbstractAttrProcessor {
 	}
 
 	/**
-	 * Merge the content element attributes with those of the target element
+	 * Copy the attributes of the first element with those of the second,
+	 * merging on the <tt>th:with</tt> attribute, and overriding for all others.
 	 * 
 	 * @param contentelement
 	 * @param targetelement
