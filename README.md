@@ -22,7 +22,7 @@ Installation
 ------------
 
 ### Standalone distribution
-Download a copy of of the pre-compiled JAR from [the Downloads section](thymeleaf-layout-dialect/downloads),
+Copy the JAR from [the latest download bundle](http://www.ultraq.net.nz/downloads/programming/Thymeleaf Layout Dialect 1.0.5.zip),
 placing it in the `WEB-INF/lib` directory of your web application, or build the
 project from the source code here on GitHub.
 
