@@ -25,8 +25,7 @@
 apply plugin: 'java'
 apply from: 'https://raw.github.com/ultraq/gradle-support/master/java-support.gradle'
 apply plugin: 'maven'
-//apply from: 'https://raw.github.com/ultraq/gradle-support/master/maven-support.gradle'
-apply from: 'file:///D:/Scanner/Programming/Gradle Support/maven-support.gradle'
+apply from: 'https://raw.github.com/ultraq/gradle-support/master/maven-support.gradle'
 apply from: 'https://raw.github.com/ultraq/gradle-support/master/bundle.gradle'
 
 //project.name        = 'Thymeleaf Layout Dialect'
