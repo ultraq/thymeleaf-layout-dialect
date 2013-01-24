@@ -16,8 +16,8 @@
 
 /**
  * Gradle build script for the Thymeleaf Layout Dialect.  Creates the standalone
- * download file as per the old Ant build script, and all artifacts necessary
- * to deploy to a Maven repository.
+ * download file through the 'bundle' task, as well as all artifacts necessary
+ * to deploy to a Maven repository through the Gradle Maven tasks.
  * 
  * @author Emanuel Rabina
  */
@@ -37,10 +37,6 @@ project.group    = 'nz.net.ultraq.web.thymeleaf'
 project.artifact = 'thymeleaf-layout-dialect'
 project.version  = '1.0.6-SNAPSHOT'
 project.year     = '2012'
-
-repositories {
-	mavenCentral()
-}
 
 dependencies {
 	compile 'org.thymeleaf:thymeleaf:2.0.15'
