@@ -26,9 +26,9 @@ import org.thymeleaf.dom.Text;
 import org.thymeleaf.processor.ProcessorResult;
 
 /**
- * Processor for the 'layout:title-pattern' attribute, specifies a pattern to
- * use when writing the final <tt>&lt;title&gt;</tt>, allowing you to extend or
- * combine the layout title with the content title, instead of simply overriding
+ * Allows for greater control of the resulting &lt;title&gt; element by
+ * specifying a pattern with some special tokens.  This can be used to extend
+ * the decorator's title with the content's one, instead of simply overriding
  * it.
  * 
  * @author Emanuel Rabina

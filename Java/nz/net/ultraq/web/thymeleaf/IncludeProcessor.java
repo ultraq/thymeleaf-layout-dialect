@@ -30,9 +30,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Processor for the 'layout:include' attribute, does the same as Thymeleaf's
- * include tag but allows for the passing of element fragments to the included
- * page.
+ * Similar to Thymeleaf's th:include, but allows the passing of entire element
+ * fragments to the included template.  Useful if you have some HTML that you
+ * want to reuse, but whose contents are too complex to determine or construct
+ * with context variables alone.
  * 
  * @author Emanuel Rabina
  */

@@ -25,8 +25,8 @@ import org.thymeleaf.dom.Element;
 import org.thymeleaf.processor.ProcessorResult;
 
 /**
- * Processor for the 'layout:fragment' attribute, replaces the content and tag
- * of the decorator fragment with those of the same name from the content page.
+ * Marks sections of the decorator template that can be replaced by sections in
+ * the content template, which share the same name.
  * 
  * @author Emanuel Rabina
  */

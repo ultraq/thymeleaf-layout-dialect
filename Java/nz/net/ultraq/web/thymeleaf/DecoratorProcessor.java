@@ -38,12 +38,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Processor for the 'layout:decorator' attribute.  Locates the page identified
- * by the attribute and decorates the current page with it.
+ * Specifies the name of the decorator template to apply to a content template.
  * <p>
- * The page identified by the <tt>layout:decorator</tt> attribute is resolved
- * using the same template resolver as Thymeleaf, so be sure to locate your
- * decorator pages the same way you would your Thymeleaf page fragments.
+ * The mechanism for resolving decorator templates is the same as that used by
+ * Thymeleaf to resolve th:fragment and th:substituteby pages.
  * 
  * @author Emanuel Rabina
  */
