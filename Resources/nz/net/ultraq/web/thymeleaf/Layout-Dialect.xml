@@ -23,9 +23,16 @@
 	prefix="layout" namespace-uri="http://www.ultraq.net.nz/web/thymeleaf/layout"
 	class="nz.net.ultraq.web.thymeleaf.LayoutDialect">
 
-	<attribute-processor name="decorator"     class="nz.net.ultraq.web.thymeleaf.DecoratorProcessor"/>
-	<attribute-processor name="include"       class="nz.net.ultraq.web.thymeleaf.IncludeProcessor"/>
-	<attribute-processor name="fragment"      class="nz.net.ultraq.web.thymeleaf.IncludeProcessor"/>
-	<attribute-processor name="title-pattern" class="nz.net.ultraq.web.thymeleaf.TitlePatternProcessor"/>
+	<attribute-processor name="decorator" class="nz.net.ultraq.web.thymeleaf.DecoratorProcessor"/>
+
+	<attribute-processor name="include" class="nz.net.ultraq.web.thymeleaf.IncludeProcessor"/>
+
+	<attribute-processor name="fragment" class="nz.net.ultraq.web.thymeleaf.IncludeProcessor">
+		<restrictions tags="-title"/>
+	</attribute-processor>
+
+	<attribute-processor name="title-pattern" class="nz.net.ultraq.web.thymeleaf.TitlePatternProcessor">
+		<restrictions tags="title"/>
+	</attribute-processor>
 
 </dialect>
