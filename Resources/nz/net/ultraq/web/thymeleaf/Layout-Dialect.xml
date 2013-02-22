@@ -17,9 +17,6 @@
 -->
 
 <dialect xmlns="http://www.thymeleaf.org/extras/dialect"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.thymeleaf.org/extras/dialect
-						http://www.thymeleaf.org/xsd/extras/thymeleaf-dialect-help-0.4.xsd"
 	prefix="layout" namespace-uri="http://www.ultraq.net.nz/web/thymeleaf/layout"
 	class="nz.net.ultraq.web.thymeleaf.LayoutDialect">
 
@@ -27,7 +24,7 @@
 
 	<attribute-processor name="include" class="nz.net.ultraq.web.thymeleaf.IncludeProcessor"/>
 
-	<attribute-processor name="fragment" class="nz.net.ultraq.web.thymeleaf.IncludeProcessor">
+	<attribute-processor name="fragment" class="nz.net.ultraq.web.thymeleaf.FragmentProcessor">
 		<restrictions tags="-title"/>
 	</attribute-processor>
 
