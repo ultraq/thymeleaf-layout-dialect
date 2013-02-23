@@ -35,7 +35,7 @@ project.sourceCompatibility = '1.6'
 
 project.group    = 'nz.net.ultraq.web.thymeleaf'
 project.artifact = 'thymeleaf-layout-dialect'
-project.version  = '1.0.6-SNAPSHOT'
+project.version  = '1.0.6'
 project.year     = '2012'
 
 dependencies {
