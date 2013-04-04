@@ -7,8 +7,8 @@ style your content, as well as pass entire fragment elements to included pages,
 all to help improve code reuse.  If you've ever used SiteMesh 2 or JSF with
 Facelets, then the concepts of this library will be very familiar to you.
 
- - Current version: 1.0.6
- - Released: 23 Feb 2013
+ - Current version: 1.0.7-SNAPSHOT
+ - Released: ?? ??? 2013
 
 
 Requirements
@@ -31,7 +31,7 @@ Add a dependency to your project with the following co-ordinates:
 
  - GroupId: `nz.net.ultraq.web.thymeleaf`
  - ArtifactId: `thymeleaf-layout-dialect`
- - Version: `1.0.6`
+ - Version: `1.0.7-SNAPSHOT`
 
 
 Usage
@@ -39,15 +39,18 @@ Usage
 
 Add the Layout dialect to your existing Thymeleaf template engine, eg:
 
+```java
 	ServletContextTemplateResolver templateresolver = new ServletContextTemplateResolver();
 	templateresolver.setTemplateMode("HTML5");
 	
 	templateengine = new TemplateEngine();
 	templateengine.setTemplateResolver(templateresolver);
 	templateengine.addDialect(new LayoutDialect());		// This line adds the dialect to Thymeleaf
+```
 
 Or, for those using Spring configuration files:
 
+```xml
 	<bean id="templateResolver" class="org.thymeleaf.templateresolver.ServletContextTemplateResolver">
 	  <property name="templateMode" value="HTML5"/>
 	</bean>
@@ -64,6 +67,7 @@ Or, for those using Spring configuration files:
 	  </property>
 			
 	</bean>
+```
 
 This will introduce 4 new attributes that you can use in your pages:
 `layout:decorator`, `layout:include`, `layout:fragment`, and `layout:title-pattern`.
@@ -106,6 +110,7 @@ Create a page that will contain a layout that will be shared between pages.
 Often this will be a template that contains a page header, navigation, a footer,
 and a spot where your page content will go.
 
+```xml
 	Layout.html
 	
 	<!DOCTYPE html>
@@ -128,6 +133,7 @@ and a spot where your page content will go.
 	    </footer>  
 	  </body>
 	</html>
+```
 
 Notice how the `layout:fragment` attribute was applied to the `<section>` and
 `<p>` element in the footer.  These are the points in the decorator page that
@@ -135,6 +141,7 @@ are candidates for replacement by matching fragments in the content pages.
 
 Now, create some content pages.
 
+```xml
 	Content1.html
 	
 	<!DOCTYPE html>
@@ -154,6 +161,7 @@ Now, create some content pages.
 	    </footer>
 	  </body>
 	</html>
+```
 
 The `layout:decorator` in the `<html>` tag says which decorator page to apply to
 this content page.  Also, the content page defines its own title and a script,
@@ -163,6 +171,7 @@ be handy if you wish to do static templating of the content page which is one of
 the reasons one uses Thymeleaf in the first place :)  Anyway, once you tell
 Thymeleaf to process `Content1.html`, the resulting page will look like this:
 
+```xml
 	<!DOCTYPE html>
 	<html xmlns="http://www.w3.org/1999/xhtml">
 	  <head>
@@ -183,6 +192,7 @@ Thymeleaf to process `Content1.html`, the resulting page will look like this:
 	    </footer>  
 	  </body>
 	</html>
+```
 
 The content page was 'decorated' by the elements of `Layout.html`, the result
 being a combination of the decorator page, plus the fragments of the content
@@ -193,17 +203,20 @@ but replaced by all content page fragments where specified).
 Say you just want to replace _only_ the footer of your decorator page with the
 absolute minimum of HTML code:
 
+```xml
 	Content2.html
 	
 	<p layout:decorator="Layout.html" layout:fragment="custom-footer">
 	  This is some footer text from content page 2.
 	</p>
+```
 
 And that's all you need!  The full-HTML-page restriction of Thymeleaf was lifted
 from version 2.0.10, so now you can do things like the above.  The `<p>` tag
 acts as both root element and fragment definition, resulting in a page that will
 look like this:
 
+```xml
 	<!DOCTYPE html>
 	<html xmlns="http://www.w3.org/1999/xhtml">
 	  <head>
@@ -225,6 +238,7 @@ look like this:
 	    </footer>  
 	  </body>
 	</html>
+```
 
 You can think of the decorator page as your parent template that will get
 filled-up or overwritten by your content pages (child templates), but only if
@@ -241,6 +255,7 @@ code duplication.  An example of this might be a modal panel consisting of
 several HTML elements and CSS classes to create the illusion of a new window
 within your web application:
 
+```xml
 	Modal.html
 	
 	<!DOCTYPE html>
@@ -265,6 +280,7 @@ within your web application:
 	  </body>
 	
 	</html>
+```
 
 You find you can turn some things into variables like the header and IDs so that
 pages including `Modal.html` can set their own name/IDs.  You continue making
@@ -289,6 +305,7 @@ structure that can respond to the use case of the page including it.
 Here's an updated modal page, made more generic using Thymeleaf and the
 `layout:fragment` attribute to define a replaceable modal content section:
 
+```xml
 	Modal2.html
 	
 	<!DOCTYPE html>
@@ -317,11 +334,13 @@ Here's an updated modal page, made more generic using Thymeleaf and the
 	  </body>
 	
 	</html>
+```
 
 Now you can include the page using the `layout:include` attribute and implement
 the `modal-content` fragment however you need by creating a fragment of the same
 name _within the include element_ of the calling page:
 
+```xml
 	Content.html
 	
 	<!DOCTYPE html>
@@ -338,12 +357,14 @@ name _within the include element_ of the calling page:
 	  ...
 	
 	</html>
+```
 
 Just like with the content/decorator example, the `layout:fragment` of the page
 you're including will be replaced by the element with the matching fragment
 name.  In this case, the entire `modal-content` of `Modal2.html` will be
 replaced by the custom paragraph above.  Here's the result:
 
+```xml
 	<!DOCTYPE html>
 	<html xmlns="http://www.w3.org/1999/xhtml">
 	
@@ -366,6 +387,7 @@ replaced by the custom paragraph above.  Here's the result:
 	  ...
 	
 	</html>
+```
 
 The custom message defined in the page including `Modal2.html` was made a part
 of the contents of the modal.  Fragments in the context of an included page work
@@ -385,6 +407,7 @@ some special tokens in a pattern of how you want your title to appear.
 
 Here's an example:
 
+```xml
 	Layout.html
 	
 	<!DOCTYPE html>
@@ -392,19 +415,21 @@ Here's an example:
 	  xmlns:th="http://www.thymeleaf.org"
 	  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
 	
-	<head>
-	  <title layout:title-pattern="$DECORATOR_TITLE - $CONTENT_TITLE">My website</title>
-	</head>
+	  <head>
+	    <title layout:title-pattern="$DECORATOR_TITLE - $CONTENT_TITLE">My website</title>
+	  </head>
 	
-	...
+	  ...
 	
 	</html>
+```
 
 The `layout:title-pattern` attribute is a simple string that recognizes 2
 special tokens: `$DECORATOR_TITLE` and `$CONTENT_TITLE`.  Each token will be
 replaced by their respective titles in the resulting page.  So, if you had the
 following content page:
 
+```xml
 	Content.html
 	
 	<!DOCTYPE html>
@@ -419,9 +444,11 @@ following content page:
 	  ...
 	
 	</html>
+```
 
 The resulting page would be:
 
+```xml
 	<!DOCTYPE html>
 	<html xmlns="http://www.w3.org/1999/xhtml">
 	  <head>
@@ -431,6 +458,7 @@ The resulting page would be:
 	  ...
 	
 	</html>
+```
 
 The pattern was specified in the decorator, so applies to all content pages that
 make use of the decorator.  If you specify another title pattern in the content
@@ -440,6 +468,10 @@ fine-grained control of the appearance of your title.
 
 Changelog
 ---------
+
+### 1.0.7
+ - Introduced fenced code blocks and other [GitHub Markdown](https://help.github.com/articles/github-flavored-markdown)
+   niceties so this readme will work better when viewed on GitHub.
 
 ### 1.0.6
  - Added a help/documentation file so that this dialect will appear in content
@@ -452,9 +484,8 @@ Changelog
    the `<title>` element (I keep seeing people doing this, even though it's not
    required since the dialect automatically takes the content `<title>` over the
    decorator `<title>`).
- - Resolved [Issue #10](thymeleaf-layout-dialect/issues/10), so that content
-   outside the decorator page's `<html>` element (like IE conditional comments)
-   are included in the resulting page.
+ - Resolved issue #10, so that content outside the decorator page's `<html>`
+   element (like IE conditional comments) are included in the resulting page.
  - Updated Thymeleaf dependency from version 2.0.13 to 2.0.15.
 
 ### 1.0.4
@@ -463,34 +494,31 @@ Changelog
  - Fixed the resulting JAR which didn't recreate the proper Maven metadata in
    the manifest section and might have caused it to not be picked up by tools
    like m2eclipse.
- - Resolved [Issue #7](thymeleaf-layout-dialect/issues/7), which caused a `ClassCastException`
-   for cases when `th:include` was used to include entire pages.
+ - Resolved issue #7, which caused a `ClassCastException` for cases when `th:include`
+   was used to include entire pages.
  - Updated Thymeleaf dependency from version 2.0.11 to 2.0.13.
 
 ### 1.0.3
  - Added a `layout:include` attribute which works like `th:include` but allows
    for the passing of element fragments to the included page.
- - Resolved [Issue #3](thymeleaf-layout-dialect/issues/3), allowing `th:with`
-   local variable declarations made in the decorator page to be visible in
-   content pages during processing.
- - Resolved [Issue #4](thymeleaf-layout-dialect/issues/4), removing the
-   restriction that the `layout:decorator` tag appear in an HTML element since
-   Thymeleaf 2.0.10 relaxed that restriction too (tag must still appear in the
-   root element of your page however).
+ - Resolved issue #3, allowing `th:with` local variable declarations made in the
+   decorator page to be visible in content pages during processing.
+ - Resolved issue #4, removing the restriction that the `layout:decorator` tag
+   appear in an HTML element since Thymeleaf 2.0.10 relaxed that restriction too
+   (tag must still appear in the root element of your page however).
  - Updated Thymeleaf dependency from version 2.0.8 to 2.0.11 for the above issue
    due to a required API change in 2.0.11.
 
 ### 1.0.2
- - Resolved [Issue #2](thymeleaf-layout-dialect/issues/2), allowing decorator
-   and content pages to contain just a `<head>` section, or just a `<body>`
-   section, or neither section, or some other combination between pages.
+ - Resolved issue #2, allowing decorator and content pages to contain just a `<head>`
+   section, or just a `<body>` section, or neither section, or some other
+   combination between pages.
 
 ### 1.0.1
  - Switched from Ant to Gradle as a build tool and to generate Maven-compatible
    artifacts.
- - Resolved [Issue #1](thymeleaf-layout-dialect/issues/1) to appease the
-   Mavenites amongst you :)  Project is now being served from Maven Central,
-   co-ordinates added to [installation](#installation) instructions.
+ - Resolved issue #1, to appease the Mavenites amongst you :)  Project is now
+   being served from Maven Central, co-ordinates added to [installation](#installation) instructions.
 
 ### 1.0
  - Initial release.
