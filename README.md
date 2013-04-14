@@ -39,31 +39,34 @@ Usage
 
 Add the Layout dialect to your existing Thymeleaf template engine, eg:
 
-	ServletContextTemplateResolver templateresolver = new ServletContextTemplateResolver();
-	templateresolver.setTemplateMode("HTML5");
-	
-	templateengine = new TemplateEngine();
-	templateengine.setTemplateResolver(templateresolver);
-	templateengine.addDialect(new LayoutDialect());		// This line adds the dialect to Thymeleaf
+```java
+ServletContextTemplateResolver templateresolver = new ServletContextTemplateResolver();
+templateresolver.setTemplateMode("HTML5");
+
+templateengine = new TemplateEngine();
+templateengine.setTemplateResolver(templateresolver);
+templateengine.addDialect(new LayoutDialect());		// This line adds the dialect to Thymeleaf
+```
 
 Or, for those using Spring configuration files:
 
-	<bean id="templateResolver" class="org.thymeleaf.templateresolver.ServletContextTemplateResolver">
-	  <property name="templateMode" value="HTML5"/>
-	</bean>
-	
-	<bean id="templateEngine" class="org.thymeleaf.spring3.SpringTemplateEngine">
-	  <property name="templateResolver" ref="templateResolver"/>
-	
-	  <!-- These lines configure the dialects to use with Thymeleaf -->
-	  <property name="dialects">
-	    <set>
-	      <bean class="org.thymeleaf.spring3.dialect.SpringStandardDialect"/>
-	      <bean class="nz.net.ultraq.web.thymeleaf.LayoutDialect"/>
-	    </set>
-	  </property>
-			
-	</bean>
+```xml
+<bean id="templateResolver" class="org.thymeleaf.templateresolver.ServletContextTemplateResolver">
+  <property name="templateMode" value="HTML5"/>
+</bean>
+
+<bean id="templateEngine" class="org.thymeleaf.spring3.SpringTemplateEngine">
+  <property name="templateResolver" ref="templateResolver"/>
+
+  <!-- These lines add the dialect to Thymeleaf -->
+  <property name="additionalDialects">
+    <set>
+      <bean class="nz.net.ultraq.web.thymeleaf.LayoutDialect"/>
+    </set>
+  </property>
+
+</bean>
+```
 
 This will introduce 4 new attributes that you can use in your pages:
 `layout:decorator`, `layout:include`, `layout:fragment`, and `layout:title-pattern`.
@@ -106,28 +109,30 @@ Create a page that will contain a layout that will be shared between pages.
 Often this will be a template that contains a page header, navigation, a footer,
 and a spot where your page content will go.
 
-	Layout.html
-	
-	<!DOCTYPE html>
-	<html xmlns="http://www.w3.org/1999/xhtml"
-	  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
-	  <head>
-	    <title>Layout page</title>
-	    <script src="common-script.js"></script>
-	  </head>
-	  <body>
-	    <header>
-	      <h1>My website</h1>
-	    </header>
-	    <section layout:fragment="content">
-	      <p>Page content goes here</p>
-	    </section>
-	    <footer>
-	      <p>My footer</p>
-	      <p layout:fragment="custom-footer">Custom footer here</p>
-	    </footer>  
-	  </body>
-	</html>
+```html
+Layout.html
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+  <head>
+    <title>Layout page</title>
+    <script src="common-script.js"></script>
+  </head>
+  <body>
+    <header>
+      <h1>My website</h1>
+    </header>
+    <section layout:fragment="content">
+      <p>Page content goes here</p>
+    </section>
+    <footer>
+      <p>My footer</p>
+      <p layout:fragment="custom-footer">Custom footer here</p>
+    </footer>  
+  </body>
+</html>
+```
 
 Notice how the `layout:fragment` attribute was applied to the `<section>` and
 `<p>` element in the footer.  These are the points in the decorator page that
@@ -135,25 +140,27 @@ are candidates for replacement by matching fragments in the content pages.
 
 Now, create some content pages.
 
-	Content1.html
-	
-	<!DOCTYPE html>
-	<html xmlns="http://www.w3.org/1999/xhtml"
-	  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-	  layout:decorator="Layout.html">
-	  <head>
-	    <title>Content page 1</title>
-	    <script src="content-script.js"></script>
-	  </head>
-	  <body>
-	    <section layout:fragment="content">
-	      <p>This is a paragraph from content page 1</p>
-	    </section>
-	    <footer>
-	      <p layout:fragment="custom-footer">This is some footer content from content page 1</p>
-	    </footer>
-	  </body>
-	</html>
+```html
+Content1.html
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+  layout:decorator="Layout.html">
+  <head>
+    <title>Content page 1</title>
+    <script src="content-script.js"></script>
+  </head>
+  <body>
+    <section layout:fragment="content">
+      <p>This is a paragraph from content page 1</p>
+    </section>
+    <footer>
+      <p layout:fragment="custom-footer">This is some footer content from content page 1</p>
+    </footer>
+  </body>
+</html>
+```
 
 The `layout:decorator` in the `<html>` tag says which decorator page to apply to
 this content page.  Also, the content page defines its own title and a script,
@@ -163,26 +170,28 @@ be handy if you wish to do static templating of the content page which is one of
 the reasons one uses Thymeleaf in the first place :)  Anyway, once you tell
 Thymeleaf to process `Content1.html`, the resulting page will look like this:
 
-	<!DOCTYPE html>
-	<html xmlns="http://www.w3.org/1999/xhtml">
-	  <head>
-	    <title>Content page 1</title>
-	    <script src="common-script.js"></script>
-	    <script src="content-script.js"></script>
-	  </head>
-	  <body>
-	    <header>
-	      <h1>My website</h1>
-	    </header>
-	    <section>
-	      <p>This is a paragraph from content page 1</p>
-	    </section>
-	    <footer>
-	      <p>My footer</p>
-	      <p>This is some footer content from content page 1</p>
-	    </footer>  
-	  </body>
-	</html>
+```html
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Content page 1</title>
+    <script src="common-script.js"></script>
+    <script src="content-script.js"></script>
+  </head>
+  <body>
+    <header>
+      <h1>My website</h1>
+    </header>
+    <section>
+      <p>This is a paragraph from content page 1</p>
+    </section>
+    <footer>
+      <p>My footer</p>
+      <p>This is some footer content from content page 1</p>
+    </footer>  
+  </body>
+</html>
+```
 
 The content page was 'decorated' by the elements of `Layout.html`, the result
 being a combination of the decorator page, plus the fragments of the content
@@ -193,38 +202,44 @@ but replaced by all content page fragments where specified).
 Say you just want to replace _only_ the footer of your decorator page with the
 absolute minimum of HTML code:
 
-	Content2.html
-	
-	<p layout:decorator="Layout.html" layout:fragment="custom-footer">
-	  This is some footer text from content page 2.
-	</p>
+
+```html
+Content2.html
+
+<p layout:decorator="Layout.html" layout:fragment="custom-footer">
+  This is some footer text from content page 2.
+</p>
+```
+
 
 And that's all you need!  The full-HTML-page restriction of Thymeleaf was lifted
 from version 2.0.10, so now you can do things like the above.  The `<p>` tag
 acts as both root element and fragment definition, resulting in a page that will
 look like this:
 
-	<!DOCTYPE html>
-	<html xmlns="http://www.w3.org/1999/xhtml">
-	  <head>
-	    <title>Layout page</title>
-	    <script src="common-script.js"></script>
-	  </head>
-	  <body>
-	    <header>
-	      <h1>My website</h1>
-	    </header>
-	    <section>
-	      <p>Page content goes here</p>
-	    </section>
-	    <footer>
-	      <p>My footer</p>
-	      <p>
-	        This is some footer text from content page 2.
-	      </p>
-	    </footer>  
-	  </body>
-	</html>
+```html
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Layout page</title>
+    <script src="common-script.js"></script>
+  </head>
+  <body>
+    <header>
+      <h1>My website</h1>
+    </header>
+    <section>
+      <p>Page content goes here</p>
+    </section>
+    <footer>
+      <p>My footer</p>
+      <p>
+        This is some footer text from content page 2.
+      </p>
+    </footer>  
+  </body>
+</html>
+```
 
 You can think of the decorator page as your parent template that will get
 filled-up or overwritten by your content pages (child templates), but only if
@@ -241,30 +256,28 @@ code duplication.  An example of this might be a modal panel consisting of
 several HTML elements and CSS classes to create the illusion of a new window
 within your web application:
 
-	Modal.html
-	
-	<!DOCTYPE html>
-	<html xmlns="http://www.w3.org/1999/xhtml">
-	
-	  <body>
-	
-	    <div id="modal-container" class="modal-container" style="display:none;">
-	      <section id="modal" class="modal">
-	        <header>
-	          <h1>My Modal</h1>
-	          <div id="close-modal" class="modal-close">
-	            <a href="#close">Close</a>
-	          </div>
-	        </header>
-	        <div id="modal-content" class="modal-content">
-	          <p>My modal content</p>
-	        </div>
-	      </section>
-	    </div>
-	
-	  </body>
-	
-	</html>
+```html
+Modal.html
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <body>
+    <div id="modal-container" class="modal-container" style="display:none;">
+      <section id="modal" class="modal">
+        <header>
+          <h1>My Modal</h1>
+          <div id="close-modal" class="modal-close">
+            <a href="#close">Close</a>
+          </div>
+        </header>
+        <div id="modal-content" class="modal-content">
+          <p>My modal content</p>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>
+```
 
 You find you can turn some things into variables like the header and IDs so that
 pages including `Modal.html` can set their own name/IDs.  You continue making
@@ -289,83 +302,85 @@ structure that can respond to the use case of the page including it.
 Here's an updated modal page, made more generic using Thymeleaf and the
 `layout:fragment` attribute to define a replaceable modal content section:
 
-	Modal2.html
-	
-	<!DOCTYPE html>
-	<html xmlns="http://www.w3.org/1999/xhtml"
-	  xmlns:th="http://www.thymeleaf.org"
-	  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
-	
-	  <body layout:fragment="modal">
-	
-	    <div th:id="${modalId} + '-container'" class="modal-container" style="display:none;">
-	      <section th:id="${modalId}" class="modal">
-	        <header>
-	          <h1 th:text="${modalHeader}">My Modal</h1>
-	          <div th:id="'close-' + ${modalId}" class="modal-close">
-	            <a href="#close">Close</a>
-	          </div>
-	        </header>
-	        <div th:id="${modalId} + '-content'" class="modal-content">
-	          <div layout:fragment="modal-content">
-	            <p>My modal content</p>
-	          </div>
-	        </div>
-	      </section>
-	    </div>
-	
-	  </body>
-	
-	</html>
+```html
+Modal2.html
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+  <body layout:fragment="modal">
+    <div th:id="${modalId} + '-container'" class="modal-container" style="display:none;">
+      <section th:id="${modalId}" class="modal">
+        <header>
+          <h1 th:text="${modalHeader}">My Modal</h1>
+          <div th:id="'close-' + ${modalId}" class="modal-close">
+            <a href="#close">Close</a>
+          </div>
+        </header>
+        <div th:id="${modalId} + '-content'" class="modal-content">
+          <div layout:fragment="modal-content">
+            <p>My modal content</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>
+```
 
 Now you can include the page using the `layout:include` attribute and implement
 the `modal-content` fragment however you need by creating a fragment of the same
 name _within the include element_ of the calling page:
 
-	Content.html
-	
-	<!DOCTYPE html>
-	<html xmlns="http://www.w3.org/1999/xhtml"
-	  xmlns:th="http://www.thymeleaf.org"
-	  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
-	
-	  ...
-	
-	  <div layout:include="Modal2.html :: modal" th:with="modalId='message', modalHeader='Message'" th:remove="tag">
-	    <p th:fragment="modal-content">Message goes here!</p>
-	  </div>
-	
-	  ...
-	
-	</html>
+```html
+Content.html
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+
+  ...
+
+  <div layout:include="Modal2.html :: modal" th:with="modalId='message', modalHeader='Message'" th:remove="tag">
+    <p th:fragment="modal-content">Message goes here!</p>
+  </div>
+
+  ...
+
+</html>
+```
 
 Just like with the content/decorator example, the `layout:fragment` of the page
 you're including will be replaced by the element with the matching fragment
 name.  In this case, the entire `modal-content` of `Modal2.html` will be
 replaced by the custom paragraph above.  Here's the result:
 
-	<!DOCTYPE html>
-	<html xmlns="http://www.w3.org/1999/xhtml">
-	
-	  ...
-	
-	  <div id="message-container" class="modal-container" style="display:none;">
-	    <section id="message" class="modal">
-	      <header>
-	        <h1>Message</h1>
-	        <div id="close-message" class="modal-close">
-	          <a href="#close">Close</a>
-	        </div>
-	      </header>
-	      <div id="message-content" class="modal-content">
-	        <p>Message goes here!</p>
-	      </div>
-	    </section>
-	  </div>
-	
-	  ...
-	
-	</html>
+```html
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+  ...
+
+  <div id="message-container" class="modal-container" style="display:none;">
+    <section id="message" class="modal">
+      <header>
+        <h1>Message</h1>
+        <div id="close-message" class="modal-close">
+          <a href="#close">Close</a>
+        </div>
+      </header>
+      <div id="message-content" class="modal-content">
+        <p>Message goes here!</p>
+      </div>
+    </section>
+  </div>
+
+  ...
+
+</html>
+```
 
 The custom message defined in the page including `Modal2.html` was made a part
 of the contents of the modal.  Fragments in the context of an included page work
@@ -385,52 +400,60 @@ some special tokens in a pattern of how you want your title to appear.
 
 Here's an example:
 
-	Layout.html
-	
-	<!DOCTYPE html>
-	<html xmlns="http://www.w3.org/1999/xhtml"
-	  xmlns:th="http://www.thymeleaf.org"
-	  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
-	
-	<head>
-	  <title layout:title-pattern="$DECORATOR_TITLE - $CONTENT_TITLE">My website</title>
-	</head>
-	
-	...
-	
-	</html>
+Layout.html
+
+```
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+
+  <head>
+    <title layout:title-pattern="$DECORATOR_TITLE - $CONTENT_TITLE">My website</title>
+  </head>
+
+  ...
+
+</html>
+```
 
 The `layout:title-pattern` attribute is a simple string that recognizes 2
 special tokens: `$DECORATOR_TITLE` and `$CONTENT_TITLE`.  Each token will be
 replaced by their respective titles in the resulting page.  So, if you had the
 following content page:
 
-	Content.html
-	
-	<!DOCTYPE html>
-	<html xmlns="http://www.w3.org/1999/xhtml"
-	  xmlns:th="http://www.thymeleaf.org"
-	  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-	  layout:decorator="Layout.html">
-	  <head>
-	    <title>My blog</title>
-	  </head>
-	
-	  ...
-	
-	</html>
+```html
+Content.html
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+  layout:decorator="Layout.html">
+
+  <head>
+    <title>My blog</title>
+  </head>
+
+  ...
+
+</html>
+```
 
 The resulting page would be:
 
-	<!DOCTYPE html>
-	<html xmlns="http://www.w3.org/1999/xhtml">
-	  <head>
-	    <title>My website - My blog</title>
-	  </head>
-	
-	  ...
-	
-	</html>
+```html
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+  <head>
+    <title>My website - My blog</title>
+  </head>
+
+  ...
+
+</html>
+```
 
 The pattern was specified in the decorator, so applies to all content pages that
 make use of the decorator.  If you specify another title pattern in the content
