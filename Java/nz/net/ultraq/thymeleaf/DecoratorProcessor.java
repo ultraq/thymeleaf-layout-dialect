@@ -41,7 +41,7 @@ import java.util.Map;
  * Specifies the name of the decorator template to apply to a content template.
  * <p>
  * The mechanism for resolving decorator templates is the same as that used by
- * Thymeleaf to resolve th:fragment and th:substituteby pages.
+ * Thymeleaf to resolve <tt>th:fragment</tt> and <tt>th:substituteby</tt> pages.
  * 
  * @author Emanuel Rabina
  */

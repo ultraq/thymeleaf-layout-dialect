@@ -468,6 +468,8 @@ Changelog
  - Change package to `nz.net.ultraq.thymeleaf` (dropped the 'web' part).
  - Change XML namespace to `http://www.ultraq.net.nz/thymeleaf/layout` (dropped
    the 'web' part).
+ - Implemented unit tests, using the [Thymeleaf Testing](https://github.com/thymeleaf/thymeleaf-testing)
+   library.
 
 ### 1.0.6
  - Added a help/documentation file so that this dialect will appear in content

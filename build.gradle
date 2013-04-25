@@ -42,4 +42,8 @@ project.year     = '2012'
 
 dependencies {
 	compile 'org.thymeleaf:thymeleaf:2.0.15'
+	testCompile(
+		'junit:junit:4.11',
+		'org.thymeleaf:thymeleaf-testing:2.0.0-beta1'
+	)
 }
