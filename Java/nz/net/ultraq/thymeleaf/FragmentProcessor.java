@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package nz.net.ultraq.web.thymeleaf;
+package nz.net.ultraq.thymeleaf;
 
-import static nz.net.ultraq.web.thymeleaf.LayoutDialect.LAYOUT_PREFIX;
+import static nz.net.ultraq.thymeleaf.LayoutDialect.LAYOUT_PREFIX;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

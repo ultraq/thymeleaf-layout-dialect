@@ -27,15 +27,17 @@ apply from: 'https://raw.github.com/ultraq/gradle-support/master/java-support.gr
 apply plugin: 'maven'
 apply from: 'https://raw.github.com/ultraq/gradle-support/master/maven-support.gradle'
 apply from: 'https://raw.github.com/ultraq/gradle-support/master/bundle.gradle'
+apply plugin: 'eclipse'
+apply from: 'https://raw.github.com/ultraq/gradle-support/master/eclipse-support.gradle'
 
 //project.name      = 'Thymeleaf Layout Dialect'
 project.description = 'A dialect for Thymeleaf that allows you to use layout/decorator templates to style your content.'
 project.archivesBaseName = 'thymeleaf-layout-dialect'
 project.sourceCompatibility = '1.6'
 
-project.group    = 'nz.net.ultraq.web.thymeleaf'
+project.group    = 'nz.net.ultraq.thymeleaf'
 project.artifact = 'thymeleaf-layout-dialect'
-project.version  = '1.0.7-SNAPSHOT'
+project.version  = '1.1-SNAPSHOT'
 project.year     = '2012'
 
 dependencies {

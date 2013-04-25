@@ -7,7 +7,7 @@ style your content, as well as pass entire fragment elements to included pages,
 all to help improve code reuse.  If you've ever used SiteMesh 2 or JSF with
 Facelets, then the concepts of this library will be very familiar to you.
 
- - Current version: 1.0.7-SNAPSHOT
+ - Current version: 1.1-SNAPSHOT
  - Released: ?? ??? 2013
 
 
@@ -22,16 +22,16 @@ Installation
 ------------
 
 ### Standalone distribution
-Copy the JAR from [the latest download bundle](http://www.ultraq.net.nz/downloads/programming/Thymeleaf Layout Dialect 1.0.6.zip),
+Copy the JAR from [the latest download bundle](http://www.ultraq.net.nz/downloads/programming/Thymeleaf Layout Dialect 1.1.zip),
 placing it in the `WEB-INF/lib` directory of your web application, or build the
 project from the source code here on GitHub.
 
 ### For Maven and Maven-compatible dependency managers
 Add a dependency to your project with the following co-ordinates:
 
- - GroupId: `nz.net.ultraq.web.thymeleaf`
+ - GroupId: `nz.net.ultraq.thymeleaf`
  - ArtifactId: `thymeleaf-layout-dialect`
- - Version: `1.0.7-SNAPSHOT`
+ - Version: `1.1`
 
 
 Usage
@@ -61,7 +61,7 @@ Or, for those using Spring configuration files:
   <!-- These lines add the dialect to Thymeleaf -->
   <property name="additionalDialects">
     <set>
-      <bean class="nz.net.ultraq.web.thymeleaf.LayoutDialect"/>
+      <bean class="nz.net.ultraq.thymeleaf.LayoutDialect"/>
     </set>
   </property>
 
@@ -114,7 +114,7 @@ Layout.html
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
   <head>
     <title>Layout page</title>
     <script src="common-script.js"></script>
@@ -145,7 +145,7 @@ Content1.html
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
   layout:decorator="Layout.html">
   <head>
     <title>Content page 1</title>
@@ -308,7 +308,7 @@ Modal2.html
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
   xmlns:th="http://www.thymeleaf.org"
-  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
   <body layout:fragment="modal">
     <div th:id="${modalId} + '-container'" class="modal-container" style="display:none;">
       <section th:id="${modalId}" class="modal">
@@ -339,7 +339,7 @@ Content.html
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
   xmlns:th="http://www.thymeleaf.org"
-  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
   ...
 
@@ -406,7 +406,7 @@ Layout.html
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
   xmlns:th="http://www.thymeleaf.org"
-  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
   <head>
     <title layout:title-pattern="$DECORATOR_TITLE - $CONTENT_TITLE">My website</title>
@@ -428,7 +428,7 @@ Content.html
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
   xmlns:th="http://www.thymeleaf.org"
-  xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
   layout:decorator="Layout.html">
 
   <head>
@@ -464,8 +464,10 @@ fine-grained control of the appearance of your title.
 Changelog
 ---------
 
-### 1.0.7
-
+### 1.1
+ - Change package to `nz.net.ultraq.thymeleaf` (dropped the 'web' part).
+ - Change XML namespace to `http://www.ultraq.net.nz/thymeleaf/layout` (dropped
+   the 'web' part).
 
 ### 1.0.6
  - Added a help/documentation file so that this dialect will appear in content

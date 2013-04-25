@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package nz.net.ultraq.web.thymeleaf;
+package nz.net.ultraq.thymeleaf;
 
-import static nz.net.ultraq.web.thymeleaf.FragmentProcessor.PROCESSOR_NAME_FRAGMENT_FULL;
-import static nz.net.ultraq.web.thymeleaf.FragmentProcessor.FRAGMENT_NAME_PREFIX;
-import static nz.net.ultraq.web.thymeleaf.IncludeProcessor.PROCESSOR_NAME_INCLUDE_FULL;
+import static nz.net.ultraq.thymeleaf.FragmentProcessor.FRAGMENT_NAME_PREFIX;
+import static nz.net.ultraq.thymeleaf.FragmentProcessor.PROCESSOR_NAME_FRAGMENT_FULL;
+import static nz.net.ultraq.thymeleaf.IncludeProcessor.PROCESSOR_NAME_INCLUDE_FULL;
 
 import org.thymeleaf.dom.Element;
 

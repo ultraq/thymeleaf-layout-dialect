@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package nz.net.ultraq.web.thymeleaf;
+package nz.net.ultraq.thymeleaf;
 
 import org.thymeleaf.dialect.AbstractDialect;
 import org.thymeleaf.processor.IProcessor;
