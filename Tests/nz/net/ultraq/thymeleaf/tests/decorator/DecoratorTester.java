@@ -33,8 +33,8 @@ public class DecoratorTester extends AbstractLayoutDialectTester {
 	 * that also has head and body content.
 	 */
 	@Test
-	public void fullPageInclusion() {
+	public void fullPageHeadAndBody() {
 
-		testexecutor.execute("Decorator-FullPage");
+		testexecutor.execute("nz/net/ultraq/thymeleaf/tests/decorator/Decorator-FullPage-HeadAndBody.test");
 	}
 }

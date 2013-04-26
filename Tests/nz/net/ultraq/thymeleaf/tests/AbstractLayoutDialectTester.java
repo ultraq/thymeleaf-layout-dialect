@@ -32,13 +32,13 @@ import java.util.Arrays;
  */
 public abstract class AbstractLayoutDialectTester {
 
-	protected TestExecutor testexecutor;
+	protected static TestExecutor testexecutor;
 
 	/**
 	 * Set up the test executor to include the layout dialect.
 	 */
 	@BeforeClass
-	public void initTestExecutor() {
+	public static void initTestExecutor() {
 
 		testexecutor = new TestExecutor();
 		testexecutor.setDialects(Arrays.asList(new StandardDialect(), new LayoutDialect()));
