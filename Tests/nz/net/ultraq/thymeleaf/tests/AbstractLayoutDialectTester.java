@@ -21,6 +21,7 @@ import nz.net.ultraq.thymeleaf.LayoutDialect;
 import org.junit.BeforeClass;
 import org.thymeleaf.standard.StandardDialect;
 import org.thymeleaf.testing.templateengine.engine.TestExecutor;
+import org.thymeleaf.testing.templateengine.testable.ITestResult;
 
 import java.util.Arrays;
 
@@ -33,6 +34,7 @@ import java.util.Arrays;
 public abstract class AbstractLayoutDialectTester {
 
 	protected static TestExecutor testexecutor;
+	private static JUnitTestReporter testreporter;
 
 	/**
 	 * Set up the test executor to include the layout dialect.
@@ -42,5 +44,18 @@ public abstract class AbstractLayoutDialectTester {
 
 		testexecutor = new TestExecutor();
 		testexecutor.setDialects(Arrays.asList(new StandardDialect(), new LayoutDialect()));
+
+		testreporter = new JUnitTestReporter();
+		testexecutor.setReporter(testreporter);
+	}
+
+	/**
+	 * Returns the result of the last test execution.
+	 * 
+	 * @return Last test result.
+	 */
+	protected static ITestResult lastTestResult() {
+
+		return testreporter.getLastResult();
 	}
 }

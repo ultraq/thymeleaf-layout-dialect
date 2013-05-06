@@ -4,11 +4,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-	layout:decorator="Layout.html">
-	<head>
-		<title>Content page 1</title>
-		<script src="content-script.js"></script>
-	</head>
+	layout:decorator="Layout">
 	<body>
 		<section layout:fragment="content">
 			<p>This is a paragraph from content page 1</p>
@@ -19,14 +15,26 @@
 	</body>
 </html>
 
+%INPUT[Layout]
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	<body>
+		<header>
+			<h1>My website</h1>
+		</header>
+		<section layout:fragment="content">
+			<p>Page content goes here</p>
+		</section>
+		<footer>
+			<p>My footer</p>
+			<p layout:fragment="custom-footer">Custom footer here</p>
+		</footer>
+	</body>
+</html>
+
 %OUTPUT
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
-	<head>
-		<title>Content page 1</title>
-		<script src="common-script.js"></script>
-		<script src="content-script.js"></script>
-	</head>
 	<body>
 		<header>
 			<h1>My website</h1>

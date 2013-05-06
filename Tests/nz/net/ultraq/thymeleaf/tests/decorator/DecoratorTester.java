@@ -19,6 +19,7 @@ package nz.net.ultraq.thymeleaf.tests.decorator;
 import nz.net.ultraq.thymeleaf.tests.AbstractLayoutDialectTester;
 
 import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  * JUnit test class containing tests related to the <tt>layout:decorator</tt>
@@ -29,12 +30,101 @@ import org.junit.Test;
 public class DecoratorTester extends AbstractLayoutDialectTester {
 
 	/**
-	 * Test decoration of a page with both head and body content, using a layout
-	 * that also has head and body content.
+	 * Test decoration of a page with both head and body content, using a
+	 * full-page layout.
 	 */
 	@Test
-	public void fullPageHeadAndBody() {
+	public void fullLayoutFullContent() {
 
-		testexecutor.execute("nz/net/ultraq/thymeleaf/tests/decorator/Decorator-FullPage-HeadAndBody.test");
+		testexecutor.execute("nz/net/ultraq/thymeleaf/tests/decorator/FullLayout-FullContent.thtest");
+		assertTrue(lastTestResult().isOK());
+	}
+
+	/**
+	 * Test decoration of a page with head content only, using a full-page
+	 * layout.
+	 */
+	@Test
+	public void fullLayoutHeadOnlyContent() {
+
+		testexecutor.execute("nz/net/ultraq/thymeleaf/tests/decorator/FullLayout-HeadOnlyContent.thtest");
+		assertTrue(lastTestResult().isOK());
+	}
+
+	/**
+	 * Test decoration of a page with body content only, using a full-page
+	 * layout.
+	 */
+	@Test
+	public void fullLayoutBodyOnlyContent() {
+
+		testexecutor.execute("nz/net/ultraq/thymeleaf/tests/decorator/FullLayout-BodyOnlyContent.thtest");
+		assertTrue(lastTestResult().isOK());
+	}
+
+	/**
+	 * Test decoration of a page with both head and body content, using a
+	 * head-only layout.
+	 */
+	@Test
+	public void headOnlyLayoutFullContent() {
+
+		testexecutor.execute("nz/net/ultraq/thymeleaf/tests/decorator/HeadOnlyLayout-FullContent.thtest");
+		assertTrue(lastTestResult().isOK());
+	}
+
+	/**
+	 * Test decoration of a page with head content only, using a head-only
+	 * layout.
+	 */
+	@Test
+	public void headOnlyLayoutHeadOnlyContent() {
+
+		testexecutor.execute("nz/net/ultraq/thymeleaf/tests/decorator/HeadOnlyLayout-HeadOnlyContent.thtest");
+		assertTrue(lastTestResult().isOK());
+	}
+
+	/**
+	 * Test decoration of a page with body content only, using a head-only
+	 * layout.
+	 */
+	@Test
+	public void headOnlyLayoutBodyOnlyContent() {
+
+		testexecutor.execute("nz/net/ultraq/thymeleaf/tests/decorator/HeadOnlyLayout-BodyOnlyContent.thtest");
+		assertTrue(lastTestResult().isOK());
+	}
+
+	/**
+	 * Test decoration of a page with both head and body content, using a
+	 * body-only layout.
+	 */
+	@Test
+	public void bodyOnlyLayoutFullContent() {
+
+		testexecutor.execute("nz/net/ultraq/thymeleaf/tests/decorator/BodyOnlyLayout-FullContent.thtest");
+		assertTrue(lastTestResult().isOK());
+	}
+
+	/**
+	 * Test decoration of a page with head content only, using a body-only
+	 * layout.
+	 */
+	@Test
+	public void bodyOnlyLayoutHeadOnlyContent() {
+
+		testexecutor.execute("nz/net/ultraq/thymeleaf/tests/decorator/BodyOnlyLayout-HeadOnlyContent.thtest");
+		assertTrue(lastTestResult().isOK());
+	}
+
+	/**
+	 * Test decoration of a page with body content only, using a body-only
+	 * layout.
+	 */
+	@Test
+	public void bodyOnlyLayoutBodyOnlyContent() {
+
+		testexecutor.execute("nz/net/ultraq/thymeleaf/tests/decorator/BodyOnlyLayout-BodyOnlyContent.thtest");
+		assertTrue(lastTestResult().isOK());
 	}
 }
