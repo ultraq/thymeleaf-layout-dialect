@@ -36,7 +36,7 @@ public class DecoratorTester extends AbstractLayoutDialectTester {
 	@Test
 	public void fullLayoutFullContent() {
 
-		testexecutor.execute("nz/net/ultraq/thymeleaf/tests/decorator/FullLayout-FullContent.thtest");
+		testexecutor.execute("decorator/FullLayout-FullContent");
 		assertTrue(lastTestResult().isOK());
 	}
 
@@ -47,7 +47,7 @@ public class DecoratorTester extends AbstractLayoutDialectTester {
 	@Test
 	public void fullLayoutHeadOnlyContent() {
 
-		testexecutor.execute("nz/net/ultraq/thymeleaf/tests/decorator/FullLayout-HeadOnlyContent.thtest");
+		testexecutor.execute("decorator/FullLayout-HeadOnlyContent");
 		assertTrue(lastTestResult().isOK());
 	}
 
@@ -58,7 +58,7 @@ public class DecoratorTester extends AbstractLayoutDialectTester {
 	@Test
 	public void fullLayoutBodyOnlyContent() {
 
-		testexecutor.execute("nz/net/ultraq/thymeleaf/tests/decorator/FullLayout-BodyOnlyContent.thtest");
+		testexecutor.execute("decorator/FullLayout-BodyOnlyContent");
 		assertTrue(lastTestResult().isOK());
 	}
 
@@ -69,7 +69,7 @@ public class DecoratorTester extends AbstractLayoutDialectTester {
 	@Test
 	public void headOnlyLayoutFullContent() {
 
-		testexecutor.execute("nz/net/ultraq/thymeleaf/tests/decorator/HeadOnlyLayout-FullContent.thtest");
+		testexecutor.execute("decorator/HeadOnlyLayout-FullContent");
 		assertTrue(lastTestResult().isOK());
 	}
 
@@ -80,7 +80,7 @@ public class DecoratorTester extends AbstractLayoutDialectTester {
 	@Test
 	public void headOnlyLayoutHeadOnlyContent() {
 
-		testexecutor.execute("nz/net/ultraq/thymeleaf/tests/decorator/HeadOnlyLayout-HeadOnlyContent.thtest");
+		testexecutor.execute("decorator/HeadOnlyLayout-HeadOnlyContent");
 		assertTrue(lastTestResult().isOK());
 	}
 
@@ -91,7 +91,7 @@ public class DecoratorTester extends AbstractLayoutDialectTester {
 	@Test
 	public void headOnlyLayoutBodyOnlyContent() {
 
-		testexecutor.execute("nz/net/ultraq/thymeleaf/tests/decorator/HeadOnlyLayout-BodyOnlyContent.thtest");
+		testexecutor.execute("decorator/HeadOnlyLayout-BodyOnlyContent");
 		assertTrue(lastTestResult().isOK());
 	}
 
@@ -102,7 +102,7 @@ public class DecoratorTester extends AbstractLayoutDialectTester {
 	@Test
 	public void bodyOnlyLayoutFullContent() {
 
-		testexecutor.execute("nz/net/ultraq/thymeleaf/tests/decorator/BodyOnlyLayout-FullContent.thtest");
+		testexecutor.execute("decorator/BodyOnlyLayout-FullContent");
 		assertTrue(lastTestResult().isOK());
 	}
 
@@ -113,7 +113,7 @@ public class DecoratorTester extends AbstractLayoutDialectTester {
 	@Test
 	public void bodyOnlyLayoutHeadOnlyContent() {
 
-		testexecutor.execute("nz/net/ultraq/thymeleaf/tests/decorator/BodyOnlyLayout-HeadOnlyContent.thtest");
+		testexecutor.execute("decorator/BodyOnlyLayout-HeadOnlyContent");
 		assertTrue(lastTestResult().isOK());
 	}
 
@@ -124,7 +124,7 @@ public class DecoratorTester extends AbstractLayoutDialectTester {
 	@Test
 	public void bodyOnlyLayoutBodyOnlyContent() {
 
-		testexecutor.execute("nz/net/ultraq/thymeleaf/tests/decorator/BodyOnlyLayout-BodyOnlyContent.thtest");
+		testexecutor.execute("decorator/BodyOnlyLayout-BodyOnlyContent");
 		assertTrue(lastTestResult().isOK());
 	}
 }

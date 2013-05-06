@@ -44,6 +44,8 @@ public abstract class AbstractLayoutDialectTester {
 
 		testexecutor = new TestExecutor();
 		testexecutor.setDialects(Arrays.asList(new StandardDialect(), new LayoutDialect()));
+		testexecutor.setTestableResolver(new JUnitTestableResolver(
+				"nz/net/ultraq/thymeleaf/tests/", ".thtest"));
 
 		testreporter = new JUnitTestReporter();
 		testexecutor.setReporter(testreporter);
