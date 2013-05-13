@@ -16,8 +16,8 @@
 
 package nz.net.ultraq.thymeleaf.tests;
 
+import org.thymeleaf.testing.templateengine.report.AbstractTestReporter;
 import org.thymeleaf.testing.templateengine.report.ConsoleTestReporter;
-import org.thymeleaf.testing.templateengine.report.ITestReporter;
 import org.thymeleaf.testing.templateengine.testable.ITest;
 import org.thymeleaf.testing.templateengine.testable.ITestIterator;
 import org.thymeleaf.testing.templateengine.testable.ITestParallelizer;
@@ -30,7 +30,7 @@ import org.thymeleaf.testing.templateengine.testable.ITestSequence;
  * 
  * @author Emanuel Rabina
  */
-public class JUnitTestReporter implements ITestReporter {
+public class JUnitTestReporter extends AbstractTestReporter {
 
 	private final ConsoleTestReporter testreporter = new ConsoleTestReporter();
 	private ITestResult lastresult;
@@ -131,6 +131,26 @@ public class JUnitTestReporter implements ITestReporter {
 	 * {@inheritDoc}
 	 */
 	@Override
+	protected void reportTestEnd(String executionId, int nestingLevel, ITest test, String testName,
+		ITestResult result, long executionTimeNanos) {
+
+		lastresult = result;
+		testreporter.testEnd(executionId, nestingLevel, test, testName, result, executionTimeNanos);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void reportTestStart(String executionId, int nestingLevel, ITest test, String testName) {
+
+		testreporter.testStart(executionId, nestingLevel, test, testName);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public void sequenceEnd(String executionId, int nestingLevel, ITestSequence sequence,
 		int okTests, int totalTests, long executionTimeNanos) {
 
@@ -145,25 +165,5 @@ public class JUnitTestReporter implements ITestReporter {
 	public void sequenceStart(String executionId, int nestingLevel, ITestSequence sequence) {
 
 		testreporter.sequenceStart(executionId, nestingLevel, sequence);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void testEnd(String executionId, int nestingLevel, ITest test, String testName,
-		ITestResult result, long executionTimeNanos) {
-
-		lastresult = result;
-		testreporter.testEnd(executionId, nestingLevel, test, testName, result, executionTimeNanos);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void testStart(String executionId, int nestingLevel, ITest test, String testName) {
-
-		testreporter.testStart(executionId, nestingLevel, test, testName);
 	}
 }
