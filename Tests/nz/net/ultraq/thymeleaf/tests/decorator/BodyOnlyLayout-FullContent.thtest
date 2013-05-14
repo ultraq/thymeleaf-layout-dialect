@@ -20,6 +20,7 @@
 </html>
 
 %INPUT[Layout]
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 	<body>

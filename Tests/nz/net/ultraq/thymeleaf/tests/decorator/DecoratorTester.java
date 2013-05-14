@@ -127,4 +127,47 @@ public class DecoratorTester extends AbstractLayoutDialectTester {
 		testexecutor.execute("decorator/BodyOnlyLayout-BodyOnlyContent");
 		assertTrue(lastTestResult().isOK());
 	}
+
+	/**
+	 * Test decoration of a page that is an HTML fragment.
+	 */
+	@Test
+	public void fragmentDecoration() {
+
+		testexecutor.execute("decorator/FragmentDecoration");
+		assertTrue(lastTestResult().isOK());
+	}
+
+	/**
+	 * Test the merging of the DOCTYPE, so that the result always tries to have
+	 * one.
+	 */
+	@Test
+	public void doctypeMergingContentNoDocType() {
+
+		testexecutor.execute("decorator/DocTypeMerging-ContentNoDocType");
+		assertTrue(lastTestResult().isOK());
+	}
+
+	/**
+	 * Test the merging of the DOCTYPE, so that the result always tries to have
+	 * one.
+	 */
+	@Test
+	public void doctypeMergingLayoutNoDocType() {
+
+		testexecutor.execute("decorator/DocTypeMerging-LayoutNoDocType");
+		assertTrue(lastTestResult().isOK());
+	}
+
+	/**
+	 * Test the merging of the DOCTYPE, so that the result always tries to have
+	 * one.
+	 */
+	@Test
+	public void doctypeMergingNoDocTypes() {
+
+		testexecutor.execute("decorator/DocTypeMerging-NoDocTypes");
+		assertTrue(lastTestResult().isOK());
+	}
 }

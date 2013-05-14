@@ -1,14 +1,18 @@
 %TEMPLATE_MODE HTML5
 
+%CONTEXT
+var1 = "Content variable"
+
 %INPUT
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
 	layout:decorator="Layout">
-	<head>
-		<title>Content page 1</title>
-		<script src="content-script.js"></script>
-	</head>
+	<body th:with="contentvar=${var1}">
+		<section layout:fragment="content">
+			<p th:text="${contentvar}"></p>
+		</section>
+	</body>
 </html>
 
 %INPUT[Layout]
@@ -16,17 +20,22 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 	<head>
-		<title>Layout page</title>
-		<script src="common-script.js"></script>
+		<title>Local variable merging test</title>
 	</head>
+	<body>
+		<section layout:fragment="content"></section>
+	</body>
 </html>
 
 %OUTPUT
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<title>Content page 1</title>
-		<script src="common-script.js"></script>
-		<script src="content-script.js"></script>
+		<title>Local variable merging test</title>
 	</head>
+	<body>
+		<section>
+			<p>Content variable</p>
+		</section>
+	</body>
 </html>
