@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package nz.net.ultraq.thymeleaf.tests.include;
+package nz.net.ultraq.thymeleaf.tests.titlepattern;
 
 import nz.net.ultraq.thymeleaf.tests.AbstractLayoutDialectTester;
 
@@ -22,21 +22,21 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * JUnit class containing tests related to the <tt>layout:include</tt>
+ * JUnit class containing tests related to the <tt>layout:title-pattern</tt>
  * attribute processor.
  * 
  * @author Emanuel Rabina
  */
-public class IncludeTester extends AbstractLayoutDialectTester {
+public class TitlePatternTester extends AbstractLayoutDialectTester {
 
 	/**
-	 * Test that both of the inclusion features - attribute merging and element
-	 * passing - work.
+	 * Test the basic token replacement feature of the title-pattern attribute
+	 * processor.
 	 */
 	@Test
-	public void attributeAndElementInclusion() {
+	public void tokenReplacement() {
 
-		testexecutor.execute("include/AttributeAndElementInclusion");
+		testexecutor.execute("titlepattern/TokenReplacement");
 		assertTrue(lastTestResult().isOK());
 	}
 }
