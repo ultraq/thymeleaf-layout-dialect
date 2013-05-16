@@ -19,7 +19,6 @@ package nz.net.ultraq.thymeleaf.tests.decorator;
 import nz.net.ultraq.thymeleaf.tests.AbstractLayoutDialectTester;
 
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  * JUnit test class containing tests related to the <tt>layout:decorator</tt>
@@ -36,8 +35,7 @@ public class DecoratorTester extends AbstractLayoutDialectTester {
 	@Test
 	public void fullLayoutFullContent() {
 
-		testexecutor.execute("decorator/FullLayout-FullContent");
-		assertTrue(lastTestResult().isOK());
+		testOK("decorator/FullLayout-FullContent");
 	}
 
 	/**
@@ -47,8 +45,7 @@ public class DecoratorTester extends AbstractLayoutDialectTester {
 	@Test
 	public void fullLayoutHeadOnlyContent() {
 
-		testexecutor.execute("decorator/FullLayout-HeadOnlyContent");
-		assertTrue(lastTestResult().isOK());
+		testOK("decorator/FullLayout-HeadOnlyContent");
 	}
 
 	/**
@@ -58,8 +55,7 @@ public class DecoratorTester extends AbstractLayoutDialectTester {
 	@Test
 	public void fullLayoutBodyOnlyContent() {
 
-		testexecutor.execute("decorator/FullLayout-BodyOnlyContent");
-		assertTrue(lastTestResult().isOK());
+		testOK("decorator/FullLayout-BodyOnlyContent");
 	}
 
 	/**
@@ -69,8 +65,7 @@ public class DecoratorTester extends AbstractLayoutDialectTester {
 	@Test
 	public void headOnlyLayoutFullContent() {
 
-		testexecutor.execute("decorator/HeadOnlyLayout-FullContent");
-		assertTrue(lastTestResult().isOK());
+		testOK("decorator/HeadOnlyLayout-FullContent");
 	}
 
 	/**
@@ -80,8 +75,7 @@ public class DecoratorTester extends AbstractLayoutDialectTester {
 	@Test
 	public void headOnlyLayoutHeadOnlyContent() {
 
-		testexecutor.execute("decorator/HeadOnlyLayout-HeadOnlyContent");
-		assertTrue(lastTestResult().isOK());
+		testOK("decorator/HeadOnlyLayout-HeadOnlyContent");
 	}
 
 	/**
@@ -91,8 +85,7 @@ public class DecoratorTester extends AbstractLayoutDialectTester {
 	@Test
 	public void headOnlyLayoutBodyOnlyContent() {
 
-		testexecutor.execute("decorator/HeadOnlyLayout-BodyOnlyContent");
-		assertTrue(lastTestResult().isOK());
+		testOK("decorator/HeadOnlyLayout-BodyOnlyContent");
 	}
 
 	/**
@@ -102,8 +95,7 @@ public class DecoratorTester extends AbstractLayoutDialectTester {
 	@Test
 	public void bodyOnlyLayoutFullContent() {
 
-		testexecutor.execute("decorator/BodyOnlyLayout-FullContent");
-		assertTrue(lastTestResult().isOK());
+		testOK("decorator/BodyOnlyLayout-FullContent");
 	}
 
 	/**
@@ -113,8 +105,7 @@ public class DecoratorTester extends AbstractLayoutDialectTester {
 	@Test
 	public void bodyOnlyLayoutHeadOnlyContent() {
 
-		testexecutor.execute("decorator/BodyOnlyLayout-HeadOnlyContent");
-		assertTrue(lastTestResult().isOK());
+		testOK("decorator/BodyOnlyLayout-HeadOnlyContent");
 	}
 
 	/**
@@ -124,8 +115,7 @@ public class DecoratorTester extends AbstractLayoutDialectTester {
 	@Test
 	public void bodyOnlyLayoutBodyOnlyContent() {
 
-		testexecutor.execute("decorator/BodyOnlyLayout-BodyOnlyContent");
-		assertTrue(lastTestResult().isOK());
+		testOK("decorator/BodyOnlyLayout-BodyOnlyContent");
 	}
 
 	/**
@@ -134,8 +124,7 @@ public class DecoratorTester extends AbstractLayoutDialectTester {
 	@Test
 	public void fragmentDecoration() {
 
-		testexecutor.execute("decorator/FragmentDecoration");
-		assertTrue(lastTestResult().isOK());
+		testOK("decorator/FragmentDecoration");
 	}
 
 	/**
@@ -145,8 +134,7 @@ public class DecoratorTester extends AbstractLayoutDialectTester {
 	@Test
 	public void doctypeMergingContentNoDocType() {
 
-		testexecutor.execute("decorator/DocTypeMerging-ContentNoDocType");
-		assertTrue(lastTestResult().isOK());
+		testOK("decorator/DocTypeMerging-ContentNoDocType");
 	}
 
 	/**
@@ -156,8 +144,7 @@ public class DecoratorTester extends AbstractLayoutDialectTester {
 	@Test
 	public void doctypeMergingLayoutNoDocType() {
 
-		testexecutor.execute("decorator/DocTypeMerging-LayoutNoDocType");
-		assertTrue(lastTestResult().isOK());
+		testOK("decorator/DocTypeMerging-LayoutNoDocType");
 	}
 
 	/**
@@ -167,7 +154,15 @@ public class DecoratorTester extends AbstractLayoutDialectTester {
 	@Test
 	public void doctypeMergingNoDocTypes() {
 
-		testexecutor.execute("decorator/DocTypeMerging-NoDocTypes");
-		assertTrue(lastTestResult().isOK());
+		testOK("decorator/DocTypeMerging-NoDocTypes");
+	}
+
+	/**
+	 * Test that the decorator processor must appear in the root element only.
+	 */
+	@Test
+	public void appearInRootElementOnly() {
+
+		testOK("decorator/AppearInRootElementOnly");
 	}
 }

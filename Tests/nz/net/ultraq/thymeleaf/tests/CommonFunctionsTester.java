@@ -17,7 +17,6 @@
 package nz.net.ultraq.thymeleaf.tests;
 
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  * JUnit class containing tests of code that is common across all of the layout
@@ -34,8 +33,7 @@ public class CommonFunctionsTester extends AbstractLayoutDialectTester {
 	@Test
 	public void localVariableMerging() {
 
-		testexecutor.execute("LocalVariableMerging");
-		assertTrue(lastTestResult().isOK());
+		testOK("LocalVariableMerging");
 	}
 
 	/**
@@ -45,7 +43,6 @@ public class CommonFunctionsTester extends AbstractLayoutDialectTester {
 	@Test
 	public void localVariableInheritance() {
 
-		testexecutor.execute("LocalVariableInheritance");
-		assertTrue(lastTestResult().isOK());
+		testOK("LocalVariableInheritance");
 	}
 }

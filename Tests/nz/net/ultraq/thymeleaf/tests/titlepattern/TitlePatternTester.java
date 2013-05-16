@@ -18,25 +18,11 @@ package nz.net.ultraq.thymeleaf.tests.titlepattern;
 
 import nz.net.ultraq.thymeleaf.tests.AbstractLayoutDialectTester;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
-
 /**
- * JUnit class containing tests related to the <tt>layout:title-pattern</tt>
- * attribute processor.
+ * 
  * 
  * @author Emanuel Rabina
  */
 public class TitlePatternTester extends AbstractLayoutDialectTester {
 
-	/**
-	 * Test the basic token replacement feature of the title-pattern attribute
-	 * processor.
-	 */
-	@Test
-	public void tokenReplacement() {
-
-		testexecutor.execute("titlepattern/TokenReplacement");
-		assertTrue(lastTestResult().isOK());
-	}
 }

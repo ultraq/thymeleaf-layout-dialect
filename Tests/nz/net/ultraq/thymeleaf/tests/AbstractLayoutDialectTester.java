@@ -21,7 +21,9 @@ import nz.net.ultraq.thymeleaf.LayoutDialect;
 import org.junit.BeforeClass;
 import org.thymeleaf.standard.StandardDialect;
 import org.thymeleaf.testing.templateengine.engine.TestExecutor;
-import org.thymeleaf.testing.templateengine.testable.ITestResult;
+import org.thymeleaf.testing.templateengine.report.ConsoleTestReporter;
+
+import static org.junit.Assert.*;
 
 import java.util.Arrays;
 
@@ -33,8 +35,10 @@ import java.util.Arrays;
  */
 public abstract class AbstractLayoutDialectTester {
 
-	protected static TestExecutor testexecutor;
-	private static JUnitTestReporter testreporter;
+	private static final String TEST_FILE_PREFIX = "nz/net/ultraq/thymeleaf/tests/";
+	private static final String TEST_FILE_SUFFIX = ".thtest";
+
+	private static TestExecutor testexecutor;
 
 	/**
 	 * Set up the test executor to include the layout dialect.
@@ -44,20 +48,18 @@ public abstract class AbstractLayoutDialectTester {
 
 		testexecutor = new TestExecutor();
 		testexecutor.setDialects(Arrays.asList(new StandardDialect(), new LayoutDialect()));
-		testexecutor.setTestableResolver(new JUnitTestableResolver(
-				"nz/net/ultraq/thymeleaf/tests/", ".thtest"));
-
-		testreporter = new JUnitTestReporter();
-		testexecutor.setReporter(testreporter);
+		testexecutor.setReporter(new ConsoleTestReporter());
 	}
 
 	/**
-	 * Returns the result of the last test execution.
+	 * Perform a standard test on the given Thymeleaf test file.
 	 * 
-	 * @return Last test result.
+	 * @param testfile
 	 */
-	protected static ITestResult lastTestResult() {
+	protected void testOK(String testfile) {
 
-		return testreporter.getLastResult();
+		testexecutor.execute(TEST_FILE_PREFIX + testfile + TEST_FILE_SUFFIX);
+		assertTrue(testexecutor.isAllOK());
+		testexecutor.reset();
 	}
 }

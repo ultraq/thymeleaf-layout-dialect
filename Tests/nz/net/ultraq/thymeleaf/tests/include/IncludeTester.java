@@ -18,9 +18,6 @@ package nz.net.ultraq.thymeleaf.tests.include;
 
 import nz.net.ultraq.thymeleaf.tests.AbstractLayoutDialectTester;
 
-import org.junit.Test;
-import static org.junit.Assert.*;
-
 /**
  * JUnit class containing tests related to the <tt>layout:include</tt>
  * attribute processor.
@@ -29,14 +26,4 @@ import static org.junit.Assert.*;
  */
 public class IncludeTester extends AbstractLayoutDialectTester {
 
-	/**
-	 * Test that both of the inclusion features - attribute merging and element
-	 * passing - work.
-	 */
-	@Test
-	public void attributeAndElementInclusion() {
-
-		testexecutor.execute("include/AttributeAndElementInclusion");
-		assertTrue(lastTestResult().isOK());
-	}
 }

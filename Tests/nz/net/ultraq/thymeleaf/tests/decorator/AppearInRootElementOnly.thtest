@@ -1,0 +1,15 @@
+%TEMPLATE_MODE HTML5
+
+%INPUT
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+	<body layout:decorator="Layout">
+		<section layout:fragment="content">
+			<p>This is a paragraph from the content page</p>
+		</section>
+	</body>
+</html>
+
+%EXCEPTION java.lang.IllegalArgumentException
+%EXCEPTION_MESSAGE_PATTERN layout:decorator attribute must appear in the root element of your content page
