@@ -35,7 +35,7 @@ import java.util.Arrays;
  */
 public abstract class AbstractLayoutDialectTester {
 
-	private static final String TEST_FILE_PREFIX = "nz/net/ultraq/thymeleaf/tests/";
+	private static final String TEST_FILE_PREFIX = "classpath:nz/net/ultraq/thymeleaf/tests/";
 	private static final String TEST_FILE_SUFFIX = ".thtest";
 
 	private static TestExecutor testexecutor;

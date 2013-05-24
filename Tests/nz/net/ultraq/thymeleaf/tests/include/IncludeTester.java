@@ -18,6 +18,8 @@ package nz.net.ultraq.thymeleaf.tests.include;
 
 import nz.net.ultraq.thymeleaf.tests.AbstractLayoutDialectTester;
 
+import org.junit.Test;
+
 /**
  * JUnit class containing tests related to the <tt>layout:include</tt>
  * attribute processor.
@@ -26,4 +28,13 @@ import nz.net.ultraq.thymeleaf.tests.AbstractLayoutDialectTester;
  */
 public class IncludeTester extends AbstractLayoutDialectTester {
 
+	/**
+	 * Test that <tt>th:with</tt> attributes and fragment elements get copied
+	 * over to the included page.
+	 */
+	@Test
+	public void attributeAndElementInclusion() {
+
+		testOK("include/AttributeAndElementInclusion");
+	}
 }
