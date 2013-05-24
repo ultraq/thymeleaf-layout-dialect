@@ -15,7 +15,7 @@ Requirements
 ------------
 
  - Java 6
- - Thymeleaf 2.0.12+ (2.0.15 and its dependencies included)
+ - Thymeleaf 2.0.12+ (2.0.16 and its dependencies included)
 
 
 Installation
@@ -167,8 +167,14 @@ this content page.  Also, the content page defines its own title and a script,
 as well as both the `content` and `custom-footer` fragments.  The `custom-footer`
 fragment is within a `<footer>` element, which isn't really necessary, but might
 be handy if you wish to do static templating of the content page which is one of
-the reasons one uses Thymeleaf in the first place :)  Anyway, once you tell
-Thymeleaf to process `Content1.html`, the resulting page will look like this:
+the reasons one uses Thymeleaf in the first place :)
+
+> *NOTE:* Fragment names must be unique within a page (ie: you cannot have 2
+> 'content' fragments within a decorator or content page), otherwise the
+> matching of fragments might not work as you expect.
+
+Anyway, once you tell Thymeleaf to process `Content1.html`, the resulting page
+will look like this:
 
 ```html
 <!DOCTYPE html>
@@ -199,9 +205,26 @@ page (`<head>` elements from both pages with the `<title>` element from the
 content page taking place of the decorator's, all elements from the decorator,
 but replaced by all content page fragments where specified).
 
+> *NOTE:* The decoration process redirects processing from your content page to
+> the decorator page, picking `layout:fragment` parts out of your content page
+> as the decorator page demands them.  Because of this, anything _outside_ of a
+> `layout:fragment` within the `<body>` in your content page never actually gets
+> executed, meaning you can't do this in your content page:
+> 
+> ```html
+> <div th:if="${user.admin}">
+>   <div layout:fragment="content">
+>     ...
+>   </div>
+> </div>
+> ```
+> 
+> If the decorator wants the 'content' fragment, then it'll get that fragment,
+> regardless of any conditions around it because those conditions aren't
+> executed.
+
 Say you just want to replace _only_ the footer of your decorator page with the
 absolute minimum of HTML code:
-
 
 ```html
 Content2.html
@@ -210,7 +233,6 @@ Content2.html
   This is some footer text from content page 2.
 </p>
 ```
-
 
 And that's all you need!  The full-HTML-page restriction of Thymeleaf was lifted
 from version 2.0.10, so now you can do things like the above.  The `<p>` tag
@@ -407,7 +429,6 @@ Layout.html
 <html xmlns="http://www.w3.org/1999/xhtml"
   xmlns:th="http://www.thymeleaf.org"
   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-
   <head>
     <title layout:title-pattern="$DECORATOR_TITLE - $CONTENT_TITLE">My website</title>
   </head>
@@ -470,6 +491,8 @@ Changelog
    the 'web' part).
  - Implemented unit tests, using the [Thymeleaf Testing](https://github.com/thymeleaf/thymeleaf-testing)
    library.
+ - Updated Thymeleaf dependency from version 2.0.15 to 2.0.16 since it's needed
+   by the testing library.
 
 ### 1.0.6
  - Added a help/documentation file so that this dialect will appear in content
