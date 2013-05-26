@@ -68,8 +68,9 @@ Or, for those using Spring configuration files:
 </bean>
 ```
 
-This will introduce 4 new attributes that you can use in your pages:
-`layout:decorator`, `layout:include`, `layout:fragment`, and `layout:title-pattern`.
+This will introduce 5 new attributes that you can use in your pages:
+`layout:decorator`, `layout:include`, `layout:substituteby`, `layout:fragment`,
+and `layout:title-pattern`.
 
 ### layout:decorator
 Used in your content pages and declared in the root tag (usually `<html>`, but
@@ -87,6 +88,11 @@ reuse, but whose contents are too complex to determine or construct with context
 variables alone.
 Check out the [Includes and fragments](#includes-and-fragments) example for how
 to pass HTML code to the pages you want to include.
+
+### layout:substituteby
+Similar to `layout:include` in that you can pass HTML content to the
+page/fragments you're substituting in, but with the behaviour of Thymeleaf's
+`th:substituteby`.
 
 ### layout:fragment
 The glue that holds everything together; it marks sections in the decorator page
@@ -169,9 +175,9 @@ fragment is within a `<footer>` element, which isn't really necessary, but might
 be handy if you wish to do static templating of the content page which is one of
 the reasons one uses Thymeleaf in the first place :)
 
-> *NOTE:* Fragment names must be unique within a page (ie: you cannot have 2
-> 'content' fragments within a decorator or content page), otherwise the
-> matching of fragments might not work as you expect.
+> Fragment names must be unique within a page (ie: you cannot have 2 'content'
+> fragments within a decorator or content page), otherwise the matching of
+> fragments might not work as you expect.
 
 Anyway, once you tell Thymeleaf to process `Content1.html`, the resulting page
 will look like this:
@@ -205,9 +211,9 @@ page (`<head>` elements from both pages with the `<title>` element from the
 content page taking place of the decorator's, all elements from the decorator,
 but replaced by all content page fragments where specified).
 
-> *NOTE:* The decoration process redirects processing from your content page to
-> the decorator page, picking `layout:fragment` parts out of your content page
-> as the decorator page demands them.  Because of this, anything _outside_ of a
+> The decoration process redirects processing from your content page to the
+> decorator page, picking `layout:fragment` parts out of your content page as
+> the decorator page demands them.  Because of this, anything _outside_ of a
 > `layout:fragment` within the `<body>` in your content page never actually gets
 > executed, meaning you can't do this in your content page:
 > 
@@ -491,6 +497,9 @@ Changelog
    the 'web' part).
  - Implemented unit tests, using the [Thymeleaf Testing](https://github.com/thymeleaf/thymeleaf-testing)
    library.
+ - Resolved [Issue #21](thymeleaf-layout-dialect/issues/21), adding a `layout:substituteby`
+   processor which works much like `layout:include`, but with the behaviour of
+   Thymeleaf's `th:substituteby`.
  - Updated Thymeleaf dependency from version 2.0.15 to 2.0.16 since it's needed
    by the testing library.
 

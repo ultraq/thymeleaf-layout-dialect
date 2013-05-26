@@ -1,5 +1,5 @@
 /*
- * Copyright 2012, Emanuel Rabina (http://www.ultraq.net.nz/)
+ * Copyright 2013, Emanuel Rabina (http://www.ultraq.net.nz/)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,28 +30,29 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Similar to Thymeleaf's <tt>th:include</tt>, but allows the passing of entire
- * element fragments to the included template.  Useful if you have some HTML
- * that you want to reuse, but whose contents are too complex to determine or
- * construct with context variables alone.
+ * Similar to Thymeleaf's <tt>th:substituteby</tt>, but allows the passing of
+ * entire element fragments to the included template.  Useful if you have some
+ * HTML that you want to reuse, but whose contents are too complex to determine
+ * or construct with context variables alone.
  * 
  * @author Emanuel Rabina
  */
-public class IncludeProcessor extends AbstractContentProcessor {
+public class SubstituteByProcessor extends AbstractContentProcessor {
 
-	static final String PROCESSOR_NAME_INCLUDE = "include";
-	static final String PROCESSOR_NAME_INCLUDE_FULL = LAYOUT_PREFIX + ":" + PROCESSOR_NAME_INCLUDE;
+	static final String PROCESSOR_NAME_SUBSTITUTEBY = "substituteby";
+	static final String PROCESSOR_NAME_SUBSTITUTEBY_FULL = LAYOUT_PREFIX + ":" + PROCESSOR_NAME_SUBSTITUTEBY;
 
 	/**
-	 * Constructor, sets this processor to work on the 'include' attribute.
+	 * Constructor, set this processor to work on the 'substituteby' attribute.
 	 */
-	public IncludeProcessor() {
+	public SubstituteByProcessor() {
 
-		super(PROCESSOR_NAME_INCLUDE);
+		super(PROCESSOR_NAME_SUBSTITUTEBY);
 	}
 
 	/**
-	 * Locates the specified page and includes it into the current template.
+	 * Locates the specified page/fragment and brings it into the current
+	 * template.
 	 * 
 	 * @param arguments
 	 * @param element
@@ -64,26 +65,26 @@ public class IncludeProcessor extends AbstractContentProcessor {
 		// Locate the page and fragment to include
 		FragmentAndTarget fragmentandtarget = StandardFragmentProcessor.computeStandardFragmentSpec(
 				arguments.getConfiguration(), arguments, element.getAttributeValue(attributeName),
-				null, PROCESSOR_NAME_FRAGMENT_FULL, true);
+				null, PROCESSOR_NAME_FRAGMENT_FULL, false);
 		List<Node> includefragments = fragmentandtarget.extractFragment(arguments.getConfiguration(),
 				arguments.getContext(), arguments.getTemplateRepository());
 
 		element.removeAttribute(attributeName);
 
-		// Gather all fragment parts within the include element
+		// Gather all fragment parts within the substituteby element
 		Map<String,Object> pagefragments = findFragments(element.getElementChildren());
 
-		// Replace the children of this element with those of the include page fragments
+		// Replace the children of this element with those of the substituteby
+		// page fragments, scoping any fragment parts to the immediate children
 		element.clearChildren();
 		if (includefragments != null) {
 			for (Node includefragment: includefragments) {
+				includefragment.setAllNodeLocalVariables(pagefragments);
 				element.addChild(includefragment);
 			}
 		}
+		element.getParent().extractChild(element);
 
-		// Scope any fragment parts for the include page to the current element
-		return !pagefragments.isEmpty() ?
-				ProcessorResult.setLocalVariables(pagefragments) :
-				ProcessorResult.OK;
+		return ProcessorResult.OK;
 	}
 }
