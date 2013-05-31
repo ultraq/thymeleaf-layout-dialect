@@ -17,12 +17,14 @@
 package nz.net.ultraq.thymeleaf;
 
 import static nz.net.ultraq.thymeleaf.LayoutDialect.LAYOUT_PREFIX;
+import static nz.net.ultraq.thymeleaf.decorator.DecoratorUtilities.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.thymeleaf.Arguments;
 import org.thymeleaf.dom.Element;
 import org.thymeleaf.processor.ProcessorResult;
+import org.thymeleaf.processor.attr.AbstractAttrProcessor;
 
 /**
  * Marks sections of the decorator template that can be replaced by sections in
@@ -30,7 +32,7 @@ import org.thymeleaf.processor.ProcessorResult;
  * 
  * @author Emanuel Rabina
  */
-public class FragmentProcessor extends AbstractProcessor {
+public class FragmentProcessor extends AbstractAttrProcessor {
 
 	private static final Logger logger = LoggerFactory.getLogger(FragmentProcessor.class);
 
@@ -83,8 +85,8 @@ public class FragmentProcessor extends AbstractProcessor {
 		// Replace the decorator/include fragment with the page fragment
 		if (pagefragment != null) {
 			pagefragment.removeAttribute(attributeName);
-			mergeAttributes(element, pagefragment);
-			pullTargetContent(element, pagefragment);
+			pullAttributes(pagefragment, element);
+			pullContent(element, pagefragment);
 		}
 
 		return ProcessorResult.OK;

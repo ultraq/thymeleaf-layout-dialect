@@ -21,6 +21,7 @@ import static nz.net.ultraq.thymeleaf.FragmentProcessor.PROCESSOR_NAME_FRAGMENT_
 import static nz.net.ultraq.thymeleaf.IncludeProcessor.PROCESSOR_NAME_INCLUDE_FULL;
 
 import org.thymeleaf.dom.Element;
+import org.thymeleaf.processor.attr.AbstractAttrProcessor;
 
 import java.util.HashMap;
 import java.util.List;
@@ -32,7 +33,7 @@ import java.util.Map;
  * 
  * @author Emanuel Rabina
  */
-public abstract class AbstractContentProcessor extends AbstractProcessor {
+public abstract class AbstractContentProcessor extends AbstractAttrProcessor {
 
 	/**
 	 * Subclass constructor, set the attribute name that this processor will

@@ -16,25 +16,24 @@
 
 package nz.net.ultraq.thymeleaf;
 
+import nz.net.ultraq.thymeleaf.decorator.Decorator;
+import nz.net.ultraq.thymeleaf.decorator.HtmlPageDecorator;
+import nz.net.ultraq.thymeleaf.decorator.StandardDecorator;
+
 import static nz.net.ultraq.thymeleaf.LayoutDialect.LAYOUT_PREFIX;
-import static nz.net.ultraq.thymeleaf.TitlePatternProcessor.DECORATOR_TITLE_NAME;
-import static nz.net.ultraq.thymeleaf.TitlePatternProcessor.PROCESSOR_NAME_TITLEPATTERN_FULL;
+import static nz.net.ultraq.thymeleaf.decorator.DecoratorUtilities.HTML_ELEMENT_HTML;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.thymeleaf.Arguments;
 import org.thymeleaf.Template;
 import org.thymeleaf.TemplateProcessingParameters;
-import org.thymeleaf.dom.Attribute;
 import org.thymeleaf.dom.Document;
 import org.thymeleaf.dom.Element;
-import org.thymeleaf.dom.Node;
-import org.thymeleaf.dom.Text;
 import org.thymeleaf.fragment.FragmentAndTarget;
 import org.thymeleaf.processor.ProcessorResult;
 import org.thymeleaf.standard.fragment.StandardFragmentProcessor;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -47,8 +46,6 @@ import java.util.Map;
  */
 public class DecoratorProcessor extends AbstractContentProcessor {
 
-	private static final String LINE_SEPARATOR = System.getProperty("line.separator");
-
 	private static final Logger logger = LoggerFactory.getLogger(DecoratorProcessor.class);
 
 	static final String PROCESSOR_NAME_DECORATOR = "decorator";
@@ -60,114 +57,6 @@ public class DecoratorProcessor extends AbstractContentProcessor {
 	public DecoratorProcessor() {
 
 		super(PROCESSOR_NAME_DECORATOR);
-	}
-
-	/**
-	 * Decorate the BODY part.  This step merges the decorator and page BODY
-	 * attributes, ensuring only that a BODY element actually exists in the
-	 * result.  The bulk of the body decoration is actually performed by the
-	 * fragment replacements.
-	 * 
-	 * @param decoratorhtml Decorator's HTML element.
-	 * @param pagebody		Page's BODY element.
-	 */
-	private void decorateBody(Element decoratorhtml, Element pagebody) {
-
-		// If the page has no BODY, then we don't need to do anything
-		if (pagebody == null) {
-			return;
-		}
-
-		// If the decorator has no BODY, we can just copy the page BODY
-		Element decoratorbody = findElement(decoratorhtml, HTML_ELEMENT_BODY);
-		if (decoratorbody == null) {
-			decoratorhtml.addChild(pagebody);
-			decoratorhtml.addChild(new Text(LINE_SEPARATOR));
-			return;
-		}
-
-		mergeAttributes(pagebody, decoratorbody);
-	}
-
-	/**
-	 * Decorate the HEAD part.  This step replaces the decorator's TITLE element
-	 * if the page has one, and appends all other page elements to the HEAD
-	 * section, after all the decorator elements.
-	 * 
-	 * @param decoratorhtml Decorator's HTML element.
-	 * @param pagehead		Page's HEAD element.
-	 */
-	private void decorateHead(Element decoratorhtml, Element pagehead) {
-
-		// If the page has no HEAD, then we don't need to do anything
-		if (pagehead == null) {
-			return;
-		}
-
-		// If the decorator has no HEAD, then we can just copy the page HEAD
-		Element decoratorhead = findElement(decoratorhtml, HTML_ELEMENT_HEAD);
-		if (decoratorhead == null) {
-			decoratorhtml.insertChild(0, new Text(LINE_SEPARATOR));
-			decoratorhtml.insertChild(1, pagehead);
-			return;
-		}
-
-		// Append the page's HEAD elements to the end of the decorator's HEAD section,
-		// replacing the decorator's TITLE element if necessary
-		Element pagetitle = findElement(pagehead, HTML_ELEMENT_TITLE);
-		if (pagetitle != null) {
-			pagehead.removeChild(pagetitle);
-			Element decoratortitle = findElement(decoratorhead, HTML_ELEMENT_TITLE);
-			if (decoratortitle != null) {
-				decoratorhead.insertBefore(decoratortitle, pagetitle);
-				decoratorhead.removeChild(decoratortitle);
-
-				// For title pattern processing, save the decorator's title so it can be retrieved later
-				if (decoratortitle.hasChildren()) {
-					HashMap<String,Object> decoratortitlemap = new HashMap<String,Object>();
-					decoratortitlemap.put(DECORATOR_TITLE_NAME, ((Text)decoratortitle.getFirstChild()).getContent());
-					pagetitle.setAllNodeLocalVariables(decoratortitlemap);
-
-					// Let the content pattern override the decorator pattern
-					Attribute contenttitlepattern = pagetitle.getAttributeMap().get(PROCESSOR_NAME_TITLEPATTERN_FULL);
-					mergeAttributes(decoratortitle, pagetitle);
-					if (contenttitlepattern != null) {
-						pagetitle.setAttribute(PROCESSOR_NAME_TITLEPATTERN_FULL, contenttitlepattern.getValue());
-					}
-				}
-			}
-			else {
-				decoratorhead.insertChild(0, new Text(LINE_SEPARATOR));
-				decoratorhead.insertChild(1, pagetitle);
-			}
-		}
-		for (Node pageheadnode: pagehead.getChildren()) {
-			decoratorhead.addChild(pageheadnode);
-		}
-
-		mergeAttributes(pagehead, decoratorhead);
-	}
-
-	/**
-	 * Recursive search for an element within the given node in the DOM tree.
-	 * 
-	 * @param element Node to initiate the search from.
-	 * @param name	  Name of the element to look for.
-	 * @return Element with the given name, or <tt>null</tt> if the element
-	 * 		   could not be found.
-	 */
-	private Element findElement(Element element, String name) {
-
-		if (element.getOriginalName().equals(name)) {
-			return element;
-		}
-		for (Element child: element.getElementChildren()) {
-			Element result = findElement(child, name);
-			if (result != null) {
-				return result;
-			}
-		}
-		return null;
 	}
 
 	/**
@@ -189,55 +78,30 @@ public class DecoratorProcessor extends AbstractContentProcessor {
 		}
 		Document document = (Document)element.getParent();
 
-		// Locate the decorator page, ensure it has an HTML root element
+		// Gather all fragment parts from this page before processing
+		Map<String,Object> fragments = findFragments(document.getElementChildren());
+
+		// Locate the decorator page
 		FragmentAndTarget fragmentandtarget = StandardFragmentProcessor.computeStandardFragmentSpec(
 				arguments.getConfiguration(), arguments, element.getAttributeValue(attributeName),
 				null, null, false);
-		Template decorator = arguments.getTemplateRepository().getTemplate(new TemplateProcessingParameters(
+		Template decoratortemplate = arguments.getTemplateRepository().getTemplate(new TemplateProcessingParameters(
 				arguments.getConfiguration(), fragmentandtarget.getTemplateName(), arguments.getContext()));
-		Element decoratorhtmlelement = decorator.getDocument().getFirstElementChild();
-		if (decoratorhtmlelement == null || !decoratorhtmlelement.getOriginalName().equals(HTML_ELEMENT_HTML)) {
-			throw new IllegalArgumentException("Decorator page " + decorator.getTemplateName() + " must have an <html> root element");
-		}
 
-		// Thymeleaf's template repository already returns clones of templates, so the
-		// template resolution above returned a clone of the decorator page.  The following
-		// functions operate on the decorator directly.
+		// Decide which kind of decorator to apply, given the decorator page root element
+		Document decoratordocument = decoratortemplate.getDocument();
+		Element decoratorrootelement = decoratordocument.getFirstElementChild();
+		Decorator decorator = decoratorrootelement != null &&
+				decoratorrootelement.getOriginalName().equals(HTML_ELEMENT_HTML) ?
+						new HtmlPageDecorator() :
+						new StandardDecorator();
+
+		// Perform decoration
+		decorator.decorate(decoratorrootelement, element);
 
 		element.removeAttribute(attributeName);
-		decorateHead(decoratorhtmlelement, findElement(element, HTML_ELEMENT_HEAD));
-		decorateBody(decoratorhtmlelement, findElement(element, HTML_ELEMENT_BODY));
-
-		// Gather all fragment parts from this page and scope to the HTML element.  These
-		// will be used to decorate the BODY as Thymeleaf encounters the fragment placeholders.
-		Map<String,Object> fragments = findFragments(document.getElementChildren());
-		if (!fragments.isEmpty()) {
-			decoratorhtmlelement.setAllNodeLocalVariables(fragments);
-		}
-
-		// Pull the decorator page into this document
-		if (element.getOriginalName().equals(HTML_ELEMENT_HTML)) {
-			mergeAttributes(element, decoratorhtmlelement);
-		}
-		Document decoratordocument = (Document)decoratorhtmlelement.getParent();
-		if (decoratordocument.hasDocType() && !document.hasDocType()) {
-			document.setDocType(decoratordocument.getDocType());
-		}
-		boolean beforehtml = true;
-		for (Node externalnode: decoratordocument.getChildren()) {
-			if (externalnode.equals(decoratorhtmlelement)) {
-				beforehtml = false;
-				continue;
-			}
-			if (beforehtml) {
-				document.insertBefore(element, externalnode);
-			}
-			else {
-				document.insertAfter(element, externalnode);
-			}
-		}
-		pullTargetContent(element, decoratorhtmlelement);
-
-		return ProcessorResult.OK;
+		return !fragments.isEmpty() ?
+				ProcessorResult.setLocalVariables(fragments) :
+				ProcessorResult.OK;
 	}
 }
