@@ -27,13 +27,10 @@ import org.thymeleaf.dom.Node;
  * 
  * @author Emanuel Rabina
  */
-public class DocumentDecorator implements Decorator {
+public class XmlDocumentDecorator implements Decorator {
 
 	/**
-	 * Apply the contents of the decorator element to the content element.
-	 * 
-	 * @param decorator Root element of the decorator template.
-	 * @param content	Root element of the content template.
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void decorate(Element decorator, Element content) {

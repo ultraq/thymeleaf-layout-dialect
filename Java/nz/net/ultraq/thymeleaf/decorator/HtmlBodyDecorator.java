@@ -26,7 +26,7 @@ import org.thymeleaf.dom.Text;
  * 
  * @author Emanuel Rabina
  */
-public class HtmlBodyDecorator extends ElementDecorator {
+public class HtmlBodyDecorator extends XmlElementDecorator {
 
 	/**
 	 * Decorate the BODY part.  This step merges the decorator and content BODY

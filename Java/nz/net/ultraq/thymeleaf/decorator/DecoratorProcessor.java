@@ -99,7 +99,7 @@ public class DecoratorProcessor extends AbstractContentProcessor {
 		Decorator decorator = decoratorrootelement != null &&
 				decoratorrootelement.getOriginalName().equals(HTML_ELEMENT_HTML) ?
 						new HtmlDocumentDecorator() :
-						new DocumentDecorator();
+						new XmlDocumentDecorator();
 
 		// Perform decoration
 		decorator.decorate(decoratorrootelement, element);

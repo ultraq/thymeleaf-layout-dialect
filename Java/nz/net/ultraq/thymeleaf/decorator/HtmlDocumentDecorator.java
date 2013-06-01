@@ -28,7 +28,7 @@ import org.thymeleaf.dom.Element;
  * 
  * @author Emanuel Rabina
  */
-public class HtmlDocumentDecorator extends DocumentDecorator {
+public class HtmlDocumentDecorator extends XmlDocumentDecorator {
 
 	private final HtmlHeadDecorator headdecorator = new HtmlHeadDecorator();
 	private final HtmlBodyDecorator bodydecorator = new HtmlBodyDecorator();

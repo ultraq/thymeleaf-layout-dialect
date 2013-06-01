@@ -25,7 +25,7 @@ import org.thymeleaf.dom.Element;
  * 
  * @author Emanuel Rabina
  */
-public class ElementDecorator implements Decorator {
+public class XmlElementDecorator implements Decorator {
 
 	/**
 	 * {@inheritDoc}

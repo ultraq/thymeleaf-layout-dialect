@@ -32,7 +32,7 @@ import java.util.HashMap;
  * 
  * @author Emanuel Rabina
  */
-public class HtmlHeadDecorator extends ElementDecorator {
+public class HtmlHeadDecorator extends XmlElementDecorator {
 
 	/**
 	 * Decorate the HEAD part.  This step replaces the decorator's TITLE element
