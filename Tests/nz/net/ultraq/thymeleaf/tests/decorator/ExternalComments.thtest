@@ -1,0 +1,37 @@
+%TEMPLATE_MODE HTML5
+
+%INPUT
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorator="Layout">
+	<head>
+	</head>
+	<body>
+	</body>
+</html>
+
+%INPUT[Layout]
+<!DOCTYPE html>
+<!-- Comment before the HTML element -->
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	<head>
+		<title>Layout page</title>
+	</head>
+	<body>
+	</body>
+</html>
+<!-- Comment after the HTML element -->
+
+%OUTPUT
+<!DOCTYPE html>
+<!-- Comment before the HTML element -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Layout page</title>
+	</head>
+	<body>
+	</body>
+</html>
+<!-- Comment after the HTML element -->

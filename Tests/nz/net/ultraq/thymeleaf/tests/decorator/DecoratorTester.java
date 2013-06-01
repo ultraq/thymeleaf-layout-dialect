@@ -165,4 +165,23 @@ public class DecoratorTester extends AbstractLayoutDialectTester {
 
 		testOK("decorator/AppearInRootElementOnly");
 	}
+
+	/**
+	 * Test whether comments found outside the HTML element are included in the
+	 * final output.
+	 */
+	@Test
+	public void externalComments() {
+
+		testOK("decorator/ExternalComments");
+	}
+
+	/**
+	 * Test that standard decoration can occur on XML documents.
+	 */
+	@Test
+	public void xmlDecoration() {
+
+		testOK("decorator/XMLDecoration");
+	}
 }
