@@ -71,15 +71,15 @@ public final class DecoratorUtilities {
 	 * other attributes are simply overidden.
 	 * 
 	 * @param targetelement
-	 * @param contentelement
+	 * @param sourceelement
 	 */
-	public static void pullAttributes(Element targetelement, Element contentelement) {
+	public static void pullAttributes(Element targetelement, Element sourceelement) {
 
-		if (targetelement == null || contentelement == null) {
+		if (targetelement == null || sourceelement == null) {
 			return;
 		}
 
-		for (Attribute contentattribute: contentelement.getAttributeMap().values()) {
+		for (Attribute contentattribute: sourceelement.getAttributeMap().values()) {
 			String attributename = contentattribute.getOriginalName();
 
 			// Merge th:with attributes to retain local variable declarations

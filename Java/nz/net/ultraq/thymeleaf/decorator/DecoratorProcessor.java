@@ -14,11 +14,9 @@
  * limitations under the License.
  */
 
-package nz.net.ultraq.thymeleaf;
+package nz.net.ultraq.thymeleaf.decorator;
 
-import nz.net.ultraq.thymeleaf.decorator.Decorator;
-import nz.net.ultraq.thymeleaf.decorator.HtmlPageDecorator;
-import nz.net.ultraq.thymeleaf.decorator.StandardDecorator;
+import nz.net.ultraq.thymeleaf.AbstractContentProcessor;
 
 import static nz.net.ultraq.thymeleaf.LayoutDialect.LAYOUT_PREFIX;
 import static nz.net.ultraq.thymeleaf.decorator.DecoratorUtilities.HTML_ELEMENT_HTML;
@@ -48,8 +46,8 @@ public class DecoratorProcessor extends AbstractContentProcessor {
 
 	private static final Logger logger = LoggerFactory.getLogger(DecoratorProcessor.class);
 
-	static final String PROCESSOR_NAME_DECORATOR = "decorator";
-	static final String PROCESSOR_NAME_DECORATOR_FULL = LAYOUT_PREFIX + ":" + PROCESSOR_NAME_DECORATOR;
+	public static final String PROCESSOR_NAME_DECORATOR = "decorator";
+	public static final String PROCESSOR_NAME_DECORATOR_FULL = LAYOUT_PREFIX + ":" + PROCESSOR_NAME_DECORATOR;
 
 	/**
 	 * Constructor, sets this processor to work on the 'decorator' attribute.
@@ -78,30 +76,34 @@ public class DecoratorProcessor extends AbstractContentProcessor {
 		}
 		Document document = (Document)element.getParent();
 
-		// Gather all fragment parts from this page before processing
-		Map<String,Object> fragments = findFragments(document.getElementChildren());
-
 		// Locate the decorator page
 		FragmentAndTarget fragmentandtarget = StandardFragmentProcessor.computeStandardFragmentSpec(
 				arguments.getConfiguration(), arguments, element.getAttributeValue(attributeName),
 				null, null, false);
 		Template decoratortemplate = arguments.getTemplateRepository().getTemplate(new TemplateProcessingParameters(
 				arguments.getConfiguration(), fragmentandtarget.getTemplateName(), arguments.getContext()));
+		element.removeAttribute(attributeName);
 
-		// Decide which kind of decorator to apply, given the decorator page root element
 		Document decoratordocument = decoratortemplate.getDocument();
 		Element decoratorrootelement = decoratordocument.getFirstElementChild();
+
+		// Gather all fragment parts from this page and scope to the HTML element.
+		// These will be used to decorate the document as Thymeleaf encounters the
+		// fragment placeholders.
+		Map<String,Object> fragments = findFragments(document.getElementChildren());
+		if (!fragments.isEmpty()) {
+			decoratorrootelement.setAllNodeLocalVariables(fragments);
+		}
+
+		// Decide which kind of decorator to apply, given the decorator page root element
 		Decorator decorator = decoratorrootelement != null &&
 				decoratorrootelement.getOriginalName().equals(HTML_ELEMENT_HTML) ?
-						new HtmlPageDecorator() :
-						new StandardDecorator();
+						new HtmlDocumentDecorator() :
+						new DocumentDecorator();
 
 		// Perform decoration
 		decorator.decorate(decoratorrootelement, element);
 
-		element.removeAttribute(attributeName);
-		return !fragments.isEmpty() ?
-				ProcessorResult.setLocalVariables(fragments) :
-				ProcessorResult.OK;
+		return ProcessorResult.OK;
 	}
 }

@@ -18,7 +18,7 @@ package nz.net.ultraq.thymeleaf;
 
 import static nz.net.ultraq.thymeleaf.FragmentProcessor.FRAGMENT_NAME_PREFIX;
 import static nz.net.ultraq.thymeleaf.FragmentProcessor.PROCESSOR_NAME_FRAGMENT_FULL;
-import static nz.net.ultraq.thymeleaf.IncludeProcessor.PROCESSOR_NAME_INCLUDE_FULL;
+import static nz.net.ultraq.thymeleaf.include.IncludeProcessor.PROCESSOR_NAME_INCLUDE_FULL;
 
 import org.thymeleaf.dom.Element;
 import org.thymeleaf.processor.attr.AbstractAttrProcessor;
@@ -28,8 +28,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Common code for the layout processors that fetch the content of other pages
- * to include into the current template.
+ * Common code for processors that fetch the content of other pages to include
+ * into the current template.
  * 
  * @author Emanuel Rabina
  */

@@ -23,12 +23,12 @@ import org.thymeleaf.dom.Element;
 
 /**
  * A decorator made to work over whole HTML pages.  Decoration will be done in
- * 2 phases: a special one for the &lt;head&gt; element, and a generic one for
- * the &lt;body&gt; element.
+ * 2 phases: a special one for the HEAD element, and a generic one for the BODY
+ * element.
  * 
  * @author Emanuel Rabina
  */
-public class HtmlPageDecorator extends Decorator {
+public class HtmlDocumentDecorator extends DocumentDecorator {
 
 	private final HtmlHeadDecorator headdecorator = new HtmlHeadDecorator();
 	private final HtmlBodyDecorator bodydecorator = new HtmlBodyDecorator();
@@ -37,24 +37,24 @@ public class HtmlPageDecorator extends Decorator {
 	 * Decorate an entire HTML page.
 	 * 
 	 * @param decoratorhtml Decorator's HTML element.
-	 * @param pagehtml		Page's HTML element.
+	 * @param contenthtml	Content's HTML element.
 	 */
 	@Override
-	public void decorate(Element decoratorhtml, Element pagehtml) {
+	public void decorate(Element decoratorhtml, Element contenthtml) {
 
-		headdecorator.decorate(decoratorhtml, findElement(pagehtml, HTML_ELEMENT_HEAD));
-		bodydecorator.decorate(decoratorhtml, findElement(pagehtml, HTML_ELEMENT_BODY));
+		headdecorator.decorate(decoratorhtml, findElement(contenthtml, HTML_ELEMENT_HEAD));
+		bodydecorator.decorate(decoratorhtml, findElement(contenthtml, HTML_ELEMENT_BODY));
 
 		// Pull the decorator page into this document
-		if (pagehtml.getOriginalName().equals(HTML_ELEMENT_HTML)) {
-			pullAttributes(decoratorhtml, pagehtml);
+		if (contenthtml.getOriginalName().equals(HTML_ELEMENT_HTML)) {
+			pullAttributes(decoratorhtml, contenthtml);
 		}
 		Document decoratordocument = (Document)decoratorhtml.getParent();
-		Document pagedocument = (Document)pagehtml.getParent();
+		Document pagedocument = (Document)contenthtml.getParent();
 		if (decoratordocument.hasDocType() && !pagedocument.hasDocType()) {
 			pagedocument.setDocType(decoratordocument.getDocType());
 		}
 
-		super.decorate(decoratorhtml, pagehtml);
+		super.decorate(decoratorhtml, contenthtml);
 	}
 }

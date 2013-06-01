@@ -16,6 +16,11 @@
 
 package nz.net.ultraq.thymeleaf;
 
+import nz.net.ultraq.thymeleaf.decorator.DecoratorProcessor;
+import nz.net.ultraq.thymeleaf.decorator.TitlePatternProcessor;
+import nz.net.ultraq.thymeleaf.include.IncludeProcessor;
+import nz.net.ultraq.thymeleaf.include.SubstituteByProcessor;
+
 import org.thymeleaf.dialect.AbstractDialect;
 import org.thymeleaf.processor.IProcessor;
 

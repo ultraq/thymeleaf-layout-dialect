@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package nz.net.ultraq.thymeleaf.tests.substituteby;
+package nz.net.ultraq.thymeleaf.tests.include;
 
 import nz.net.ultraq.thymeleaf.tests.AbstractLayoutDialectTester;
 
@@ -34,6 +34,6 @@ public class SubstituteByTester extends AbstractLayoutDialectTester {
 	@Test
 	public void elementInclusion() {
 
-		testOK("substituteby/ElementInclusion");
+		testOK("include/ElementInclusion");
 	}
 }

@@ -21,11 +21,11 @@ import static nz.net.ultraq.thymeleaf.decorator.DecoratorUtilities.pullAttribute
 import org.thymeleaf.dom.Element;
 
 /**
- * A standard decorator that works over any HTML/XML element.
+ * A decorator made to work over any Thymeleaf element.
  * 
  * @author Emanuel Rabina
  */
-public class StandardDecorator extends Decorator {
+public class ElementDecorator implements Decorator {
 
 	/**
 	 * {@inheritDoc}
@@ -34,6 +34,5 @@ public class StandardDecorator extends Decorator {
 	public void decorate(Element decoratorelement, Element contentelement) {
 
 		pullAttributes(decoratorelement, contentelement);
-		super.decorate(decoratorelement, contentelement);
 	}
 }

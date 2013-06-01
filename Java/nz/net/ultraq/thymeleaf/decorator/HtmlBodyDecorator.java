@@ -22,37 +22,37 @@ import org.thymeleaf.dom.Element;
 import org.thymeleaf.dom.Text;
 
 /**
- * A decorator specific to processing an HTML &lt;body&gt; element.
+ * A decorator specific to processing an HTML BODY element.
  * 
  * @author Emanuel Rabina
  */
-public class HtmlBodyDecorator extends StandardDecorator {
+public class HtmlBodyDecorator extends ElementDecorator {
 
 	/**
-	 * Decorate the BODY part.  This step merges the decorator and page BODY
+	 * Decorate the BODY part.  This step merges the decorator and content BODY
 	 * attributes, ensuring only that a BODY element actually exists in the
 	 * result.  The bulk of the body decoration is actually performed by the
 	 * fragment replacements.
 	 * 
 	 * @param decoratorhtml Decorator's HTML element.
-	 * @param pagebody		Page's BODY element.
+	 * @param contentbody	Content's BODY element.
 	 */
 	@Override
-	public void decorate(Element decoratorhtml, Element pagebody) {
+	public void decorate(Element decoratorhtml, Element contentbody) {
 
 		// If the page has no BODY, then we don't need to do anything
-		if (pagebody == null) {
+		if (contentbody == null) {
 			return;
 		}
 
 		// If the decorator has no BODY, we can just copy the page BODY
 		Element decoratorbody = findElement(decoratorhtml, HTML_ELEMENT_BODY);
 		if (decoratorbody == null) {
-			decoratorhtml.addChild(pagebody);
+			decoratorhtml.addChild(contentbody);
 			decoratorhtml.addChild(new Text(LINE_SEPARATOR));
 			return;
 		}
 
-		super.decorate(decoratorbody, pagebody);
+		super.decorate(decoratorbody, contentbody);
 	}
 }

@@ -46,7 +46,7 @@ dependencies {
 	)
 	testCompile(
 		'junit:junit:4.11',
-		'org.thymeleaf:thymeleaf-testing:2.0.0'
+		'org.thymeleaf:thymeleaf-testing:2.0.1'
 	)
 }
 

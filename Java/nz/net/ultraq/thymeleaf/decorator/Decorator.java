@@ -16,46 +16,21 @@
 
 package nz.net.ultraq.thymeleaf.decorator;
 
-import static nz.net.ultraq.thymeleaf.decorator.DecoratorUtilities.pullContent;
-
-import org.thymeleaf.dom.Document;
 import org.thymeleaf.dom.Element;
-import org.thymeleaf.dom.Node;
 
 /**
- * Interface for all document decorators.
+ * Interface for all decorators.
  * 
  * @author Emanuel Rabina
  */
-public abstract class Decorator {
+public interface Decorator {
 
 	/**
 	 * Apply the contents of the decorator element to the content element.
 	 * 
-	 * @param decorator Root element of the decorator template.
-	 * @param content	Root element of the content template.
+	 * @param decorator Element from the decorator template to bring in to the
+	 * 					content template which is currently being processed.
+	 * @param content	Element from the content template.
 	 */
-	public void decorate(Element decorator, Element content) {
-
-		Document decoratordocument = (Document)decorator.getParent();
-		Document contentdocument   = (Document)content.getParent();
-
-		// Copy text outside of the root element
-		boolean beforehtml = true;
-		for (Node externalnode: decoratordocument.getChildren()) {
-			if (externalnode.equals(decorator)) {
-				beforehtml = false;
-				continue;
-			}
-			if (beforehtml) {
-				contentdocument.insertBefore(content, externalnode);
-			}
-			else {
-				contentdocument.insertAfter(content, externalnode);
-			}
-		}
-
-		// Bring the decorator into the content page (which is the one being processed)
-		pullContent(content, decorator);
-	}
+	public void decorate(Element decorator, Element content);
 }

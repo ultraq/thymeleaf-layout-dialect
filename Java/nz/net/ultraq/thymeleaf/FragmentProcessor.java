@@ -27,8 +27,9 @@ import org.thymeleaf.processor.ProcessorResult;
 import org.thymeleaf.processor.attr.AbstractAttrProcessor;
 
 /**
- * Marks sections of the decorator template that can be replaced by sections in
- * the content template, which share the same name.
+ * Marks sections of the template that can be replaced by sections in the
+ * content template (if decorating) or passed along to included pages (if
+ * including), which share the same name.
  * 
  * @author Emanuel Rabina
  */
@@ -36,8 +37,8 @@ public class FragmentProcessor extends AbstractAttrProcessor {
 
 	private static final Logger logger = LoggerFactory.getLogger(FragmentProcessor.class);
 
-	static final String PROCESSOR_NAME_FRAGMENT = "fragment";
-	static final String PROCESSOR_NAME_FRAGMENT_FULL = LAYOUT_PREFIX + ":" + PROCESSOR_NAME_FRAGMENT;
+	public static final String PROCESSOR_NAME_FRAGMENT = "fragment";
+	public static final String PROCESSOR_NAME_FRAGMENT_FULL = LAYOUT_PREFIX + ":" + PROCESSOR_NAME_FRAGMENT;
 
 	static final String FRAGMENT_NAME_PREFIX = "fragment-name::";
 

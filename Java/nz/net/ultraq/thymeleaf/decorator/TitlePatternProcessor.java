@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package nz.net.ultraq.thymeleaf;
+package nz.net.ultraq.thymeleaf.decorator;
 
 import static nz.net.ultraq.thymeleaf.LayoutDialect.LAYOUT_PREFIX;
 import static nz.net.ultraq.thymeleaf.decorator.DecoratorUtilities.*;

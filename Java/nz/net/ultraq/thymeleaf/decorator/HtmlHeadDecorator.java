@@ -16,9 +16,9 @@
 
 package nz.net.ultraq.thymeleaf.decorator;
 
-import static nz.net.ultraq.thymeleaf.TitlePatternProcessor.DECORATOR_TITLE_NAME;
-import static nz.net.ultraq.thymeleaf.TitlePatternProcessor.PROCESSOR_NAME_TITLEPATTERN_FULL;
 import static nz.net.ultraq.thymeleaf.decorator.DecoratorUtilities.*;
+import static nz.net.ultraq.thymeleaf.decorator.TitlePatternProcessor.DECORATOR_TITLE_NAME;
+import static nz.net.ultraq.thymeleaf.decorator.TitlePatternProcessor.PROCESSOR_NAME_TITLEPATTERN_FULL;
 
 import org.thymeleaf.dom.Attribute;
 import org.thymeleaf.dom.Element;
@@ -28,69 +28,69 @@ import org.thymeleaf.dom.Text;
 import java.util.HashMap;
 
 /**
- * A decorator specific to processing an HTML &lt;head&gt; element.
+ * A decorator specific to processing an HTML HEAD element.
  * 
  * @author Emanuel Rabina
  */
-public class HtmlHeadDecorator extends Decorator {
+public class HtmlHeadDecorator extends ElementDecorator {
 
 	/**
 	 * Decorate the HEAD part.  This step replaces the decorator's TITLE element
-	 * if the page has one, and appends all other page elements to the HEAD
-	 * section, after all the decorator elements.
+	 * if the content has one, and appends all other content elements to the
+	 * HEAD section, after all the decorator elements.
 	 * 
 	 * @param decoratorhtml Decorator's HTML element.
-	 * @param pagehead		Page's HEAD element.
+	 * @param contenthead	Content's HEAD element.
 	 */
 	@Override
-	public void decorate(Element decoratorhtml, Element pagehead) {
+	public void decorate(Element decoratorhtml, Element contenthead) {
 
-		// If the page has no HEAD, then we don't need to do anything
-		if (pagehead == null) {
+		// If the content has no HEAD, then we don't need to do anything
+		if (contenthead == null) {
 			return;
 		}
 
-		// If the decorator has no HEAD, then we can just copy the page HEAD
+		// If the decorator has no HEAD, then we can just copy the content HEAD
 		Element decoratorhead = findElement(decoratorhtml, HTML_ELEMENT_HEAD);
 		if (decoratorhead == null) {
 			decoratorhtml.insertChild(0, new Text(LINE_SEPARATOR));
-			decoratorhtml.insertChild(1, pagehead);
+			decoratorhtml.insertChild(1, contenthead);
 			return;
 		}
 
-		// Append the page's HEAD elements to the end of the decorator's HEAD section,
-		// replacing the decorator's TITLE element if necessary
-		Element pagetitle = findElement(pagehead, HTML_ELEMENT_TITLE);
-		if (pagetitle != null) {
-			pagehead.removeChild(pagetitle);
+		// Append the content's HEAD elements to the end of the decorator's HEAD
+		// section, replacing the decorator's TITLE element if necessary
+		Element contenttitle = findElement(contenthead, HTML_ELEMENT_TITLE);
+		if (contenttitle != null) {
+			contenthead.removeChild(contenttitle);
 			Element decoratortitle = findElement(decoratorhead, HTML_ELEMENT_TITLE);
 			if (decoratortitle != null) {
-				decoratorhead.insertBefore(decoratortitle, pagetitle);
+				decoratorhead.insertBefore(decoratortitle, contenttitle);
 				decoratorhead.removeChild(decoratortitle);
 
 				// For title pattern processing, save the decorator's title so it can be retrieved later
 				if (decoratortitle.hasChildren()) {
 					HashMap<String,Object> decoratortitlemap = new HashMap<String,Object>();
 					decoratortitlemap.put(DECORATOR_TITLE_NAME, ((Text)decoratortitle.getFirstChild()).getContent());
-					pagetitle.setAllNodeLocalVariables(decoratortitlemap);
+					contenttitle.setAllNodeLocalVariables(decoratortitlemap);
 
 					// Let the content pattern override the decorator pattern
-					Attribute contenttitlepattern = pagetitle.getAttributeMap().get(PROCESSOR_NAME_TITLEPATTERN_FULL);
-					pullAttributes(pagetitle, decoratortitle);
+					Attribute contenttitlepattern = contenttitle.getAttributeMap().get(PROCESSOR_NAME_TITLEPATTERN_FULL);
+					pullAttributes(contenttitle, decoratortitle);
 					if (contenttitlepattern != null) {
-						pagetitle.setAttribute(PROCESSOR_NAME_TITLEPATTERN_FULL, contenttitlepattern.getValue());
+						contenttitle.setAttribute(PROCESSOR_NAME_TITLEPATTERN_FULL, contenttitlepattern.getValue());
 					}
 				}
 			}
 			else {
 				decoratorhead.insertChild(0, new Text(LINE_SEPARATOR));
-				decoratorhead.insertChild(1, pagetitle);
+				decoratorhead.insertChild(1, contenttitle);
 			}
 		}
-		for (Node pageheadnode: pagehead.getChildren()) {
-			decoratorhead.addChild(pageheadnode);
+		for (Node contentheadnode: contenthead.getChildren()) {
+			decoratorhead.addChild(contentheadnode);
 		}
 
-		pullAttributes(decoratorhead, pagehead);
+		super.decorate(decoratorhead, contenthead);
 	}
 }

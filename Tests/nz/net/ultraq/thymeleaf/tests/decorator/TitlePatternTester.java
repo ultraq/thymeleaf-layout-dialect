@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package nz.net.ultraq.thymeleaf.tests.titlepattern;
+package nz.net.ultraq.thymeleaf.tests.decorator;
 
 import nz.net.ultraq.thymeleaf.tests.AbstractLayoutDialectTester;
 
@@ -34,6 +34,6 @@ public class TitlePatternTester extends AbstractLayoutDialectTester {
 	@Test
 	public void tokenReplacement() {
 
-		testOK("titlepattern/TokenReplacement");
+		testOK("decorator/TokenReplacement");
 	}
 }
