@@ -23,7 +23,7 @@
  */
 
 apply plugin: 'java'
-apply from: 'https://raw.github.com/ultraq/gradle-support/master/java-support.gradle'
+apply from: 'https://raw.github.com/ultraq/gradle-support/dev/java-support.gradle'
 apply plugin: 'maven'
 apply from: 'https://raw.github.com/ultraq/gradle-support/master/maven-support.gradle'
 apply from: 'https://raw.github.com/ultraq/gradle-support/master/bundle.gradle'
@@ -46,7 +46,7 @@ dependencies {
 	)
 	testCompile(
 		'junit:junit:4.11',
-		'org.thymeleaf:thymeleaf-testing:2.0.1'
+		'org.thymeleaf:thymeleaf-testing:2.0.2'
 	)
 }
 
