@@ -15,7 +15,7 @@ Requirements
 ------------
 
  - Java 6
- - Thymeleaf 2.0.12+ (2.0.16 and its dependencies included)
+ - Thymeleaf 2.0.12+ (2.0.17 and its dependencies included)
 
 
 Installation
@@ -500,8 +500,7 @@ Changelog
  - Resolved [Issue #21](thymeleaf-layout-dialect/issues/21), adding a `layout:substituteby`
    processor which works much like `layout:include`, but with the behaviour of
    Thymeleaf's `th:substituteby`.
- - Updated Thymeleaf dependency from version 2.0.15 to 2.0.16 since it's needed
-   by the testing library.
+ - Updated Thymeleaf dependency from version 2.0.15 to 2.0.17.
 
 ### 1.0.6
  - Added a help/documentation file so that this dialect will appear in content

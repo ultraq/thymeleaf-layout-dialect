@@ -40,6 +40,7 @@ public class XmlDocumentDecorator implements Decorator {
 
 		// Copy text outside of the root element
 		boolean beforehtml = true;
+		Node lastnode = content;
 		for (Node externalnode: decoratordocument.getChildren()) {
 			if (externalnode.equals(decorator)) {
 				beforehtml = false;
@@ -49,7 +50,8 @@ public class XmlDocumentDecorator implements Decorator {
 				contentdocument.insertBefore(content, externalnode);
 			}
 			else {
-				contentdocument.insertAfter(content, externalnode);
+				contentdocument.insertAfter(lastnode, externalnode);
+				lastnode = externalnode;
 			}
 		}
 

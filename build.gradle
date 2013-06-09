@@ -42,7 +42,7 @@ project.year     = '2012'
 
 dependencies {
 	compile(
-		'org.thymeleaf:thymeleaf:2.0.16'
+		'org.thymeleaf:thymeleaf:2.0.17'
 	)
 	testCompile(
 		'junit:junit:4.11',
