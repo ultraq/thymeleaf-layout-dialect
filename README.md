@@ -7,8 +7,8 @@ style your content, as well as pass entire fragment elements to included pages,
 all to help improve code reuse.  If you've ever used SiteMesh 2 or JSF with
 Facelets, then the concepts of this library will be very familiar to you.
 
- - Current version: 1.1
- - Released: 9 Jun 2013
+ - Current version: 1.1.1
+ - Released: 14 Jun 2013
 
 
 Requirements
@@ -31,7 +31,7 @@ Add a dependency to your project with the following co-ordinates:
 
  - GroupId: `nz.net.ultraq.thymeleaf`
  - ArtifactId: `thymeleaf-layout-dialect`
- - Version: `1.1`
+ - Version: `1.1.1`
 
 
 Usage
@@ -490,6 +490,12 @@ fine-grained control of the appearance of your title.
 
 Changelog
 ---------
+
+### 1.1.1
+ - Restore the help/documentation file so that this dialect will appear in
+   content assist in the Thymeleaf Eclipse plugin. (I use a new build process
+   for the 1.1 branch, and it missed this resource file!  Apologies for that
+   folks.)
 
 ### 1.1
  - Change package to `nz.net.ultraq.thymeleaf` (dropped the 'web' part).
