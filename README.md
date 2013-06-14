@@ -22,7 +22,7 @@ Installation
 ------------
 
 ### Standalone distribution
-Copy the JAR from [the latest download bundle](http://www.ultraq.net.nz/downloads/programming/Thymeleaf Layout Dialect 1.1.zip),
+Copy the JAR from [the latest download bundle](http://www.ultraq.net.nz/downloads/programming/Thymeleaf Layout Dialect 1.1.1.zip),
 placing it in the `WEB-INF/lib` directory of your web application, or build the
 project from the source code here on GitHub.
 
@@ -493,7 +493,7 @@ Changelog
 
 ### 1.1.1
  - Restore the help/documentation file so that this dialect will appear in
-   content assist in the Thymeleaf Eclipse plugin. (I use a new build process
+   content assist in the Thymeleaf Eclipse plugin. (I used a new build process
    for the 1.1 branch, and it missed this resource file!  Apologies for that
    folks.)
 
