@@ -184,4 +184,13 @@ public class DecoratorTester extends AbstractLayoutDialectTester {
 
 		testOK("decorator/XMLDecoration");
 	}
+
+	/**
+	 * Test the decorator using the 'legacy HTML5' template mode.
+	 */
+	@Test
+	public void nonXmlHtml5() {
+
+		testOK("decorator/NonXMLHTML5");
+	}
 }

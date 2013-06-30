@@ -7,8 +7,8 @@ style your content, as well as pass entire fragment elements to included pages,
 all to help improve code reuse.  If you've ever used SiteMesh 2 or JSF with
 Facelets, then the concepts of this library will be very familiar to you.
 
- - Current version: 1.1.1
- - Released: 14 Jun 2013
+ - Current version: 1.1.2
+ - Released: ?? ??? 2013
 
 
 Requirements
@@ -22,7 +22,7 @@ Installation
 ------------
 
 ### Standalone distribution
-Copy the JAR from [the latest download bundle](http://www.ultraq.net.nz/downloads/programming/Thymeleaf Layout Dialect 1.1.1.zip),
+Copy the JAR from [the latest download bundle](http://www.ultraq.net.nz/downloads/programming/Thymeleaf Layout Dialect 1.1.2.zip),
 placing it in the `WEB-INF/lib` directory of your web application, or build the
 project from the source code here on GitHub.
 
@@ -31,7 +31,7 @@ Add a dependency to your project with the following co-ordinates:
 
  - GroupId: `nz.net.ultraq.thymeleaf`
  - ArtifactId: `thymeleaf-layout-dialect`
- - Version: `1.1.1`
+ - Version: `1.1.2`
 
 
 Usage
@@ -491,6 +491,11 @@ fine-grained control of the appearance of your title.
 Changelog
 ---------
 
+### 1.1.2
+ - Resolved [Issue #23](https://github.com/ultraq/thymeleaf-layout-dialect/issues/23),
+   relaxing the root element restriction when using the `LEGACYHTML5` template mode
+   due to the way the NekoHTML parser works on HTML fragments.
+
 ### 1.1.1
  - Restore the help/documentation file so that this dialect will appear in
    content assist in the Thymeleaf Eclipse plugin. (I used a new build process
@@ -503,9 +508,9 @@ Changelog
    the 'web' part).
  - Implemented unit tests, using the [Thymeleaf Testing](https://github.com/thymeleaf/thymeleaf-testing)
    library.
- - Resolved [Issue #21](thymeleaf-layout-dialect/issues/21), adding a `layout:substituteby`
-   processor which works much like `layout:include`, but with the behaviour of
-   Thymeleaf's `th:substituteby`.
+ - Resolved [Issue #21](https://github.com/ultraq/thymeleaf-layout-dialect/issues/21),
+   adding a `layout:substituteby` processor which works much like `layout:include`,
+   but with the behaviour of Thymeleaf's `th:substituteby`.
  - Updated Thymeleaf dependency from version 2.0.15 to 2.0.17.
 
 ### 1.0.6
@@ -519,9 +524,9 @@ Changelog
    the `<title>` element (I keep seeing people doing this, even though it's not
    required since the dialect automatically takes the content `<title>` over the
    decorator `<title>`).
- - Resolved [Issue #10](thymeleaf-layout-dialect/issues/10), so that content
-   outside the decorator page's `<html>` element (like IE conditional comments)
-   are included in the resulting page.
+ - Resolved [Issue #10](https://github.com/ultraq/thymeleaf-layout-dialect/issues/10),
+   so that content outside the decorator page's `<html>` element (like IE
+   conditional comments) are included in the resulting page.
  - Updated Thymeleaf dependency from version 2.0.13 to 2.0.15.
 
 ### 1.0.4
@@ -530,34 +535,36 @@ Changelog
  - Fixed the resulting JAR which didn't recreate the proper Maven metadata in
    the manifest section and might have caused it to not be picked up by tools
    like m2eclipse.
- - Resolved [Issue #7](thymeleaf-layout-dialect/issues/7), which caused a `ClassCastException`
-   for cases when `th:include` was used to include entire pages.
+ - Resolved [Issue #7](https://github.com/ultraq/thymeleaf-layout-dialect/issues/7),
+   which caused a `ClassCastException` for cases when `th:include` was used to
+   include entire pages.
  - Updated Thymeleaf dependency from version 2.0.11 to 2.0.13.
 
 ### 1.0.3
  - Added a `layout:include` attribute which works like `th:include` but allows
    for the passing of element fragments to the included page.
- - Resolved [Issue #3](thymeleaf-layout-dialect/issues/3), allowing `th:with`
-   local variable declarations made in the decorator page to be visible in
-   content pages during processing.
- - Resolved [Issue #4](thymeleaf-layout-dialect/issues/4), removing the
-   restriction that the `layout:decorator` tag appear in an HTML element since
-   Thymeleaf 2.0.10 relaxed that restriction too (tag must still appear in the
-   root element of your page however).
+ - Resolved [Issue #3](https://github.com/ultraq/thymeleaf-layout-dialect/issues/3),
+   allowing `th:with` local variable declarations made in the decorator page to
+   be visible in content pages during processing.
+ - Resolved [Issue #4](https://github.com/ultraq/thymeleaf-layout-dialect/issues/4),
+   removing the restriction that the `layout:decorator` tag appear in an HTML
+   element since Thymeleaf 2.0.10 relaxed that restriction too (tag must still
+   appear in the root element of your page however).
  - Updated Thymeleaf dependency from version 2.0.8 to 2.0.11 for the above issue
    due to a required API change in 2.0.11.
 
 ### 1.0.2
- - Resolved [Issue #2](thymeleaf-layout-dialect/issues/2), allowing decorator
-   and content pages to contain just a `<head>` section, or just a `<body>`
-   section, or neither section, or some other combination between pages.
+ - Resolved [Issue #2](https://github.com/ultraq/thymeleaf-layout-dialect/issues/2),
+   allowing decorator and content pages to contain just a `<head>` section, or
+   just a `<body>` section, or neither section, or some other combination
+   between pages.
 
 ### 1.0.1
  - Switched from Ant to Gradle as a build tool and to generate Maven-compatible
    artifacts.
- - Resolved [Issue #1](thymeleaf-layout-dialect/issues/1) to appease the
-   Mavenites amongst you :)  Project is now being served from Maven Central,
-   co-ordinates added to [installation](#installation) instructions.
+ - Resolved [Issue #1](https://github.com/ultraq/thymeleaf-layout-dialect/issues/1)
+   to appease the Mavenites amongst you :)  Project is now being served from
+   Maven Central, co-ordinates added to [installation](#installation) instructions.
 
 ### 1.0
  - Initial release.

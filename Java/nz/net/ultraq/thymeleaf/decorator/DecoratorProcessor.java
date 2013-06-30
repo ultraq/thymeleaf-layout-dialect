@@ -28,6 +28,7 @@ import org.thymeleaf.Template;
 import org.thymeleaf.TemplateProcessingParameters;
 import org.thymeleaf.dom.Document;
 import org.thymeleaf.dom.Element;
+import org.thymeleaf.dom.NestableNode;
 import org.thymeleaf.fragment.FragmentAndTarget;
 import org.thymeleaf.processor.ProcessorResult;
 import org.thymeleaf.standard.fragment.StandardFragmentProcessor;
@@ -46,6 +47,8 @@ public class DecoratorProcessor extends AbstractContentProcessor {
 
 	private static final Logger logger = LoggerFactory.getLogger(DecoratorProcessor.class);
 
+	private static final String TEMPLATE_MODE_LEGACYHTML5 = "LEGACYHTML5";
+
 	public static final String PROCESSOR_NAME_DECORATOR = "decorator";
 	public static final String PROCESSOR_NAME_DECORATOR_FULL = LAYOUT_PREFIX + ":" + PROCESSOR_NAME_DECORATOR;
 
@@ -55,6 +58,21 @@ public class DecoratorProcessor extends AbstractContentProcessor {
 	public DecoratorProcessor() {
 
 		super(PROCESSOR_NAME_DECORATOR);
+	}
+
+	/**
+	 * Get the document node containing the given element.
+	 * 
+	 * @param element
+	 * @return Document node for the element.
+	 */
+	private Document findDocument(NestableNode element) {
+
+		NestableNode parent = element.getParent();
+		if (parent instanceof Document) {
+			return (Document)parent;
+		}
+		return findDocument(parent);
 	}
 
 	/**
@@ -70,11 +88,17 @@ public class DecoratorProcessor extends AbstractContentProcessor {
 	protected ProcessorResult processAttribute(Arguments arguments, Element element, String attributeName) {
 
 		// Ensure the decorator attribute is in the root element of the document
-		if (!(element.getParent() instanceof Document)) {
+		// NOTE: The NekoHTML parser adds <html> and <body> elements to template fragments
+		//       that don't already have them, potentially failing this restriction.  For
+		//       now I'll relax it for the LEGACYHTML5 template mode, but developers
+		//       should be aware that putting the layout:decorator attribute anywhere but
+		//       the root element can lead to unexpected results.
+		if (!(element.getParent() instanceof Document) &&
+			!arguments.getTemplateResolution().getTemplateMode().equals(TEMPLATE_MODE_LEGACYHTML5)) {
 			logger.error("layout:decorator attribute must appear in the root element of your content page");
 			throw new IllegalArgumentException("layout:decorator attribute must appear in the root element of your content page");
 		}
-		Document document = (Document)element.getParent();
+		Document document = findDocument(element);
 
 		// Locate the decorator page
 		FragmentAndTarget fragmentandtarget = StandardFragmentProcessor.computeStandardFragmentSpec(
@@ -102,7 +126,7 @@ public class DecoratorProcessor extends AbstractContentProcessor {
 						new XmlDocumentDecorator();
 
 		// Perform decoration
-		decorator.decorate(decoratorrootelement, element);
+		decorator.decorate(decoratorrootelement, document.getFirstElementChild());
 
 		return ProcessorResult.OK;
 	}
