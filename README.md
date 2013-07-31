@@ -8,7 +8,7 @@ all to help improve code reuse.  If you've ever used SiteMesh 2 or JSF with
 Facelets, then the concepts of this library will be very familiar to you.
 
  - Current version: 1.1.2
- - Released: ?? ??? 2013
+ - Released: 31 July 2013
 
 
 Requirements
