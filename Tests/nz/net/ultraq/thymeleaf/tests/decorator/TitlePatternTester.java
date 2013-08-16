@@ -36,4 +36,13 @@ public class TitlePatternTester extends AbstractLayoutDialectTester {
 
 		testOK("decorator/TokenReplacement");
 	}
+
+	/**
+	 * Test the behaviour when there's no content title.
+	 */
+	@Test
+	public void noTitleInContent() {
+
+		testOK("decorator/NoTitleInContent");
+	}
 }

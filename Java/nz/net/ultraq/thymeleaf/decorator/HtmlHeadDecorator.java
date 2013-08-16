@@ -17,10 +17,9 @@
 package nz.net.ultraq.thymeleaf.decorator;
 
 import static nz.net.ultraq.thymeleaf.decorator.DecoratorUtilities.*;
+import static nz.net.ultraq.thymeleaf.decorator.TitlePatternProcessor.CONTENT_TITLE_NAME;
 import static nz.net.ultraq.thymeleaf.decorator.TitlePatternProcessor.DECORATOR_TITLE_NAME;
-import static nz.net.ultraq.thymeleaf.decorator.TitlePatternProcessor.PROCESSOR_NAME_TITLEPATTERN_FULL;
 
-import org.thymeleaf.dom.Attribute;
 import org.thymeleaf.dom.Element;
 import org.thymeleaf.dom.Node;
 import org.thymeleaf.dom.Text;
@@ -58,37 +57,44 @@ public class HtmlHeadDecorator extends XmlElementDecorator {
 			return;
 		}
 
-		// Append the content's HEAD elements to the end of the decorator's HEAD
-		// section, replacing the decorator's TITLE element if necessary
-		Element contenttitle = findElement(contenthead, HTML_ELEMENT_TITLE);
+		// Merge the content and decorator titles into a single title element
+		Element decoratortitle = findElement(decoratorhead, HTML_ELEMENT_TITLE);
+		Element contenttitle   = findElement(contenthead, HTML_ELEMENT_TITLE);
+		Element resultingtitle = null;
+
+		if (decoratortitle != null || contenttitle != null) {
+			resultingtitle = new Element("title");
+			HashMap<String,Object> resultingtitlemap = new HashMap<String,Object>();
+			if (decoratortitle != null) {
+				resultingtitle.addChild(decoratortitle.getFirstChild());
+				pullAttributes(resultingtitle, decoratortitle);
+				resultingtitlemap.put(DECORATOR_TITLE_NAME, ((Text)decoratortitle.getFirstChild()).getContent());
+			}
+			if (contenttitle != null) {
+				resultingtitle.clearChildren();
+				resultingtitle.addChild(contenttitle.getFirstChild());
+				pullAttributes(resultingtitle, contenttitle);
+				resultingtitlemap.put(CONTENT_TITLE_NAME, ((Text)contenttitle.getFirstChild()).getContent());
+			}
+			resultingtitle.setAllNodeLocalVariables(resultingtitlemap);
+		}
+
+		// Remove the existing titles
+		if (decoratortitle != null) {
+			decoratorhead.removeChild(decoratortitle);
+		}
 		if (contenttitle != null) {
 			contenthead.removeChild(contenttitle);
-			Element decoratortitle = findElement(decoratorhead, HTML_ELEMENT_TITLE);
-			if (decoratortitle != null) {
-				decoratorhead.insertBefore(decoratortitle, contenttitle);
-				decoratorhead.removeChild(decoratortitle);
-
-				// For title pattern processing, save the decorator's title so it can be retrieved later
-				if (decoratortitle.hasChildren()) {
-					HashMap<String,Object> decoratortitlemap = new HashMap<String,Object>();
-					decoratortitlemap.put(DECORATOR_TITLE_NAME, ((Text)decoratortitle.getFirstChild()).getContent());
-					contenttitle.setAllNodeLocalVariables(decoratortitlemap);
-
-					// Let the content pattern override the decorator pattern
-					Attribute contenttitlepattern = contenttitle.getAttributeMap().get(PROCESSOR_NAME_TITLEPATTERN_FULL);
-					pullAttributes(contenttitle, decoratortitle);
-					if (contenttitlepattern != null) {
-						contenttitle.setAttribute(PROCESSOR_NAME_TITLEPATTERN_FULL, contenttitlepattern.getValue());
-					}
-				}
-			}
-			else {
-				decoratorhead.insertChild(0, new Text(LINE_SEPARATOR));
-				decoratorhead.insertChild(1, contenttitle);
-			}
 		}
+
+		// Append the content's HEAD elements to the end of the decorator's HEAD
+		// section, placing the resulting title at the beginning of it
 		for (Node contentheadnode: contenthead.getChildren()) {
 			decoratorhead.addChild(contentheadnode);
+		}
+		if (resultingtitle != null) {
+			decoratorhead.insertChild(0, new Text(LINE_SEPARATOR));
+			decoratorhead.insertChild(1, resultingtitle);
 		}
 
 		super.decorate(decoratorhead, contenthead);
