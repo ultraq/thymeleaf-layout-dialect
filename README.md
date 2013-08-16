@@ -7,8 +7,8 @@ style your content, as well as pass entire fragment elements to included pages,
 all to help improve code reuse.  If you've ever used SiteMesh 2 or JSF with
 Facelets, then the concepts of this library will be very familiar to you.
 
- - Current version: 1.1.2
- - Released: 31 July 2013
+ - Current version: 1.1.3
+ - Released: ?? ??? 2013
 
 
 Requirements
@@ -22,7 +22,7 @@ Installation
 ------------
 
 ### Standalone distribution
-Copy the JAR from [the latest download bundle](http://www.ultraq.net.nz/downloads/programming/Thymeleaf Layout Dialect 1.1.2.zip),
+Copy the JAR from [the latest download bundle](http://www.ultraq.net.nz/downloads/programming/Thymeleaf Layout Dialect 1.1.3.zip),
 placing it in the `WEB-INF/lib` directory of your web application, or build the
 project from the source code here on GitHub.
 
@@ -31,7 +31,7 @@ Add a dependency to your project with the following co-ordinates:
 
  - GroupId: `nz.net.ultraq.thymeleaf`
  - ArtifactId: `thymeleaf-layout-dialect`
- - Version: `1.1.2`
+ - Version: `1.1.3`
 
 
 Usage
@@ -491,10 +491,14 @@ fine-grained control of the appearance of your title.
 Changelog
 ---------
 
+### 1.1.3
+ - Refactored handling of `<title>` elements for when they're lacking in either
+   content or decorator templates and the `layout:title-pattern` processor is
+   being used (#25)
+
 ### 1.1.2
- - Resolved [Issue #23](https://github.com/ultraq/thymeleaf-layout-dialect/issues/23),
-   relaxing the root element restriction when using the `LEGACYHTML5` template mode
-   due to the way the NekoHTML parser works on HTML fragments.
+ - Relaxed the root element restriction when using the `LEGACYHTML5` template
+   mode due to the way the NekoHTML parser works on HTML fragments (#23)
 
 ### 1.1.1
  - Restore the help/documentation file so that this dialect will appear in

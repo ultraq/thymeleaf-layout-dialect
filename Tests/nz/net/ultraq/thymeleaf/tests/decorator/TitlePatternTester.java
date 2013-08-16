@@ -45,4 +45,13 @@ public class TitlePatternTester extends AbstractLayoutDialectTester {
 
 		testOK("decorator/NoTitleInContent");
 	}
+
+	/**
+	 * Test the behaviour when there's no content title.
+	 */
+	@Test
+	public void noTitleInDecorator() {
+
+		testOK("decorator/NoTitleInDecorator");
+	}
 }
