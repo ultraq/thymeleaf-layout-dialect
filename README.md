@@ -91,8 +91,7 @@ to pass HTML code to the pages you want to include.
 
 ### layout:replace (aka: layout:substituteby)
 Similar to `layout:include` in that you can pass HTML content to the
-page/fragments you're substituting in, but with the behaviour of Thymeleaf's
-`th:replace`.
+page/fragments you're replacing, but with the behaviour of Thymeleaf's `th:replace`.
 > Just like Thymeleaf, the `replace` processor will eventually replace `substituteby`.
 > They both perform the same function, but `substituteby` is effectively
 > deprecated.
@@ -503,7 +502,7 @@ Changelog
    They both perform the same function, but `substituteby` is effectively
    deprecated.)
  - Updated the Eclipse plugin help file to point to the updated 1.1.x processor
-   locations, as well as add the `layout:substituteby`.
+   locations.
 
 ### 1.1.2
  - Relaxed the root element restriction when using the `LEGACYHTML5` template
