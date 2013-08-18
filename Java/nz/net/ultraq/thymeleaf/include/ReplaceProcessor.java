@@ -32,26 +32,24 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Similar to Thymeleaf's <tt>th:substituteby</tt>, but allows the passing of
- * entire element fragments to the included template.  Useful if you have some
- * HTML that you want to reuse, but whose contents are too complex to determine
- * or construct with context variables alone.
+ * Similar to Thymeleaf's <tt>th:replace</tt>, but allows the passing of entire
+ * element fragments to the included template.  Useful if you have some HTML
+ * that you want to reuse, but whose contents are too complex to determine or
+ * construct with context variables alone.
  * 
- * @deprecated Use the {@link ReplaceProcessor} instead.
  * @author Emanuel Rabina
  */
-@Deprecated
-public class SubstituteByProcessor extends AbstractContentProcessor {
+public class ReplaceProcessor extends AbstractContentProcessor {
 
-	public static final String PROCESSOR_NAME_SUBSTITUTEBY = "substituteby";
-	public static final String PROCESSOR_NAME_SUBSTITUTEBY_FULL = LAYOUT_PREFIX + ":" + PROCESSOR_NAME_SUBSTITUTEBY;
+	public static final String PROCESSOR_NAME_REPLACE = "replace";
+	public static final String PROCESSOR_NAME_REPLACE_FULL = LAYOUT_PREFIX + ":" + PROCESSOR_NAME_REPLACE;
 
 	/**
-	 * Constructor, set this processor to work on the 'substituteby' attribute.
+	 * Constructor, set this processor to work on the 'replace' attribute.
 	 */
-	public SubstituteByProcessor() {
+	public ReplaceProcessor() {
 
-		super(PROCESSOR_NAME_SUBSTITUTEBY);
+		super(PROCESSOR_NAME_REPLACE);
 	}
 
 	/**
@@ -75,11 +73,11 @@ public class SubstituteByProcessor extends AbstractContentProcessor {
 
 		element.removeAttribute(attributeName);
 
-		// Gather all fragment parts within the substituteby element
+		// Gather all fragment parts within the replace element
 		Map<String,Object> pagefragments = findFragments(element.getElementChildren());
 
-		// Replace the children of this element with those of the substituteby
-		// page fragments, scoping any fragment parts to the immediate children
+		// Replace the children of this element with those of the replace page
+		// fragments, scoping any fragment parts to the immediate children
 		element.clearChildren();
 		if (includefragments != null) {
 			for (Node includefragment: includefragments) {

@@ -8,7 +8,7 @@ all to help improve code reuse.  If you've ever used SiteMesh 2 or JSF with
 Facelets, then the concepts of this library will be very familiar to you.
 
  - Current version: 1.1.3
- - Released: ?? ??? 2013
+ - Released: 18 August 2013
 
 
 Requirements
@@ -69,15 +69,15 @@ Or, for those using Spring configuration files:
 ```
 
 This will introduce 5 new attributes that you can use in your pages:
-`layout:decorator`, `layout:include`, `layout:substituteby`, `layout:fragment`,
-and `layout:title-pattern`.
+`layout:decorator`, `layout:include`, `layout:replace` (aka: `layout:substituteby`),
+`layout:fragment`, and `layout:title-pattern`.
 
 ### layout:decorator
 Used in your content pages and declared in the root tag (usually `<html>`, but
 as of Thymeleaf 2.0.10 this is no longer a restriction), this attribute
 specifies the location of the decorator page to apply to the content page.  The
 mechanism for resolving decorator pages is the same as that used by Thymeleaf to
-resolve `th:fragment` and `th:substituteby` pages.
+resolve `th:fragment` and `th:replace` pages.
 Check out the [Decorators and fragments](#decorators-and-fragments) example for
 how to apply a decorator to your content pages.
 
@@ -89,10 +89,13 @@ variables alone.
 Check out the [Includes and fragments](#includes-and-fragments) example for how
 to pass HTML code to the pages you want to include.
 
-### layout:substituteby
+### layout:replace (aka: layout:substituteby)
 Similar to `layout:include` in that you can pass HTML content to the
 page/fragments you're substituting in, but with the behaviour of Thymeleaf's
-`th:substituteby`.
+`th:replace`.
+> Just like Thymeleaf, the `replace` processor will eventually replace `substituteby`.
+> They both perform the same function, but `substituteby` is effectively
+> deprecated.
 
 ### layout:fragment
 The glue that holds everything together; it marks sections in the decorator page
@@ -495,6 +498,12 @@ Changelog
  - Refactored handling of `<title>` elements for when they're lacking in either
    content or decorator templates and the `layout:title-pattern` processor is
    being used (#25)
+ - Added a `layout:replace` attribute processor, an alias of `layout:substituteby`
+   (Just like Thymeleaf, the `replace` processor will eventually replace `substituteby`.
+   They both perform the same function, but `substituteby` is effectively
+   deprecated.)
+ - Updated the Eclipse plugin help file to point to the updated 1.1.x processor
+   locations, as well as add the `layout:substituteby`.
 
 ### 1.1.2
  - Relaxed the root element restriction when using the `LEGACYHTML5` template
