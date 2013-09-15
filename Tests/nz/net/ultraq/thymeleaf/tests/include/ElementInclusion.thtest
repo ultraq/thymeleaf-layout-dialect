@@ -6,7 +6,7 @@
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 	<body>
-		<div layout:substituteby="Nav :: nav">
+		<div layout:replace="Nav :: nav">
 			<ul layout:fragment="custom-nav-items">
 				<li>Custom nav item 1</li>
 				<li>Custom nav item 2</li>

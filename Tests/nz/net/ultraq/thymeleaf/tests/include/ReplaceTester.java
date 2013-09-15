@@ -26,7 +26,7 @@ import org.junit.Test;
  * 
  * @author Emanuel Rabina
  */
-public class SubstituteByTester extends AbstractLayoutDialectTester {
+public class ReplaceTester extends AbstractLayoutDialectTester {
 
 	/**
 	 * Test that fragment elements get copied over to the included page.

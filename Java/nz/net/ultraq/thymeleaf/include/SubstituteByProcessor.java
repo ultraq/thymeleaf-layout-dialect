@@ -16,16 +16,16 @@
 
 package nz.net.ultraq.thymeleaf.include;
 
-import static nz.net.ultraq.thymeleaf.FragmentProcessor.PROCESSOR_NAME_FRAGMENT_FULL;
-import static nz.net.ultraq.thymeleaf.LayoutDialect.LAYOUT_PREFIX;
+import static nz.net.ultraq.thymeleaf.FragmentProcessor.PROCESSOR_NAME_FRAGMENT;
+import static nz.net.ultraq.thymeleaf.LayoutDialect.DIALECT_PREFIX_LAYOUT;
 
 import nz.net.ultraq.thymeleaf.AbstractContentProcessor;
 
 import org.thymeleaf.Arguments;
 import org.thymeleaf.dom.Element;
 import org.thymeleaf.dom.Node;
-import org.thymeleaf.fragment.FragmentAndTarget;
 import org.thymeleaf.processor.ProcessorResult;
+import org.thymeleaf.standard.fragment.StandardFragment;
 import org.thymeleaf.standard.fragment.StandardFragmentProcessor;
 
 import java.util.List;
@@ -44,7 +44,7 @@ import java.util.Map;
 public class SubstituteByProcessor extends AbstractContentProcessor {
 
 	public static final String PROCESSOR_NAME_SUBSTITUTEBY = "substituteby";
-	public static final String PROCESSOR_NAME_SUBSTITUTEBY_FULL = LAYOUT_PREFIX + ":" + PROCESSOR_NAME_SUBSTITUTEBY;
+	public static final String PROCESSOR_NAME_SUBSTITUTEBY_FULL = DIALECT_PREFIX_LAYOUT + ":" + PROCESSOR_NAME_SUBSTITUTEBY;
 
 	/**
 	 * Constructor, set this processor to work on the 'substituteby' attribute.
@@ -67,11 +67,10 @@ public class SubstituteByProcessor extends AbstractContentProcessor {
 	protected ProcessorResult processAttribute(Arguments arguments, Element element, String attributeName) {
 
 		// Locate the page and fragment to include
-		FragmentAndTarget fragmentandtarget = StandardFragmentProcessor.computeStandardFragmentSpec(
-				arguments.getConfiguration(), arguments, element.getAttributeValue(attributeName),
-				null, PROCESSOR_NAME_FRAGMENT_FULL, false);
-		List<Node> includefragments = fragmentandtarget.extractFragment(arguments.getConfiguration(),
-				arguments.getContext(), arguments.getTemplateRepository());
+		StandardFragment fragment = StandardFragmentProcessor.computeStandardFragmentSpec(
+				arguments.getConfiguration(), arguments, element.getAttributeValue(attributeName), null);
+		List<Node> includefragments = fragment.extractFragment(arguments.getConfiguration(),
+				arguments, arguments.getTemplateRepository(), DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_FRAGMENT);
 
 		element.removeAttribute(attributeName);
 

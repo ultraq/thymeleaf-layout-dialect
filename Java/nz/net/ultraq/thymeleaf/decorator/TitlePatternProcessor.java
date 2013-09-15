@@ -16,7 +16,7 @@
 
 package nz.net.ultraq.thymeleaf.decorator;
 
-import static nz.net.ultraq.thymeleaf.LayoutDialect.LAYOUT_PREFIX;
+import static nz.net.ultraq.thymeleaf.LayoutDialect.DIALECT_PREFIX_LAYOUT;
 import static nz.net.ultraq.thymeleaf.decorator.DecoratorUtilities.*;
 
 import org.slf4j.Logger;
@@ -43,7 +43,7 @@ public class TitlePatternProcessor extends AbstractAttrProcessor {
 	private static final String PARAM_TITLE_CONTENT   = "$CONTENT_TITLE";
 
 	public static final String PROCESSOR_NAME_TITLEPATTERN      = "title-pattern";
-	public static final String PROCESSOR_NAME_TITLEPATTERN_FULL = LAYOUT_PREFIX + ":" + PROCESSOR_NAME_TITLEPATTERN;
+	public static final String PROCESSOR_NAME_TITLEPATTERN_FULL = DIALECT_PREFIX_LAYOUT + ":" + PROCESSOR_NAME_TITLEPATTERN;
 
 	public static final String DECORATOR_TITLE_NAME = "title-pattern::decorator-title";
 	public static final String CONTENT_TITLE_NAME   = "title-pattern::content-title";

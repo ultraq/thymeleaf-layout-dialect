@@ -17,8 +17,7 @@
 package nz.net.ultraq.thymeleaf.decorator;
 
 import nz.net.ultraq.thymeleaf.AbstractContentProcessor;
-
-import static nz.net.ultraq.thymeleaf.LayoutDialect.LAYOUT_PREFIX;
+import static nz.net.ultraq.thymeleaf.LayoutDialect.DIALECT_PREFIX_LAYOUT;
 import static nz.net.ultraq.thymeleaf.decorator.DecoratorUtilities.HTML_ELEMENT_HTML;
 
 import org.slf4j.Logger;
@@ -29,8 +28,8 @@ import org.thymeleaf.TemplateProcessingParameters;
 import org.thymeleaf.dom.Document;
 import org.thymeleaf.dom.Element;
 import org.thymeleaf.dom.NestableNode;
-import org.thymeleaf.fragment.FragmentAndTarget;
 import org.thymeleaf.processor.ProcessorResult;
+import org.thymeleaf.standard.fragment.StandardFragment;
 import org.thymeleaf.standard.fragment.StandardFragmentProcessor;
 
 import java.util.Map;
@@ -50,7 +49,7 @@ public class DecoratorProcessor extends AbstractContentProcessor {
 	private static final String TEMPLATE_MODE_LEGACYHTML5 = "LEGACYHTML5";
 
 	public static final String PROCESSOR_NAME_DECORATOR = "decorator";
-	public static final String PROCESSOR_NAME_DECORATOR_FULL = LAYOUT_PREFIX + ":" + PROCESSOR_NAME_DECORATOR;
+	public static final String PROCESSOR_NAME_DECORATOR_FULL = DIALECT_PREFIX_LAYOUT + ":" + PROCESSOR_NAME_DECORATOR;
 
 	/**
 	 * Constructor, sets this processor to work on the 'decorator' attribute.
@@ -101,11 +100,10 @@ public class DecoratorProcessor extends AbstractContentProcessor {
 		Document document = findDocument(element);
 
 		// Locate the decorator page
-		FragmentAndTarget fragmentandtarget = StandardFragmentProcessor.computeStandardFragmentSpec(
-				arguments.getConfiguration(), arguments, element.getAttributeValue(attributeName),
-				null, null, false);
+		StandardFragment fragment = StandardFragmentProcessor.computeStandardFragmentSpec(
+				arguments.getConfiguration(), arguments, element.getAttributeValue(attributeName), null);
 		Template decoratortemplate = arguments.getTemplateRepository().getTemplate(new TemplateProcessingParameters(
-				arguments.getConfiguration(), fragmentandtarget.getTemplateName(), arguments.getContext()));
+				arguments.getConfiguration(), fragment.getTemplateName(), arguments.getContext()));
 		element.removeAttribute(attributeName);
 
 		Document decoratordocument = decoratortemplate.getDocument();
