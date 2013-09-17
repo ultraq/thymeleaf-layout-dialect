@@ -6,7 +6,7 @@
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 	<body>
-		<div layout:replace="Nav :: nav">
+		<div layout:replace="Navigation :: navigation">
 			<ul layout:fragment="custom-nav-items">
 				<li>Custom nav item 1</li>
 				<li>Custom nav item 2</li>
@@ -15,13 +15,13 @@
 	</body>
 </html>
 
-%INPUT[Nav]
+%INPUT[Navigation]
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 	<body>
-		<nav layout:fragment="nav">
+		<nav layout:fragment="navigation">
 			<ul layout:fragment="custom-nav-items" class="custom-nav-items"></ul>
 			<ul class="standard-nav-items">
 				<li>Standard nav item 1</li>

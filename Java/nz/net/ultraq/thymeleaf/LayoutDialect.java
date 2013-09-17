@@ -19,6 +19,7 @@ package nz.net.ultraq.thymeleaf;
 import nz.net.ultraq.thymeleaf.decorator.DecoratorProcessor;
 import nz.net.ultraq.thymeleaf.decorator.TitlePatternProcessor;
 import nz.net.ultraq.thymeleaf.include.IncludeProcessor;
+import nz.net.ultraq.thymeleaf.include.ReplaceProcessor;
 import nz.net.ultraq.thymeleaf.include.SubstituteByProcessor;
 
 import org.thymeleaf.dialect.AbstractDialect;
@@ -57,6 +58,7 @@ public class LayoutDialect extends AbstractDialect {
 		HashSet<IProcessor> processors = new HashSet<IProcessor>();
 		processors.add(new DecoratorProcessor());
 		processors.add(new IncludeProcessor());
+		processors.add(new ReplaceProcessor());
 		processors.add(new SubstituteByProcessor());
 		processors.add(new FragmentProcessor());
 		processors.add(new TitlePatternProcessor());
