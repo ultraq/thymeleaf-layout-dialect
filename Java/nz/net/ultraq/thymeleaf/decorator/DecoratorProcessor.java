@@ -17,6 +17,7 @@
 package nz.net.ultraq.thymeleaf.decorator;
 
 import nz.net.ultraq.thymeleaf.AbstractContentProcessor;
+import static nz.net.ultraq.thymeleaf.FragmentProcessor.PROCESSOR_NAME_FRAGMENT_FULL;
 import static nz.net.ultraq.thymeleaf.LayoutDialect.DIALECT_PREFIX_LAYOUT;
 import static nz.net.ultraq.thymeleaf.decorator.DecoratorUtilities.HTML_ELEMENT_HTML;
 
@@ -27,9 +28,8 @@ import org.thymeleaf.Template;
 import org.thymeleaf.TemplateProcessingParameters;
 import org.thymeleaf.dom.Document;
 import org.thymeleaf.dom.Element;
-import org.thymeleaf.dom.NestableNode;
+import org.thymeleaf.fragment.FragmentAndTarget;
 import org.thymeleaf.processor.ProcessorResult;
-import org.thymeleaf.standard.fragment.StandardFragment;
 import org.thymeleaf.standard.fragment.StandardFragmentProcessor;
 
 import java.util.Map;
@@ -60,21 +60,6 @@ public class DecoratorProcessor extends AbstractContentProcessor {
 	}
 
 	/**
-	 * Get the document node containing the given element.
-	 * 
-	 * @param element
-	 * @return Document node for the element.
-	 */
-	private Document findDocument(NestableNode element) {
-
-		NestableNode parent = element.getParent();
-		if (parent instanceof Document) {
-			return (Document)parent;
-		}
-		return findDocument(parent);
-	}
-
-	/**
 	 * Locates the decorator page specified by the layout attribute and applies
 	 * it to the current page being processed.
 	 * 
@@ -97,13 +82,14 @@ public class DecoratorProcessor extends AbstractContentProcessor {
 			logger.error("layout:decorator attribute must appear in the root element of your content page");
 			throw new IllegalArgumentException("layout:decorator attribute must appear in the root element of your content page");
 		}
-		Document document = findDocument(element);
+		Document document = arguments.getDocument();
 
 		// Locate the decorator page
-		StandardFragment fragment = StandardFragmentProcessor.computeStandardFragmentSpec(
-				arguments.getConfiguration(), arguments, element.getAttributeValue(attributeName), null);
+		FragmentAndTarget fragmentandtarget = StandardFragmentProcessor.computeStandardFragmentSpec(
+				arguments.getConfiguration(), arguments, element.getAttributeValue(attributeName),
+				null, PROCESSOR_NAME_FRAGMENT_FULL, false);
 		Template decoratortemplate = arguments.getTemplateRepository().getTemplate(new TemplateProcessingParameters(
-				arguments.getConfiguration(), fragment.getTemplateName(), arguments.getContext()));
+				arguments.getConfiguration(), fragmentandtarget.getTemplateName(), arguments.getContext()));
 		element.removeAttribute(attributeName);
 
 		Document decoratordocument = decoratortemplate.getDocument();

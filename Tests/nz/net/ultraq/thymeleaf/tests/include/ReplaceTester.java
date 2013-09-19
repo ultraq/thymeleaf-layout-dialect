@@ -36,4 +36,13 @@ public class ReplaceTester extends AbstractLayoutDialectTester {
 
 		testOK("include/ElementInclusion");
 	}
+
+	/**
+	 * Duplicate test for the deprecated 'substituteby' processor.
+	 */
+	@Test
+	public void elementInclusionSubstituteBy() {
+
+		testOK("include/ElementInclusionSubstituteBy");
+	}
 }
