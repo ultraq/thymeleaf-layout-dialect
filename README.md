@@ -4,7 +4,7 @@ Thymeleaf Layout Dialect
 
 A dialect for Thymeleaf that allows you to use layout/decorator templates to
 style your content, as well as pass entire fragment elements to included pages,
-all to help improve code reuse.  If you've ever used SiteMesh 2 or JSF with
+all to help improve code reuse.  If you've ever used SiteMesh or JSF with
 Facelets, then the concepts of this library will be very familiar to you.
 
  - Current version: 1.2
@@ -22,7 +22,7 @@ Installation
 ------------
 
 ### Standalone distribution
-Copy the JAR from [the latest download bundle](http://www.ultraq.net.nz/downloads/programming/Thymeleaf Layout Dialect 1.2.zip),
+Copy the JAR from [the latest release bundle](https://github.com/ultraq/thymeleaf-layout-dialect/releases),
 placing it in the `WEB-INF/lib` directory of your web application, or build the
 project from the source code here on GitHub.
 
