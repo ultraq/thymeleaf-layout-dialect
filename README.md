@@ -7,15 +7,18 @@ style your content, as well as pass entire fragment elements to included pages,
 all to help improve code reuse.  If you've ever used SiteMesh or JSF with
 Facelets, then the concepts of this library will be very familiar to you.
 
- - Current version: 1.2
+ - Current version: 1.1.4
  - Released: ?? ??? 2013
+
+This version is for Thymeleaf 2.0.  Check out the [master branch](https://github.com/ultraq/thymeleaf-layout-dialect)
+for a version of the Layout Dialect that supports Thymeleaf 2.1.
 
 
 Requirements
 ------------
 
  - Java 6
- - Thymeleaf 2.1 (2.1.0 and its dependencies included)
+ - Thymeleaf 2.0.12+ (2.0.18 and its dependencies included)
 
 
 Installation
@@ -31,7 +34,7 @@ Add a dependency to your project with the following co-ordinates:
 
  - GroupId: `nz.net.ultraq.thymeleaf`
  - ArtifactId: `thymeleaf-layout-dialect`
- - Version: `1.2`
+ - Version: `1.1.4`
 
 
 Usage
@@ -494,8 +497,9 @@ fine-grained control of the appearance of your title.
 Changelog
 ---------
 
-### 1.2
- - Works with Thymeleaf 2.1 ([#26](https://github.com/ultraq/thymeleaf-layout-dialect/issues/26))
+### 1.1.4
+ - Minor bugfixes, small refactoring, and a large cleanup as a result of moving
+   to be compatible with Thymeleaf 2.1.
 
 ### 1.1.3
  - Refactored handling of `<title>` elements for when they're lacking in either

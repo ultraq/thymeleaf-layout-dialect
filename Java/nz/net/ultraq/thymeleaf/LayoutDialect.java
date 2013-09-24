@@ -64,4 +64,15 @@ public class LayoutDialect extends AbstractDialect {
 		processors.add(new TitlePatternProcessor());
 		return processors;
 	}
+
+	/**
+	 * This dialect is not lenient.
+	 * 
+	 * @return <tt>false</tt>
+	 */
+	@Override
+	public boolean isLenient() {
+
+		return false;
+	}
 }
