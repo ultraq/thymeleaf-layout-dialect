@@ -553,8 +553,8 @@ Changelog
  - Fixed the resulting JAR which didn't recreate the proper Maven metadata in
    the manifest section and might have caused it to not be picked up by tools
    like m2eclipse.
- - Fix a `ClassCastException` for cases when `th:include` was used to include
-   entire pages ([#7](https://github.com/ultraq/thymeleaf-layout-dialect/issues/7))
+ - Fix a `ClassCastException` for cases when `layout:include` was used to
+   include entire pages ([#7](https://github.com/ultraq/thymeleaf-layout-dialect/issues/7))
  - Updated Thymeleaf dependency from version 2.0.11 to 2.0.13.
 
 ### 1.0.3
@@ -578,7 +578,7 @@ Changelog
    artifacts.
  - To appease the Mavenites amongst you, the project is now being served from
    Maven Central, co-ordinates added to [installation](#installation)
-   instructions (Resolved [#1](https://github.com/ultraq/thymeleaf-layout-dialect/issues/1))
+   instructions ([#1](https://github.com/ultraq/thymeleaf-layout-dialect/issues/1))
 
 ### 1.0
  - Initial release.
