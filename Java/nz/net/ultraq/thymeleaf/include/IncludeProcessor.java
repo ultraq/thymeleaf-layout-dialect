@@ -17,14 +17,14 @@
 package nz.net.ultraq.thymeleaf.include;
 
 import nz.net.ultraq.thymeleaf.AbstractContentProcessor;
-import static nz.net.ultraq.thymeleaf.FragmentProcessor.PROCESSOR_NAME_FRAGMENT_FULL;
+import static nz.net.ultraq.thymeleaf.FragmentProcessor.PROCESSOR_NAME_FRAGMENT;
 import static nz.net.ultraq.thymeleaf.LayoutDialect.DIALECT_PREFIX_LAYOUT;
 
 import org.thymeleaf.Arguments;
 import org.thymeleaf.dom.Element;
 import org.thymeleaf.dom.Node;
-import org.thymeleaf.fragment.FragmentAndTarget;
 import org.thymeleaf.processor.ProcessorResult;
+import org.thymeleaf.standard.fragment.StandardFragment;
 import org.thymeleaf.standard.fragment.StandardFragmentProcessor;
 
 import java.util.List;
@@ -63,10 +63,10 @@ public class IncludeProcessor extends AbstractContentProcessor {
 	protected ProcessorResult processAttribute(Arguments arguments, Element element, String attributeName) {
 
 		// Locate the page and fragment to include
-		FragmentAndTarget fragmentandtarget = StandardFragmentProcessor.computeStandardFragmentSpec(
+		StandardFragment fragment = StandardFragmentProcessor.computeStandardFragmentSpec(
 				arguments.getConfiguration(), arguments, element.getAttributeValue(attributeName),
-				null, PROCESSOR_NAME_FRAGMENT_FULL, true);
-		List<Node> includefragments = fragmentandtarget.extractFragment(arguments.getConfiguration(),
+				DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_FRAGMENT);
+		List<Node> includefragments = fragment.extractFragment(arguments.getConfiguration(),
 				arguments, arguments.getTemplateRepository());
 
 		element.removeAttribute(attributeName);

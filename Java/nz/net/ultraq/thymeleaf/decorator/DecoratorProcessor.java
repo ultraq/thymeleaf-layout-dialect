@@ -17,7 +17,7 @@
 package nz.net.ultraq.thymeleaf.decorator;
 
 import nz.net.ultraq.thymeleaf.AbstractContentProcessor;
-import static nz.net.ultraq.thymeleaf.FragmentProcessor.PROCESSOR_NAME_FRAGMENT_FULL;
+import static nz.net.ultraq.thymeleaf.FragmentProcessor.PROCESSOR_NAME_FRAGMENT;
 import static nz.net.ultraq.thymeleaf.LayoutDialect.DIALECT_PREFIX_LAYOUT;
 import static nz.net.ultraq.thymeleaf.decorator.DecoratorUtilities.HTML_ELEMENT_HTML;
 
@@ -28,8 +28,8 @@ import org.thymeleaf.Template;
 import org.thymeleaf.TemplateProcessingParameters;
 import org.thymeleaf.dom.Document;
 import org.thymeleaf.dom.Element;
-import org.thymeleaf.fragment.FragmentAndTarget;
 import org.thymeleaf.processor.ProcessorResult;
+import org.thymeleaf.standard.fragment.StandardFragment;
 import org.thymeleaf.standard.fragment.StandardFragmentProcessor;
 
 import java.util.Map;
@@ -85,11 +85,11 @@ public class DecoratorProcessor extends AbstractContentProcessor {
 		Document document = arguments.getDocument();
 
 		// Locate the decorator page
-		FragmentAndTarget fragmentandtarget = StandardFragmentProcessor.computeStandardFragmentSpec(
+		StandardFragment fragment = StandardFragmentProcessor.computeStandardFragmentSpec(
 				arguments.getConfiguration(), arguments, element.getAttributeValue(attributeName),
-				null, PROCESSOR_NAME_FRAGMENT_FULL, false);
+				DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_FRAGMENT);
 		Template decoratortemplate = arguments.getTemplateRepository().getTemplate(new TemplateProcessingParameters(
-				arguments.getConfiguration(), fragmentandtarget.getTemplateName(), arguments.getContext()));
+				arguments.getConfiguration(), fragment.getTemplateName(), arguments.getContext()));
 		element.removeAttribute(attributeName);
 
 		Document decoratordocument = decoratortemplate.getDocument();

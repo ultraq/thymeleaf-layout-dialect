@@ -42,11 +42,11 @@ project.year     = '2012'
 
 dependencies {
 	compile(
-		'org.thymeleaf:thymeleaf:2.1.0-beta1'
+		'org.thymeleaf:thymeleaf:2.1.0-SNAPSHOT'
 	)
 	testCompile(
 		'junit:junit:4.11',
-		'org.thymeleaf:thymeleaf-testing:2.1.0-beta1'
+		'org.thymeleaf:thymeleaf-testing:2.1.0-SNAPSHOT'
 	)
-	testCompile('net.sourceforge.nekohtml:nekohtml:1.9.18', optional)
+	testRuntime('net.sourceforge.nekohtml:nekohtml:1.9.18')
 }
