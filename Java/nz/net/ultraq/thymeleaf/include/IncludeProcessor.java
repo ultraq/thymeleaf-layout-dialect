@@ -74,11 +74,16 @@ public class IncludeProcessor extends AbstractContentProcessor {
 		// Gather all fragment parts within the include element
 		Map<String,Object> pagefragments = findFragments(element.getElementChildren());
 
-		// Replace the children of this element with those of the include page fragments
+		// Replace the children of this element with those of the include page fragments.
 		element.clearChildren();
 		if (includefragments != null) {
+			Element containerelement = new Element("container");
 			for (Node includefragment: includefragments) {
-				element.addChild(includefragment);
+				containerelement.addChild(includefragment);
+				containerelement.extractChild(includefragment);
+			}
+			for (Node extractedchild: containerelement.getChildren()) {
+				element.addChild(extractedchild);
 			}
 		}
 
