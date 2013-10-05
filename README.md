@@ -181,8 +181,7 @@ fragment is within a `<footer>` element, which isn't really necessary, but might
 be handy if you wish to do static templating of the content page which is one of
 the reasons one uses Thymeleaf in the first place :)
 
-> Fragment names must be unique within a page (ie: you cannot have 2 'content'
-> fragments within a decorator or content page), otherwise the matching of
+> Fragment names must be unique within a page, otherwise the matching of
 > fragments might not work as you expect.
 
 Anyway, once you tell Thymeleaf to process `Content1.html`, the resulting page
