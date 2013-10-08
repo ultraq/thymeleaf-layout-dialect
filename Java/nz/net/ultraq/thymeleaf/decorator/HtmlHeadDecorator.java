@@ -63,7 +63,7 @@ public class HtmlHeadDecorator extends XmlElementDecorator {
 		Element resultingtitle = null;
 
 		if (decoratortitle != null || contenttitle != null) {
-			resultingtitle = new Element("title");
+			resultingtitle = new Element(HTML_ELEMENT_TITLE);
 			HashMap<String,Object> resultingtitlemap = new HashMap<String,Object>();
 			if (decoratortitle != null) {
 				resultingtitle.addChild(decoratortitle.getFirstChild());
