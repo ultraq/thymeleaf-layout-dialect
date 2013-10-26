@@ -486,6 +486,11 @@ The resulting page would be:
 </html>
 ```
 
+> As of version 1.2, `layout:title-pattern` can work on both static and dynamic
+> title text set using `th:text` attributes.  The decoration process will look
+> for these attributes in the `<title>` tag and apply them to the respective
+> token.
+
 The pattern was specified in the decorator, so applies to all content pages that
 make use of the decorator.  If you specify another title pattern in the content
 page, then it will override the one found in the decorator, allowing for
@@ -497,10 +502,12 @@ Changelog
 
 ### 1.2
  - Works with Thymeleaf 2.1 ([#26](https://github.com/ultraq/thymeleaf-layout-dialect/issues/26))
+ - `layout:title-pattern` now works on title text created using the `th:text`
+   attribute ([#28](https://github.com/ultraq/thymeleaf-layout-dialect/issues/28))
 
 ### 1.1.4
- - Minor bugfixes, small refactoring, and a large cleanup as a result of moving
-   to be compatible with Thymeleaf 2.1.
+ - Minor bugfixes, small refactoring, and a large cleanup as a result of the
+   work done towards being compatible with Thymeleaf 2.1.
 
 ### 1.1.3
  - Refactored handling of `<title>` elements for when they're lacking in either
