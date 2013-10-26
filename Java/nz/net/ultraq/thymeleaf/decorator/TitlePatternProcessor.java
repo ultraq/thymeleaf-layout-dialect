@@ -26,6 +26,8 @@ import org.thymeleaf.dom.Element;
 import org.thymeleaf.dom.Text;
 import org.thymeleaf.processor.ProcessorResult;
 import org.thymeleaf.processor.attr.AbstractAttrProcessor;
+import org.thymeleaf.standard.StandardDialect;
+import org.thymeleaf.standard.processor.attr.StandardInlineAttrProcessor;
 
 /**
  * Allows for greater control of the resulting &lt;title&gt; element by
@@ -42,11 +44,13 @@ public class TitlePatternProcessor extends AbstractAttrProcessor {
 	private static final String PARAM_TITLE_DECORATOR = "$DECORATOR_TITLE";
 	private static final String PARAM_TITLE_CONTENT   = "$CONTENT_TITLE";
 
+	private static final String TH_INLINE = StandardDialect.PREFIX + ":" + StandardInlineAttrProcessor.ATTR_NAME;
+
 	public static final String PROCESSOR_NAME_TITLEPATTERN      = "title-pattern";
 	public static final String PROCESSOR_NAME_TITLEPATTERN_FULL = DIALECT_PREFIX_LAYOUT + ":" + PROCESSOR_NAME_TITLEPATTERN;
 
-	public static final String DECORATOR_TITLE_NAME = "title-pattern::decorator-title";
-	public static final String CONTENT_TITLE_NAME   = "title-pattern::content-title";
+	public static final String DECORATOR_TITLE = "title-pattern::decorator-title";
+	public static final String CONTENT_TITLE   = "title-pattern::content-title";
 
 	/**
 	 * Constructor, sets this processor to work on the 'title-pattern' attribute.
@@ -77,16 +81,23 @@ public class TitlePatternProcessor extends AbstractAttrProcessor {
 			throw new IllegalArgumentException("layout:title-pattern attribute should only appear in a <title> element");
 		}
 
-		// Replace the <title> text with the expanded title pattern
-		String titlepattern   = element.getAttributeValue(attributeName);
-		String decoratortitle = (String)arguments.getLocalVariable(DECORATOR_TITLE_NAME);
-		String contenttitle   = (String)arguments.getLocalVariable(CONTENT_TITLE_NAME);
+		// Replace the <title> text with an expanded title pattern expression
+		String titlepattern   = "[[|" + element.getAttributeValue(attributeName) + "|]]";
+		String decoratortitle = (String)arguments.getLocalVariable(DECORATOR_TITLE);
+		String contenttitle   = (String)arguments.getLocalVariable(CONTENT_TITLE);
 		element.clearChildren();
 		element.addChild(new Text(titlepattern
 				.replace(PARAM_TITLE_DECORATOR, decoratortitle != null ? decoratortitle : "")
 				.replace(PARAM_TITLE_CONTENT,   contenttitle   != null ? contenttitle   : "")));
-
 		element.removeAttribute(attributeName);
+
+		// Add an inline text processor in-case the title contains expressions
+		// that need to be processed
+		if (!element.hasAttribute(TH_INLINE)) {
+			element.setAttribute(TH_INLINE, "text");
+			element.setRecomputeProcessorsImmediately(true);
+		}
+
 		return ProcessorResult.OK;
 	}
 }

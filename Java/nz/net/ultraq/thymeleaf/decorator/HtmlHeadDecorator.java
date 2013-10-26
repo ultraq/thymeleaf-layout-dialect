@@ -17,14 +17,14 @@
 package nz.net.ultraq.thymeleaf.decorator;
 
 import static nz.net.ultraq.thymeleaf.decorator.DecoratorUtilities.*;
-import static nz.net.ultraq.thymeleaf.decorator.TitlePatternProcessor.CONTENT_TITLE_NAME;
-import static nz.net.ultraq.thymeleaf.decorator.TitlePatternProcessor.DECORATOR_TITLE_NAME;
+import static nz.net.ultraq.thymeleaf.decorator.TitlePatternProcessor.CONTENT_TITLE;
+import static nz.net.ultraq.thymeleaf.decorator.TitlePatternProcessor.DECORATOR_TITLE;
 
 import org.thymeleaf.dom.Element;
 import org.thymeleaf.dom.Node;
 import org.thymeleaf.dom.Text;
-
-import java.util.HashMap;
+import org.thymeleaf.standard.StandardDialect;
+import org.thymeleaf.standard.processor.attr.StandardTextAttrProcessor;
 
 /**
  * A decorator specific to processing an HTML HEAD element.
@@ -32,6 +32,8 @@ import java.util.HashMap;
  * @author Emanuel Rabina
  */
 public class HtmlHeadDecorator extends XmlElementDecorator {
+
+	private static final String TH_TEXT = StandardDialect.PREFIX + ":" + StandardTextAttrProcessor.ATTR_NAME;
 
 	/**
 	 * Decorate the HEAD part.  This step replaces the decorator's TITLE element
@@ -61,30 +63,14 @@ public class HtmlHeadDecorator extends XmlElementDecorator {
 		Element decoratortitle = findElement(decoratorhead, HTML_ELEMENT_TITLE);
 		Element contenttitle   = findElement(contenthead, HTML_ELEMENT_TITLE);
 		Element resultingtitle = null;
-
 		if (decoratortitle != null || contenttitle != null) {
 			resultingtitle = new Element(HTML_ELEMENT_TITLE);
-			HashMap<String,Object> resultingtitlemap = new HashMap<String,Object>();
 			if (decoratortitle != null) {
-				resultingtitle.addChild(decoratortitle.getFirstChild());
-				pullAttributes(resultingtitle, decoratortitle);
-				resultingtitlemap.put(DECORATOR_TITLE_NAME, ((Text)decoratortitle.getFirstChild()).getContent());
+				extractTitle(decoratorhead, decoratortitle, DECORATOR_TITLE, resultingtitle);
 			}
 			if (contenttitle != null) {
-				resultingtitle.clearChildren();
-				resultingtitle.addChild(contenttitle.getFirstChild());
-				pullAttributes(resultingtitle, contenttitle);
-				resultingtitlemap.put(CONTENT_TITLE_NAME, ((Text)contenttitle.getFirstChild()).getContent());
+				extractTitle(contenthead, contenttitle, CONTENT_TITLE, resultingtitle);
 			}
-			resultingtitle.setAllNodeLocalVariables(resultingtitlemap);
-		}
-
-		// Remove the existing titles
-		if (decoratortitle != null) {
-			decoratorhead.removeChild(decoratortitle);
-		}
-		if (contenttitle != null) {
-			contenthead.removeChild(contenttitle);
 		}
 
 		// Append the content's HEAD elements to the end of the decorator's HEAD
@@ -98,5 +84,31 @@ public class HtmlHeadDecorator extends XmlElementDecorator {
 		}
 
 		super.decorate(decoratorhead, contenthead);
+	}
+
+	/**
+	 * Extract the title from the given TITLE element, whether it be the text
+	 * in the tag body or a th:text in the attributes.
+	 * 
+	 * @param head         HEAD tag containing <tt>title</tt>.
+	 * @param title        TITLE tag from which to extract the title.
+	 * @param nodevariable Variable to store the title to as a node local
+	 *                     variable in <tt>result</tt>.   
+	 * @param result       The new TITLE element being constructed.
+	 */
+	private static void extractTitle(Element head, Element title, String nodevariable, Element result) {
+
+		Text titletext = (Text)title.getFirstChild();
+		result.clearChildren();
+		result.addChild(titletext);
+		if (title.hasAttribute(TH_TEXT)) {
+			result.setNodeLocalVariable(nodevariable, title.getAttributeValue(TH_TEXT));
+			title.removeAttribute(TH_TEXT);
+		}
+		else {
+			result.setNodeLocalVariable(nodevariable, titletext.getContent());
+		}
+		pullAttributes(result, title);
+		head.removeChild(title);
 	}
 }
