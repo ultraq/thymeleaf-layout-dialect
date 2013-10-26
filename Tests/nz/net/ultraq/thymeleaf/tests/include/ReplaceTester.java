@@ -21,8 +21,8 @@ import nz.net.ultraq.thymeleaf.tests.AbstractLayoutDialectTester;
 import org.junit.Test;
 
 /**
- * JUnit class containing tests related to the <tt>layout:substituteby</tt>
- * attribute processor.
+ * JUnit class containing tests related to the <tt>layout:replace</tt> and
+ * <tt>layout:substituteby</tt> attribute processors.
  * 
  * @author Emanuel Rabina
  */
