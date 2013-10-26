@@ -48,5 +48,7 @@ dependencies {
 		'junit:junit:4.11',
 		'org.thymeleaf:thymeleaf-testing:2.0.4'
 	)
-	testCompile('net.sourceforge.nekohtml:nekohtml:1.9.18', optional)
+	testRuntime(
+		'net.sourceforge.nekohtml:nekohtml:1.9.18'
+	)
 }
