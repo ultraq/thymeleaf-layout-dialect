@@ -37,8 +37,9 @@ public class FragmentProcessor extends AbstractAttrProcessor {
 
 	private static final Logger logger = LoggerFactory.getLogger(FragmentProcessor.class);
 
-	public static final String PROCESSOR_NAME_FRAGMENT = "fragment";
+	public static final String PROCESSOR_NAME_FRAGMENT      = "fragment";
 	public static final String PROCESSOR_NAME_FRAGMENT_FULL = DIALECT_PREFIX_LAYOUT + ":" + PROCESSOR_NAME_FRAGMENT;
+	public static final String PROCESSOR_NAME_FRAGMENT_DATA = "data-" + DIALECT_PREFIX_LAYOUT + "-" + PROCESSOR_NAME_FRAGMENT;
 
 	static final String FRAGMENT_NAME_PREFIX = "fragment-name::";
 

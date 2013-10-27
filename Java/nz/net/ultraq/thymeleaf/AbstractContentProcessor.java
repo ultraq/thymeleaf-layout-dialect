@@ -17,7 +17,9 @@
 package nz.net.ultraq.thymeleaf;
 
 import static nz.net.ultraq.thymeleaf.FragmentProcessor.FRAGMENT_NAME_PREFIX;
+import static nz.net.ultraq.thymeleaf.FragmentProcessor.PROCESSOR_NAME_FRAGMENT_DATA;
 import static nz.net.ultraq.thymeleaf.FragmentProcessor.PROCESSOR_NAME_FRAGMENT_FULL;
+import static nz.net.ultraq.thymeleaf.include.IncludeProcessor.PROCESSOR_NAME_INCLUDE_DATA;
 import static nz.net.ultraq.thymeleaf.include.IncludeProcessor.PROCESSOR_NAME_INCLUDE_FULL;
 
 import org.thymeleaf.dom.Element;
@@ -70,11 +72,17 @@ public abstract class AbstractContentProcessor extends AbstractAttrProcessor {
 	private void findFragments(HashMap<String,Object> fragments, List<Element> elements) {
 
 		for (Element element: elements) {
-			String fragmentname = element.getAttributeValue(PROCESSOR_NAME_FRAGMENT_FULL);
+			String fragmentname =
+					element.hasAttribute(PROCESSOR_NAME_FRAGMENT_FULL) ?
+							element.getAttributeValue(PROCESSOR_NAME_FRAGMENT_FULL) :
+					element.hasAttribute(PROCESSOR_NAME_FRAGMENT_DATA) ?
+							element.getAttributeValue(PROCESSOR_NAME_FRAGMENT_DATA) :
+					null;
 			if (fragmentname != null) {
 				fragments.put(FRAGMENT_NAME_PREFIX + fragmentname, element.cloneNode(null, true));
 			}
-			if (!element.hasAttribute(PROCESSOR_NAME_INCLUDE_FULL)) {
+			if (!element.hasAttribute(PROCESSOR_NAME_INCLUDE_FULL) &&
+				!element.hasAttribute(PROCESSOR_NAME_INCLUDE_DATA)) {
 				findFragments(fragments, element.getElementChildren());
 			}
 		}

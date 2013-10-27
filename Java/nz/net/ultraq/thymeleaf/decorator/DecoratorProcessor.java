@@ -49,8 +49,9 @@ public class DecoratorProcessor extends AbstractContentProcessor {
 
 	private static final String TEMPLATE_MODE_LEGACYHTML5 = "LEGACYHTML5";
 
-	public static final String PROCESSOR_NAME_DECORATOR = "decorator";
+	public static final String PROCESSOR_NAME_DECORATOR      = "decorator";
 	public static final String PROCESSOR_NAME_DECORATOR_FULL = DIALECT_PREFIX_LAYOUT + ":" + PROCESSOR_NAME_DECORATOR;
+	public static final String PROCESSOR_NAME_DECORATOR_DATA = "data-" + DIALECT_PREFIX_LAYOUT + "-" + PROCESSOR_NAME_DECORATOR;
 
 	/**
 	 * Constructor, sets this processor to work on the 'decorator' attribute.

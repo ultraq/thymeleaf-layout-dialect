@@ -28,7 +28,8 @@ import org.thymeleaf.standard.processor.attr.StandardWithAttrProcessor;
  */
 public final class DecoratorUtilities {
 
-	private static final String TH_WITH = StandardDialect.PREFIX + ":" + StandardWithAttrProcessor.ATTR_NAME;
+	private static final String TH_WITH      = StandardDialect.PREFIX + ":" + StandardWithAttrProcessor.ATTR_NAME;
+	private static final String TH_WITH_DATA = "data-" + StandardDialect.PREFIX + "-" + StandardWithAttrProcessor.ATTR_NAME;
 
 	public static final String LINE_SEPARATOR     = System.getProperty("line.separator");
 	public static final String HTML_ELEMENT_HTML  = "html";
@@ -83,9 +84,11 @@ public final class DecoratorUtilities {
 			String attributename = contentattribute.getOriginalName();
 
 			// Merge th:with attributes to retain local variable declarations
-			if (attributename.equals(TH_WITH) && targetelement.hasAttribute(TH_WITH)) {
-				targetelement.setAttribute(attributename, contentattribute.getValue() + "," +
-						targetelement.getAttributeValue(TH_WITH));
+			if (attributename.equals(TH_WITH) || attributename.equals(TH_WITH_DATA)) {
+				targetelement.setAttribute(TH_WITH, contentattribute.getValue() + "," + (
+						targetelement.hasAttribute(TH_WITH)      ? targetelement.getAttributeValue(TH_WITH) :
+						targetelement.hasAttribute(TH_WITH_DATA) ? targetelement.getAttributeValue(TH_WITH_DATA) :
+						null));
 			}
 			else {
 				targetelement.setAttribute(contentattribute.getOriginalName(), contentattribute.getValue());

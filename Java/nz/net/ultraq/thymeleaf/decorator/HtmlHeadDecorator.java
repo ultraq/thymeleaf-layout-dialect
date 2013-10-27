@@ -33,7 +33,8 @@ import org.thymeleaf.standard.processor.attr.StandardTextAttrProcessor;
  */
 public class HtmlHeadDecorator extends XmlElementDecorator {
 
-	private static final String TH_TEXT = StandardDialect.PREFIX + ":" + StandardTextAttrProcessor.ATTR_NAME;
+	private static final String TH_TEXT      = StandardDialect.PREFIX + ":" + StandardTextAttrProcessor.ATTR_NAME;
+	private static final String TH_TEXT_DATA = "data-" + StandardDialect.PREFIX + "-" + StandardTextAttrProcessor.ATTR_NAME;
 
 	/**
 	 * Decorate the HEAD part.  This step replaces the decorator's TITLE element
@@ -104,6 +105,10 @@ public class HtmlHeadDecorator extends XmlElementDecorator {
 		if (title.hasAttribute(TH_TEXT)) {
 			result.setNodeLocalVariable(nodevariable, title.getAttributeValue(TH_TEXT));
 			title.removeAttribute(TH_TEXT);
+		}
+		else if (title.hasAttribute(TH_TEXT_DATA)) {
+			result.setNodeLocalVariable(nodevariable, title.getAttributeValue(TH_TEXT_DATA));
+			title.removeAttribute(TH_TEXT_DATA);
 		}
 		else {
 			result.setNodeLocalVariable(nodevariable, titletext.getContent());

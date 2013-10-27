@@ -44,10 +44,12 @@ public class TitlePatternProcessor extends AbstractAttrProcessor {
 	private static final String PARAM_TITLE_DECORATOR = "$DECORATOR_TITLE";
 	private static final String PARAM_TITLE_CONTENT   = "$CONTENT_TITLE";
 
-	private static final String TH_INLINE = StandardDialect.PREFIX + ":" + StandardInlineAttrProcessor.ATTR_NAME;
+	private static final String TH_INLINE      = StandardDialect.PREFIX + ":" + StandardInlineAttrProcessor.ATTR_NAME;
+	private static final String TH_INLINE_DATA = "data-" + StandardDialect.PREFIX + "-" + StandardInlineAttrProcessor.ATTR_NAME;
 
 	public static final String PROCESSOR_NAME_TITLEPATTERN      = "title-pattern";
 	public static final String PROCESSOR_NAME_TITLEPATTERN_FULL = DIALECT_PREFIX_LAYOUT + ":" + PROCESSOR_NAME_TITLEPATTERN;
+	public static final String PROCESSOR_NAME_TITLEPATTERN_DATA = "data-" + DIALECT_PREFIX_LAYOUT + "-" + PROCESSOR_NAME_TITLEPATTERN;
 
 	public static final String DECORATOR_TITLE = "title-pattern::decorator-title";
 	public static final String CONTENT_TITLE   = "title-pattern::content-title";
@@ -93,7 +95,7 @@ public class TitlePatternProcessor extends AbstractAttrProcessor {
 
 		// Add an inline text processor in-case the title contains expressions
 		// that need to be processed
-		if (!element.hasAttribute(TH_INLINE)) {
+		if (!element.hasAttribute(TH_INLINE) && !element.hasAttribute(TH_INLINE_DATA)) {
 			element.setAttribute(TH_INLINE, "text");
 			element.setRecomputeProcessorsImmediately(true);
 		}

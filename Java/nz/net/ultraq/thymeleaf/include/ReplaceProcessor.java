@@ -40,8 +40,9 @@ import java.util.Map;
  */
 public class ReplaceProcessor extends AbstractContentProcessor {
 
-	public static final String PROCESSOR_NAME_REPLACE = "replace";
+	public static final String PROCESSOR_NAME_REPLACE      = "replace";
 	public static final String PROCESSOR_NAME_REPLACE_FULL = DIALECT_PREFIX_LAYOUT + ":" + PROCESSOR_NAME_REPLACE;
+	public static final String PROCESSOR_NAME_REPLACE_DATA = "data-" + DIALECT_PREFIX_LAYOUT + "-" + PROCESSOR_NAME_REPLACE;
 
 	/**
 	 * Constructor, set this processor to work on the 'replace' attribute.

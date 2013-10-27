@@ -18,6 +18,7 @@ package nz.net.ultraq.thymeleaf.include;
 
 import nz.net.ultraq.thymeleaf.AbstractContentProcessor;
 import static nz.net.ultraq.thymeleaf.FragmentProcessor.PROCESSOR_NAME_FRAGMENT;
+import static nz.net.ultraq.thymeleaf.LayoutDialect.DIALECT_NAMESPACE_LAYOUT;
 import static nz.net.ultraq.thymeleaf.LayoutDialect.DIALECT_PREFIX_LAYOUT;
 
 import org.thymeleaf.Arguments;
@@ -42,8 +43,9 @@ import java.util.Map;
 @Deprecated
 public class SubstituteByProcessor extends AbstractContentProcessor {
 
-	public static final String PROCESSOR_NAME_SUBSTITUTEBY = "substituteby";
+	public static final String PROCESSOR_NAME_SUBSTITUTEBY      = "substituteby";
 	public static final String PROCESSOR_NAME_SUBSTITUTEBY_FULL = DIALECT_PREFIX_LAYOUT + ":" + PROCESSOR_NAME_SUBSTITUTEBY;
+	public static final String PROCESSOR_NAME_SUBSTITUTEBY_DATA = "data-" + DIALECT_PREFIX_LAYOUT + "-" + PROCESSOR_NAME_SUBSTITUTEBY;
 
 	/**
 	 * Constructor, set this processor to work on the 'substituteby' attribute.
