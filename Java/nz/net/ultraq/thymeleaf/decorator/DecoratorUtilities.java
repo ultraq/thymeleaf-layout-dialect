@@ -85,14 +85,16 @@ public final class DecoratorUtilities {
 
 			// Merge th:with attributes to retain local variable declarations
 			if (attributename.equals(TH_WITH) || attributename.equals(TH_WITH_DATA)) {
-				targetelement.setAttribute(TH_WITH, contentattribute.getValue() + "," + (
+				String targetwithvalue =
 						targetelement.hasAttribute(TH_WITH)      ? targetelement.getAttributeValue(TH_WITH) :
 						targetelement.hasAttribute(TH_WITH_DATA) ? targetelement.getAttributeValue(TH_WITH_DATA) :
-						null));
+						null;
+				if (targetwithvalue != null) {
+					targetelement.setAttribute(TH_WITH, contentattribute.getValue() + "," + targetwithvalue);
+					continue;
+				}
 			}
-			else {
-				targetelement.setAttribute(contentattribute.getOriginalName(), contentattribute.getValue());
-			}
+			targetelement.setAttribute(attributename, contentattribute.getValue());
 		}
 	}
 
