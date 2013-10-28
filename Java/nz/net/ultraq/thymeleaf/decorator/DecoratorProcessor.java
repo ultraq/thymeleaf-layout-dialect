@@ -17,9 +17,10 @@
 package nz.net.ultraq.thymeleaf.decorator;
 
 import nz.net.ultraq.thymeleaf.AbstractContentProcessor;
+
+import static nz.net.ultraq.thymeleaf.DecoratorUtilities.*;
 import static nz.net.ultraq.thymeleaf.FragmentProcessor.PROCESSOR_NAME_FRAGMENT;
 import static nz.net.ultraq.thymeleaf.LayoutDialect.DIALECT_PREFIX_LAYOUT;
-import static nz.net.ultraq.thymeleaf.decorator.DecoratorUtilities.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,9 +50,7 @@ public class DecoratorProcessor extends AbstractContentProcessor {
 
 	private static final String TEMPLATE_MODE_LEGACYHTML5 = "LEGACYHTML5";
 
-	public static final String PROCESSOR_NAME_DECORATOR      = "decorator";
-	public static final String PROCESSOR_NAME_DECORATOR_FULL = DIALECT_PREFIX_LAYOUT + ":" + PROCESSOR_NAME_DECORATOR;
-	public static final String PROCESSOR_NAME_DECORATOR_DATA = "data-" + DIALECT_PREFIX_LAYOUT + "-" + PROCESSOR_NAME_DECORATOR;
+	public static final String PROCESSOR_NAME_DECORATOR = "decorator";
 
 	/**
 	 * Constructor, sets this processor to work on the 'decorator' attribute.

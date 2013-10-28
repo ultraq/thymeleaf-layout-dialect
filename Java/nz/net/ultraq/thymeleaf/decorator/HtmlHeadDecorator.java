@@ -16,7 +16,7 @@
 
 package nz.net.ultraq.thymeleaf.decorator;
 
-import static nz.net.ultraq.thymeleaf.decorator.DecoratorUtilities.*;
+import static nz.net.ultraq.thymeleaf.DecoratorUtilities.*;
 import static nz.net.ultraq.thymeleaf.decorator.TitlePatternProcessor.CONTENT_TITLE;
 import static nz.net.ultraq.thymeleaf.decorator.TitlePatternProcessor.DECORATOR_TITLE;
 
@@ -32,9 +32,6 @@ import org.thymeleaf.standard.processor.attr.StandardTextAttrProcessor;
  * @author Emanuel Rabina
  */
 public class HtmlHeadDecorator extends XmlElementDecorator {
-
-	private static final String TH_TEXT      = StandardDialect.PREFIX + ":" + StandardTextAttrProcessor.ATTR_NAME;
-	private static final String TH_TEXT_DATA = "data-" + StandardDialect.PREFIX + "-" + StandardTextAttrProcessor.ATTR_NAME;
 
 	/**
 	 * Decorate the HEAD part.  This step replaces the decorator's TITLE element
@@ -102,13 +99,10 @@ public class HtmlHeadDecorator extends XmlElementDecorator {
 		Text titletext = (Text)title.getFirstChild();
 		result.clearChildren();
 		result.addChild(titletext);
-		if (title.hasAttribute(TH_TEXT)) {
-			result.setNodeLocalVariable(nodevariable, title.getAttributeValue(TH_TEXT));
-			title.removeAttribute(TH_TEXT);
-		}
-		else if (title.hasAttribute(TH_TEXT_DATA)) {
-			result.setNodeLocalVariable(nodevariable, title.getAttributeValue(TH_TEXT_DATA));
-			title.removeAttribute(TH_TEXT_DATA);
+		if (hasAttribute(title, StandardDialect.PREFIX, StandardTextAttrProcessor.ATTR_NAME)) {
+			result.setNodeLocalVariable(nodevariable, getAttributeValue(title,
+					StandardDialect.PREFIX, StandardTextAttrProcessor.ATTR_NAME));
+			removeAttribute(title, StandardDialect.PREFIX, StandardTextAttrProcessor.ATTR_NAME);
 		}
 		else {
 			result.setNodeLocalVariable(nodevariable, titletext.getContent());

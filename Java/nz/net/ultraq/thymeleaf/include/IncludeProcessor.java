@@ -40,9 +40,7 @@ import java.util.Map;
  */
 public class IncludeProcessor extends AbstractContentProcessor {
 
-	public static final String PROCESSOR_NAME_INCLUDE      = "include";
-	public static final String PROCESSOR_NAME_INCLUDE_FULL = DIALECT_PREFIX_LAYOUT + ":" + PROCESSOR_NAME_INCLUDE;
-	public static final String PROCESSOR_NAME_INCLUDE_DATA = "data-" + DIALECT_PREFIX_LAYOUT + "-" + PROCESSOR_NAME_INCLUDE;
+	public static final String PROCESSOR_NAME_INCLUDE = "include";
 
 	/**
 	 * Constructor, sets this processor to work on the 'include' attribute.

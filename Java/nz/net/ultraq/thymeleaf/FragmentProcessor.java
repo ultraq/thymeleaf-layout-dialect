@@ -16,8 +16,7 @@
 
 package nz.net.ultraq.thymeleaf;
 
-import static nz.net.ultraq.thymeleaf.LayoutDialect.DIALECT_PREFIX_LAYOUT;
-import static nz.net.ultraq.thymeleaf.decorator.DecoratorUtilities.*;
+import static nz.net.ultraq.thymeleaf.DecoratorUtilities.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,9 +36,7 @@ public class FragmentProcessor extends AbstractAttrProcessor {
 
 	private static final Logger logger = LoggerFactory.getLogger(FragmentProcessor.class);
 
-	public static final String PROCESSOR_NAME_FRAGMENT      = "fragment";
-	public static final String PROCESSOR_NAME_FRAGMENT_FULL = DIALECT_PREFIX_LAYOUT + ":" + PROCESSOR_NAME_FRAGMENT;
-	public static final String PROCESSOR_NAME_FRAGMENT_DATA = "data-" + DIALECT_PREFIX_LAYOUT + "-" + PROCESSOR_NAME_FRAGMENT;
+	public static final String PROCESSOR_NAME_FRAGMENT = "fragment";
 
 	static final String FRAGMENT_NAME_PREFIX = "fragment-name::";
 

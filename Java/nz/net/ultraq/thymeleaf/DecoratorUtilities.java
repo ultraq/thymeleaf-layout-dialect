@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package nz.net.ultraq.thymeleaf.decorator;
+package nz.net.ultraq.thymeleaf;
 
 import org.thymeleaf.dom.Attribute;
 import org.thymeleaf.dom.Element;
 import org.thymeleaf.standard.StandardDialect;
+import org.thymeleaf.standard.processor.attr.StandardTextAttrProcessor;
 import org.thymeleaf.standard.processor.attr.StandardWithAttrProcessor;
 
 /**
@@ -27,9 +28,6 @@ import org.thymeleaf.standard.processor.attr.StandardWithAttrProcessor;
  * @author Emanuel Rabina
  */
 public final class DecoratorUtilities {
-
-	private static final String TH_WITH      = StandardDialect.PREFIX + ":" + StandardWithAttrProcessor.ATTR_NAME;
-	private static final String TH_WITH_DATA = "data-" + StandardDialect.PREFIX + "-" + StandardWithAttrProcessor.ATTR_NAME;
 
 	public static final String LINE_SEPARATOR     = System.getProperty("line.separator");
 	public static final String HTML_ELEMENT_HTML  = "html";
@@ -45,25 +43,38 @@ public final class DecoratorUtilities {
 	}
 
 	/**
-	 * Recursive search for an element within the given node in the DOM tree.
+	 * Returns the value of the attribute.  Checks both the prefixed and data-
+	 * versions of a Thymeleaf attribute processor.
 	 * 
-	 * @param element Node to initiate the search from.
-	 * @param name	  Name of the element to look for.
-	 * @return Element with the given name, or <tt>null</tt> if the element
-	 * 		   could not be found.
+	 * @param element
+	 * @param prefix
+	 * @param attributename
+	 * @return The value of the attribute, in either form, or <tt>null</tt> if
+	 *         the value doesn't exist in either form.
 	 */
-	public static Element findElement(Element element, String name) {
+	public static String getAttributeValue(Element element, String prefix, String attributename) {
 
-		if (element.getOriginalName().equals(name)) {
-			return element;
+		String value = element.getAttributeValue(prefix + ":" + attributename);
+		if (value == null) {
+			value = element.getAttributeValue("data-" + prefix + "-" + attributename);
 		}
-		for (Element child: element.getElementChildren()) {
-			Element result = findElement(child, name);
-			if (result != null) {
-				return result;
-			}
-		}
-		return null;
+		return value;
+	}
+
+	/**
+	 * Returns whether or not the attribute on the element exists.  Checks both
+	 * the prefixed and data- versions of a Thymeleaf attribute processor.
+	 * 
+	 * @param element
+	 * @param prefix
+	 * @param attributename
+	 * @return <tt>true</tt> if the attribute exists on the element, in either
+	 *         form.
+	 */
+	public static boolean hasAttribute(Element element, String prefix, String attributename) {
+
+		return element.hasAttribute(prefix + ":" + attributename) ||
+		       element.hasAttribute("data-" + prefix + "-" + attributename);
 	}
 
 	/**
@@ -84,17 +95,16 @@ public final class DecoratorUtilities {
 			String attributename = contentattribute.getOriginalName();
 
 			// Merge th:with attributes to retain local variable declarations
-			if (attributename.equals(TH_WITH) || attributename.equals(TH_WITH_DATA)) {
-				String targetwithvalue =
-						targetelement.hasAttribute(TH_WITH)      ? targetelement.getAttributeValue(TH_WITH) :
-						targetelement.hasAttribute(TH_WITH_DATA) ? targetelement.getAttributeValue(TH_WITH_DATA) :
-						null;
-				if (targetwithvalue != null) {
-					targetelement.setAttribute(TH_WITH, contentattribute.getValue() + "," + targetwithvalue);
-					continue;
-				}
+			if (Attribute.getPrefixFromAttributeName(attributename).equals(StandardDialect.PREFIX) &&
+				Attribute.getUnprefixedAttributeName(attributename).equals(StandardWithAttrProcessor.ATTR_NAME)) {
+				String targetwithvalue = getAttributeValue(targetelement,
+						StandardDialect.PREFIX, StandardTextAttrProcessor.ATTR_NAME);
+				targetelement.setAttribute(StandardDialect.PREFIX + ":" + StandardWithAttrProcessor.ATTR_NAME,
+						contentattribute.getValue() + "," + targetwithvalue);
 			}
-			targetelement.setAttribute(attributename, contentattribute.getValue());
+			else {
+				targetelement.setAttribute(attributename, contentattribute.getValue());
+			}
 		}
 	}
 
@@ -110,5 +120,19 @@ public final class DecoratorUtilities {
 		targettelement.clearChildren();
 		targettelement.addChild(sourceelement.cloneNode(null, false));
 		targettelement.getParent().extractChild(targettelement);
+	}
+
+	/**
+	 * Removes an attribute from an element.  Removes both the prefixed and
+	 * data- variations of the attribute.
+	 * 
+	 * @param element
+	 * @param prefix
+	 * @param attributename
+	 */
+	public static void removeAttribute(Element element, String prefix, String attributename) {
+
+		element.removeAttribute(prefix + ":" + attributename);
+		element.removeAttribute("data-" + prefix + "-" + attributename);
 	}
 }
