@@ -43,20 +43,38 @@ public final class DecoratorUtilities {
 	}
 
 	/**
+	 * Returns whether the attribute contains the given prefix and name parts.
+	 * Checks both the prefixed and data- versions of a Thymeleaf attribute
+	 * processor.
+	 * 
+	 * @param attribute
+	 * @param prefix
+	 * @param name
+	 * @return <tt>true</tt> if the attribute name consists of the prefix and
+	 *         name parts.
+	 */
+	public static boolean equalsAttributeName(Attribute attribute, String prefix, String name) {
+
+		String attributename = attribute.getOriginalName();
+		return attributename.equals(prefix + ":" + name) ||
+		       attributename.equals("data-" + prefix + "-" + name);
+	}
+
+	/**
 	 * Returns the value of the attribute.  Checks both the prefixed and data-
 	 * versions of a Thymeleaf attribute processor.
 	 * 
 	 * @param element
 	 * @param prefix
-	 * @param attributename
+	 * @param name
 	 * @return The value of the attribute, in either form, or <tt>null</tt> if
 	 *         the value doesn't exist in either form.
 	 */
-	public static String getAttributeValue(Element element, String prefix, String attributename) {
+	public static String getAttributeValue(Element element, String prefix, String name) {
 
-		String value = element.getAttributeValue(prefix + ":" + attributename);
+		String value = element.getAttributeValue(prefix + ":" + name);
 		if (value == null) {
-			value = element.getAttributeValue("data-" + prefix + "-" + attributename);
+			value = element.getAttributeValue("data-" + prefix + "-" + name);
 		}
 		return value;
 	}
@@ -67,14 +85,14 @@ public final class DecoratorUtilities {
 	 * 
 	 * @param element
 	 * @param prefix
-	 * @param attributename
+	 * @param name
 	 * @return <tt>true</tt> if the attribute exists on the element, in either
 	 *         form.
 	 */
-	public static boolean hasAttribute(Element element, String prefix, String attributename) {
+	public static boolean hasAttribute(Element element, String prefix, String name) {
 
-		return element.hasAttribute(prefix + ":" + attributename) ||
-		       element.hasAttribute("data-" + prefix + "-" + attributename);
+		return element.hasAttribute(prefix + ":" + name) ||
+		       element.hasAttribute("data-" + prefix + "-" + name);
 	}
 
 	/**
@@ -91,20 +109,19 @@ public final class DecoratorUtilities {
 			return;
 		}
 
-		for (Attribute contentattribute: sourceelement.getAttributeMap().values()) {
-			String attributename = contentattribute.getOriginalName();
+		for (Attribute sourceattribute: sourceelement.getAttributeMap().values()) {
 
 			// Merge th:with attributes to retain local variable declarations
-			if (Attribute.getPrefixFromAttributeName(attributename).equals(StandardDialect.PREFIX) &&
-				Attribute.getUnprefixedAttributeName(attributename).equals(StandardWithAttrProcessor.ATTR_NAME)) {
+			if (equalsAttributeName(sourceattribute, StandardDialect.PREFIX, StandardWithAttrProcessor.ATTR_NAME)) {
 				String targetwithvalue = getAttributeValue(targetelement,
 						StandardDialect.PREFIX, StandardTextAttrProcessor.ATTR_NAME);
-				targetelement.setAttribute(StandardDialect.PREFIX + ":" + StandardWithAttrProcessor.ATTR_NAME,
-						contentattribute.getValue() + "," + targetwithvalue);
+				if (targetwithvalue != null) {
+					targetelement.setAttribute(StandardDialect.PREFIX + ":" + StandardWithAttrProcessor.ATTR_NAME,
+							sourceattribute.getValue() + "," + targetwithvalue);
+					continue;
+				}
 			}
-			else {
-				targetelement.setAttribute(attributename, contentattribute.getValue());
-			}
+			targetelement.setAttribute(sourceattribute.getOriginalName(), sourceattribute.getValue());
 		}
 	}
 
@@ -128,11 +145,11 @@ public final class DecoratorUtilities {
 	 * 
 	 * @param element
 	 * @param prefix
-	 * @param attributename
+	 * @param name
 	 */
-	public static void removeAttribute(Element element, String prefix, String attributename) {
+	public static void removeAttribute(Element element, String prefix, String name) {
 
-		element.removeAttribute(prefix + ":" + attributename);
-		element.removeAttribute("data-" + prefix + "-" + attributename);
+		element.removeAttribute(prefix + ":" + name);
+		element.removeAttribute("data-" + prefix + "-" + name);
 	}
 }

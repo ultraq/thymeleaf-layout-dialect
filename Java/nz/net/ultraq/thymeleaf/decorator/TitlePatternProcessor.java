@@ -89,8 +89,8 @@ public class TitlePatternProcessor extends AbstractAttrProcessor {
 
 		// Add an inline text processor in-case the title contains expressions
 		// that need to be processed
-		if (!hasAttribute(element, StandardInlineAttrProcessor.ATTR_NAME, StandardDialect.PREFIX)) {
-			element.setAttribute(StandardInlineAttrProcessor.ATTR_NAME + ":" + StandardDialect.PREFIX, "text");
+		if (!hasAttribute(element, StandardDialect.PREFIX, StandardInlineAttrProcessor.ATTR_NAME)) {
+			element.setAttribute(StandardDialect.PREFIX + ":" + StandardInlineAttrProcessor.ATTR_NAME, "text");
 			element.setRecomputeProcessorsImmediately(true);
 		}
 
