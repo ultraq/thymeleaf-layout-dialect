@@ -16,4 +16,4 @@ install:
 
 # Run test
 script:
-  - gradle -i -PsonatypeUsername='' -PsonatypePassword='' --stacktrace test
+  - gradle -i --stacktrace test
