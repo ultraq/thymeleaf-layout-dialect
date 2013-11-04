@@ -35,8 +35,8 @@ import java.util.Set;
  */
 public class LayoutDialect extends AbstractDialect {
 
-	public static final String LAYOUT_NAMESPACE = "http://www.ultraq.net.nz/web/thymeleaf/layout";
-	public static final String LAYOUT_PREFIX    = "layout";
+	public static final String DIALECT_NAMESPACE_LAYOUT = "http://www.ultraq.net.nz/thymeleaf/layout";
+	public static final String DIALECT_PREFIX_LAYOUT    = "layout";
 
 	/**
 	 * Return the layout prefix.
@@ -46,7 +46,7 @@ public class LayoutDialect extends AbstractDialect {
 	@Override
 	public String getPrefix() {
 
-		return LAYOUT_PREFIX;
+		return DIALECT_PREFIX_LAYOUT;
 	}
 
 	/**

@@ -17,9 +17,9 @@
 package nz.net.ultraq.thymeleaf.decorator;
 
 import nz.net.ultraq.thymeleaf.AbstractContentProcessor;
-
-import static nz.net.ultraq.thymeleaf.LayoutDialect.LAYOUT_PREFIX;
-import static nz.net.ultraq.thymeleaf.decorator.DecoratorUtilities.HTML_ELEMENT_HTML;
+import static nz.net.ultraq.thymeleaf.FragmentProcessor.PROCESSOR_NAME_FRAGMENT_FULL;
+import static nz.net.ultraq.thymeleaf.LayoutDialect.DIALECT_PREFIX_LAYOUT;
+import static nz.net.ultraq.thymeleaf.decorator.DecoratorUtilities.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +28,6 @@ import org.thymeleaf.Template;
 import org.thymeleaf.TemplateProcessingParameters;
 import org.thymeleaf.dom.Document;
 import org.thymeleaf.dom.Element;
-import org.thymeleaf.dom.NestableNode;
 import org.thymeleaf.fragment.FragmentAndTarget;
 import org.thymeleaf.processor.ProcessorResult;
 import org.thymeleaf.standard.fragment.StandardFragmentProcessor;
@@ -39,7 +38,8 @@ import java.util.Map;
  * Specifies the name of the decorator template to apply to a content template.
  * <p>
  * The mechanism for resolving decorator templates is the same as that used by
- * Thymeleaf to resolve <tt>th:fragment</tt> and <tt>th:substituteby</tt> pages.
+ * Thymeleaf to resolve pages in the <tt>th:fragment</tt> and
+ * <tt>th:include</tt> processors.
  * 
  * @author Emanuel Rabina
  */
@@ -50,7 +50,7 @@ public class DecoratorProcessor extends AbstractContentProcessor {
 	private static final String TEMPLATE_MODE_LEGACYHTML5 = "LEGACYHTML5";
 
 	public static final String PROCESSOR_NAME_DECORATOR = "decorator";
-	public static final String PROCESSOR_NAME_DECORATOR_FULL = LAYOUT_PREFIX + ":" + PROCESSOR_NAME_DECORATOR;
+	public static final String PROCESSOR_NAME_DECORATOR_FULL = DIALECT_PREFIX_LAYOUT + ":" + PROCESSOR_NAME_DECORATOR;
 
 	/**
 	 * Constructor, sets this processor to work on the 'decorator' attribute.
@@ -58,21 +58,6 @@ public class DecoratorProcessor extends AbstractContentProcessor {
 	public DecoratorProcessor() {
 
 		super(PROCESSOR_NAME_DECORATOR);
-	}
-
-	/**
-	 * Get the document node containing the given element.
-	 * 
-	 * @param element
-	 * @return Document node for the element.
-	 */
-	private Document findDocument(NestableNode element) {
-
-		NestableNode parent = element.getParent();
-		if (parent instanceof Document) {
-			return (Document)parent;
-		}
-		return findDocument(parent);
 	}
 
 	/**
@@ -98,12 +83,12 @@ public class DecoratorProcessor extends AbstractContentProcessor {
 			logger.error("layout:decorator attribute must appear in the root element of your content page");
 			throw new IllegalArgumentException("layout:decorator attribute must appear in the root element of your content page");
 		}
-		Document document = findDocument(element);
+		Document document = arguments.getDocument();
 
 		// Locate the decorator page
 		FragmentAndTarget fragmentandtarget = StandardFragmentProcessor.computeStandardFragmentSpec(
 				arguments.getConfiguration(), arguments, element.getAttributeValue(attributeName),
-				null, null, false);
+				null, PROCESSOR_NAME_FRAGMENT_FULL, false);
 		Template decoratortemplate = arguments.getTemplateRepository().getTemplate(new TemplateProcessingParameters(
 				arguments.getConfiguration(), fragmentandtarget.getTemplateName(), arguments.getContext()));
 		element.removeAttribute(attributeName);

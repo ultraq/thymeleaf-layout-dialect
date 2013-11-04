@@ -17,7 +17,11 @@
 -->
 
 <dialect xmlns="http://www.thymeleaf.org/extras/dialect"
-	prefix="layout" namespace-uri="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.thymeleaf.org/extras/dialect
+	                    http://www.thymeleaf.org/xsd/thymeleaf-extras-dialect-2.1.xsd"
+	prefix="layout"
+	namespace-uri="http://www.ultraq.net.nz/thymeleaf/layout"
 	class="nz.net.ultraq.thymeleaf.LayoutDialect">
 
 	<attribute-processor name="fragment" class="nz.net.ultraq.thymeleaf.FragmentProcessor">

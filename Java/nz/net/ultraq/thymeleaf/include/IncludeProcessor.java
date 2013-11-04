@@ -18,7 +18,7 @@ package nz.net.ultraq.thymeleaf.include;
 
 import nz.net.ultraq.thymeleaf.AbstractContentProcessor;
 import static nz.net.ultraq.thymeleaf.FragmentProcessor.PROCESSOR_NAME_FRAGMENT_FULL;
-import static nz.net.ultraq.thymeleaf.LayoutDialect.LAYOUT_PREFIX;
+import static nz.net.ultraq.thymeleaf.LayoutDialect.DIALECT_PREFIX_LAYOUT;
 
 import org.thymeleaf.Arguments;
 import org.thymeleaf.dom.Element;
@@ -41,7 +41,7 @@ import java.util.Map;
 public class IncludeProcessor extends AbstractContentProcessor {
 
 	public static final String PROCESSOR_NAME_INCLUDE = "include";
-	public static final String PROCESSOR_NAME_INCLUDE_FULL = LAYOUT_PREFIX + ":" + PROCESSOR_NAME_INCLUDE;
+	public static final String PROCESSOR_NAME_INCLUDE_FULL = DIALECT_PREFIX_LAYOUT + ":" + PROCESSOR_NAME_INCLUDE;
 
 	/**
 	 * Constructor, sets this processor to work on the 'include' attribute.
@@ -67,7 +67,7 @@ public class IncludeProcessor extends AbstractContentProcessor {
 				arguments.getConfiguration(), arguments, element.getAttributeValue(attributeName),
 				null, PROCESSOR_NAME_FRAGMENT_FULL, true);
 		List<Node> includefragments = fragmentandtarget.extractFragment(arguments.getConfiguration(),
-				arguments.getContext(), arguments.getTemplateRepository());
+				arguments, arguments.getTemplateRepository());
 
 		element.removeAttribute(attributeName);
 

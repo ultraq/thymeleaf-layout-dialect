@@ -21,12 +21,12 @@ import nz.net.ultraq.thymeleaf.tests.AbstractLayoutDialectTester;
 import org.junit.Test;
 
 /**
- * JUnit class containing tests related to the <tt>layout:substituteby</tt>
- * attribute processor.
+ * JUnit class containing tests related to the <tt>layout:replace</tt> and
+ * <tt>layout:substituteby</tt> attribute processors.
  * 
  * @author Emanuel Rabina
  */
-public class SubstituteByTester extends AbstractLayoutDialectTester {
+public class ReplaceTester extends AbstractLayoutDialectTester {
 
 	/**
 	 * Test that fragment elements get copied over to the included page.
@@ -35,5 +35,14 @@ public class SubstituteByTester extends AbstractLayoutDialectTester {
 	public void elementInclusion() {
 
 		testOK("include/ElementInclusion");
+	}
+
+	/**
+	 * Duplicate test for the deprecated 'substituteby' processor.
+	 */
+	@Test
+	public void elementInclusionSubstituteBy() {
+
+		testOK("include/ElementInclusionSubstituteBy");
 	}
 }

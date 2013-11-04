@@ -16,10 +16,9 @@
 
 package nz.net.ultraq.thymeleaf.include;
 
-import static nz.net.ultraq.thymeleaf.FragmentProcessor.PROCESSOR_NAME_FRAGMENT_FULL;
-import static nz.net.ultraq.thymeleaf.LayoutDialect.LAYOUT_PREFIX;
-
 import nz.net.ultraq.thymeleaf.AbstractContentProcessor;
+import static nz.net.ultraq.thymeleaf.FragmentProcessor.PROCESSOR_NAME_FRAGMENT_FULL;
+import static nz.net.ultraq.thymeleaf.LayoutDialect.DIALECT_PREFIX_LAYOUT;
 
 import org.thymeleaf.Arguments;
 import org.thymeleaf.dom.Element;
@@ -42,7 +41,7 @@ import java.util.Map;
 public class ReplaceProcessor extends AbstractContentProcessor {
 
 	public static final String PROCESSOR_NAME_REPLACE = "replace";
-	public static final String PROCESSOR_NAME_REPLACE_FULL = LAYOUT_PREFIX + ":" + PROCESSOR_NAME_REPLACE;
+	public static final String PROCESSOR_NAME_REPLACE_FULL = DIALECT_PREFIX_LAYOUT + ":" + PROCESSOR_NAME_REPLACE;
 
 	/**
 	 * Constructor, set this processor to work on the 'replace' attribute.
@@ -69,7 +68,7 @@ public class ReplaceProcessor extends AbstractContentProcessor {
 				arguments.getConfiguration(), arguments, element.getAttributeValue(attributeName),
 				null, PROCESSOR_NAME_FRAGMENT_FULL, false);
 		List<Node> includefragments = fragmentandtarget.extractFragment(arguments.getConfiguration(),
-				arguments.getContext(), arguments.getTemplateRepository());
+				arguments, arguments.getTemplateRepository());
 
 		element.removeAttribute(attributeName);
 
