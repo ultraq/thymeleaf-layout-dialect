@@ -27,7 +27,7 @@ import org.thymeleaf.standard.processor.attr.StandardWithAttrProcessor;
  * 
  * @author Emanuel Rabina
  */
-public final class DecoratorUtilities {
+public final class LayoutUtilities {
 
 	public static final String LINE_SEPARATOR     = System.getProperty("line.separator");
 	public static final String HTML_ELEMENT_HTML  = "html";
@@ -39,7 +39,7 @@ public final class DecoratorUtilities {
 	 * Default hidden constructor as this class is only ever meant to be used
 	 * statically.
 	 */
-	private DecoratorUtilities() {
+	private LayoutUtilities() {
 	}
 
 	/**

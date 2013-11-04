@@ -16,10 +16,10 @@
 
 package nz.net.ultraq.thymeleaf;
 
-import static nz.net.ultraq.thymeleaf.DecoratorUtilities.*;
 import static nz.net.ultraq.thymeleaf.FragmentProcessor.FRAGMENT_NAME_PREFIX;
 import static nz.net.ultraq.thymeleaf.FragmentProcessor.PROCESSOR_NAME_FRAGMENT;
 import static nz.net.ultraq.thymeleaf.LayoutDialect.DIALECT_PREFIX_LAYOUT;
+import static nz.net.ultraq.thymeleaf.LayoutUtilities.*;
 import static nz.net.ultraq.thymeleaf.include.IncludeProcessor.PROCESSOR_NAME_INCLUDE;
 
 import org.thymeleaf.dom.Element;
