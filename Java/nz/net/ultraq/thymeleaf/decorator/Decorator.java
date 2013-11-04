@@ -19,11 +19,11 @@ package nz.net.ultraq.thymeleaf.decorator;
 import org.thymeleaf.dom.Element;
 
 /**
- * Interface for all decorators.
+ * The contract for all decorators.
  * 
  * @author Emanuel Rabina
  */
-public interface Decorator {
+public abstract class Decorator {
 
 	/**
 	 * Apply the contents of the decorator element to the content element.
@@ -32,5 +32,27 @@ public interface Decorator {
 	 * 					content template which is currently being processed.
 	 * @param content	Element from the content template.
 	 */
-	public void decorate(Element decorator, Element content);
+	public abstract void decorate(Element decorator, Element content);
+
+	/**
+	 * Recursive search for an element within the given node in the DOM tree.
+	 * 
+	 * @param node        Node to initiate the search from.
+	 * @param elementname Name of the element to look for.
+	 * @return Element with the given name, or <tt>null</tt> if the element
+	 * 		   could not be found.
+	 */
+	protected static Element findElement(Element node, String elementname) {
+
+		if (node.getOriginalName().equals(elementname)) {
+			return node;
+		}
+		for (Element child: node.getElementChildren()) {
+			Element result = findElement(child, elementname);
+			if (result != null) {
+				return result;
+			}
+		}
+		return null;
+	}
 }

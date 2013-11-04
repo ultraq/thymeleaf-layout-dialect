@@ -16,7 +16,7 @@
 
 package nz.net.ultraq.thymeleaf.decorator;
 
-import static nz.net.ultraq.thymeleaf.decorator.DecoratorUtilities.pullContent;
+import static nz.net.ultraq.thymeleaf.LayoutUtilities.*;
 
 import org.thymeleaf.dom.Document;
 import org.thymeleaf.dom.Element;
@@ -27,7 +27,7 @@ import org.thymeleaf.dom.Node;
  * 
  * @author Emanuel Rabina
  */
-public class XmlDocumentDecorator implements Decorator {
+public class XmlDocumentDecorator extends Decorator {
 
 	/**
 	 * {@inheritDoc}

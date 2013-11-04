@@ -17,8 +17,10 @@
 package nz.net.ultraq.thymeleaf;
 
 import static nz.net.ultraq.thymeleaf.FragmentProcessor.FRAGMENT_NAME_PREFIX;
-import static nz.net.ultraq.thymeleaf.FragmentProcessor.PROCESSOR_NAME_FRAGMENT_FULL;
-import static nz.net.ultraq.thymeleaf.include.IncludeProcessor.PROCESSOR_NAME_INCLUDE_FULL;
+import static nz.net.ultraq.thymeleaf.FragmentProcessor.PROCESSOR_NAME_FRAGMENT;
+import static nz.net.ultraq.thymeleaf.LayoutDialect.DIALECT_PREFIX_LAYOUT;
+import static nz.net.ultraq.thymeleaf.LayoutUtilities.*;
+import static nz.net.ultraq.thymeleaf.include.IncludeProcessor.PROCESSOR_NAME_INCLUDE;
 
 import org.thymeleaf.dom.Element;
 import org.thymeleaf.processor.attr.AbstractAttrProcessor;
@@ -53,7 +55,7 @@ public abstract class AbstractContentProcessor extends AbstractAttrProcessor {
 	 * @param elements
 	 * @return Map of prefixed fragment names and their fragment elements.
 	 */
-	protected Map<String,Object> findFragments(List<Element> elements) {
+	protected static Map<String,Object> findFragments(List<Element> elements) {
 
 		HashMap<String,Object> fragments = new HashMap<String,Object>();
 		findFragments(fragments, elements);
@@ -67,14 +69,14 @@ public abstract class AbstractContentProcessor extends AbstractAttrProcessor {
 	 * @param fragments
 	 * @param elements
 	 */
-	private void findFragments(HashMap<String,Object> fragments, List<Element> elements) {
+	private static void findFragments(HashMap<String,Object> fragments, List<Element> elements) {
 
 		for (Element element: elements) {
-			String fragmentname = element.getAttributeValue(PROCESSOR_NAME_FRAGMENT_FULL);
+			String fragmentname = getAttributeValue(element, DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_FRAGMENT);
 			if (fragmentname != null) {
 				fragments.put(FRAGMENT_NAME_PREFIX + fragmentname, element.cloneNode(null, true));
 			}
-			if (!element.hasAttribute(PROCESSOR_NAME_INCLUDE_FULL)) {
+			if (!hasAttribute(element, DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_INCLUDE)) {
 				findFragments(fragments, element.getElementChildren());
 			}
 		}
@@ -84,7 +86,7 @@ public abstract class AbstractContentProcessor extends AbstractAttrProcessor {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final int getPrecedence() {
+	public int getPrecedence() {
 
 		return 0;
 	}

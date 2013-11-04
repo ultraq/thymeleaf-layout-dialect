@@ -38,6 +38,16 @@ public class TitlePatternTester extends AbstractLayoutDialectTester {
 	}
 
 	/**
+	 * Test that the title pattern tokens are replaced correctly when using
+	 * th:text to set the decorator/content titles.
+	 */
+	@Test
+	public void tokenReplacementText() {
+
+		testOK("decorator/TokenReplacementText");
+	}
+
+	/**
 	 * Test the behaviour when there's no content title.
 	 */
 	@Test

@@ -16,16 +16,15 @@
 
 package nz.net.ultraq.thymeleaf.include;
 
-import static nz.net.ultraq.thymeleaf.FragmentProcessor.PROCESSOR_NAME_FRAGMENT_FULL;
-import static nz.net.ultraq.thymeleaf.LayoutDialect.LAYOUT_PREFIX;
-
 import nz.net.ultraq.thymeleaf.AbstractContentProcessor;
+import static nz.net.ultraq.thymeleaf.FragmentProcessor.PROCESSOR_NAME_FRAGMENT;
+import static nz.net.ultraq.thymeleaf.LayoutDialect.DIALECT_PREFIX_LAYOUT;
 
 import org.thymeleaf.Arguments;
 import org.thymeleaf.dom.Element;
 import org.thymeleaf.dom.Node;
-import org.thymeleaf.fragment.FragmentAndTarget;
 import org.thymeleaf.processor.ProcessorResult;
+import org.thymeleaf.standard.fragment.StandardFragment;
 import org.thymeleaf.standard.fragment.StandardFragmentProcessor;
 
 import java.util.List;
@@ -42,7 +41,6 @@ import java.util.Map;
 public class ReplaceProcessor extends AbstractContentProcessor {
 
 	public static final String PROCESSOR_NAME_REPLACE = "replace";
-	public static final String PROCESSOR_NAME_REPLACE_FULL = LAYOUT_PREFIX + ":" + PROCESSOR_NAME_REPLACE;
 
 	/**
 	 * Constructor, set this processor to work on the 'replace' attribute.
@@ -65,11 +63,11 @@ public class ReplaceProcessor extends AbstractContentProcessor {
 	protected ProcessorResult processAttribute(Arguments arguments, Element element, String attributeName) {
 
 		// Locate the page and fragment to include
-		FragmentAndTarget fragmentandtarget = StandardFragmentProcessor.computeStandardFragmentSpec(
+		StandardFragment fragment = StandardFragmentProcessor.computeStandardFragmentSpec(
 				arguments.getConfiguration(), arguments, element.getAttributeValue(attributeName),
-				null, PROCESSOR_NAME_FRAGMENT_FULL, false);
-		List<Node> includefragments = fragmentandtarget.extractFragment(arguments.getConfiguration(),
-				arguments.getContext(), arguments.getTemplateRepository());
+				DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_FRAGMENT);
+		List<Node> includefragments = fragment.extractFragment(arguments.getConfiguration(),
+				arguments, arguments.getTemplateRepository());
 
 		element.removeAttribute(attributeName);
 
