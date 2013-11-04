@@ -8,7 +8,7 @@ all to help improve code reuse.  If you've ever used SiteMesh or JSF with
 Facelets, then the concepts of this library will be very familiar to you.
 
  - Current version: 1.2
- - Released: ?? ??? 2013
+ - Released: 5 November 2013
 
 This version is for Thymeleaf 2.1.  Check out the [master-thymeleaf-2.0 branch](https://github.com/ultraq/thymeleaf-layout-dialect/tree/master-thymeleaf-2.0)
 for a version of the Layout Dialect that supports Thymeleaf 2.0.
