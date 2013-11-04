@@ -16,7 +16,7 @@
 
 package nz.net.ultraq.thymeleaf.decorator;
 
-import static nz.net.ultraq.thymeleaf.decorator.DecoratorUtilities.*;
+import static nz.net.ultraq.thymeleaf.LayoutUtilities.*;
 
 import org.thymeleaf.dom.Document;
 import org.thymeleaf.dom.Element;

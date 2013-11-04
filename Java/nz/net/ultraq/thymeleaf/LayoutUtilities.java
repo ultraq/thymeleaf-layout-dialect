@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package nz.net.ultraq.thymeleaf.decorator;
+package nz.net.ultraq.thymeleaf;
 
 import org.thymeleaf.dom.Attribute;
 import org.thymeleaf.dom.Element;
@@ -26,7 +26,7 @@ import org.thymeleaf.standard.processor.attr.StandardWithAttrProcessor;
  * 
  * @author Emanuel Rabina
  */
-public final class DecoratorUtilities {
+public final class LayoutUtilities {
 
 	private static final String TH_WITH = StandardDialect.PREFIX + ":" + StandardWithAttrProcessor.ATTR_NAME;
 
@@ -40,7 +40,7 @@ public final class DecoratorUtilities {
 	 * Default hidden constructor as this class is only ever meant to be used
 	 * statically.
 	 */
-	private DecoratorUtilities() {
+	private LayoutUtilities() {
 	}
 
 	/**

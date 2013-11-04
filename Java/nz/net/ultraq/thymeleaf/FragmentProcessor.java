@@ -17,7 +17,7 @@
 package nz.net.ultraq.thymeleaf;
 
 import static nz.net.ultraq.thymeleaf.LayoutDialect.DIALECT_PREFIX_LAYOUT;
-import static nz.net.ultraq.thymeleaf.decorator.DecoratorUtilities.*;
+import static nz.net.ultraq.thymeleaf.LayoutUtilities.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

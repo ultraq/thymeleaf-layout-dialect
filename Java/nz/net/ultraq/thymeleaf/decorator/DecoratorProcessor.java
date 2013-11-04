@@ -17,9 +17,10 @@
 package nz.net.ultraq.thymeleaf.decorator;
 
 import nz.net.ultraq.thymeleaf.AbstractContentProcessor;
+
 import static nz.net.ultraq.thymeleaf.FragmentProcessor.PROCESSOR_NAME_FRAGMENT_FULL;
 import static nz.net.ultraq.thymeleaf.LayoutDialect.DIALECT_PREFIX_LAYOUT;
-import static nz.net.ultraq.thymeleaf.decorator.DecoratorUtilities.*;
+import static nz.net.ultraq.thymeleaf.LayoutUtilities.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
