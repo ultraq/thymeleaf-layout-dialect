@@ -193,4 +193,13 @@ public class DecoratorTester extends AbstractLayoutDialectTester {
 
 		testOK("decorator/NonXMLHTML5");
 	}
+
+	/**
+	 * Test a deep layout hierarchy (3 levels).
+	 */
+	@Test
+	public void deepHierarchy() {
+
+		testOK("decorator/DeepHierarchy");
+	}
 }

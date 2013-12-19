@@ -17,7 +17,6 @@
 package nz.net.ultraq.thymeleaf.decorator;
 
 import nz.net.ultraq.thymeleaf.AbstractContentProcessor;
-
 import static nz.net.ultraq.thymeleaf.FragmentProcessor.PROCESSOR_NAME_FRAGMENT;
 import static nz.net.ultraq.thymeleaf.LayoutDialect.DIALECT_PREFIX_LAYOUT;
 import static nz.net.ultraq.thymeleaf.LayoutUtilities.*;
@@ -34,6 +33,7 @@ import org.thymeleaf.standard.fragment.StandardFragment;
 import org.thymeleaf.standard.fragment.StandardFragmentProcessor;
 
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Specifies the name of the decorator template to apply to a content template.
@@ -96,13 +96,8 @@ public class DecoratorProcessor extends AbstractContentProcessor {
 		Document decoratordocument = decoratortemplate.getDocument();
 		Element decoratorrootelement = decoratordocument.getFirstElementChild();
 
-		// Gather all fragment parts from this page and scope to the HTML element.
-		// These will be used to decorate the document as Thymeleaf encounters the
-		// fragment placeholders.
+		// Gather all fragment parts from this page
 		Map<String,Object> fragments = findFragments(document.getElementChildren());
-		if (!fragments.isEmpty()) {
-			decoratorrootelement.setAllNodeLocalVariables(fragments);
-		}
 
 		// Decide which kind of decorator to apply, given the decorator page root element
 		Decorator decorator = decoratorrootelement != null &&
@@ -110,8 +105,17 @@ public class DecoratorProcessor extends AbstractContentProcessor {
 						new HtmlDocumentDecorator() :
 						new XmlDocumentDecorator();
 
-		// Perform decoration
+		// Perform decoration, apply any new fragments found from the pre-decorated page
 		decorator.decorate(decoratorrootelement, document.getFirstElementChild());
+		if (!fragments.isEmpty()) {
+			Element newrootelement = document.getFirstElementChild();
+			Set<String> nodelocalvariables = newrootelement.getNodeLocalVariableNames();
+			for (String fragmentname: fragments.keySet()) {
+				if (!nodelocalvariables.contains(fragmentname)) {
+					newrootelement.setNodeLocalVariable(fragmentname, fragments.get(fragmentname));
+				}
+			}
+		}
 
 		return ProcessorResult.OK;
 	}

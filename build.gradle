@@ -37,16 +37,16 @@ project.sourceCompatibility = '1.6'
 
 project.group    = 'nz.net.ultraq.thymeleaf'
 project.artifact = 'thymeleaf-layout-dialect'
-project.version  = '1.2'
+project.version  = '1.2.1-SNAPSHOT'
 project.year     = '2012'
 
 dependencies {
 	compile(
-		'org.thymeleaf:thymeleaf:2.1.0.RELEASE'
+		'org.thymeleaf:thymeleaf:2.1.2.RELEASE'
 	)
 	testCompile(
 		'junit:junit:4.11',
-		'org.thymeleaf:thymeleaf-testing:2.1.0.RELEASE'
+		'org.thymeleaf:thymeleaf-testing:2.1.2.RELEASE'
 	)
 	testRuntime(
 		'net.sourceforge.nekohtml:nekohtml:1.9.18'
