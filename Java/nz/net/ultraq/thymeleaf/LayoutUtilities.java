@@ -16,10 +16,12 @@
 
 package nz.net.ultraq.thymeleaf;
 
+import static nz.net.ultraq.thymeleaf.FragmentProcessor.PROCESSOR_NAME_FRAGMENT;
+import static nz.net.ultraq.thymeleaf.LayoutDialect.DIALECT_PREFIX_LAYOUT;
+
 import org.thymeleaf.dom.Attribute;
 import org.thymeleaf.dom.Element;
 import org.thymeleaf.standard.StandardDialect;
-import org.thymeleaf.standard.processor.attr.StandardTextAttrProcessor;
 import org.thymeleaf.standard.processor.attr.StandardWithAttrProcessor;
 
 /**
@@ -111,32 +113,38 @@ public final class LayoutUtilities {
 
 		for (Attribute sourceattribute: sourceelement.getAttributeMap().values()) {
 
+			// Exclude the coping of fragment attributes
+			if (equalsAttributeName(sourceattribute, DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_FRAGMENT)) {
+				continue;
+			}
+
 			// Merge th:with attributes to retain local variable declarations
 			if (equalsAttributeName(sourceattribute, StandardDialect.PREFIX, StandardWithAttrProcessor.ATTR_NAME)) {
 				String targetwithvalue = getAttributeValue(targetelement,
-						StandardDialect.PREFIX, StandardTextAttrProcessor.ATTR_NAME);
+						StandardDialect.PREFIX, StandardWithAttrProcessor.ATTR_NAME);
 				if (targetwithvalue != null) {
 					targetelement.setAttribute(StandardDialect.PREFIX + ":" + StandardWithAttrProcessor.ATTR_NAME,
 							sourceattribute.getValue() + "," + targetwithvalue);
 					continue;
 				}
 			}
+
 			targetelement.setAttribute(sourceattribute.getOriginalName(), sourceattribute.getValue());
 		}
 	}
 
 	/**
-	 * Replace the target element with the source element.
+	 * Replace the target element with the source element.  Includes attributes.
 	 * 
-	 * @param targettelement
+	 * @param targetelement
 	 * @param sourceelement
 	 */
-	public static void pullContent(Element targettelement, Element sourceelement) {
+	public static void pullContent(Element targetelement, Element sourceelement) {
 
 		// Clone target element without processing information to make Thymeleaf reprocesses it
-		targettelement.clearChildren();
-		targettelement.addChild(sourceelement.cloneNode(null, false));
-		targettelement.getParent().extractChild(targettelement);
+		targetelement.clearChildren();
+		targetelement.addChild(sourceelement.cloneNode(null, false));
+		targetelement.getParent().extractChild(targetelement);
 	}
 
 	/**
