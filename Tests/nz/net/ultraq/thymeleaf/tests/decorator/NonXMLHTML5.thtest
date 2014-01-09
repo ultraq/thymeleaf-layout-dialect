@@ -1,7 +1,7 @@
 %TEMPLATE_MODE LEGACYHTML5
 
 %INPUT
-<body xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<body xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 	<section layout:decorator="Layout" layout:fragment="content">
 		<p>This is a paragraph from the content page</p>
 	</section>

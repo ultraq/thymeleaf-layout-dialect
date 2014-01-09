@@ -3,7 +3,7 @@
 %INPUT
 <?xml version="1.0" encoding="utf-8"?>
 <root xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorator="Decorator">
 	<item layout:fragment="item">
 		<name>Tomatoes</name>
