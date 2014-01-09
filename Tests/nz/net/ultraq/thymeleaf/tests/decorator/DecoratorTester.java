@@ -186,6 +186,15 @@ public class DecoratorTester extends AbstractLayoutDialectTester {
 	}
 
 	/**
+	 * Test that variable passing works in the XML document decorator.
+	 */
+	@Test
+	public void xmlVariablePassing() {
+
+		testOK("decorator/XMLVariablePassing");
+	}
+
+	/**
 	 * Test the decorator using the 'legacy HTML5' template mode.
 	 */
 	@Test
