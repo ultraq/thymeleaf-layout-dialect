@@ -2,6 +2,7 @@
 
 %CONTEXT
 var1 = "Content variable"
+var2 = "Layout variable"
 
 %INPUT
 <!DOCTYPE html>
@@ -10,7 +11,7 @@ var1 = "Content variable"
 	layout:decorator="Layout">
 	<body th:with="contentvar=${var1}">
 		<section layout:fragment="content">
-			<p th:text="${contentvar}"></p>
+			<p th:text="|${layoutvar} - ${contentvar}|"></p>
 		</section>
 	</body>
 </html>
@@ -22,7 +23,7 @@ var1 = "Content variable"
 	<head>
 		<title>Local variable merging test</title>
 	</head>
-	<body>
+	<body th:with="layoutvar=${var2}">
 		<section layout:fragment="content"></section>
 	</body>
 </html>
@@ -35,7 +36,7 @@ var1 = "Content variable"
 	</head>
 	<body>
 		<section>
-			<p>Content variable</p>
+			<p>Layout variable - Content variable</p>
 		</section>
 	</body>
 </html>
