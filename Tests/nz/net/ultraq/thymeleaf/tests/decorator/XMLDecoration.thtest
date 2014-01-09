@@ -2,7 +2,7 @@
 
 %INPUT
 <?xml version="1.0" encoding="utf-8"?>
-<root xmlns="http://www.w3.org/1999/xhtml"
+<root xmlns="http://www.example.org/"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorator="Decorator">
 	<item layout:fragment="item">
@@ -27,7 +27,7 @@
 # Can't check against encoding just yet as it's lost in parsing
 # <?xml version="1.0" encoding="utf-8"?>
 <?xml version="1.0"?>
-<root>
+<root xmlns="http://www.example.org/">
 	<list>
 		<item>
 			<name>Tomatoes</name>
