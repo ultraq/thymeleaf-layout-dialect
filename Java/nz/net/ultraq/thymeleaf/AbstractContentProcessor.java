@@ -74,7 +74,9 @@ public abstract class AbstractContentProcessor extends AbstractAttrProcessor {
 		for (Element element: elements) {
 			String fragmentname = getAttributeValue(element, DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_FRAGMENT);
 			if (fragmentname != null) {
-				fragments.put(FRAGMENT_NAME_PREFIX + fragmentname, element.cloneNode(null, true));
+				Element fragment = (Element)element.cloneNode(null, true);
+				removeAttribute(fragment, DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_FRAGMENT);
+				fragments.put(FRAGMENT_NAME_PREFIX + fragmentname, fragment);
 			}
 			if (!hasAttribute(element, DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_INCLUDE)) {
 				findFragments(fragments, element.getElementChildren());
