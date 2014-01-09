@@ -2,6 +2,10 @@
 Changelog
 =========
 
+### 1.2.2
+ - Allow passing variables for all document types, not just full HTML templates
+   ([#32](https://github.com/ultraq/thymeleaf-layout-dialect/issues/32))
+
 ### 1.2.1
  - Restore `layout:decorator` behaviour when using it for deep page hierarchies
    in Thymeleaf 2.1.2 ([#30](https://github.com/ultraq/thymeleaf-layout-dialect/issues/30))
