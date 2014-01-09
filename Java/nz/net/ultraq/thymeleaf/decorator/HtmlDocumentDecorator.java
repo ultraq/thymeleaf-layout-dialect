@@ -45,10 +45,7 @@ public class HtmlDocumentDecorator extends XmlDocumentDecorator {
 		headdecorator.decorate(decoratorhtml, findElement(contenthtml, HTML_ELEMENT_HEAD));
 		bodydecorator.decorate(decoratorhtml, findElement(contenthtml, HTML_ELEMENT_BODY));
 
-		// Pull the decorator page into this document
-		if (contenthtml.getOriginalName().equals(HTML_ELEMENT_HTML)) {
-			pullAttributes(decoratorhtml, contenthtml);
-		}
+		// Set the doctype from the decorator if missing from the content page
 		Document decoratordocument = (Document)decoratorhtml.getParent();
 		Document pagedocument = (Document)contenthtml.getParent();
 		if (decoratordocument.hasDocType() && !pagedocument.hasDocType()) {
