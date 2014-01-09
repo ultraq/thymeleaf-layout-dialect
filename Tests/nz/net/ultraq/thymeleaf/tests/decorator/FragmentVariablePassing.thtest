@@ -1,4 +1,4 @@
-%TEMPLATE_MODE XML
+%TEMPLATE_MODE HTML5
 
 %INPUT
 <body layout:decorator="layout" th:with="hello='world'">

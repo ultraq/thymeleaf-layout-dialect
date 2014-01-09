@@ -128,6 +128,15 @@ public class DecoratorTester extends AbstractLayoutDialectTester {
 	}
 
 	/**
+	 * Test that variable passing works in the XML document decorator.
+	 */
+	@Test
+	public void fragmentVariablePassing() {
+
+		testOK("decorator/FragmentVariablePassing");
+	}
+
+	/**
 	 * Test the merging of the DOCTYPE, so that the result always tries to have
 	 * one.
 	 */
@@ -183,15 +192,6 @@ public class DecoratorTester extends AbstractLayoutDialectTester {
 	public void xmlDecoration() {
 
 		testOK("decorator/XMLDecoration");
-	}
-
-	/**
-	 * Test that variable passing works in the XML document decorator.
-	 */
-	@Test
-	public void xmlVariablePassing() {
-
-		testOK("decorator/XMLVariablePassing");
 	}
 
 	/**
