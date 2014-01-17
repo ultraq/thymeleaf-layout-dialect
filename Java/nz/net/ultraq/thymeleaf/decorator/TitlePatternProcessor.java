@@ -21,12 +21,14 @@ import static nz.net.ultraq.thymeleaf.LayoutUtilities.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.thymeleaf.Arguments;
+import org.thymeleaf.Configuration;
 import org.thymeleaf.dom.Element;
 import org.thymeleaf.dom.Text;
+import org.thymeleaf.exceptions.TemplateProcessingException;
 import org.thymeleaf.processor.ProcessorResult;
 import org.thymeleaf.processor.attr.AbstractAttrProcessor;
-import org.thymeleaf.standard.StandardDialect;
-import org.thymeleaf.standard.processor.attr.StandardInlineAttrProcessor;
+import org.thymeleaf.standard.expression.IStandardExpressionParser;
+import org.thymeleaf.standard.expression.StandardExpressions;
 
 /**
  * Allows for greater control of the resulting &lt;title&gt; element by
@@ -77,22 +79,41 @@ public class TitlePatternProcessor extends AbstractAttrProcessor {
 			throw new IllegalArgumentException("layout:title-pattern attribute should only appear in a <title> element");
 		}
 
-		// Replace the <title> text with an expanded title pattern expression
-		String titlepattern   = "[[|" + element.getAttributeValue(attributeName) + "|]]";
+		Configuration configuration = arguments.getConfiguration();
+		IStandardExpressionParser parser = StandardExpressions.getExpressionParser(configuration);
+
+		// Process the decorator and content title parts
 		String decoratortitle = (String)arguments.getLocalVariable(DECORATOR_TITLE);
-		String contenttitle   = (String)arguments.getLocalVariable(CONTENT_TITLE);
+		String decoratortitlevalue;
+		try {
+			decoratortitlevalue = decoratortitle == null ? "" :
+					parser.parseExpression(configuration, arguments, decoratortitle)
+						.execute(configuration, arguments)
+						.toString();
+		}
+		catch (TemplateProcessingException ex) {
+			decoratortitlevalue = decoratortitle;
+		}
+
+		String contenttitle = (String)arguments.getLocalVariable(CONTENT_TITLE);
+		String contenttitlevalue;
+		try {
+			contenttitlevalue = contenttitle == null ? "" :
+					parser.parseExpression(configuration, arguments, contenttitle)
+						.execute(configuration, arguments)
+						.toString();
+		}
+		catch (TemplateProcessingException ex) {
+			contenttitlevalue = contenttitle;
+		}
+
+		// Replace the <title> text with an expanded title pattern expression
+		String titlepattern   = element.getAttributeValue(attributeName);
 		element.clearChildren();
 		element.addChild(new Text(titlepattern
-				.replace(PARAM_TITLE_DECORATOR, decoratortitle != null ? decoratortitle : "")
-				.replace(PARAM_TITLE_CONTENT,   contenttitle   != null ? contenttitle   : "")));
+				.replace(PARAM_TITLE_DECORATOR, decoratortitlevalue)
+				.replace(PARAM_TITLE_CONTENT,   contenttitlevalue)));
 		element.removeAttribute(attributeName);
-
-		// Add an inline text processor in-case the title contains expressions
-		// that need to be processed
-		if (!hasAttribute(element, StandardDialect.PREFIX, StandardInlineAttrProcessor.ATTR_NAME)) {
-			element.setAttribute(StandardDialect.PREFIX + ":" + StandardInlineAttrProcessor.ATTR_NAME, "text");
-			element.setRecomputeProcessorsImmediately(true);
-		}
 
 		return ProcessorResult.OK;
 	}
