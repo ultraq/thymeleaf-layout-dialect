@@ -5,6 +5,9 @@ Changelog
 ### 1.2.2
  - Allow passing variables for all document types, not just full HTML templates
    ([#32](https://github.com/ultraq/thymeleaf-layout-dialect/issues/32))
+ - Remove the reliance on Thymeleaf's [literal substitutions](http://www.thymeleaf.org/whatsnew21.html#lsub)
+   feature for the `layout:title-pattern` processor, allowing devs to use the
+   pipe `|` character in their title patterns ([#33]((https://github.com/ultraq/thymeleaf-layout-dialect/issues/33)))
 
 ### 1.2.1
  - Restore `layout:decorator` behaviour when using it for deep page hierarchies
