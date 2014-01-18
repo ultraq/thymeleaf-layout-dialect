@@ -8,6 +8,8 @@ Changelog
  - Remove the reliance on Thymeleaf's [literal substitutions](http://www.thymeleaf.org/whatsnew21.html#lsub)
    feature for the `layout:title-pattern` processor, allowing devs to use the
    pipe `|` character in their title patterns ([#33]((https://github.com/ultraq/thymeleaf-layout-dialect/issues/33)))
+ - Fix the passing of decorator/content title values up deep layout hierarchies
+   ([#34](https://github.com/ultraq/thymeleaf-layout-dialect/issues/34))
 
 ### 1.2.1
  - Restore `layout:decorator` behaviour when using it for deep page hierarchies
