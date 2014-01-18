@@ -211,4 +211,13 @@ public class DecoratorTester extends AbstractLayoutDialectTester {
 
 		testOK("decorator/DeepHierarchy");
 	}
+
+	/**
+	 * Test passing up a title value in a deep layout hierarchy (3 levels).
+	 */
+	@Test
+	public void deepHierarchyTitle() {
+
+		testOK("decorator/DeepHierarchyTitle");
+	}
 }
