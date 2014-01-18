@@ -83,7 +83,7 @@ public class TitlePatternProcessor extends AbstractAttrProcessor {
 		IStandardExpressionParser parser = StandardExpressions.getExpressionParser(configuration);
 
 		// Process the decorator and content title parts
-		String decoratortitle = (String)arguments.getLocalVariable(DECORATOR_TITLE);
+		String decoratortitle = (String)element.getNodeProperty(DECORATOR_TITLE);
 		String decoratortitlevalue;
 		try {
 			decoratortitlevalue = decoratortitle == null ? "" :
@@ -95,7 +95,7 @@ public class TitlePatternProcessor extends AbstractAttrProcessor {
 			decoratortitlevalue = decoratortitle;
 		}
 
-		String contenttitle = (String)arguments.getLocalVariable(CONTENT_TITLE);
+		String contenttitle = (String)element.getNodeProperty(CONTENT_TITLE);
 		String contenttitlevalue;
 		try {
 			contenttitlevalue = contenttitle == null ? "" :

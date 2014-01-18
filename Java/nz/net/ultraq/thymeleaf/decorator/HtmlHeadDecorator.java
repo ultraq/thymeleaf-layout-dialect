@@ -88,24 +88,27 @@ public class HtmlHeadDecorator extends XmlElementDecorator {
 	 * Extract the title from the given TITLE element, whether it be the text
 	 * in the tag body or a th:text in the attributes.
 	 * 
-	 * @param head         HEAD tag containing <tt>title</tt>.
-	 * @param title        TITLE tag from which to extract the title.
-	 * @param nodevariable Variable to store the title to as a node local
-	 *                     variable in <tt>result</tt>.   
-	 * @param result       The new TITLE element being constructed.
+	 * @param head     HEAD tag containing <tt>title</tt>.
+	 * @param title    TITLE tag from which to extract the title.
+	 * @param titlekey Key to store the title to as a node property in
+	 *                 <tt>result</tt>.   
+	 * @param result   The new TITLE element being constructed.
 	 */
-	private static void extractTitle(Element head, Element title, String nodevariable, Element result) {
+	private static void extractTitle(Element head, Element title, String titlekey, Element result) {
 
 		Text titletext = (Text)title.getFirstChild();
 		result.clearChildren();
 		result.addChild(titletext);
 		if (hasAttribute(title, StandardDialect.PREFIX, StandardTextAttrProcessor.ATTR_NAME)) {
-			result.setNodeLocalVariable(nodevariable, getAttributeValue(title,
+			result.setNodeProperty(titlekey, getAttributeValue(title,
 					StandardDialect.PREFIX, StandardTextAttrProcessor.ATTR_NAME));
 			removeAttribute(title, StandardDialect.PREFIX, StandardTextAttrProcessor.ATTR_NAME);
 		}
+		else if (title.hasNodeProperty(titlekey)) {
+			result.setNodeProperty(titlekey, title.getNodeProperty(titlekey));
+		}
 		else {
-			result.setNodeLocalVariable(nodevariable, titletext.getContent());
+			result.setNodeProperty(titlekey, titletext.getContent());
 		}
 		pullAttributes(result, title);
 		head.removeChild(title);
