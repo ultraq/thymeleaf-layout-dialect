@@ -375,7 +375,7 @@ Content.html
   ...
 
   <div layout:include="Modal2.html :: modal" th:with="modalId='message', modalHeader='Message'" th:remove="tag">
-    <p th:fragment="modal-content">Message goes here!</p>
+    <p layout:fragment="modal-content">Message goes here!</p>
   </div>
 
   ...
