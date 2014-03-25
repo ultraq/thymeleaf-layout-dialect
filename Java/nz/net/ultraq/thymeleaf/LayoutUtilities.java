@@ -113,7 +113,7 @@ public final class LayoutUtilities {
 
 		for (Attribute sourceattribute: sourceelement.getAttributeMap().values()) {
 
-			// Exclude the coping of fragment attributes
+			// Exclude the copying of fragment attributes
 			if (equalsAttributeName(sourceattribute, DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_FRAGMENT)) {
 				continue;
 			}
@@ -135,7 +135,7 @@ public final class LayoutUtilities {
 
 	/**
 	 * Replace the content of the source element, with the content of the target
-	 * elementtarget element with the source element.  Includes attributes.
+	 * element.
 	 * 
 	 * @param sourceelement
 	 * @param targetelement
