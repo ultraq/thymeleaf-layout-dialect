@@ -2,6 +2,10 @@
 Changelog
 =========
 
+### 1.2.3
+ - Fix for nested layout fragments using the replace/substituteby processors
+   ([#37](https://github.com/ultraq/thymeleaf-layout-dialect/issues/37))
+
 ### 1.2.2
  - Allow passing variables for all document types, not just full HTML templates
    ([#32](https://github.com/ultraq/thymeleaf-layout-dialect/issues/32))
