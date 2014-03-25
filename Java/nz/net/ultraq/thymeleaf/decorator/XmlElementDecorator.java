@@ -33,6 +33,6 @@ public class XmlElementDecorator extends Decorator {
 	@Override
 	public void decorate(Element decoratorelement, Element contentelement) {
 
-		pullAttributes(decoratorelement, contentelement);
+		pullAttributes(contentelement, decoratorelement);
 	}
 }

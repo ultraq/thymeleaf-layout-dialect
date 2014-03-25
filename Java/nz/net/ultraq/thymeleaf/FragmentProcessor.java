@@ -83,7 +83,7 @@ public class FragmentProcessor extends AbstractAttrProcessor {
 
 		// Replace the decorator/include fragment with the page fragment
 		if (pagefragment != null) {
-			pullAttributes(pagefragment, element);
+			pullAttributes(element, pagefragment);
 			pullContent(element, pagefragment);
 		}
 

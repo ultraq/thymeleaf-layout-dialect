@@ -102,10 +102,10 @@ public final class LayoutUtilities {
 	 * element.  A merge is done on the <tt>th:with</tt> attribute, while all
 	 * other attributes are simply overidden.
 	 * 
-	 * @param targetelement
 	 * @param sourceelement
+	 * @param targetelement
 	 */
-	public static void pullAttributes(Element targetelement, Element sourceelement) {
+	public static void pullAttributes(Element sourceelement, Element targetelement) {
 
 		if (targetelement == null || sourceelement == null) {
 			return;
@@ -134,17 +134,18 @@ public final class LayoutUtilities {
 	}
 
 	/**
-	 * Replace the target element with the source element.  Includes attributes.
+	 * Replace the content of the source element, with the content of the target
+	 * elementtarget element with the source element.  Includes attributes.
 	 * 
-	 * @param targetelement
 	 * @param sourceelement
+	 * @param targetelement
 	 */
-	public static void pullContent(Element targetelement, Element sourceelement) {
+	public static void pullContent(Element sourceelement, Element targetelement) {
 
 		// Clone target element without processing information to make Thymeleaf reprocesses it
-		targetelement.clearChildren();
-		targetelement.addChild(sourceelement.cloneNode(null, false));
-		targetelement.getParent().extractChild(targetelement);
+		sourceelement.clearChildren();
+		sourceelement.addChild(targetelement.cloneNode(null, false));
+		sourceelement.getParent().extractChild(sourceelement);
 	}
 
 	/**

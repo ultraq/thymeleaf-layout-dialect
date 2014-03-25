@@ -56,7 +56,7 @@ public class XmlDocumentDecorator extends Decorator {
 		}
 
 		// Bring the decorator into the content page (which is the one being processed)
-		pullAttributes(decorator, content);
+		pullAttributes(content, decorator);
 		pullContent(content, decorator);
 	}
 }
