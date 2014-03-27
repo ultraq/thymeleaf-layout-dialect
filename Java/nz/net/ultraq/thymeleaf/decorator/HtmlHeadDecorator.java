@@ -110,7 +110,7 @@ public class HtmlHeadDecorator extends XmlElementDecorator {
 		else {
 			result.setNodeProperty(titlekey, titletext.getContent());
 		}
-		pullAttributes(title, result);
+		pullAttributes(result, title);
 		head.removeChild(title);
 	}
 }

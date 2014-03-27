@@ -56,7 +56,7 @@ public class XmlDocumentDecorator extends Decorator {
 		}
 
 		// Bring the decorator into the content page (which is the one being processed)
-		pullAttributes(content, decorator);
+		pullAttributes(decorator, content, !decorator.getNormalizedName().equals(content.getNormalizedName()));
 		pullContent(content, decorator);
 	}
 }
