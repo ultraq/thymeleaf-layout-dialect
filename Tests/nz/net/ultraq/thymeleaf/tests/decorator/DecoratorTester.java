@@ -220,4 +220,14 @@ public class DecoratorTester extends AbstractLayoutDialectTester {
 
 		testOK("decorator/DeepHierarchyTitle");
 	}
+
+	/**
+	 * Test the merging of the <tt>id</tt> attribute from layout fragments up
+	 * the decorator hierarchy.
+	 */
+	@Test
+	public void idMerging() {
+
+		testOK("decorator/IDMerging");
+	}
 }
