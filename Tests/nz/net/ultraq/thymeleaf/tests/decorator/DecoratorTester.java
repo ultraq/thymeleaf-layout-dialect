@@ -222,12 +222,22 @@ public class DecoratorTester extends AbstractLayoutDialectTester {
 	}
 
 	/**
-	 * Test the merging of the <tt>id</tt> attribute from layout fragments up
-	 * the decorator hierarchy.
+	 * Test the merging of attributes from layout fragments up the decorator
+	 * hierarchy.
 	 */
 	@Test
-	public void idMerging() {
+	public void fragmentMerging() {
 
-		testOK("decorator/IDMerging");
+		testOK("decorator/FragmentMerging");
+	}
+
+	/**
+	 * Test the merging of attribute processors from layout fragments up the
+	 * decorator hierarchy.
+	 */
+	@Test
+	public void fragmentProcessorMerging() {
+
+		testOK("decorator/FragmentProcessorMerging");
 	}
 }
