@@ -1,4 +1,3 @@
-
 Thymeleaf Layout Dialect
 ========================
 
@@ -156,7 +155,7 @@ Content1.html
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-  layout:decorator="Layout.html">
+  layout:decorator="Layout">
   <head>
     <title>Content page 1</title>
     <script src="content-script.js"></script>
@@ -238,7 +237,7 @@ absolute minimum of HTML code:
 ```html
 Content2.html
 
-<p layout:decorator="Layout.html" layout:fragment="custom-footer">
+<p layout:decorator="Layout" layout:fragment="custom-footer">
   This is some footer text from content page 2.
 </p>
 ```
@@ -459,7 +458,7 @@ Content.html
 <html xmlns="http://www.w3.org/1999/xhtml"
   xmlns:th="http://www.thymeleaf.org"
   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-  layout:decorator="Layout.html">
+  layout:decorator="Layout">
 
   <head>
     <title>My blog</title>
