@@ -37,4 +37,13 @@ public class IncludeTester extends AbstractLayoutDialectTester {
 
 		testOK("include/AttributeAndElementInclusion");
 	}
+
+	/**
+	 * Test the use of a nested fragment section defined and used in one go.
+	 */
+	@Test
+	public void nestedFragment() {
+
+		testOK("include/NestedFragment");
+	}
 }

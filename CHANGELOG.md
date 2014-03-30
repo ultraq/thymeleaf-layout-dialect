@@ -2,6 +2,13 @@
 Changelog
 =========
 
+### 1.2.3
+ - Fix for nested layout fragments using the replace/substituteby processors
+   ([#37](https://github.com/ultraq/thymeleaf-layout-dialect/issues/37))
+ - Don't pass arbitrary attributes (ie: anything that isn't an attribute
+   processor) up to decorator pages if the content template is a fragment
+   ([#39](https://github.com/ultraq/thymeleaf-layout-dialect/issues/39))
+
 ### 1.2.2
  - Allow passing variables for all document types, not just full HTML templates
    ([#32](https://github.com/ultraq/thymeleaf-layout-dialect/issues/32))

@@ -98,7 +98,7 @@ public final class LayoutUtilities {
 	}
 
 	/**
-	 * Replace the attributes of the source element with those of the target
+	 * Replace the attributes of the target element with those of the source
 	 * element.  A merge is done on the <tt>th:with</tt> attribute, while all
 	 * other attributes are simply overidden.
 	 * 
@@ -107,34 +107,59 @@ public final class LayoutUtilities {
 	 */
 	public static void pullAttributes(Element targetelement, Element sourceelement) {
 
-		if (targetelement == null || sourceelement == null) {
+		pullAttributes(targetelement, sourceelement, false);
+	}
+
+	/**
+	 * The same as {@link #pullAttributes(Element, Element)}, but with the
+	 * option to specify whether to copy everything over, or only attributes
+	 * that already exist in <tt>sourceelement</tt>.
+	 * 
+	 * @param targetelement
+	 * @param sourceelement
+	 * @param mergeonly     <tt>true</tt> to pull only attributes that exist in
+	 *                      <tt>targetelement</tt>.  <tt>th:with</tt> values
+	 *                      will continue to be brought in regardless.
+	 */
+	public static void pullAttributes(Element targetelement, Element sourceelement,
+		boolean mergeonly) {
+
+		if (sourceelement == null || targetelement == null) {
 			return;
 		}
 
 		for (Attribute sourceattribute: sourceelement.getAttributeMap().values()) {
 
-			// Exclude the coping of fragment attributes
+			// Exclude the copying of fragment attributes
 			if (equalsAttributeName(sourceattribute, DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_FRAGMENT)) {
 				continue;
 			}
 
 			// Merge th:with attributes to retain local variable declarations
 			if (equalsAttributeName(sourceattribute, StandardDialect.PREFIX, StandardWithAttrProcessor.ATTR_NAME)) {
+				String mergedwithvalue = sourceattribute.getValue();
 				String targetwithvalue = getAttributeValue(targetelement,
 						StandardDialect.PREFIX, StandardWithAttrProcessor.ATTR_NAME);
 				if (targetwithvalue != null) {
-					targetelement.setAttribute(StandardDialect.PREFIX + ":" + StandardWithAttrProcessor.ATTR_NAME,
-							sourceattribute.getValue() + "," + targetwithvalue);
-					continue;
+					mergedwithvalue += "," + targetwithvalue;
 				}
+				targetelement.setAttribute(StandardDialect.PREFIX + ":" + StandardWithAttrProcessor.ATTR_NAME,
+						mergedwithvalue);
+				continue;
 			}
 
-			targetelement.setAttribute(sourceattribute.getOriginalName(), sourceattribute.getValue());
+			// Copy only attributes that already exist in the target element, or
+			// copy any attributes
+			if ((mergeonly && targetelement.hasAttribute(sourceattribute.getNormalizedName())) ||
+				!mergeonly) {
+				targetelement.setAttribute(sourceattribute.getOriginalName(), sourceattribute.getValue());
+			}
 		}
 	}
 
 	/**
-	 * Replace the target element with the source element.  Includes attributes.
+	 * Replace the content of the target element, with the content of the source
+	 * element.
 	 * 
 	 * @param targetelement
 	 * @param sourceelement

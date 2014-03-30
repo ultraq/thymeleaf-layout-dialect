@@ -21,6 +21,8 @@ import static nz.net.ultraq.thymeleaf.FragmentProcessor.PROCESSOR_NAME_FRAGMENT;
 import static nz.net.ultraq.thymeleaf.LayoutDialect.DIALECT_PREFIX_LAYOUT;
 import static nz.net.ultraq.thymeleaf.LayoutUtilities.*;
 import static nz.net.ultraq.thymeleaf.include.IncludeProcessor.PROCESSOR_NAME_INCLUDE;
+import static nz.net.ultraq.thymeleaf.include.ReplaceProcessor.PROCESSOR_NAME_REPLACE;
+import static nz.net.ultraq.thymeleaf.include.SubstituteByProcessor.PROCESSOR_NAME_SUBSTITUTEBY;
 
 import org.thymeleaf.dom.Element;
 import org.thymeleaf.processor.attr.AbstractAttrProcessor;
@@ -49,8 +51,9 @@ public abstract class AbstractContentProcessor extends AbstractAttrProcessor {
 	}
 
 	/**
-	 * Find and return all fragments within the given elements without delving
-	 * into <tt>layout:include</tt> elements.
+	 * Find and return clones of all fragments within the given elements without
+	 * delving into <tt>layout:include</tt>, <tt>layout:replace</tt>, or
+	 * <tt>layout:substituteby</tt> elements.
 	 * 
 	 * @param elements
 	 * @return Map of prefixed fragment names and their fragment elements.
@@ -63,8 +66,9 @@ public abstract class AbstractContentProcessor extends AbstractAttrProcessor {
 	}
 
 	/**
-	 * Recursive search for all fragment elements without delving into
-	 * <tt>layout:include</tt> elements.
+	 * Recursive clone of all fragment elements without delving into delving
+	 * into <tt>layout:include</tt>, <tt>layout:replace</tt>, or
+	 * <tt>layout:substituteby</tt> elements.
 	 * 
 	 * @param fragments
 	 * @param elements
@@ -78,7 +82,9 @@ public abstract class AbstractContentProcessor extends AbstractAttrProcessor {
 				removeAttribute(fragment, DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_FRAGMENT);
 				fragments.put(FRAGMENT_NAME_PREFIX + fragmentname, fragment);
 			}
-			if (!hasAttribute(element, DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_INCLUDE)) {
+			if (!hasAttribute(element, DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_INCLUDE) &&
+				!hasAttribute(element, DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_REPLACE) &&
+				!hasAttribute(element, DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_SUBSTITUTEBY)) {
 				findFragments(fragments, element.getElementChildren());
 			}
 		}

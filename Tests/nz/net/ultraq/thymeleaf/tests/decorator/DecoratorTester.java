@@ -220,4 +220,24 @@ public class DecoratorTester extends AbstractLayoutDialectTester {
 
 		testOK("decorator/DeepHierarchyTitle");
 	}
+
+	/**
+	 * Test the merging of attributes from layout fragments up the decorator
+	 * hierarchy.
+	 */
+	@Test
+	public void fragmentMerging() {
+
+		testOK("decorator/FragmentMerging");
+	}
+
+	/**
+	 * Test the merging of attribute processors from layout fragments up the
+	 * decorator hierarchy.
+	 */
+	@Test
+	public void fragmentProcessorMerging() {
+
+		testOK("decorator/FragmentProcessorMerging");
+	}
 }
