@@ -113,7 +113,6 @@ Starting with [Thymeleaf 2.1](http://www.thymeleaf.org/whatsnew21.html#data) you
 can use HTML5 Data Attributes in addition to the above namespaced attributes.
 The syntax is `data-layout-{name}`, e.g. `data-layout-decorator`.
 
-
 Examples
 --------
 
