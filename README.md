@@ -1,4 +1,3 @@
-
 Thymeleaf Layout Dialect
 ========================
 
@@ -109,6 +108,10 @@ title with the content's one, instead of simply overriding it.
 Check out the [Title pattern](#title-pattern) example for how to create a
 configurable title pattern.
 
+### HTML5 Data Attributes
+Starting with [Thymeleaf 2.1](http://www.thymeleaf.org/whatsnew21.html#data) you
+can use HTML5 Data Attributes in addition to the above namespaced attributes.
+The syntax is `data-layout-{name}`, e.g. `data-layout-decorator`.
 
 Examples
 --------
