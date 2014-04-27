@@ -44,22 +44,22 @@ public class HtmlHeadDecorator extends XmlElementDecorator {
 	@Override
 	public void decorate(Element decoratorhtml, Element contenthead) {
 
-		// If the content has no HEAD, then we don't need to do anything
-		if (contenthead == null) {
-			return;
-		}
-
 		// If the decorator has no HEAD, then we can just copy the content HEAD
 		Element decoratorhead = findElement(decoratorhtml, HTML_ELEMENT_HEAD);
 		if (decoratorhead == null) {
-			decoratorhtml.insertChild(0, new Text(LINE_SEPARATOR));
-			decoratorhtml.insertChild(1, contenthead);
+		    if (contenthead != null) {
+    			decoratorhtml.insertChild(0, new Text(LINE_SEPARATOR));
+    			decoratorhtml.insertChild(1, contenthead);
+		    }
 			return;
 		}
 
 		// Merge the content and decorator titles into a single title element
 		Element decoratortitle = findElement(decoratorhead, HTML_ELEMENT_TITLE);
-		Element contenttitle   = findElement(contenthead, HTML_ELEMENT_TITLE);
+		Element contenttitle   =  null;
+		if (contenthead != null) {
+		    contenttitle = findElement(contenthead, HTML_ELEMENT_TITLE);
+        }
 		Element resultingtitle = null;
 		if (decoratortitle != null || contenttitle != null) {
 			resultingtitle = new Element(HTML_ELEMENT_TITLE);
@@ -73,8 +73,10 @@ public class HtmlHeadDecorator extends XmlElementDecorator {
 
 		// Append the content's HEAD elements to the end of the decorator's HEAD
 		// section, placing the resulting title at the beginning of it
-		for (Node contentheadnode: contenthead.getChildren()) {
-			decoratorhead.addChild(contentheadnode);
+        if (contenthead != null) {
+    		for (Node contentheadnode: contenthead.getChildren()) {
+    			decoratorhead.addChild(contentheadnode);
+    		}
 		}
 		if (resultingtitle != null) {
 			decoratorhead.insertChild(0, new Text(LINE_SEPARATOR));
