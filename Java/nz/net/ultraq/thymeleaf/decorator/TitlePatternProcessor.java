@@ -16,9 +16,8 @@
 
 package nz.net.ultraq.thymeleaf.decorator;
 
-import static nz.net.ultraq.thymeleaf.LayoutUtilities.*;
+import static nz.net.ultraq.thymeleaf.LayoutUtilities.HTML_ELEMENT_TITLE;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.thymeleaf.Arguments;
@@ -30,6 +29,7 @@ import org.thymeleaf.processor.ProcessorResult;
 import org.thymeleaf.processor.attr.AbstractAttrProcessor;
 import org.thymeleaf.standard.expression.IStandardExpressionParser;
 import org.thymeleaf.standard.expression.StandardExpressions;
+import org.thymeleaf.util.StringUtils;
 
 /**
  * Allows for greater control of the resulting &lt;title&gt; element by
@@ -112,8 +112,8 @@ public class TitlePatternProcessor extends AbstractAttrProcessor {
 		String titlepattern   = element.getAttributeValue(attributeName);
 		
 		//trim empty titles to null
-        decoratortitlevalue = StringUtils.trimToNull(decoratortitlevalue);
-        contenttitlevalue = StringUtils.trimToNull(contenttitlevalue);
+        decoratortitlevalue = StringUtils.isEmptyOrWhitespace(decoratortitlevalue) ? null : StringUtils.trim(decoratortitlevalue);
+        contenttitlevalue = StringUtils.isEmptyOrWhitespace(contenttitlevalue) ? null : StringUtils.trim(contenttitlevalue);
         
         // only use the title pattern if both the decorator and content have a title
 		String title = "";
