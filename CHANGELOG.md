@@ -2,6 +2,8 @@
 Changelog
 =========
 
+### 1.2.4
+
 ### 1.2.3
  - Fix for nested layout fragments using the replace/substituteby processors
    ([#37](https://github.com/ultraq/thymeleaf-layout-dialect/issues/37))
