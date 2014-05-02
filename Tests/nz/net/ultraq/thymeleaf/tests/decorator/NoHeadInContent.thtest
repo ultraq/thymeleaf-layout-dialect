@@ -5,9 +5,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorator="Layout">
-	<head>
-		<title layout:title-pattern="$DECORATOR_TITLE - $CONTENT_TITLE">Content title</title>
-	</head>
 	<body>
 		<section layout:fragment="content">
 			<p>This is a paragraph from the content page</p>
@@ -20,6 +17,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 	<head>
+		<title layout:title-pattern="$DECORATOR_TITLE - $CONTENT_TITLE">Layout title</title>
 	</head>
 	<body>
 		<section layout:fragment="content">
@@ -32,7 +30,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<title>Content title</title>
+		<title>Layout title</title>
 	</head>
 	<body>
 		<section>
