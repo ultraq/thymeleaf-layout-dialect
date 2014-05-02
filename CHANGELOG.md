@@ -3,6 +3,9 @@ Changelog
 =========
 
 ### 1.2.4
+ - Contribution from [Justin Munn](https://github.com/munnja001) to fix bugs in
+   the `layout:title-pattern` processor, making it behave more naturally in the
+   process ([#42](https://github.com/ultraq/thymeleaf-layout-dialect/pull/42))
 
 ### 1.2.3
  - Fix for nested layout fragments using the replace/substituteby processors

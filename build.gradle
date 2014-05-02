@@ -39,6 +39,13 @@ project.group    = 'nz.net.ultraq.thymeleaf'
 project.artifact = 'thymeleaf-layout-dialect'
 project.version  = '1.2.4-SNAPSHOT'
 project.year     = '2012'
+project.contributors = [
+	[
+		name: 'Justin Munn',
+		role: 'developer',
+		contribution: 'Fixed up bugs in the title-pattern processor so that it behaves more naturally'
+	]
+]
 
 dependencies {
 	compile(
