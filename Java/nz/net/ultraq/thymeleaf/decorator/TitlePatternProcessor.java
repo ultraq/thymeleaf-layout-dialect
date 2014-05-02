@@ -16,7 +16,7 @@
 
 package nz.net.ultraq.thymeleaf.decorator;
 
-import static nz.net.ultraq.thymeleaf.LayoutUtilities.*;
+import static nz.net.ultraq.thymeleaf.LayoutUtilities.HTML_ELEMENT_TITLE;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +29,7 @@ import org.thymeleaf.processor.ProcessorResult;
 import org.thymeleaf.processor.attr.AbstractAttrProcessor;
 import org.thymeleaf.standard.expression.IStandardExpressionParser;
 import org.thymeleaf.standard.expression.StandardExpressions;
+import org.thymeleaf.util.StringUtils;
 
 /**
  * Allows for greater control of the resulting &lt;title&gt; element by
@@ -86,7 +87,7 @@ public class TitlePatternProcessor extends AbstractAttrProcessor {
 		String decoratortitle = (String)element.getNodeProperty(DECORATOR_TITLE);
 		String decoratortitlevalue;
 		try {
-			decoratortitlevalue = decoratortitle == null ? "" :
+			decoratortitlevalue = decoratortitle == null ? null :
 					parser.parseExpression(configuration, arguments, decoratortitle)
 						.execute(configuration, arguments)
 						.toString();
@@ -98,7 +99,7 @@ public class TitlePatternProcessor extends AbstractAttrProcessor {
 		String contenttitle = (String)element.getNodeProperty(CONTENT_TITLE);
 		String contenttitlevalue;
 		try {
-			contenttitlevalue = contenttitle == null ? "" :
+			contenttitlevalue = contenttitle == null ? null :
 					parser.parseExpression(configuration, arguments, contenttitle)
 						.execute(configuration, arguments)
 						.toString();
@@ -109,10 +110,24 @@ public class TitlePatternProcessor extends AbstractAttrProcessor {
 
 		// Replace the <title> text with an expanded title pattern expression
 		String titlepattern   = element.getAttributeValue(attributeName);
+		
+		//trim empty titles to null
+        decoratortitlevalue = StringUtils.isEmptyOrWhitespace(decoratortitlevalue) ? null : StringUtils.trim(decoratortitlevalue);
+        contenttitlevalue = StringUtils.isEmptyOrWhitespace(contenttitlevalue) ? null : StringUtils.trim(contenttitlevalue);
+        
+        // only use the title pattern if both the decorator and content have a title
+		String title = "";
+		if (decoratortitlevalue != null && contenttitlevalue == null) {
+		    title = decoratortitlevalue;
+		} else if (decoratortitlevalue == null && contenttitlevalue != null) {
+            title = contenttitlevalue;
+		} else if (decoratortitlevalue != null && contenttitlevalue != null) {
+		    title = titlepattern
+		            .replace(PARAM_TITLE_DECORATOR, decoratortitlevalue)
+	                .replace(PARAM_TITLE_CONTENT,   contenttitlevalue);
+		}
 		element.clearChildren();
-		element.addChild(new Text(titlepattern
-				.replace(PARAM_TITLE_DECORATOR, decoratortitlevalue)
-				.replace(PARAM_TITLE_CONTENT,   contenttitlevalue)));
+		element.addChild(new Text(title));
 		element.removeAttribute(attributeName);
 
 		return ProcessorResult.OK;
