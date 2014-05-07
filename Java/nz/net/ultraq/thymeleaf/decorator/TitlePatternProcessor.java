@@ -84,52 +84,56 @@ public class TitlePatternProcessor extends AbstractAttrProcessor {
 		IStandardExpressionParser parser = StandardExpressions.getExpressionParser(configuration);
 
 		// Process the decorator and content title parts
-		String decoratortitle = (String)element.getNodeProperty(DECORATOR_TITLE);
-		String decoratortitlevalue;
-		try {
-			decoratortitlevalue = decoratortitle == null ? null :
-					parser.parseExpression(configuration, arguments, decoratortitle)
-						.execute(configuration, arguments)
-						.toString();
-		}
-		catch (TemplateProcessingException ex) {
-			decoratortitlevalue = decoratortitle;
-		}
-
-		String contenttitle = (String)element.getNodeProperty(CONTENT_TITLE);
-		String contenttitlevalue;
-		try {
-			contenttitlevalue = contenttitle == null ? null :
-					parser.parseExpression(configuration, arguments, contenttitle)
-						.execute(configuration, arguments)
-						.toString();
-		}
-		catch (TemplateProcessingException ex) {
-			contenttitlevalue = contenttitle;
-		}
+		String decoratortitle = processTitle((String)element.getNodeProperty(DECORATOR_TITLE),
+				arguments, configuration, parser);
+		String contenttitle = processTitle((String)element.getNodeProperty(CONTENT_TITLE),
+				arguments, configuration, parser);
 
 		// Replace the <title> text with an expanded title pattern expression
-		String titlepattern   = element.getAttributeValue(attributeName);
-		
-		//trim empty titles to null
-        decoratortitlevalue = StringUtils.isEmptyOrWhitespace(decoratortitlevalue) ? null : StringUtils.trim(decoratortitlevalue);
-        contenttitlevalue = StringUtils.isEmptyOrWhitespace(contenttitlevalue) ? null : StringUtils.trim(contenttitlevalue);
-        
-        // only use the title pattern if both the decorator and content have a title
-		String title = "";
-		if (decoratortitlevalue != null && contenttitlevalue == null) {
-		    title = decoratortitlevalue;
-		} else if (decoratortitlevalue == null && contenttitlevalue != null) {
-            title = contenttitlevalue;
-		} else if (decoratortitlevalue != null && contenttitlevalue != null) {
-		    title = titlepattern
-		            .replace(PARAM_TITLE_DECORATOR, decoratortitlevalue)
-	                .replace(PARAM_TITLE_CONTENT,   contenttitlevalue);
-		}
+		String titlepattern = element.getAttributeValue(attributeName);
+
+		// Only use the title pattern if both the decorator and content have a title
+		String title =
+			decoratortitle != null ? contenttitle != null ?
+				titlepattern
+					.replace(PARAM_TITLE_DECORATOR, decoratortitle)
+					.replace(PARAM_TITLE_CONTENT,   contenttitle) :
+				decoratortitle :
+			contenttitle != null ? contenttitle : "";
+
 		element.clearChildren();
 		element.addChild(new Text(title));
 		element.removeAttribute(attributeName);
 
 		return ProcessorResult.OK;
+	}
+
+	/**
+	 * Process a title part, executing expressions if it contains any.
+	 * 
+	 * @param title
+	 * @param arguments
+	 * @param configuration
+	 * @param parser
+	 * @return The result of executing <tt>title</tt> if it contained any
+	 *         expressions, or <tt>null</tt> if the title resolved to an empty
+	 *         string or whitespace.
+	 */
+	private static String processTitle(String title, Arguments arguments,
+		Configuration configuration, IStandardExpressionParser parser) {
+
+		String titlevalue;
+		try {
+			titlevalue = title == null ? null :
+					parser.parseExpression(configuration, arguments, title)
+						.execute(configuration, arguments)
+						.toString();
+		}
+		catch (TemplateProcessingException ex) {
+			titlevalue = title;
+		}
+		titlevalue = StringUtils.isEmptyOrWhitespace(titlevalue) ? null : titlevalue.trim();
+
+		return titlevalue;
 	}
 }
