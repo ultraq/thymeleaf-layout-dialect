@@ -89,10 +89,9 @@ public class TitlePatternProcessor extends AbstractAttrProcessor {
 		String contenttitle = processTitle((String)element.getNodeProperty(CONTENT_TITLE),
 				arguments, configuration, parser);
 
-		// Replace the <title> text with an expanded title pattern expression
+		// Replace the <title> text with an expanded title pattern expression,
+		// only using the pattern if both the decorator and content have a title.
 		String titlepattern = element.getAttributeValue(attributeName);
-
-		// Only use the title pattern if both the decorator and content have a title
 		String title =
 			decoratortitle != null ? contenttitle != null ?
 				titlepattern
