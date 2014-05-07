@@ -23,12 +23,10 @@
  */
 
 apply plugin: 'java'
-apply from: 'https://raw.github.com/ultraq/gradle-support/master/java-support.gradle'
 apply plugin: 'maven'
-apply from: 'https://raw.github.com/ultraq/gradle-support/master/maven-support.gradle'
-apply from: 'https://raw.github.com/ultraq/gradle-support/master/bundle.gradle'
-apply plugin: 'eclipse'
-apply from: 'https://raw.github.com/ultraq/gradle-support/master/eclipse-support.gradle'
+apply from: 'https://raw.github.com/ultraq/gradle-support/1.1/gradle-support.gradle'
+apply from: 'https://raw.github.com/ultraq/gradle-support/1.1/maven-support.gradle'
+apply from: 'https://raw.github.com/ultraq/gradle-support/1.1/bundle.gradle'
 
 //project.name      = 'Thymeleaf Layout Dialect'
 project.description = 'A dialect for Thymeleaf that allows you to use layout/decorator templates to style your content.'
