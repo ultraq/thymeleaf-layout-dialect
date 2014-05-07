@@ -70,48 +70,76 @@ Or, for those using Spring configuration files:
 </bean>
 ```
 
-This will introduce 5 new attributes that you can use in your pages:
-`layout:decorator`, `layout:include`, `layout:replace` (aka: `layout:substituteby`),
-`layout:fragment`, and `layout:title-pattern`.
+This will introduce the `layout` namespace, and 5 new attribute processors that
+you can use in your pages: `decorator`, `include`, `replace` (aka: `substituteby`),
+`fragment`, and `title-pattern`.
 
-### layout:decorator
+### decorator
+
+ - XML attribute: `layout:decorator`
+ - Data attribute: `data-layout-decorator`
+
 Used in your content pages and declared in the root tag (usually `<html>`, but
 as of Thymeleaf 2.0.10 this is no longer a restriction), this attribute
 specifies the location of the decorator page to apply to the content page.  The
 mechanism for resolving decorator pages is the same as that used by Thymeleaf to
 resolve `th:fragment` and `th:replace` pages.
+
 Check out the [Decorators and fragments](#decorators-and-fragments) example for
 how to apply a decorator to your content pages.
 
-### layout:include
+### include
+
+ - XML attribute: `layout:include`
+ - Data attribute: `data-layout-include`
+
 Similar to Thymeleaf's `th:include`, but allows the passing of entire element
 fragments to the included page.  Useful if you have some HTML that you want to
 reuse, but whose contents are too complex to determine or construct with context
 variables alone.
+
 Check out the [Includes and fragments](#includes-and-fragments) example for how
 to pass HTML code to the pages you want to include.
 
-### layout:replace (aka: layout:substituteby)
+### replace (aka: substituteby)
+
+ - XML attribute: `layout:replace`
+ - Data attribute: `data-layout-replace`
+
 Similar to `layout:include` in that you can pass HTML content to the
 page/fragments you're replacing, but with the behaviour of Thymeleaf's `th:replace`.
+
 > Just like Thymeleaf, the `replace` processor will eventually replace `substituteby`.
 > They both perform the same function, but `substituteby` is effectively
 > deprecated.
 
-### layout:fragment
+### fragment
+
+ - XML attribute: `layout:fragment`
+ - Data attribute: `data-layout-fragment`
+
 The glue that holds everything together; it marks sections in the decorator page
 that can be replaced by sections in the content page, which share the same name.
 
-### layout:title-pattern
+### title-pattern
+
+ - XML attribute: `layout:title-pattern`
+ - Data attribute: `data-layout-title-pattern`
+
 Allows for greater control of the resulting `<title>` element by specifying a
 pattern with some special tokens.  This can be used to extend the decorator's
 title with the content's one, instead of simply overriding it.
+
 Check out the [Title pattern](#title-pattern) example for how to create a
 configurable title pattern.
 
 
 Examples
 --------
+
+> All the examples here use the XML attribute version of the processors, but
+> can just as easily be swapped for their HTML data attribute equivalents if
+> that's more your style.
 
 ### Decorators and fragments
 
