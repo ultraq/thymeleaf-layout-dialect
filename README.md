@@ -71,7 +71,7 @@ Or, for those using Spring configuration files:
 ```
 
 This will introduce the `layout` namespace, and 5 new attribute processors that
-you can use in your pages: `decorator`, `include`, `replace` (aka: `substituteby`),
+you can use in your pages: `decorator`, `include`, `replace` (`substituteby`),
 `fragment`, and `title-pattern`.
 
 ### decorator
@@ -101,7 +101,7 @@ variables alone.
 Check out the [Includes and fragments](#includes-and-fragments) example for how
 to pass HTML code to the pages you want to include.
 
-### replace (aka: substituteby)
+### replace (substituteby)
 
  - XML attribute: `layout:replace`
  - Data attribute: `data-layout-replace`
@@ -207,8 +207,8 @@ fragment is within a `<footer>` element, which isn't really necessary, but might
 be handy if you wish to do static templating of the content page which is one of
 the reasons one uses Thymeleaf in the first place :)
 
-> Fragment names must be unique within a page, otherwise the matching of
-> fragments might not work as you expect.
+> Fragment names must be unique within a page, otherwise fragment mismatches can
+> occur and all sorts of hilarity will ensue.
 
 Anyway, once you tell Thymeleaf to process `Content1.html`, the resulting page
 will look like this:
