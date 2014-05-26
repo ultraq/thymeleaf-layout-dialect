@@ -47,6 +47,16 @@ public class TitlePatternTester extends AbstractLayoutDialectTester {
 		testOK("decorator/TokenReplacementText");
 	}
 
+	/**
+	 * Test the behaviour when there's an empty &lt;title&gt; in the content
+	 * page.
+	 */
+	@Test
+	public void emptyTitleInContent() {
+
+		testOK("decorator/EmptyTitleInContent");
+	}
+
     /**
      * Test the behaviour when there's no content title.
      */
@@ -66,11 +76,30 @@ public class TitlePatternTester extends AbstractLayoutDialectTester {
     }
 
 	/**
+	 * Test the behaviour when there's an empty &lt;title&gt; in the decorator
+	 * page.
+	 */
+	@Test
+	public void emptyTitleInDecorator() {
+
+		testOK("decorator/EmptyTitleInDecorator");
+	}
+
+	/**
 	 * Test the behaviour when there's no content title.
 	 */
 	@Test
 	public void noTitleInDecorator() {
 
 		testOK("decorator/NoTitleInDecorator");
+	}
+
+	/**
+	 * Test the behaviour when there's no decorator head.
+	 */
+	@Test
+	public void noHeadInDecorator() {
+
+		testOK("decorator/NoHeadInDecorator");
 	}
 }
