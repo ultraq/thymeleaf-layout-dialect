@@ -2,6 +2,10 @@
 Changelog
 =========
 
+### 1.2.5
+ - Restore title fallback behaviour when either content or decorator title
+   elements are empty ([#45](https://github.com/ultraq/thymeleaf-layout-dialect/pull/45))
+
 ### 1.2.4
  - Contribution from [Justin Munn](https://github.com/munnja001) to fix bugs in
    the `layout:title-pattern` processor, making it behave more naturally in the
