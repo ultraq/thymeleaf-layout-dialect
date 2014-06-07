@@ -240,4 +240,14 @@ public class DecoratorTester extends AbstractLayoutDialectTester {
 
 		testOK("decorator/FragmentProcessorMerging");
 	}
+
+	/**
+	 * Test the use of "th:text" in the title tag of a page decorated
+	 * with a layout.
+	 */
+	@Test
+	public void noTitleDecoration() {
+
+		testOK("decorator/HeadDecorationThText");
+	}
 }
