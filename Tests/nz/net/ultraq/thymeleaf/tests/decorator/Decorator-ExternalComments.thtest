@@ -1,45 +1,41 @@
 
-# Test the inheritance of local variables, where those set in the decorator page
-# using th:with are also available in the content pages.
+# Test whether comments found outside the HTML element are included in the final
+# output.
 
 %TEMPLATE_MODE HTML5
-
-%CONTEXT
-var2 = "Decorator variable"
 
 %INPUT
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorator="Layout">
+	<head>
+	</head>
 	<body>
-		<section layout:fragment="content">
-			<p th:text="${decoratorvar}"></p>
-		</section>
 	</body>
 </html>
 
 %INPUT[Layout]
 <!DOCTYPE html>
+<!-- Comment before the HTML element -->
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 	<head>
-		<title>Local variable merging test</title>
+		<title>Layout page</title>
 	</head>
-	<body th:with="decoratorvar=${var2}">
-		<section layout:fragment="content"></section>
+	<body>
 	</body>
 </html>
+<!-- Comment after the HTML element -->
 
 %OUTPUT
 <!DOCTYPE html>
+<!-- Comment before the HTML element -->
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<title>Local variable merging test</title>
+		<title>Layout page</title>
 	</head>
 	<body>
-		<section>
-			<p>Decorator variable</p>
-		</section>
 	</body>
 </html>
+<!-- Comment after the HTML element -->

@@ -1,0 +1,21 @@
+
+# Test that variable passing works in the XML document decorator.
+
+%TEMPLATE_MODE HTML5
+
+%INPUT
+<body layout:decorator="layout" th:with="hello='world'">
+    <div layout:fragment="content">...</div>
+</body>
+
+%INPUT[layout]
+<body>
+	<h1 th:text="${hello}">Hello</h1>
+	<div layout:fragment="content"></div>
+</body>
+
+%OUTPUT
+<body>
+    <h1>world</h1>
+    <div>...</div>
+</body>

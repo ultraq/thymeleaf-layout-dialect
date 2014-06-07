@@ -1,22 +1,20 @@
 
-# Test the merging of local variables set with the th:with processor, across
-# content and fragment pages.
+# Test decoration of a page with body content only, using a head-only layout.
 
 %TEMPLATE_MODE HTML5
-
-%CONTEXT
-var1 = "Content variable"
-var2 = "Layout variable"
 
 %INPUT
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorator="Layout">
-	<body th:with="contentvar=${var1}">
+	<body>
 		<section layout:fragment="content">
-			<p th:text="|${layoutvar} - ${contentvar}|"></p>
+			<p>This is a paragraph from content page 1</p>
 		</section>
+		<footer>
+			<p layout:fragment="custom-footer">This is some footer content from content page 1</p>
+		</footer>
 	</body>
 </html>
 
@@ -25,22 +23,24 @@ var2 = "Layout variable"
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 	<head>
-		<title>Local variable merging test</title>
+		<title>Layout page</title>
+		<script src="common-script.js"></script>
 	</head>
-	<body th:with="layoutvar=${var2}">
-		<section layout:fragment="content"></section>
-	</body>
 </html>
 
 %OUTPUT
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<title>Local variable merging test</title>
+		<title>Layout page</title>
+		<script src="common-script.js"></script>
 	</head>
 	<body>
 		<section>
-			<p>Layout variable - Content variable</p>
+			<p>This is a paragraph from content page 1</p>
 		</section>
+		<footer>
+			<p>This is some footer content from content page 1</p>
+		</footer>
 	</body>
 </html>

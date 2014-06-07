@@ -1,0 +1,77 @@
+
+# Test a deep layout hierarchy (3 levels).
+
+%TEMPLATE_MODE HTML5
+
+%INPUT
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="Parent">
+	<head>
+		<title>Page title</title>
+		<script src="child-script.js"></script>
+	</head>
+	<body>
+		<div layout:fragment="content">
+			<p>This is a paragraph from the child page</p>
+		</div>
+	</body>
+</html>
+
+%INPUT[Parent]
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="Grandparent">
+	<body>
+		<section layout:fragment="section">
+			<header>
+				<h1>My website</h1>
+			</header>
+			<div layout:fragment="content">
+				<p>Page content goes here</p>
+			</div>
+			<footer>
+				<p>My footer</p>
+			</footer>
+		</section>
+	</body>
+</html>
+
+%INPUT[Grandparent]
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	<head>
+		<script src="grandparent-script.js"></script>
+	</head>
+	<body>
+		<section layout:fragment="section">
+			<p>Middle layout section goes here</p>
+		</section>
+	</body>
+</html>
+
+%OUTPUT
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Page title</title>
+		<script src="grandparent-script.js"></script>
+		<script src="child-script.js"></script>
+	</head>
+	<body>
+		<section>
+			<header>
+				<h1>My website</h1>
+			</header>
+			<div>
+				<p>This is a paragraph from the child page</p>
+			</div>
+			<footer>
+				<p>My footer</p>
+			</footer>
+		</section>  
+	</body>
+</html>

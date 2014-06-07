@@ -1,21 +1,18 @@
 
-# Test the merging of local variables set with the th:with processor, across
-# content and fragment pages.
+# Test the behaviour when there's no content title.
 
 %TEMPLATE_MODE HTML5
-
-%CONTEXT
-var1 = "Content variable"
-var2 = "Layout variable"
 
 %INPUT
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorator="Layout">
-	<body th:with="contentvar=${var1}">
+	<head>
+	</head>
+	<body>
 		<section layout:fragment="content">
-			<p th:text="|${layoutvar} - ${contentvar}|"></p>
+			<p>This is a paragraph from the content page</p>
 		</section>
 	</body>
 </html>
@@ -25,10 +22,12 @@ var2 = "Layout variable"
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 	<head>
-		<title>Local variable merging test</title>
+		<title layout:title-pattern="$DECORATOR_TITLE - $CONTENT_TITLE">Layout title</title>
 	</head>
-	<body th:with="layoutvar=${var2}">
-		<section layout:fragment="content"></section>
+	<body>
+		<section layout:fragment="content">
+			<p>Page content goes here</p>
+		</section>
 	</body>
 </html>
 
@@ -36,11 +35,11 @@ var2 = "Layout variable"
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<title>Local variable merging test</title>
+		<title>Layout title</title>
 	</head>
 	<body>
 		<section>
-			<p>Layout variable - Content variable</p>
+			<p>This is a paragraph from the content page</p>
 		</section>
 	</body>
 </html>

@@ -1,0 +1,63 @@
+
+# Test decoration of a page with both head and body content, using a body-only
+# layout.
+
+%TEMPLATE_MODE HTML5
+
+%INPUT
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="Layout">
+	<head>
+		<title>Content page 1</title>
+		<script src="content-script.js"></script>
+	</head>
+	<body>
+		<section layout:fragment="content">
+			<p>This is a paragraph from content page 1</p>
+		</section>
+		<footer>
+			<p layout:fragment="custom-footer">This is some footer content from content page 1</p>
+		</footer>
+	</body>
+</html>
+
+%INPUT[Layout]
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	<body>
+		<header>
+			<h1>My website</h1>
+		</header>
+		<section layout:fragment="content">
+			<p>Page content goes here</p>
+		</section>
+		<footer>
+			<p>My footer</p>
+			<p layout:fragment="custom-footer">Custom footer here</p>
+		</footer>
+	</body>
+</html>
+
+%OUTPUT
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Content page 1</title>
+		<script src="content-script.js"></script>
+	</head>
+	<body>
+		<header>
+			<h1>My website</h1>
+		</header>
+		<section>
+			<p>This is a paragraph from content page 1</p>
+		</section>
+		<footer>
+			<p>My footer</p>
+			<p>This is some footer content from content page 1</p>
+		</footer>  
+	</body>
+</html>
