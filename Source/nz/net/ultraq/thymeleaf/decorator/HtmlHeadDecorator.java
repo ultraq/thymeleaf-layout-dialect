@@ -16,15 +16,18 @@
 
 package nz.net.ultraq.thymeleaf.decorator;
 
+import static nz.net.ultraq.thymeleaf.LayoutDialect.DIALECT_PREFIX_LAYOUT;
 import static nz.net.ultraq.thymeleaf.LayoutUtilities.*;
 import static nz.net.ultraq.thymeleaf.decorator.TitlePatternProcessor.CONTENT_TITLE;
 import static nz.net.ultraq.thymeleaf.decorator.TitlePatternProcessor.DECORATOR_TITLE;
+import static nz.net.ultraq.thymeleaf.decorator.TitlePatternProcessor.PROCESSOR_NAME_TITLEPATTERN;
 
 import org.thymeleaf.dom.Element;
 import org.thymeleaf.dom.Node;
 import org.thymeleaf.dom.Text;
 import org.thymeleaf.standard.StandardDialect;
 import org.thymeleaf.standard.processor.attr.StandardTextAttrProcessor;
+import org.thymeleaf.standard.processor.attr.StandardUtextAttrProcessor;
 
 /**
  * A decorator specific to processing an HTML HEAD element.
@@ -77,6 +80,13 @@ public class HtmlHeadDecorator extends XmlElementDecorator {
 			if (contenttitle != null) {
 				extractTitle(contenthead, contenttitle, CONTENT_TITLE, resultingtitle);
 			}
+
+			// If there's a title pattern, get rid of all other text setters so
+			// they don't interfere with it
+			if (hasAttribute(resultingtitle, DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_TITLEPATTERN)) {
+				removeAttribute(resultingtitle, StandardDialect.PREFIX, StandardTextAttrProcessor.ATTR_NAME);
+				removeAttribute(resultingtitle, StandardDialect.PREFIX, StandardUtextAttrProcessor.ATTR_NAME);
+			}
 		}
 
 		// Append the content's HEAD elements to the end of the decorator's HEAD
@@ -106,20 +116,31 @@ public class HtmlHeadDecorator extends XmlElementDecorator {
 	 */
 	private static void extractTitle(Element head, Element title, String titlekey, Element result) {
 
+		// Make the result look like the title
 		Text titletext = (Text)title.getFirstChild();
 		result.clearChildren();
 		result.addChild(titletext);
-		if (hasAttribute(title, StandardDialect.PREFIX, StandardTextAttrProcessor.ATTR_NAME)) {
+
+		// Extract any text or processors from the title element's attributes
+		if (hasAttribute(title, StandardDialect.PREFIX, StandardUtextAttrProcessor.ATTR_NAME)) {
+			result.setNodeProperty(titlekey, getAttributeValue(title,
+					StandardDialect.PREFIX, StandardUtextAttrProcessor.ATTR_NAME));
+		}
+		else if (hasAttribute(title, StandardDialect.PREFIX, StandardTextAttrProcessor.ATTR_NAME)) {
 			result.setNodeProperty(titlekey, getAttributeValue(title,
 					StandardDialect.PREFIX, StandardTextAttrProcessor.ATTR_NAME));
-			removeAttribute(title, StandardDialect.PREFIX, StandardTextAttrProcessor.ATTR_NAME);
 		}
+
+		// Extract text from a previously set value (deep hierarchies)
 		else if (title.hasNodeProperty(titlekey)) {
 			result.setNodeProperty(titlekey, title.getNodeProperty(titlekey));
 		}
+
+		// Extract text from the title element's content
 		else if (titletext != null) {
 			result.setNodeProperty(titlekey, titletext.getContent());
 		}
+
 		pullAttributes(result, title);
 		head.removeChild(title);
 	}
