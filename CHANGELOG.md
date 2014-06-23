@@ -71,7 +71,6 @@ Changelog
    library.
  - Added a `layout:substituteby` processor which works much like `layout:include`,
    but with the behaviour of Thymeleaf's `th:substituteby` ([#21](https://github.com/ultraq/thymeleaf-layout-dialect/issues/21))
- - Updated Thymeleaf dependency from version 2.0.15 to 2.0.17.
 
 ### 1.0.6
  - Added a help/documentation file so that this dialect will appear in content
@@ -86,7 +85,6 @@ Changelog
    decorator `<title>`).
  - Made it so that content outside the decorator page's `<html>` element (like
    IE conditional comments) are included in the resulting page ([#10](https://github.com/ultraq/thymeleaf-layout-dialect/issues/10))
- - Updated Thymeleaf dependency from version 2.0.13 to 2.0.15.
 
 ### 1.0.4
  - Fixed enforcing of `layout:decorator` element being in the root element,
@@ -96,7 +94,6 @@ Changelog
    like m2eclipse.
  - Fix a `ClassCastException` for cases when `layout:include` was used to
    include entire pages ([#7](https://github.com/ultraq/thymeleaf-layout-dialect/issues/7))
- - Updated Thymeleaf dependency from version 2.0.11 to 2.0.13.
 
 ### 1.0.3
  - Added a `layout:include` attribute which works like `th:include` but allows
@@ -106,8 +103,7 @@ Changelog
  - Removed the restriction that the `layout:decorator` tag appear in an HTML
    element since Thymeleaf 2.0.10 relaxed that restriction too (tag must still
    appear in the root element of your page however) ([#4](https://github.com/ultraq/thymeleaf-layout-dialect/issues/4))
- - Updated Thymeleaf dependency from version 2.0.8 to 2.0.11 for the above issue
-   due to a required API change in 2.0.11.
+ - Updated Thymeleaf dependency to 2.0.11 for a required API change.
 
 ### 1.0.2
  - Allow a decorator and content pages to contain just a `<head>` section, or
