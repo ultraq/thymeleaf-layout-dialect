@@ -3,6 +3,7 @@
 # output.
 
 %TEMPLATE_MODE HTML5
+%EXACT_MATCH
 
 %INPUT
 <!DOCTYPE html>

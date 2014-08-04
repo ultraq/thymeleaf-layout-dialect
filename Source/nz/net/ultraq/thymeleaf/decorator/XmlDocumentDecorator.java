@@ -18,6 +18,7 @@ package nz.net.ultraq.thymeleaf.decorator;
 
 import static nz.net.ultraq.thymeleaf.LayoutUtilities.*;
 
+import org.thymeleaf.dom.Comment;
 import org.thymeleaf.dom.Document;
 import org.thymeleaf.dom.Element;
 import org.thymeleaf.dom.Node;
@@ -38,20 +39,25 @@ public class XmlDocumentDecorator extends Decorator {
 		Document decoratordocument = (Document)decorator.getParent();
 		Document contentdocument   = (Document)content.getParent();
 
-		// Copy text outside of the root element
+		// Copy text outside of the root element, keeping whitespace copied to a minimum
 		boolean beforehtml = true;
+		boolean allownext = false;
 		Node lastnode = content;
 		for (Node externalnode: decoratordocument.getChildren()) {
 			if (externalnode.equals(decorator)) {
 				beforehtml = false;
+				allownext = true;
 				continue;
 			}
-			if (beforehtml) {
-				contentdocument.insertBefore(content, externalnode);
-			}
-			else {
-				contentdocument.insertAfter(lastnode, externalnode);
-				lastnode = externalnode;
+			if (externalnode instanceof Comment || allownext) {
+				if (beforehtml) {
+					contentdocument.insertBefore(content, externalnode);
+				}
+				else {
+					contentdocument.insertAfter(lastnode, externalnode);
+					lastnode = externalnode;
+				}
+				allownext = !allownext;
 			}
 		}
 
