@@ -57,7 +57,7 @@ public class XmlDocumentDecorator extends Decorator {
 					contentdocument.insertAfter(lastnode, externalnode);
 					lastnode = externalnode;
 				}
-				allownext = !allownext;
+				allownext = externalnode instanceof Comment;
 			}
 		}
 
