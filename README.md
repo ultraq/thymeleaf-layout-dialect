@@ -7,8 +7,8 @@ style your content, as well as pass entire fragment elements to included pages,
 all to help improve code reuse.  If you've ever used SiteMesh or JSF with
 Facelets, then the concepts of this library will be very familiar to you.
 
- - Current version: 1.2.5
- - Released: 23 June 2014
+ - Current version: 1.2.6
+ - Released: ?? ??? 2014
 
 This version is for Thymeleaf 2.1.  Check out the [master-thymeleaf-2.0 branch](https://github.com/ultraq/thymeleaf-layout-dialect/tree/master-thymeleaf-2.0)
 for a version of the Layout Dialect that supports Thymeleaf 2.0.
@@ -33,7 +33,7 @@ Add a dependency to your project with the following co-ordinates:
 
  - GroupId: `nz.net.ultraq.thymeleaf`
  - ArtifactId: `thymeleaf-layout-dialect`
- - Version: `1.2.5`
+ - Version: `1.2.6`
 
 
 Usage

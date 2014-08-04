@@ -2,6 +2,10 @@
 Changelog
 =========
 
+### 1.2.6
+ - Reduce the amount of whitespace copied surrounding the `<html>` tag
+   ([#50](https://github.com/ultraq/thymeleaf-layout-dialect/pull/50))
+
 ### 1.2.5
  - Restore title fallback behaviour when either content or decorator title
    elements are empty ([#45](https://github.com/ultraq/thymeleaf-layout-dialect/pull/45))
