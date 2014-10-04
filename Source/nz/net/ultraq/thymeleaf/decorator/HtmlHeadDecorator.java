@@ -166,18 +166,22 @@ public class HtmlHeadDecorator extends XmlElementDecorator {
 	}
 
 	/**
-	 * Attempt to find the best place for a given node in amongst all the other
-	 * HEAD nodes.  Used to attempt smarter merging of the decorator and content
-	 * HEAD sections so that like elements are grouped together.  Currently,
-	 * only stylesheets and scripts are subject to this logic, with the rule
-	 * being that stylesheets must appear before scripts.  Everything else just
-	 * results in a value that would put it at the end of the HEAD section.
+	 * Attempt to find the best place to merge a content element into the
+	 * decorator HEAD section, ensuring like elements are grouped together.
+	 * Currently, only stylesheets and scripts are subject to this logic.
+	 * Everything else just results in a value that would put it at the end of
+	 * the HEAD section.
 	 * 
 	 * @param head
 	 * @param element
 	 * @return Best guess at where the node should be inserted in the HEAD.
 	 */
 	private int findBestInsertionPoint(Element head, Element element) {
+
+		// TODO: Expand this to include all other element types.  Will likely
+		//       leave this until the Groovy rewrite as I know how to solve this
+		//       problem in a functional programming style - it'll be too much
+		//       code in plain Java.
 
 		HeadElement type = HeadElement.findMatchingType(element);
 
