@@ -10,8 +10,12 @@
 	layout:decorator="Layout">
 	<head>
 		<title>Content page</title>
-		<link rel="stylesheet" src="content-styles.css"/>
-		<script src="content-script.js"></script>
+
+		<link rel="stylesheet" src="content-styles1.css"/>
+		<link rel="stylesheet" src="content-styles2.css"/>
+
+		<script src="content-script1.js"></script>
+		<script src="content-script2.js"></script>
 	</head>
 </html>
 
@@ -24,8 +28,11 @@
 		<meta charset="UTF-8"/>
 		<base href="http://www.thymeleaf.org/test/"/>
 		<link rel="icon" href="images/icon.png"/>
+
 		<link rel="stylesheet" src="common-styles.css"/>
+
 		<script src="common-script.js"></script>
+
 		<link rel="alternate" type="application/rss+xml" href="feed/" title="Test RSS feed"/>
 	</head>
 </html>
@@ -38,10 +45,15 @@
 		<meta charset="UTF-8"/>
 		<base href="http://www.thymeleaf.org/test/"/>
 		<link rel="icon" href="images/icon.png"/>
+
 		<link rel="stylesheet" src="common-styles.css"/>
-		<link rel="stylesheet" src="content-styles.css"/>
+		<link rel="stylesheet" src="content-styles1.css"/>
+		<link rel="stylesheet" src="content-styles2.css"/>
+
 		<script src="common-script.js"></script>
-		<script src="content-script.js"></script>
+		<script src="content-script1.js"></script>
+		<script src="content-script2.js"></script>
+
 		<link rel="alternate" type="application/rss+xml" href="feed/" title="Test RSS feed"/>
 	</head>
 </html>
