@@ -29,12 +29,20 @@ import org.thymeleaf.standard.StandardDialect;
 import org.thymeleaf.standard.processor.attr.StandardTextAttrProcessor;
 import org.thymeleaf.standard.processor.attr.StandardUtextAttrProcessor;
 
+import java.util.List;
+
 /**
  * A decorator specific to processing an HTML HEAD element.
  * 
  * @author Emanuel Rabina
  */
 public class HtmlHeadDecorator extends XmlElementDecorator {
+
+	private static final String HEAD_ELEMENT_SCRIPT      = "script";
+	private static final String HEAD_ELEMENT_LINK        = "link";
+	private static final String HEAD_ELEMENT_STYLESHEET  = "style";
+	private static final String REL_ATTRIBUTE            = "rel";
+	private static final String REL_ATTRIBUTE_STYLESHEET = "stylesheet";
 
 	/**
 	 * Decorate the HEAD part.  This step replaces the decorator's TITLE element
@@ -89,15 +97,27 @@ public class HtmlHeadDecorator extends XmlElementDecorator {
 			}
 		}
 
-		// Append the content's HEAD elements to the end of the decorator's HEAD
-		// section, placing the resulting title at the beginning of it
+		// Merge the content's HEAD elements with the decorator's HEAD section,
+		// placing the resulting title at the beginning of it
+		// TODO: Create common function for adding elements ahead of whitespace
 		if (contenthead != null) {
-			for (Node contentheadnode: contenthead.getChildren()) {
-				decoratorhead.addChild(contentheadnode);
+			for (Element contentheadelement: contenthead.getElementChildren()) {
+				int insertionpoint = findBestInsertionPoint(decoratorhead, contentheadelement);
+				Node whitespace = decoratorhead.getChildren().get(insertionpoint);
+				if (whitespace instanceof Text) {
+					decoratorhead.insertChild(insertionpoint, whitespace.cloneNode(null, false));
+				}
+				decoratorhead.insertChild(insertionpoint + 1, contentheadelement);
 			}
 		}
 		if (resultingtitle != null) {
-			decoratorhead.insertChild(0, new Text(LINE_SEPARATOR));
+			Node firstnode = decoratorhead.getFirstChild();
+			if (firstnode instanceof Text) {
+				decoratorhead.insertChild(0, firstnode.cloneNode(null, false));
+			}
+			else {
+				decoratorhead.insertChild(0, new Text(LINE_SEPARATOR));
+			}
 			decoratorhead.insertChild(1, resultingtitle);
 		}
 
@@ -143,5 +163,95 @@ public class HtmlHeadDecorator extends XmlElementDecorator {
 
 		pullAttributes(result, title);
 		head.removeChild(title);
+	}
+
+	/**
+	 * Attempt to find the best place for a given node in amongst all the other
+	 * HEAD nodes.  Used to attempt smarter merging of the decorator and content
+	 * HEAD sections so that like elements are grouped together.  Currently,
+	 * only stylesheets and scripts are subject to this logic, with the rule
+	 * being that stylesheets must appear before scripts.  Everything else just
+	 * results in a value that would put it at the end of the HEAD section.
+	 * 
+	 * @param head
+	 * @param element
+	 * @return Best guess at where the node should be inserted in the HEAD.
+	 */
+	private int findBestInsertionPoint(Element head, Element element) {
+
+		HeadElement type = HeadElement.findMatchingType(element);
+
+		int indexoflastoftype = -1;
+		List<Node> headnodes = head.getChildren();
+		for (int i = 0; i < headnodes.size(); i++) {
+			Node headnode = headnodes.get(i);
+			if (headnode instanceof Element && HeadElement.findMatchingType((Element)headnode) == type) {
+				indexoflastoftype = i;
+			}
+		}
+
+		return indexoflastoftype != -1 ? indexoflastoftype + 1 : headnodes.size();
+	}
+
+	/**
+	 * Returns a value indicating the type of HEAD element that was given.
+	 * 
+	 * @param element
+	 * @return A value indicating a script, stylesheet, or other element type.
+	 */
+	private static HeadElement getHeadElementType(Element element) {
+
+		String elementname = element.getNormalizedName();
+
+		if (elementname.equals(HEAD_ELEMENT_SCRIPT)) {
+			return HeadElement.SCRIPT;
+		}
+		else if (elementname.equals(HEAD_ELEMENT_STYLESHEET) ||
+				(elementname.equals(HEAD_ELEMENT_LINK) &&
+				 element.hasAttribute(REL_ATTRIBUTE) &&
+				 element.getAttributeValue(REL_ATTRIBUTE).equals(REL_ATTRIBUTE_STYLESHEET))) {
+			return HeadElement.STYLESHEET;
+		}
+
+		return HeadElement.OTHER;
+	}
+
+
+	/**
+	 * Enum for the types of elements in the HEAD section that we might need to
+	 * sort.
+	 */
+	private static enum HeadElement {
+
+		STYLESHEET,
+		SCRIPT,
+		OTHER;
+
+		private static final String HEAD_ELEMENT_SCRIPT      = "script";
+		private static final String HEAD_ELEMENT_LINK        = "link";
+		private static final String HEAD_ELEMENT_STYLESHEET  = "style";
+		private static final String REL_ATTRIBUTE            = "rel";
+		private static final String REL_ATTRIBUTE_STYLESHEET = "stylesheet";
+
+		/**
+		 * Figure out the enum for the given element type.
+		 *
+		 * @param element
+		 * @return Matching <tt>HeadElement</tt> enum to descript the element.
+		 */
+		private static HeadElement findMatchingType(Element element) {
+
+			String elementname = element.getNormalizedName();
+			if (elementname.equals(HEAD_ELEMENT_SCRIPT)) {
+				return SCRIPT;
+			}
+			else if (elementname.equals(HEAD_ELEMENT_STYLESHEET) ||
+					(elementname.equals(HEAD_ELEMENT_LINK) &&
+							element.hasAttribute(REL_ATTRIBUTE) &&
+							element.getAttributeValue(REL_ATTRIBUTE).equals(REL_ATTRIBUTE_STYLESHEET))) {
+				return STYLESHEET;
+			}
+			return OTHER;
+		}
 	}
 }
