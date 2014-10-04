@@ -193,29 +193,6 @@ public class HtmlHeadDecorator extends XmlElementDecorator {
 		return indexoflastoftype != -1 ? indexoflastoftype + 1 : headnodes.size();
 	}
 
-	/**
-	 * Returns a value indicating the type of HEAD element that was given.
-	 * 
-	 * @param element
-	 * @return A value indicating a script, stylesheet, or other element type.
-	 */
-	private static HeadElement getHeadElementType(Element element) {
-
-		String elementname = element.getNormalizedName();
-
-		if (elementname.equals(HEAD_ELEMENT_SCRIPT)) {
-			return HeadElement.SCRIPT;
-		}
-		else if (elementname.equals(HEAD_ELEMENT_STYLESHEET) ||
-				(elementname.equals(HEAD_ELEMENT_LINK) &&
-				 element.hasAttribute(REL_ATTRIBUTE) &&
-				 element.getAttributeValue(REL_ATTRIBUTE).equals(REL_ATTRIBUTE_STYLESHEET))) {
-			return HeadElement.STYLESHEET;
-		}
-
-		return HeadElement.OTHER;
-	}
-
 
 	/**
 	 * Enum for the types of elements in the HEAD section that we might need to
