@@ -5,6 +5,8 @@ Changelog
 ### 1.2.6
  - Reduce the amount of whitespace copied surrounding the `<html>` tag
    ([#50](https://github.com/ultraq/thymeleaf-layout-dialect/pull/50))
+ - Start logic to group like elements in the merged `<head>` section together
+   ([#52](https://github.com/ultraq/thymeleaf-layout-dialect/pull/52))
 
 ### 1.2.5
  - Restore title fallback behaviour when either content or decorator title
