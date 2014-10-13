@@ -2,15 +2,19 @@
 Changelog
 =========
 
+### 1.2.7
+ - Fix for the grouping of like elements when the `<head>` section is empty
+   ([#54](https://github.com/ultraq/thymeleaf-layout-dialect/issues/54))
+
 ### 1.2.6
  - Reduce the amount of whitespace copied surrounding the `<html>` tag
-   ([#50](https://github.com/ultraq/thymeleaf-layout-dialect/pull/50))
+   ([#50](https://github.com/ultraq/thymeleaf-layout-dialect/issues/50))
  - Start logic to group like elements in the merged `<head>` section together
-   ([#52](https://github.com/ultraq/thymeleaf-layout-dialect/pull/52))
+   ([#52](https://github.com/ultraq/thymeleaf-layout-dialect/issues/52))
 
 ### 1.2.5
  - Restore title fallback behaviour when either content or decorator title
-   elements are empty ([#45](https://github.com/ultraq/thymeleaf-layout-dialect/pull/45))
+   elements are empty ([#45](https://github.com/ultraq/thymeleaf-layout-dialect/issues/45))
  - Fix title creation when using `th:text` without a `layout:title-pattern`
    processor ([#46](https://github.com/ultraq/thymeleaf-layout-dialect/pull/46))
 
