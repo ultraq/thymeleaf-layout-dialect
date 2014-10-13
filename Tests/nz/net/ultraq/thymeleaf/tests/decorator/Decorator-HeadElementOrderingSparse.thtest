@@ -1,0 +1,31 @@
+
+# Test the sort order imposed on elements in the head section with a sparse
+# number of elements
+
+%TEMPLATE_MODE HTML5
+
+%INPUT
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="Layout">
+	<head>
+		<meta name="test" content="roflcopter"/>
+	</head>
+</html>
+
+%INPUT[Layout]
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	<head>
+	</head>
+</html>
+
+%OUTPUT
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta name="test" content="roflcopter"/>
+	</head>
+</html>
