@@ -38,12 +38,6 @@ import java.util.List;
  */
 public class HtmlHeadDecorator extends XmlElementDecorator {
 
-	private static final String HEAD_ELEMENT_SCRIPT      = "script";
-	private static final String HEAD_ELEMENT_LINK        = "link";
-	private static final String HEAD_ELEMENT_STYLESHEET  = "style";
-	private static final String REL_ATTRIBUTE            = "rel";
-	private static final String REL_ATTRIBUTE_STYLESHEET = "stylesheet";
-
 	/**
 	 * Decorate the HEAD part.  This step replaces the decorator's TITLE element
 	 * if the content has one, and appends all other content elements to the
@@ -99,26 +93,14 @@ public class HtmlHeadDecorator extends XmlElementDecorator {
 
 		// Merge the content's HEAD elements with the decorator's HEAD section,
 		// placing the resulting title at the beginning of it
-		// TODO: Create common function for adding elements ahead of whitespace
 		if (contenthead != null) {
 			for (Element contentheadelement: contenthead.getElementChildren()) {
 				int insertionpoint = findBestInsertionPoint(decoratorhead, contentheadelement);
-				Node whitespace = decoratorhead.getChildren().get(insertionpoint);
-				if (whitespace instanceof Text) {
-					decoratorhead.insertChild(insertionpoint, whitespace.cloneNode(null, false));
-				}
-				decoratorhead.insertChild(insertionpoint + 1, contentheadelement);
+				insertElementWithWhitespace(decoratorhead, contentheadelement, insertionpoint);
 			}
 		}
 		if (resultingtitle != null) {
-			Node firstnode = decoratorhead.getFirstChild();
-			if (firstnode instanceof Text) {
-				decoratorhead.insertChild(0, firstnode.cloneNode(null, false));
-			}
-			else {
-				decoratorhead.insertChild(0, new Text(LINE_SEPARATOR));
-			}
-			decoratorhead.insertChild(1, resultingtitle);
+			insertElementWithWhitespace(decoratorhead, resultingtitle, 0);
 		}
 
 		super.decorate(decoratorhead, contenthead);
@@ -172,8 +154,8 @@ public class HtmlHeadDecorator extends XmlElementDecorator {
 	 * Everything else just results in a value that would put it at the end of
 	 * the HEAD section.
 	 * 
-	 * @param head
-	 * @param element
+	 * @param head    HEAD element.
+	 * @param element The element to insert.
 	 * @return Best guess at where the node should be inserted in the HEAD.
 	 */
 	private int findBestInsertionPoint(Element head, Element element) {
@@ -186,15 +168,37 @@ public class HtmlHeadDecorator extends XmlElementDecorator {
 		HeadElement type = HeadElement.findMatchingType(element);
 
 		int indexoflastoftype = -1;
+		int numelements = 0;
 		List<Node> headnodes = head.getChildren();
 		for (int i = 0; i < headnodes.size(); i++) {
 			Node headnode = headnodes.get(i);
-			if (headnode instanceof Element && HeadElement.findMatchingType((Element)headnode) == type) {
-				indexoflastoftype = i;
+			if (headnode instanceof Element) {
+				numelements++;
+				if (HeadElement.findMatchingType((Element)headnode) == type) {
+					indexoflastoftype = i;
+				}
 			}
 		}
 
-		return indexoflastoftype != -1 ? indexoflastoftype + 1 : headnodes.size();
+		return indexoflastoftype != -1 ? indexoflastoftype + 1 : numelements == 0 ? 0 : headnodes.size();
+	}
+
+	/**
+	 * Inserts an element as a child of another element, creating a matching
+	 * whitespace node before it so that it appears in line with all the
+	 * existing children.
+	 * 
+	 * @param parent         Element group to add the child to.
+	 * @param child          Element to add.
+	 * @param insertionpoint Point at which to insert the child element.
+	 */
+	private void insertElementWithWhitespace(Element parent, Element child, int insertionpoint) {
+
+		Node whitespace = parent.getChildren().get(insertionpoint);
+		parent.insertChild(insertionpoint, whitespace instanceof Text ?
+				whitespace.cloneNode(null, false) :
+				new Text(LINE_SEPARATOR));
+		parent.insertChild(insertionpoint + 1, child);
 	}
 
 
@@ -217,7 +221,7 @@ public class HtmlHeadDecorator extends XmlElementDecorator {
 		/**
 		 * Figure out the enum for the given element type.
 		 *
-		 * @param element
+		 * @param element The element to match.
 		 * @return Matching <tt>HeadElement</tt> enum to descript the element.
 		 */
 		private static HeadElement findMatchingType(Element element) {
