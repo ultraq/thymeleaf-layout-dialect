@@ -167,20 +167,27 @@ public class HtmlHeadDecorator extends XmlElementDecorator {
 
 		HeadElement type = HeadElement.findMatchingType(element);
 
-		int indexoflastoftype = -1;
-		int numelements = 0;
+		int indexoflastoftype  = -1;
+		int indexoflastelement = -1;
+		int indexoflastgap     = -1;
 		List<Node> headnodes = head.getChildren();
 		for (int i = 0; i < headnodes.size(); i++) {
 			Node headnode = headnodes.get(i);
 			if (headnode instanceof Element) {
-				numelements++;
+				indexoflastelement = i;
 				if (HeadElement.findMatchingType((Element)headnode) == type) {
 					indexoflastoftype = i;
 				}
 			}
+			if (i == headnodes.size() - 1 && headnode instanceof Text) {
+				indexoflastgap = i;
+			}
 		}
 
-		return indexoflastoftype != -1 ? indexoflastoftype + 1 : numelements == 0 ? 0 : headnodes.size();
+		return indexoflastoftype  != -1 ? indexoflastoftype  + 1 :	// After last matching type
+		       indexoflastelement != -1 ? indexoflastelement + 1 :	// After last element
+		       indexoflastgap     != -1 ? indexoflastgap :			// At the last gap
+		       headnodes.size();									// At the end
 	}
 
 	/**
@@ -194,11 +201,18 @@ public class HtmlHeadDecorator extends XmlElementDecorator {
 	 */
 	private void insertElementWithWhitespace(Element parent, Element child, int insertionpoint) {
 
-		Node whitespace = parent.getChildren().get(insertionpoint);
-		parent.insertChild(insertionpoint, whitespace instanceof Text ?
-				whitespace.cloneNode(null, false) :
-				new Text(LINE_SEPARATOR));
-		parent.insertChild(insertionpoint + 1, child);
+		List<Node> children = parent.getChildren();
+
+		// Insert a whitespace gap between elements if available
+		if (!children.isEmpty()) {
+			Node whitespace = children.get(Math.min(insertionpoint, children.size() - 1));
+			if (whitespace instanceof Text) {
+				parent.insertChild(insertionpoint, whitespace.cloneNode(null, false));
+				parent.insertChild(insertionpoint + 1, child);
+				return;
+			}
+		}
+		parent.insertChild(insertionpoint, child);
 	}
 
 
