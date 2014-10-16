@@ -103,11 +103,15 @@ public class HtmlHeadDecorator extends XmlElementDecorator {
 		if (contenthead != null) {
 			for (Element contentheadelement: contenthead.getElementChildren()) {
 				int insertionpoint = findBestInsertionPoint(decoratorhead, contentheadelement);
-				Node whitespace = decoratorhead.getChildren().get(insertionpoint);
-				if (whitespace instanceof Text) {
-					decoratorhead.insertChild(insertionpoint, whitespace.cloneNode(null, false));
+				if (insertionpoint < decoratorhead.getChildren().size()) {
+	            Node whitespace = decoratorhead.getChildren().get(insertionpoint);
+	            if (whitespace instanceof Text) {
+	               decoratorhead.insertChild(insertionpoint, whitespace.cloneNode(null, false));
+	            }
+	            decoratorhead.insertChild(insertionpoint + 1, contentheadelement);
+				} else {
+               decoratorhead.insertChild(insertionpoint, contentheadelement);
 				}
-				decoratorhead.insertChild(insertionpoint + 1, contentheadelement);
 			}
 		}
 		if (resultingtitle != null) {
