@@ -2,6 +2,11 @@
 Changelog
 =========
 
+### 1.2.8
+ - Contribution from [Oliver Niekrenz](https://github.com/oniekrenz) to fix a
+   recursion issue in the way fragments are picked out of templates
+   ([#60](https://github.com/ultraq/thymeleaf-layout-dialect/pull/60))
+
 ### 1.2.7
  - Fix for `ArrayIndexOutOfBoundsException`s coming out of the grouping feature
    introduced in 1.2.6

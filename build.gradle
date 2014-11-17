@@ -35,13 +35,19 @@ project.sourceCompatibility = '1.6'
 
 project.group    = 'nz.net.ultraq.thymeleaf'
 project.artifact = 'thymeleaf-layout-dialect'
-project.version  = '1.2.7'
+project.version  = '1.2.8-SNAPSHOT'
 project.year     = '2012'
 project.contributors = [
 	[
 		name:  'Justin Munn',
 		roles: ['developer'],
 		contribution: 'Fixed up bugs in the title-pattern processor so that it behaves more naturally'
+	],
+	[
+		name:  'Oliver Niekrenz',
+		email: 'oliver@niekrenz.de',
+		roles: ['developer'],
+		contribution: 'Fixed a recursion issue in the way fragments are picked out of templates'
 	]
 ]
 

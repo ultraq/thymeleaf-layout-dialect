@@ -66,10 +66,10 @@ public abstract class AbstractContentProcessor extends AbstractAttrProcessor {
 	}
 
 	/**
-	 * Recursive clone of all fragment elements without delving into delving
-	 * into <tt>layout:include</tt>, <tt>layout:replace</tt>, or
+	 * Recursive clone of all fragment elements without delving into
+	 * <tt>layout:include</tt>, <tt>layout:replace</tt>, or
 	 * <tt>layout:substituteby</tt> elements.
-	 *
+	 * 
 	 * @param fragments
 	 * @param elements
 	 */
@@ -81,12 +81,11 @@ public abstract class AbstractContentProcessor extends AbstractAttrProcessor {
 				Element fragment = (Element)element.cloneNode(null, true);
 				removeAttribute(fragment, DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_FRAGMENT);
 				fragments.put(FRAGMENT_NAME_PREFIX + fragmentname, fragment);
-			} else {
-				if (!hasAttribute(element, DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_INCLUDE) &&
-					!hasAttribute(element, DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_REPLACE) &&
-					!hasAttribute(element, DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_SUBSTITUTEBY)) {
-					findFragments(fragments, element.getElementChildren());
-				}
+			}
+			else if (!hasAttribute(element, DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_INCLUDE) &&
+				!hasAttribute(element, DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_REPLACE) &&
+				!hasAttribute(element, DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_SUBSTITUTEBY)) {
+				findFragments(fragments, element.getElementChildren());
 			}
 		}
 	}
