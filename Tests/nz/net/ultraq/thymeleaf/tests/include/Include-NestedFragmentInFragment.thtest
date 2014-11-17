@@ -1,0 +1,41 @@
+
+# Test the reference of a fragment content within a nested fragment call using include
+# Based off GitHub issue #57 - https://github.com/ultraq/thymeleaf-layout-dialect/issues/57
+
+%TEMPLATE_MODE HTML5
+
+%INPUT
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+    <div id="fragment-outer" layout:fragment="outer" th:remove="all">
+        <div id="include-inner" layout:include="this :: inner">
+            <div id="inner-content" layout:fragment="inner-content">
+                <div id="ref-outer" layout:fragment="outer-content">This should not be visible</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="fragment-inner" layout:fragment="inner" th:remove="all">
+        <div id="ref-inner" layout:fragment="inner-content"/>
+    </div>
+
+    <div id="include-outer" layout:include="this :: outer">
+        <div id="outer-content" layout:fragment="outer-content">Outer content</div>
+    </div>
+</html>
+
+
+%OUTPUT
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <div id="include-outer">
+        <div id="include-inner">
+            <div id="ref-inner">
+                <div id="ref-outer">Outer content</div>
+            </div>
+        </div>
+    </div>
+</html>

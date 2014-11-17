@@ -34,7 +34,7 @@ import java.util.Map;
 /**
  * Common code for processors that fetch the content of other pages to include
  * into the current template.
- * 
+ *
  * @author Emanuel Rabina
  */
 public abstract class AbstractContentProcessor extends AbstractAttrProcessor {
@@ -42,7 +42,7 @@ public abstract class AbstractContentProcessor extends AbstractAttrProcessor {
 	/**
 	 * Subclass constructor, set the attribute name that this processor will
 	 * respond to.
-	 * 
+	 *
 	 * @param attribute
 	 */
 	protected AbstractContentProcessor(String attribute) {
@@ -54,7 +54,7 @@ public abstract class AbstractContentProcessor extends AbstractAttrProcessor {
 	 * Find and return clones of all fragments within the given elements without
 	 * delving into <tt>layout:include</tt>, <tt>layout:replace</tt>, or
 	 * <tt>layout:substituteby</tt> elements.
-	 * 
+	 *
 	 * @param elements
 	 * @return Map of prefixed fragment names and their fragment elements.
 	 */
@@ -69,7 +69,7 @@ public abstract class AbstractContentProcessor extends AbstractAttrProcessor {
 	 * Recursive clone of all fragment elements without delving into delving
 	 * into <tt>layout:include</tt>, <tt>layout:replace</tt>, or
 	 * <tt>layout:substituteby</tt> elements.
-	 * 
+	 *
 	 * @param fragments
 	 * @param elements
 	 */
@@ -81,11 +81,12 @@ public abstract class AbstractContentProcessor extends AbstractAttrProcessor {
 				Element fragment = (Element)element.cloneNode(null, true);
 				removeAttribute(fragment, DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_FRAGMENT);
 				fragments.put(FRAGMENT_NAME_PREFIX + fragmentname, fragment);
-			}
-			if (!hasAttribute(element, DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_INCLUDE) &&
-				!hasAttribute(element, DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_REPLACE) &&
-				!hasAttribute(element, DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_SUBSTITUTEBY)) {
-				findFragments(fragments, element.getElementChildren());
+			} else {
+				if (!hasAttribute(element, DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_INCLUDE) &&
+					!hasAttribute(element, DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_REPLACE) &&
+					!hasAttribute(element, DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_SUBSTITUTEBY)) {
+					findFragments(fragments, element.getElementChildren());
+				}
 			}
 		}
 	}

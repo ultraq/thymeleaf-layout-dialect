@@ -1,0 +1,43 @@
+
+# Test the reference of a fragment content within a nested fragment call using replace
+# Based off GitHub issue #57 - https://github.com/ultraq/thymeleaf-layout-dialect/issues/57
+
+%TEMPLATE_MODE HTML5
+
+%INPUT
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+    <th:block th:remove="all">
+        <div id="fragment-outer" layout:fragment="outer">
+            <div id="replace-inner" layout:replace="this :: inner">
+                <div id="inner-content" layout:fragment="inner-content">
+                    <div id="ref-outer" layout:fragment="outer-content">This should not be visible</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="fragment-inner" layout:fragment="inner">
+            <div id="ref-inner" layout:fragment="inner-content"/>
+        </div>
+    </th:block>
+
+    <div id="replace-outer" layout:replace="this :: outer">
+        <div id="outer-content" layout:fragment="outer-content">Outer content</div>
+    </div>
+</html>
+
+
+%OUTPUT
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <div id="fragment-outer">
+        <div id="fragment-inner">
+            <div id="ref-inner">
+                <div id="ref-outer">Outer content</div>
+            </div>
+        </div>
+    </div>
+</html>
