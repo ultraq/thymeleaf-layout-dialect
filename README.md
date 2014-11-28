@@ -368,7 +368,7 @@ Modal2.html
 <html xmlns="http://www.w3.org/1999/xhtml"
   xmlns:th="http://www.thymeleaf.org"
   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-  <body layout:fragment="modal">
+  <body layout:fragment="modal(modalId, modalHeader)">
     <div th:id="${modalId} + '-container'" class="modal-container" style="display:none;">
       <section th:id="${modalId}" class="modal">
         <header>
@@ -402,7 +402,7 @@ Content.html
 
   ...
 
-  <div layout:include="Modal2.html :: modal" th:with="modalId='message', modalHeader='Message'" th:remove="tag">
+  <div layout:include="Modal2.html :: modal(modalId='message', modalHeader='Message')" th:remove="tag">
     <p layout:fragment="modal-content">Message goes here!</p>
   </div>
 
