@@ -10,15 +10,17 @@ Facelets, then the concepts of this library will be very familiar to you.
  - Current version: 2.0.0-SNAPSHOT
  - Released: ?? ??? 2015
 
-This in-development branch is intended for the upcoming Thymeleaf 3.0 which, as
-of writing, is still under heavy development.  For now it still works with
-Thymeleaf 2.1, but could go to 3.0 any time once the dialect API stabilizes.
+> This in-development branch is intended for the upcoming Thymeleaf 3.0 which,
+> as of writing, is still under heavy development.  For now it still works with
+> Thymeleaf 2.1, but could go to 3.0 at any time while the dialect API
+> stabilizes.
 
 
 Installation
 ------------
 
-Minimum of Java 6 and Thymeleaf 3.0 required.
+Minimum of Java 6 and Thymeleaf <strike>3.0</strike> (not just yet) 2.1
+required.
 
 ### Standalone distribution
 Copy the JAR from [the latest release bundle](https://github.com/ultraq/thymeleaf-layout-dialect/releases),
@@ -68,8 +70,8 @@ Or, for those using Spring configuration files:
 ```
 
 This will introduce the `layout` namespace, and 5 new attribute processors that
-you can use in your pages: `decorator`, `include`, `replace` (`substituteby`),
-`fragment`, and `title-pattern`.
+you can use in your pages: `decorator`, `include`, `replace`, `fragment`, and
+`title-pattern`.
 
 ### decorator
 
@@ -98,17 +100,13 @@ variables alone.
 Check out the [Includes and fragments](#includes-and-fragments) example for how
 to pass HTML code to the pages you want to include.
 
-### replace (substituteby)
+### replace
 
  - XML attribute: `layout:replace`
  - Data attribute: `data-layout-replace`
 
 Similar to `layout:include` in that you can pass HTML content to the
 page/fragments you're replacing, but with the behaviour of Thymeleaf's `th:replace`.
-
-> Just like Thymeleaf, the `replace` processor will eventually replace `substituteby`.
-> They both perform the same function, but `substituteby` is effectively
-> deprecated.
 
 ### fragment
 

@@ -33,8 +33,7 @@
 		<restrictions tags="title"/>
 	</attribute-processor>
 
-	<attribute-processor name="include"      class="nz.net.ultraq.thymeleaf.include.IncludeProcessor"/>
-	<attribute-processor name="replace"      class="nz.net.ultraq.thymeleaf.include.ReplaceProcessor"/>
-	<attribute-processor name="substituteby" class="nz.net.ultraq.thymeleaf.include.SubstituteByProcessor"/>
+	<attribute-processor name="include" class="nz.net.ultraq.thymeleaf.include.IncludeProcessor"/>
+	<attribute-processor name="replace" class="nz.net.ultraq.thymeleaf.include.ReplaceProcessor"/>
 
 </dialect>

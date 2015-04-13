@@ -53,14 +53,14 @@ project.contributors = [
 
 dependencies {
 	compile(
-		'org.codehaus.groovy:groovy:2.4.+',
-		'org.thymeleaf:thymeleaf:2.1.+'
+		'org.codehaus.groovy:groovy:2.4.3',
+		'org.thymeleaf:thymeleaf:2.1.4.RELEASE'
 	)
 	testCompile(
-		'junit:junit:4.+',
-		'org.thymeleaf:thymeleaf-testing:2.1.+'
+		'junit:junit:4.12',
+		'org.thymeleaf:thymeleaf-testing:2.1.4.RELEASE'
 	)
 	testRuntime(
-		'net.sourceforge.nekohtml:nekohtml:1.9.+'
+		'net.sourceforge.nekohtml:nekohtml:1.9.21'
 	)
 }

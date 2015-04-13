@@ -22,7 +22,6 @@ import static nz.net.ultraq.thymeleaf.LayoutDialect.DIALECT_PREFIX_LAYOUT;
 import static nz.net.ultraq.thymeleaf.LayoutUtilities.*;
 import static nz.net.ultraq.thymeleaf.include.IncludeProcessor.PROCESSOR_NAME_INCLUDE;
 import static nz.net.ultraq.thymeleaf.include.ReplaceProcessor.PROCESSOR_NAME_REPLACE;
-import static nz.net.ultraq.thymeleaf.include.SubstituteByProcessor.PROCESSOR_NAME_SUBSTITUTEBY;
 
 import org.thymeleaf.dom.Element;
 import org.thymeleaf.processor.attr.AbstractAttrProcessor;
@@ -52,9 +51,8 @@ public abstract class AbstractContentProcessor extends AbstractAttrProcessor {
 
 	/**
 	 * Find and return clones of all fragments within the given elements without
-	 * delving into <tt>layout:include</tt>, <tt>layout:replace</tt>, or
-	 * <tt>layout:substituteby</tt> elements.
-	 *
+	 * delving into <tt>layout:include</tt> or <tt>layout:replace</tt> elements.
+	 * 
 	 * @param elements
 	 * @return Map of prefixed fragment names and their fragment elements.
 	 */
@@ -67,8 +65,7 @@ public abstract class AbstractContentProcessor extends AbstractAttrProcessor {
 
 	/**
 	 * Recursive clone of all fragment elements without delving into
-	 * <tt>layout:include</tt>, <tt>layout:replace</tt>, or
-	 * <tt>layout:substituteby</tt> elements.
+	 * <tt>layout:include</tt> or <tt>layout:replace</tt> elements.
 	 * 
 	 * @param fragments
 	 * @param elements
@@ -83,8 +80,7 @@ public abstract class AbstractContentProcessor extends AbstractAttrProcessor {
 				fragments.put(FRAGMENT_NAME_PREFIX + fragmentname, fragment);
 			}
 			else if (!hasAttribute(element, DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_INCLUDE) &&
-				!hasAttribute(element, DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_REPLACE) &&
-				!hasAttribute(element, DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_SUBSTITUTEBY)) {
+				!hasAttribute(element, DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_REPLACE)) {
 				findFragments(fragments, element.getElementChildren());
 			}
 		}
