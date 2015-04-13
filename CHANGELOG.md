@@ -2,6 +2,11 @@
 Changelog
 =========
 
+### 2.0.0
+ - Dialect rewritten in Groovy
+ - Planning to be compatible for Thymeleaf 3.0 when the dialect API starts to
+   stabilize
+
 ### 1.2.8
  - Contribution from [Oliver Niekrenz](https://github.com/oniekrenz) to fix a
    recursion issue in the way fragments are picked out of templates
