@@ -1,7 +1,7 @@
 /*
  * Copyright 2012, Emanuel Rabina (http://www.ultraq.net.nz/)
  * 
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package nz.net.ultraq.thymeleaf;
+package nz.net.ultraq.thymeleaf
 
-import static nz.net.ultraq.thymeleaf.LayoutUtilities.*;
+import static nz.net.ultraq.thymeleaf.LayoutUtilities.*
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.thymeleaf.Arguments;
-import org.thymeleaf.dom.Element;
-import org.thymeleaf.processor.ProcessorResult;
-import org.thymeleaf.processor.attr.AbstractAttrProcessor;
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+import org.thymeleaf.Arguments
+import org.thymeleaf.dom.Element
+import org.thymeleaf.processor.ProcessorResult
+import org.thymeleaf.processor.attr.AbstractAttrProcessor
 
 /**
  * Marks sections of the template that can be replaced by sections in the
@@ -32,29 +32,27 @@ import org.thymeleaf.processor.attr.AbstractAttrProcessor;
  * 
  * @author Emanuel Rabina
  */
-public class FragmentProcessor extends AbstractAttrProcessor {
+class FragmentProcessor extends AbstractAttrProcessor {
 
-	private static final Logger logger = LoggerFactory.getLogger(FragmentProcessor.class);
+	private static final Logger logger = LoggerFactory.getLogger(FragmentProcessor)
 
-	public static final String PROCESSOR_NAME_FRAGMENT = "fragment";
-
-	static final String FRAGMENT_NAME_PREFIX = "fragment-name::";
+	static final String PROCESSOR_NAME_FRAGMENT = 'fragment'
 
 	/**
 	 * Constructor, sets this processor to work on the 'fragment' attribute.
 	 */
-	public FragmentProcessor() {
+	FragmentProcessor() {
 
-		super(PROCESSOR_NAME_FRAGMENT);
+		super(PROCESSOR_NAME_FRAGMENT)
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final int getPrecedence() {
+	final int getPrecedence() {
 
-		return 1;
+		return 1
 	}
 
 	/**
@@ -70,23 +68,25 @@ public class FragmentProcessor extends AbstractAttrProcessor {
 	protected ProcessorResult processAttribute(Arguments arguments, Element element, String attributeName) {
 
 		// Emit a warning if found in the <title> element
-		if (element.getOriginalName().equals(HTML_ELEMENT_TITLE)) {
-			logger.warn("You don't need to put the layout:fragment attribute into the <title> element - " +
-					"the decoration process will automatically override the <title> with the one in " +
-					"your content page, if present.");
+		if (element.originalName == HTML_ELEMENT_TITLE) {
+			logger.warn("""
+				You don't need to put the layout:fragment attribute into the <title> element -
+				the decoration process will automatically override the <title> with the one in
+				your content page, if present.
+			""".stripIndent())
 		}
 
 		// Locate the page fragment that corresponds to this decorator/include fragment
-		String fragmentname = element.getAttributeValue(attributeName);
-		Element pagefragment = (Element)arguments.getLocalVariable(FRAGMENT_NAME_PREFIX + fragmentname);
-		element.removeAttribute(attributeName);
+		def fragmentName = element.getAttributeValue(attributeName)
+		def pageFragment = FragmentMap.fragmentMapForContext(arguments.context)[(fragmentName)]
 
 		// Replace the decorator/include fragment with the page fragment
-		if (pagefragment != null) {
-			pullAttributes(pagefragment, element);
-			pullContent(element, pagefragment);
+		if (pageFragment != null) {
+			pullAttributes(pageFragment, element)
+			pullContent(element, pageFragment)
 		}
 
-		return ProcessorResult.OK;
+		element.removeAttribute(attributeName)
+		return ProcessorResult.OK
 	}
 }
