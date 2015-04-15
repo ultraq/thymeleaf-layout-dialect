@@ -1,4 +1,4 @@
-/*
+/* 
  * Copyright 2012, Emanuel Rabina (http://www.ultraq.net.nz/)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,12 +16,12 @@
 
 package nz.net.ultraq.thymeleaf;
 
-import static nz.net.ultraq.thymeleaf.FragmentProcessor.FRAGMENT_NAME_PREFIX;
-import static nz.net.ultraq.thymeleaf.FragmentProcessor.PROCESSOR_NAME_FRAGMENT;
+import static nz.net.ultraq.thymeleaf.fragments.FragmentProcessor.FRAGMENT_NAME_PREFIX;
+import static nz.net.ultraq.thymeleaf.fragments.FragmentProcessor.PROCESSOR_NAME_FRAGMENT;
 import static nz.net.ultraq.thymeleaf.LayoutDialect.DIALECT_PREFIX_LAYOUT;
-import static nz.net.ultraq.thymeleaf.LayoutUtilities.*;
-import static nz.net.ultraq.thymeleaf.include.IncludeProcessor.PROCESSOR_NAME_INCLUDE;
-import static nz.net.ultraq.thymeleaf.include.ReplaceProcessor.PROCESSOR_NAME_REPLACE;
+import static nz.net.ultraq.thymeleaf.utilities.LayoutUtilities.*;
+import static nz.net.ultraq.thymeleaf.includes.IncludeProcessor.PROCESSOR_NAME_INCLUDE;
+import static nz.net.ultraq.thymeleaf.includes.ReplaceProcessor.PROCESSOR_NAME_REPLACE;
 
 import org.thymeleaf.dom.Element;
 import org.thymeleaf.processor.attr.AbstractAttrProcessor;

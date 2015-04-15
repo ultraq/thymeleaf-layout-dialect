@@ -16,13 +16,15 @@
 
 package nz.net.ultraq.thymeleaf
 
-import nz.net.ultraq.thymeleaf.decorator.DecoratorProcessor
-import nz.net.ultraq.thymeleaf.decorator.TitlePatternProcessor
-import nz.net.ultraq.thymeleaf.include.IncludeProcessor
-import nz.net.ultraq.thymeleaf.include.ReplaceProcessor
+import nz.net.ultraq.thymeleaf.decorators.DecoratorProcessor
+import nz.net.ultraq.thymeleaf.decorators.TitlePatternProcessor
+import nz.net.ultraq.thymeleaf.fragments.FragmentProcessor
+import nz.net.ultraq.thymeleaf.includes.IncludeProcessor
+import nz.net.ultraq.thymeleaf.includes.ReplaceProcessor
 
 import org.thymeleaf.dialect.AbstractDialect
 import org.thymeleaf.dom.Attribute
+import org.thymeleaf.dom.Element
 import org.thymeleaf.processor.IProcessor
 
 /**
@@ -34,6 +36,33 @@ class LayoutDialect extends AbstractDialect {
 
 	static final String DIALECT_NAMESPACE_LAYOUT = 'http://www.ultraq.net.nz/thymeleaf/layout'
 	static final String DIALECT_PREFIX_LAYOUT    = 'layout'
+
+	/**
+	 * Add the following methods to Thymeleaf's objects.  Woohoo
+	 * metaprogramming! :D
+	 */
+	static {
+		Attribute.metaClass {
+			equalsName << { String prefix, String name ->
+				return this.originalName == "${prefix}:${name}" ?:
+				       this.originalName == "data-${prefix}-${name}"
+			}
+		}
+		Element.metaClass {
+			getAttributeValue << { String prefix, String name ->
+				return this.getAttributeValue("${prefix}:${name}") ?:
+				       this.getAttributeValue("data-${prefix}-${name}")
+			}
+			hasAttribute << { String prefix, String name ->
+				return this.hasAttribute("${prefix}:${name}") ||
+				       this.hasAttribute("data-${prefix}-${name}")
+			}
+			removeAttribute << { String prefix, String name ->
+				this.removeAttribute("${prefix}:${name}")
+				this.removeAttribute("data-${prefix}-${name}")
+			}
+		}
+	}
 
 	/**
 	 * Return the layout prefix.

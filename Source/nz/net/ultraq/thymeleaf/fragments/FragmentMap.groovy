@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package nz.net.ultraq.thymeleaf
+package nz.net.ultraq.thymeleaf.fragments
 
 import org.thymeleaf.context.Context
 import org.thymeleaf.dom.Element

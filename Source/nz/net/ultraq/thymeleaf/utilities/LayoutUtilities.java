@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package nz.net.ultraq.thymeleaf;
+package nz.net.ultraq.thymeleaf.utilities;
 
-import static nz.net.ultraq.thymeleaf.FragmentProcessor.PROCESSOR_NAME_FRAGMENT;
 import static nz.net.ultraq.thymeleaf.LayoutDialect.DIALECT_PREFIX_LAYOUT;
+import static nz.net.ultraq.thymeleaf.fragments.FragmentProcessor.PROCESSOR_NAME_FRAGMENT;
 
 import org.thymeleaf.dom.Attribute;
 import org.thymeleaf.dom.Element;

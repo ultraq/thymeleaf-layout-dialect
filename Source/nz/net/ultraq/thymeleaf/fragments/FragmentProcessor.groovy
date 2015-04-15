@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package nz.net.ultraq.thymeleaf
+package nz.net.ultraq.thymeleaf.fragments
 
-import static nz.net.ultraq.thymeleaf.LayoutUtilities.*
+import static nz.net.ultraq.thymeleaf.utilities.LayoutUtilities.*
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -82,8 +82,7 @@ class FragmentProcessor extends AbstractAttrProcessor {
 
 		// Replace the decorator/include fragment with the page fragment
 		if (pageFragment != null) {
-			pullAttributes(pageFragment, element)
-			pullContent(element, pageFragment)
+			new FragmentMerger().merge(element, pageFragment)
 		}
 
 		element.removeAttribute(attributeName)
