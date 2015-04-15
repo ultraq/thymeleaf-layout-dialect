@@ -21,7 +21,6 @@ import nz.net.ultraq.thymeleaf.decorators.xml.XmlDocumentDecorator
 import nz.net.ultraq.thymeleaf.fragments.FragmentLocator
 import static nz.net.ultraq.thymeleaf.fragments.FragmentProcessor.PROCESSOR_NAME_FRAGMENT
 import static nz.net.ultraq.thymeleaf.LayoutDialect.DIALECT_PREFIX_LAYOUT
-import static nz.net.ultraq.thymeleaf.utilities.LayoutUtilities.*
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -45,7 +44,6 @@ import org.thymeleaf.standard.fragment.StandardFragmentProcessor
 class DecoratorProcessor extends AbstractAttrProcessor {
 
 	private static final Logger logger = LoggerFactory.getLogger(DecoratorProcessor)
-	private static final String TEMPLATE_MODE_LEGACYHTML5 = 'LEGACYHTML5'
 
 	static final String PROCESSOR_NAME_DECORATOR = 'decorator'
 
@@ -79,7 +77,7 @@ class DecoratorProcessor extends AbstractAttrProcessor {
 		//       layout:decorator attribute anywhere but the root element can
 		//       lead to unexpected results.
 		if (!(element.parent instanceof Document) &&
-			!arguments.templateResolution.templateMode == TEMPLATE_MODE_LEGACYHTML5) {
+			!arguments.templateResolution.templateMode == 'LEGACYHTML5') {
 			logger.error('layout:decorator attribute must appear in the root element of your content page')
 			throw new IllegalArgumentException('layout:decorator attribute must appear in the root element of your content page')
 		}
@@ -100,7 +98,7 @@ class DecoratorProcessor extends AbstractAttrProcessor {
 		def fragments = new FragmentLocator().locate(document.elementChildren)
 
 		// Decide which kind of decorator to apply, given the decorator page root element
-		def decorator = decoratorRootElement?.originalName == HTML_ELEMENT_HTML ?
+		def decorator = decoratorRootElement?.originalName == 'html' ?
 				new HtmlDocumentDecorator() :
 				new XmlDocumentDecorator()
 
