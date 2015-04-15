@@ -1,7 +1,7 @@
 /*
  * Copyright 2012, Emanuel Rabina (http://www.ultraq.net.nz/)
  * 
- * Licensed under the Apache License, Version 2.0 (the "License")
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
@@ -44,22 +44,31 @@ class LayoutDialect extends AbstractDialect {
 	static {
 		Attribute.metaClass {
 			equalsName << { String prefix, String name ->
-				return this.originalName == "${prefix}:${name}" ?:
-				       this.originalName == "data-${prefix}-${name}"
+				return delegate.originalName == "${prefix}:${name}" ?:
+				       delegate.originalName == "data-${prefix}-${name}"
 			}
 		}
 		Element.metaClass {
+			findElement << { String name ->
+				def search = { Element element ->
+					if (element.originalName == name) {
+						return element
+					}
+					return element.elementChildren.find(search)
+				}
+				return search.call(delegate)
+			}
 			getAttributeValue << { String prefix, String name ->
-				return this.getAttributeValue("${prefix}:${name}") ?:
-				       this.getAttributeValue("data-${prefix}-${name}")
+				return delegate.getAttributeValue("${prefix}:${name}") ?:
+				       delegate.getAttributeValue("data-${prefix}-${name}")
 			}
 			hasAttribute << { String prefix, String name ->
-				return this.hasAttribute("${prefix}:${name}") ||
-				       this.hasAttribute("data-${prefix}-${name}")
+				return delegate.hasAttribute("${prefix}:${name}") ||
+				       delegate.hasAttribute("data-${prefix}-${name}")
 			}
 			removeAttribute << { String prefix, String name ->
-				this.removeAttribute("${prefix}:${name}")
-				this.removeAttribute("data-${prefix}-${name}")
+				delegate.removeAttribute("${prefix}:${name}")
+				delegate.removeAttribute("data-${prefix}-${name}")
 			}
 		}
 	}
