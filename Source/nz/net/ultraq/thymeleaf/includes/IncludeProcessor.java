@@ -1,5 +1,5 @@
 /*
- * Copyright 2013, Emanuel Rabina (http://www.ultraq.net.nz/)
+ * Copyright 2012, Emanuel Rabina (http://www.ultraq.net.nz/)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package nz.net.ultraq.thymeleaf.include;
+package nz.net.ultraq.thymeleaf.includes;
 
 import nz.net.ultraq.thymeleaf.AbstractContentProcessor;
-import static nz.net.ultraq.thymeleaf.FragmentProcessor.PROCESSOR_NAME_FRAGMENT;
+import static nz.net.ultraq.thymeleaf.fragments.FragmentProcessor.PROCESSOR_NAME_FRAGMENT;
 import static nz.net.ultraq.thymeleaf.LayoutDialect.DIALECT_PREFIX_LAYOUT;
 
 import org.thymeleaf.Arguments;
@@ -31,28 +31,27 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Similar to Thymeleaf's <tt>th:replace</tt>, but allows the passing of entire
+ * Similar to Thymeleaf's <tt>th:include</tt>, but allows the passing of entire
  * element fragments to the included template.  Useful if you have some HTML
  * that you want to reuse, but whose contents are too complex to determine or
  * construct with context variables alone.
  * 
  * @author Emanuel Rabina
  */
-public class ReplaceProcessor extends AbstractContentProcessor {
+public class IncludeProcessor extends AbstractContentProcessor {
 
-	public static final String PROCESSOR_NAME_REPLACE = "replace";
+	public static final String PROCESSOR_NAME_INCLUDE = "include";
 
 	/**
-	 * Constructor, set this processor to work on the 'replace' attribute.
+	 * Constructor, sets this processor to work on the 'include' attribute.
 	 */
-	public ReplaceProcessor() {
+	public IncludeProcessor() {
 
-		super(PROCESSOR_NAME_REPLACE);
+		super(PROCESSOR_NAME_INCLUDE);
 	}
 
 	/**
-	 * Locates the specified page/fragment and brings it into the current
-	 * template.
+	 * Locates the specified page and includes it into the current template.
 	 * 
 	 * @param arguments
 	 * @param element
@@ -71,20 +70,25 @@ public class ReplaceProcessor extends AbstractContentProcessor {
 
 		element.removeAttribute(attributeName);
 
-		// Gather all fragment parts within the replace element
+		// Gather all fragment parts within the include element
 		Map<String,Object> pagefragments = findFragments(element.getElementChildren());
 
-		// Replace the children of this element with those of the replace page
-		// fragments, scoping any fragment parts to the immediate children
+		// Replace the children of this element with those of the include page fragments.
 		element.clearChildren();
 		if (includefragments != null) {
+			Element containerelement = new Element("container");
 			for (Node includefragment: includefragments) {
-				includefragment.setAllNodeLocalVariables(pagefragments);
-				element.addChild(includefragment);
+				containerelement.addChild(includefragment);
+				containerelement.extractChild(includefragment);
+			}
+			for (Node extractedchild: containerelement.getChildren()) {
+				element.addChild(extractedchild);
 			}
 		}
-		element.getParent().extractChild(element);
 
-		return ProcessorResult.OK;
+		// Scope any fragment parts for the include page to the current element
+		return !pagefragments.isEmpty() ?
+				ProcessorResult.setLocalVariables(pagefragments) :
+				ProcessorResult.OK;
 	}
 }

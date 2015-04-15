@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package nz.net.ultraq.thymeleaf.decorator;
+package nz.net.ultraq.thymeleaf.decorators;
 
 import nz.net.ultraq.thymeleaf.AbstractContentProcessor;
-import static nz.net.ultraq.thymeleaf.FragmentProcessor.PROCESSOR_NAME_FRAGMENT;
+import static nz.net.ultraq.thymeleaf.fragments.FragmentProcessor.PROCESSOR_NAME_FRAGMENT;
 import static nz.net.ultraq.thymeleaf.LayoutDialect.DIALECT_PREFIX_LAYOUT;
-import static nz.net.ultraq.thymeleaf.LayoutUtilities.*;
+import static nz.net.ultraq.thymeleaf.utilities.LayoutUtilities.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

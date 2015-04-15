@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package nz.net.ultraq.thymeleaf.decorator;
+package nz.net.ultraq.thymeleaf.decorators;
 
 import static nz.net.ultraq.thymeleaf.LayoutDialect.DIALECT_PREFIX_LAYOUT;
-import static nz.net.ultraq.thymeleaf.LayoutUtilities.*;
-import static nz.net.ultraq.thymeleaf.decorator.TitlePatternProcessor.CONTENT_TITLE;
-import static nz.net.ultraq.thymeleaf.decorator.TitlePatternProcessor.DECORATOR_TITLE;
-import static nz.net.ultraq.thymeleaf.decorator.TitlePatternProcessor.PROCESSOR_NAME_TITLEPATTERN;
+import static nz.net.ultraq.thymeleaf.utilities.LayoutUtilities.*;
+import static nz.net.ultraq.thymeleaf.decorators.TitlePatternProcessor.CONTENT_TITLE;
+import static nz.net.ultraq.thymeleaf.decorators.TitlePatternProcessor.DECORATOR_TITLE;
+import static nz.net.ultraq.thymeleaf.decorators.TitlePatternProcessor.PROCESSOR_NAME_TITLEPATTERN;
 
 import org.thymeleaf.dom.Element;
 import org.thymeleaf.dom.Node;
