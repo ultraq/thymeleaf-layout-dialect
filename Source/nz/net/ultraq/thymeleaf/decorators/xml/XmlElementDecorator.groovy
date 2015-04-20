@@ -14,26 +14,26 @@
  * limitations under the License.
  */
 
-package nz.net.ultraq.thymeleaf.decorators.xml;
+package nz.net.ultraq.thymeleaf.decorators.xml
 
-import nz.net.ultraq.thymeleaf.decorators.Decorator;
-import static nz.net.ultraq.thymeleaf.utilities.LayoutUtilities.*;
+import nz.net.ultraq.thymeleaf.decorators.Decorator
+import nz.net.ultraq.thymeleaf.fragments.FragmentMerger
 
-import org.thymeleaf.dom.Element;
+import org.thymeleaf.dom.Element
 
 /**
  * A decorator made to work over any Thymeleaf element.
  * 
  * @author Emanuel Rabina
  */
-public class XmlElementDecorator extends Decorator {
+class XmlElementDecorator implements Decorator {
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void decorate(Element decoratorelement, Element contentelement) {
+	void decorate(Element decoratorElement, Element contentElement) {
 
-		pullAttributes(decoratorelement, contentelement);
+		new FragmentMerger(decoratorElement, contentElement).mergeAttributes()
 	}
 }

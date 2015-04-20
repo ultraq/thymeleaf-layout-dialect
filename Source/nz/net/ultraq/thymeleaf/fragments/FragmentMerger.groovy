@@ -20,41 +20,43 @@ import org.thymeleaf.dom.Element
 import org.thymeleaf.standard.StandardDialect
 import org.thymeleaf.standard.processor.attr.StandardWithAttrProcessor
 
+import groovy.transform.Immutable
+
 /**
  * Merges page fragments by bringing in source HTML content and attributes into
  * a target element.
  * 
  * @author Emanuel Rabina
  */
+@Immutable
 class FragmentMerger {
 
+	private final Element targetElement
+	private final Element sourceElement
+
 	/**
-	 * Merge the attributes and content of the source element into the target
-	 * element.
+	 * Merge both the attributes and content of the source element into the
+	 * target element.
 	 * 
-	 * @param targetElement
-	 * @param sourceElement
 	 * @param mergeExisting Set to <tt>true</tt> to bring only attributes that
 	 *                  already exist in the target element.
 	 */
-	void merge(Element targetElement, Element sourceElement, boolean mergeExisting = false) {
+	void merge(boolean mergeExisting = false) {
 
-		mergeElements(targetElement, sourceElement)
 		mergeAttributes(targetElement, sourceElement, mergeExisting)
+		mergeElements(targetElement, sourceElement)
 	}
 
 	/**
 	 * Merges attributes between elements, with the option to specify whether to
 	 * copy everything over, or only attributes that already exist in the source
 	 * element.
-	 *
-	 * @param targetElement
-	 * @param sourceElement
+	 * 
 	 * @param mergeExisting <tt>true</tt> to pull only attributes that exist in
 	 *                      <tt>targetelement</tt>.  <tt>th:with</tt> values
 	 *                      will continue to be brought in regardless.
 	 */
-	private mergeAttributes(Element targetElement, Element sourceElement, boolean mergeExisting) {
+	void mergeAttributes(boolean mergeExisting = false) {
 
 		if (!sourceElement || !targetElement) {
 			return
@@ -84,11 +86,8 @@ class FragmentMerger {
 	/**
 	 * Replace the content of the target element, with the content of the source
 	 * element.
-	 *
-	 * @param targetElement
-	 * @param sourceElement
 	 */
-	private void mergeElements(Element targetElement, Element sourceElement) {
+	void mergeElements() {
 
 		// Clone target element without processing information to make Thymeleaf reprocesses it
 		targetElement.clearChildren()
