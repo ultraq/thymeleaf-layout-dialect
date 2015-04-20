@@ -14,20 +14,19 @@
  * limitations under the License.
  */
 
-package nz.net.ultraq.thymeleaf.decorators.html;
+package nz.net.ultraq.thymeleaf.decorators.html
 
-import nz.net.ultraq.thymeleaf.decorators.xml.XmlElementDecorator;
-import static nz.net.ultraq.thymeleaf.utilities.LayoutUtilities.*;
+import nz.net.ultraq.thymeleaf.decorators.xml.XmlElementDecorator
 
-import org.thymeleaf.dom.Element;
-import org.thymeleaf.dom.Text;
+import org.thymeleaf.dom.Element
+import org.thymeleaf.dom.Text
 
 /**
  * A decorator specific to processing an HTML BODY element.
  * 
  * @author Emanuel Rabina
  */
-public class HtmlBodyDecorator extends XmlElementDecorator {
+class HtmlBodyDecorator extends XmlElementDecorator {
 
 	/**
 	 * Decorate the BODY part.  This step merges the decorator and content BODY
@@ -35,25 +34,25 @@ public class HtmlBodyDecorator extends XmlElementDecorator {
 	 * result.  The bulk of the body decoration is actually performed by the
 	 * fragment replacements.
 	 * 
-	 * @param decoratorhtml Decorator's HTML element.
-	 * @param contentbody	Content's BODY element.
+	 * @param decoratorHtml Decorator's HTML element.
+	 * @param contentBody	Content's BODY element.
 	 */
 	@Override
-	public void decorate(Element decoratorhtml, Element contentbody) {
+	void decorate(Element decoratorHtml, Element contentBody) {
 
 		// If the page has no BODY, then we don't need to do anything
-		if (contentbody == null) {
-			return;
+		if (!contentBody) {
+			return
 		}
 
 		// If the decorator has no BODY, we can just copy the page BODY
-		Element decoratorbody = findElement(decoratorhtml, HTML_ELEMENT_BODY);
-		if (decoratorbody == null) {
-			decoratorhtml.addChild(contentbody);
-			decoratorhtml.addChild(new Text(LINE_SEPARATOR));
-			return;
+		def decoratorBody = decoratorHtml.findElement('body')
+		if (!decoratorBody) {
+			decoratorHtml.addChild(contentBody)
+			decoratorHtml.addChild(new Text(System.properties.'line.separator'))
+			return
 		}
 
-		super.decorate(decoratorbody, contentbody);
+		super.decorate(decoratorBody, contentBody)
 	}
 }
