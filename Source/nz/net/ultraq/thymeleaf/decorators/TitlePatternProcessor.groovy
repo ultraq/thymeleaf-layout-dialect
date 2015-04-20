@@ -19,13 +19,11 @@ package nz.net.ultraq.thymeleaf.decorators
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.thymeleaf.Arguments
-import org.thymeleaf.Configuration
 import org.thymeleaf.dom.Element
 import org.thymeleaf.dom.Text
 import org.thymeleaf.exceptions.TemplateProcessingException
 import org.thymeleaf.processor.ProcessorResult
 import org.thymeleaf.processor.attr.AbstractAttrProcessor
-import org.thymeleaf.standard.expression.IStandardExpressionParser
 import org.thymeleaf.standard.expression.StandardExpressions
 
 /**
@@ -75,10 +73,20 @@ class TitlePatternProcessor extends AbstractAttrProcessor {
 		def parser = StandardExpressions.getExpressionParser(configuration)
 
 		// Process the decorator and content title parts
-		def decoratorTitle = processTitle((String)element.getNodeProperty(DECORATOR_TITLE),
-				arguments, configuration, parser)
-		def contentTitle = processTitle((String)element.getNodeProperty(CONTENT_TITLE),
-				arguments, configuration, parser)
+		def processTitle = { String title ->
+			try {
+				return title ?
+					parser.parseExpression(configuration, arguments, title)
+						.execute(configuration, arguments)
+						.toString()?.trim() :
+					null
+			}
+			catch (TemplateProcessingException ex) {
+				return title?.trim()
+			}
+		}
+		def decoratorTitle = processTitle((String)element.getNodeProperty(DECORATOR_TITLE))
+		def contentTitle = processTitle((String)element.getNodeProperty(CONTENT_TITLE))
 
 		// Replace the <title> text with an expanded title pattern expression,
 		// only using the pattern if both the decorator and content have a title.
@@ -86,7 +94,7 @@ class TitlePatternProcessor extends AbstractAttrProcessor {
 		def title = decoratorTitle && contentTitle ?
 			titlePattern
 				.replace(PARAM_TITLE_DECORATOR, decoratorTitle)
-				.replace(PARAM_TITLE_CONTENT,   contentTitle) :
+				.replace(PARAM_TITLE_CONTENT, contentTitle) :
 			decoratorTitle ?: contentTitle ?: ''
 
 		element.clearChildren()
@@ -94,33 +102,5 @@ class TitlePatternProcessor extends AbstractAttrProcessor {
 
 		element.removeAttribute(attributeName)
 		return ProcessorResult.OK
-	}
-
-	/**
-	 * Process a title part, executing expressions if it contains any.
-	 * 
-	 * @param title
-	 * @param arguments
-	 * @param configuration
-	 * @param parser
-	 * @return The result of executing <tt>title</tt> if it contained any
-	 *         expressions, or <tt>null</tt> if the title resolved to an empty
-	 *         string or whitespace.
-	 */
-	private static String processTitle(String title, Arguments arguments,
-		Configuration configuration, IStandardExpressionParser parser) {
-
-		def titleValue
-		try {
-			titleValue = title ?
-				parser.parseExpression(configuration, arguments, title)
-					.execute(configuration, arguments)
-					.toString() :
-				null
-		}
-		catch (TemplateProcessingException ex) {
-			titleValue = title
-		}
-		return titleValue?.trim()
 	}
 }
