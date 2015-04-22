@@ -50,7 +50,8 @@ class LayoutDialect extends AbstractDialect {
 		}
 		Element.metaClass {
 			findElement << { String name ->
-				def search = { Element element ->
+				def search
+				search = { Element element ->
 					if (element.originalName == name) {
 						return element
 					}

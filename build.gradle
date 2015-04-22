@@ -58,7 +58,7 @@ dependencies {
 	)
 	testCompile(
 		'junit:junit:4.12',
-		'nz.net.ultraq.thymeleaf:thymeleaf-testing-junit:1.0.0-SNAPSHOT',
+		'nz.net.ultraq.thymeleaf:thymeleaf-testing-junit:1.0.0',
 		'org.thymeleaf:thymeleaf-testing:2.1.4.RELEASE'
 	)
 	testRuntime(

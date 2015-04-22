@@ -40,8 +40,8 @@ class FragmentLocator {
 	Map<String,Element> locate(List<Element> elements) {
 
 		def fragments = new HashMap<String,Element>()
-		def search
-		elements.each(search = { element ->
+		def findFragments
+		findFragments = { element ->
 			def fragmentName = element.getAttributeValue(DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_FRAGMENT)
 			if (fragmentName) {
 				def fragment = element.cloneNode(null, true)
@@ -50,8 +50,10 @@ class FragmentLocator {
 			}
 			else if (!element.hasAttribute(DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_INCLUDE) ||
 				!element.hasAttribute(DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_REPLACE)) {
-				search.trampoline(element.elementChildren)
+				element.elementChildren.each(findFragments)
 			}
-		})
+		}
+		elements.each(findFragments)
+		return fragments
 	}
 }

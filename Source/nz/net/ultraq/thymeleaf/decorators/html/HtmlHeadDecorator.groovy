@@ -141,7 +141,7 @@ class HtmlHeadDecorator extends XmlElementDecorator {
 			result.setNodeProperty(titlekey, titleText.content)
 		}
 
-		new FragmentMerger(result, title).mergeAttributes()
+		new FragmentMerger().mergeAttributes(result, title)
 		head.removeChild(title)
 	}
 

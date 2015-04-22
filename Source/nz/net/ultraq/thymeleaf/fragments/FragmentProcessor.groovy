@@ -16,8 +16,6 @@
 
 package nz.net.ultraq.thymeleaf.fragments
 
-import static nz.net.ultraq.thymeleaf.utilities.LayoutUtilities.*
-
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.thymeleaf.Arguments
@@ -68,7 +66,7 @@ class FragmentProcessor extends AbstractAttrProcessor {
 	protected ProcessorResult processAttribute(Arguments arguments, Element element, String attributeName) {
 
 		// Emit a warning if found in the <title> element
-		if (element.originalName == HTML_ELEMENT_TITLE) {
+		if (element.originalName == 'title') {
 			logger.warn("""
 				You don't need to put the layout:fragment attribute into the <title> element -
 				the decoration process will automatically override the <title> with the one in
