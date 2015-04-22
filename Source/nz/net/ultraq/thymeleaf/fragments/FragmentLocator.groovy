@@ -23,34 +23,42 @@ import static nz.net.ultraq.thymeleaf.includes.ReplaceProcessor.PROCESSOR_NAME_R
 
 import org.thymeleaf.dom.Element
 
+import groovy.transform.Immutable
+
 /**
- * Searches for and returns fragments in all descendents of an element.
+ * Searches for and returns layout dialect fragments amongst a given set of
+ * elements.
  * 
  * @author Emanuel Rabina
  */
+@Immutable
 class FragmentLocator {
+
+	/**
+	 * List of elements to search.
+	 */
+	final List<Element> elements
 
 	/**
 	 * Find and return clones of all fragments within the given elements without
 	 * delving into <tt>layout:include</tt> or <tt>layout:replace</tt> elements.
 	 * 
-	 * @param elements List of elements to search.
 	 * @return Map of fragment names and their elements.
 	 */
-	Map<String,Element> locate(List<Element> elements) {
+	Map<String,Element> locate() {
 
-		def fragments = new HashMap<String,Element>()
+		def fragments = [:]
 		def findFragments
 		findFragments = { element ->
 			def fragmentName = element.getAttributeValue(DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_FRAGMENT)
 			if (fragmentName) {
-				def fragment = element.cloneNode(null, true)
-				element.removeAttribute(DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_FRAGMENT)
+				def fragment = element.cloneNode(null, false)
+				fragment.removeAttribute(DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_FRAGMENT)
 				fragments << [(fragmentName): fragment]
 			}
 			else if (!element.hasAttribute(DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_INCLUDE) ||
-				!element.hasAttribute(DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_REPLACE)) {
-				element.elementChildren.each(findFragments)
+					 !element.hasAttribute(DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_REPLACE)) {
+				element.elementChildren.collect(findFragments)
 			}
 		}
 		elements.each(findFragments)

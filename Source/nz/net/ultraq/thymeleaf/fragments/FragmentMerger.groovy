@@ -39,7 +39,10 @@ class FragmentMerger {
 	 */
 	void merge(Element targetElement, Element sourceElement, boolean mergeExisting = false) {
 
-		mergeAttributes(targetElement, sourceElement, mergeExisting)
+		// TODO: Not too fond of having to copy over attributes to the source
+		//       element, then bring that source element over.  The source isn't
+		//       always a clone and this muddies it.
+		mergeAttributes(sourceElement, targetElement, mergeExisting)
 		mergeElements(targetElement, sourceElement)
 	}
 
@@ -60,7 +63,7 @@ class FragmentMerger {
 			return
 		}
 
-		sourceElement.attributeMap.values().forEach { sourceAttribute ->
+		sourceElement.attributeMap.values().each({ sourceAttribute ->
 
 			// Merge th:with attributes to retain local variable declarations
 			if (sourceAttribute.equalsName(StandardDialect.PREFIX, StandardWithAttrProcessor.ATTR_NAME)) {
@@ -78,7 +81,7 @@ class FragmentMerger {
 				!mergeExisting) {
 				targetElement.setAttribute(sourceAttribute.originalName, sourceAttribute.value)
 			}
-		}
+		})
 	}
 
 	/**
@@ -90,7 +93,6 @@ class FragmentMerger {
 	 */
 	void mergeElements(Element targetElement, Element sourceElement) {
 
-		// Clone target element without processing information to make Thymeleaf reprocesses it
 		targetElement.clearChildren()
 		targetElement.addChild(sourceElement.cloneNode(null, false))
 		targetElement.parent.extractChild(targetElement)

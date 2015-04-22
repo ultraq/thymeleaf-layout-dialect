@@ -19,6 +19,7 @@ package nz.net.ultraq.thymeleaf.decorators
 import nz.net.ultraq.thymeleaf.decorators.html.HtmlDocumentDecorator
 import nz.net.ultraq.thymeleaf.decorators.xml.XmlDocumentDecorator
 import nz.net.ultraq.thymeleaf.fragments.FragmentLocator
+import nz.net.ultraq.thymeleaf.fragments.FragmentMap
 import static nz.net.ultraq.thymeleaf.fragments.FragmentProcessor.PROCESSOR_NAME_FRAGMENT
 import static nz.net.ultraq.thymeleaf.LayoutDialect.DIALECT_PREFIX_LAYOUT
 
@@ -77,7 +78,7 @@ class DecoratorProcessor extends AbstractAttrProcessor {
 		//       layout:decorator attribute anywhere but the root element can
 		//       lead to unexpected results.
 		if (!(element.parent instanceof Document) &&
-			!arguments.templateResolution.templateMode == 'LEGACYHTML5') {
+			arguments.templateResolution.templateMode != 'LEGACYHTML5') {
 			logger.error('layout:decorator attribute must appear in the root element of your content page')
 			throw new IllegalArgumentException('layout:decorator attribute must appear in the root element of your content page')
 		}
@@ -90,29 +91,20 @@ class DecoratorProcessor extends AbstractAttrProcessor {
 				DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_FRAGMENT)
 		def decoratorTemplate = arguments.templateRepository.getTemplate(new TemplateProcessingParameters(
 				arguments.configuration, fragment.templateName, arguments.context))
-
-		def decoratorDocument = decoratorTemplate.document
-		def decoratorRootElement = decoratorDocument.firstElementChild
+		element.removeAttribute(attributeName)
 
 		// Gather all fragment parts from this page
-		def fragments = new FragmentLocator().locate(document.elementChildren)
+		FragmentMap.fragmentMapForContext(arguments.context).putAll(
+			new FragmentLocator(document.elementChildren).locate()
+		)
 
-		// Decide which kind of decorator to apply, given the decorator page root element
+		// Decide which kind of decorator to use, then apply it
+		def decoratorRootElement = decoratorTemplate.document.firstElementChild
 		def decorator = decoratorRootElement?.originalName == 'html' ?
 				new HtmlDocumentDecorator() :
 				new XmlDocumentDecorator()
-
-		// Perform decoration, apply any new fragments found from the pre-decorated page
 		decorator.decorate(decoratorRootElement, document.firstElementChild)
-		if (fragments) {
-			def newRootElement = document.firstElementChild
-			def nodeLocalVariables = newRootElement.nodeLocalVariableNames
-			newRootElement.setAllNodeLocalVariables(fragments.findAll { key, value ->
-				return !nodeLocalVariables.contains(key)
-			})
-		}
 
-		element.removeAttribute(attributeName)
 		return ProcessorResult.OK
 	}
 }

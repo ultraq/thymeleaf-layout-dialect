@@ -68,7 +68,7 @@ class ReplaceProcessor extends AbstractAttrProcessor {
 				arguments, arguments.templateRepository)
 
 		// Gather all fragment parts within the replace element
-		def pageFragments = new FragmentLocator().locate(element.elementChildren)
+		def pageFragments = new FragmentLocator(element.elementChildren).locate()
 
 		// Replace the children of this element with those of the replace page
 		// fragments, scoping any fragment parts to the immediate children

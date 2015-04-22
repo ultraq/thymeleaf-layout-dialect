@@ -67,7 +67,7 @@ class IncludeProcessor extends AbstractAttrProcessor {
 				arguments, arguments.templateRepository)
 
 		// Gather all fragment parts within the include element
-		def pageFragments = new FragmentLocator().locate(element.elementChildren)
+		def pageFragments = new FragmentLocator(element.elementChildren).locate()
 
 		// Replace the children of this element with those of the include page fragments
 		element.clearChildren()
