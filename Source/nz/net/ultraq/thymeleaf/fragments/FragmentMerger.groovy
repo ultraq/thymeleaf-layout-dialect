@@ -20,28 +20,24 @@ import org.thymeleaf.dom.Element
 import org.thymeleaf.standard.StandardDialect
 import org.thymeleaf.standard.processor.attr.StandardWithAttrProcessor
 
-import groovy.transform.Immutable
-
 /**
  * Merges page fragments by bringing in source HTML content and attributes into
  * a target element.
  * 
  * @author Emanuel Rabina
  */
-@Immutable
 class FragmentMerger {
-
-	private final Element targetElement
-	private final Element sourceElement
 
 	/**
 	 * Merge both the attributes and content of the source element into the
 	 * target element.
 	 * 
+	 * @param targetElement
+	 * @param sourceElement
 	 * @param mergeExisting Set to <tt>true</tt> to bring only attributes that
 	 *                  already exist in the target element.
 	 */
-	void merge(boolean mergeExisting = false) {
+	void merge(Element targetElement, Element sourceElement, boolean mergeExisting = false) {
 
 		mergeAttributes(targetElement, sourceElement, mergeExisting)
 		mergeElements(targetElement, sourceElement)
@@ -52,11 +48,13 @@ class FragmentMerger {
 	 * copy everything over, or only attributes that already exist in the source
 	 * element.
 	 * 
+	 * @param targetElement
+	 * @param sourceElement
 	 * @param mergeExisting <tt>true</tt> to pull only attributes that exist in
 	 *                      <tt>targetelement</tt>.  <tt>th:with</tt> values
 	 *                      will continue to be brought in regardless.
 	 */
-	void mergeAttributes(boolean mergeExisting = false) {
+	void mergeAttributes(Element targetElement, Element sourceElement, boolean mergeExisting = false) {
 
 		if (!sourceElement || !targetElement) {
 			return
@@ -86,8 +84,11 @@ class FragmentMerger {
 	/**
 	 * Replace the content of the target element, with the content of the source
 	 * element.
+	 * 
+	 * @param targetElement
+	 * @param sourceElement
 	 */
-	void mergeElements() {
+	void mergeElements(Element targetElement, Element sourceElement) {
 
 		// Clone target element without processing information to make Thymeleaf reprocesses it
 		targetElement.clearChildren()
