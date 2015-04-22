@@ -34,6 +34,6 @@ class XmlElementDecorator implements Decorator {
 	@Override
 	void decorate(Element decoratorElement, Element contentElement) {
 
-		new FragmentMerger(decoratorElement, contentElement).mergeAttributes()
+		new FragmentMerger().mergeAttributes(decoratorElement, contentElement)
 	}
 }

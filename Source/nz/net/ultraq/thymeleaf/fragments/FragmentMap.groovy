@@ -16,7 +16,7 @@
 
 package nz.net.ultraq.thymeleaf.fragments
 
-import org.thymeleaf.context.Context
+import org.thymeleaf.context.IContext
 import org.thymeleaf.dom.Element
 
 /**
@@ -36,7 +36,7 @@ class FragmentMap extends HashMap<String,Element> {
 	 * @param context
 	 * @return A new or existing fragment collection for the context.
 	 */
-	static FragmentMap fragmentMapForContext(Context context) {
+	static FragmentMap fragmentMapForContext(IContext context) {
 
 		def variables = context.variables
 		if (!variables.containsKey(FRAGMENT_COLLECTION_KEY)) {

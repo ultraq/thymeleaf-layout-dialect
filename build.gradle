@@ -22,7 +22,7 @@
  * @author Emanuel Rabina
  */
 
-apply plugin: 'java'
+apply plugin: 'groovy'
 apply plugin: 'maven'
 apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/1.1.0/gradle-support.gradle'
 apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/1.1.0/maven-support.gradle'

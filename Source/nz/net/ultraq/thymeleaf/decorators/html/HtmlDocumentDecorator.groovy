@@ -44,7 +44,7 @@ class HtmlDocumentDecorator extends XmlDocumentDecorator {
 		// Set the doctype from the decorator if missing from the content page
 		def decoratorDocument = decoratorHtml.parent
 		def contentDocument   = contentHtml.parent
-		if (!contentDocument.docType() && decoratorDocument.docType) {
+		if (!contentDocument.docType && decoratorDocument.docType) {
 			contentDocument.docType = decoratorDocument.docType
 		}
 
