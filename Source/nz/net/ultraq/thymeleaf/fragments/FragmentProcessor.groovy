@@ -76,7 +76,7 @@ class FragmentProcessor extends AbstractAttrProcessor {
 
 		// Locate the page fragment that corresponds to this decorator/include fragment
 		def fragmentName = element.getAttributeValue(attributeName)
-		def pageFragment = FragmentMap.fragmentMapForContext(arguments.context)[(fragmentName)]
+		def pageFragment = FragmentMap.forContext(arguments.context)[(fragmentName)]
 		element.removeAttribute(attributeName)
 
 		// Replace the decorator/include fragment with the page fragment

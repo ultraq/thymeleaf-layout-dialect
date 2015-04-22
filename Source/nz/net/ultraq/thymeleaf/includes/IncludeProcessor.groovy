@@ -68,9 +68,7 @@ class IncludeProcessor extends AbstractAttrProcessor {
 				arguments, arguments.templateRepository)
 
 		// Gather all fragment parts within the include element
-		FragmentMap.fragmentMapForContext(arguments.context).putAll(
-			new FragmentLocator(element.elementChildren).locate()
-		)
+		FragmentMap.forContext(arguments.context) << new FragmentLocator(element.elementChildren).locate()
 
 		// Replace the children of this element with those of the include page fragments
 		element.clearChildren()

@@ -94,9 +94,7 @@ class DecoratorProcessor extends AbstractAttrProcessor {
 		element.removeAttribute(attributeName)
 
 		// Gather all fragment parts from this page
-		FragmentMap.fragmentMapForContext(arguments.context).putAll(
-			new FragmentLocator(document.elementChildren).locate()
-		)
+		FragmentMap.forContext(arguments.context) << new FragmentLocator(document.elementChildren).locate()
 
 		// Decide which kind of decorator to use, then apply it
 		def decoratorRootElement = decoratorTemplate.document.firstElementChild

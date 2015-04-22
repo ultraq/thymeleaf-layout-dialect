@@ -31,12 +31,13 @@ class FragmentMap extends HashMap<String,Element> {
 
 	/**
 	 * Retrieve the fragment collection specific to the given context.  If none
-	 * exists, a new collection is created, set, and returned.
+	 * exists, a new collection is created, applied to the context, and
+	 * returned.
 	 * 
 	 * @param context
 	 * @return A new or existing fragment collection for the context.
 	 */
-	static FragmentMap fragmentMapForContext(IContext context) {
+	static FragmentMap forContext(IContext context) {
 
 		def variables = context.variables
 		if (!variables.containsKey(FRAGMENT_COLLECTION_KEY)) {
