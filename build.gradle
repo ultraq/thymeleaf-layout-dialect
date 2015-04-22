@@ -24,6 +24,7 @@
 
 apply plugin: 'groovy'
 apply plugin: 'maven'
+apply plugin: 'eclipse'
 apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/1.1.0/gradle-support.gradle'
 apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/1.1.0/maven-support.gradle'
 apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/1.1.0/bundle.gradle'
@@ -58,7 +59,7 @@ dependencies {
 	)
 	testCompile(
 		'junit:junit:4.12',
-		'nz.net.ultraq.thymeleaf:thymeleaf-testing-junit:1.0.0',
+		'nz.net.ultraq.thymeleaf:thymeleaf-testing-junit:1.0.1',
 		'org.thymeleaf:thymeleaf-testing:2.1.4.RELEASE'
 	)
 	testRuntime(

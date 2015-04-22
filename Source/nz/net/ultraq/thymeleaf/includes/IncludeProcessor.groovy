@@ -17,6 +17,7 @@
 package nz.net.ultraq.thymeleaf.includes
 
 import nz.net.ultraq.thymeleaf.fragments.FragmentLocator
+import nz.net.ultraq.thymeleaf.fragments.FragmentMap
 import static nz.net.ultraq.thymeleaf.fragments.FragmentProcessor.PROCESSOR_NAME_FRAGMENT
 import static nz.net.ultraq.thymeleaf.LayoutDialect.DIALECT_PREFIX_LAYOUT
 
@@ -67,25 +68,24 @@ class IncludeProcessor extends AbstractAttrProcessor {
 				arguments, arguments.templateRepository)
 
 		// Gather all fragment parts within the include element
-		def pageFragments = new FragmentLocator(element.elementChildren).locate()
+		FragmentMap.fragmentMapForContext(arguments.context).putAll(
+			new FragmentLocator(element.elementChildren).locate()
+		)
 
 		// Replace the children of this element with those of the include page fragments
 		element.clearChildren()
 		if (includeFragments) {
 			def containerElement = new Element('container')
-			includeFragments.each { includeFragment ->
+			includeFragments.each({ includeFragment ->
 				containerElement.addChild(includeFragment)
 				containerElement.extractChild(includeFragment)
-			}
-			containerElement.children.each { extractedChild ->
+			})
+			containerElement.children.each({ extractedChild ->
 				element.addChild(extractedChild)
-			}
+			})
 		}
 
-		// Scope any fragment parts for the include page to the current element
 		element.removeAttribute(attributeName)
-		return pageFragments ?
-			ProcessorResult.setLocalVariables(pageFragments) :
-			ProcessorResult.OK
+		return ProcessorResult.OK
 	}
 }
