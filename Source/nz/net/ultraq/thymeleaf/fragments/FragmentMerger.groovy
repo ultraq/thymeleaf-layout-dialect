@@ -63,7 +63,7 @@ class FragmentMerger {
 			return
 		}
 
-		sourceElement.attributeMap.values().each({ sourceAttribute ->
+		sourceElement.attributeMap.values().each { sourceAttribute ->
 
 			// Merge th:with attributes to retain local variable declarations
 			if (sourceAttribute.equalsName(StandardDialect.PREFIX, StandardWithAttrProcessor.ATTR_NAME)) {
@@ -81,7 +81,7 @@ class FragmentMerger {
 				!mergeExisting) {
 				targetElement.setAttribute(sourceAttribute.originalName, sourceAttribute.value)
 			}
-		})
+		}
 	}
 
 	/**

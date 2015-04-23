@@ -36,7 +36,7 @@ class HtmlDocumentDecorator extends XmlDocumentDecorator {
 	 * @param contentHtml	Content's HTML element.
 	 */
 	@Override
-	public void decorate(Element decoratorHtml, Element contentHtml) {
+	void decorate(Element decoratorHtml, Element contentHtml) {
 
 		new HtmlHeadDecorator().decorate(decoratorHtml, contentHtml.findElement('head'))
 		new HtmlBodyDecorator().decorate(decoratorHtml, contentHtml.findElement('body'))

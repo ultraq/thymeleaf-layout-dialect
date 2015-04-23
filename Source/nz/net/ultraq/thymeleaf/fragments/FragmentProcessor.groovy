@@ -36,21 +36,14 @@ class FragmentProcessor extends AbstractAttrProcessor {
 
 	static final String PROCESSOR_NAME_FRAGMENT = 'fragment'
 
+	final int precedence = 1
+
 	/**
 	 * Constructor, sets this processor to work on the 'fragment' attribute.
 	 */
 	FragmentProcessor() {
 
 		super(PROCESSOR_NAME_FRAGMENT)
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	final int getPrecedence() {
-
-		return 1
 	}
 
 	/**

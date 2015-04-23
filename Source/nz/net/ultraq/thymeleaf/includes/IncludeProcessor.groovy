@@ -74,13 +74,13 @@ class IncludeProcessor extends AbstractAttrProcessor {
 		element.clearChildren()
 		if (includeFragments) {
 			def containerElement = new Element('container')
-			includeFragments.each({ includeFragment ->
+			includeFragments.each { includeFragment ->
 				containerElement.addChild(includeFragment)
 				containerElement.extractChild(includeFragment)
-			})
-			containerElement.children.each({ extractedChild ->
+			}
+			containerElement.children.each { extractedChild ->
 				element.addChild(extractedChild)
-			})
+			}
 		}
 
 		element.removeAttribute(attributeName)

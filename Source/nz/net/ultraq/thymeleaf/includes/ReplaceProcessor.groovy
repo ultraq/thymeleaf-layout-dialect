@@ -37,7 +37,7 @@ import org.thymeleaf.standard.fragment.StandardFragmentProcessor
  */
 class ReplaceProcessor extends AbstractAttrProcessor {
 
-	static final String PROCESSOR_NAME_REPLACE = "replace"
+	static final String PROCESSOR_NAME_REPLACE = 'replace'
 
 	final int precedence = 0
 
@@ -75,9 +75,9 @@ class ReplaceProcessor extends AbstractAttrProcessor {
 		// fragments, scoping any fragment parts to the immediate children
 		element.clearChildren()
 		if (includeFragments) {
-			includeFragments.each({ includeFragment ->
+			includeFragments.each { includeFragment ->
 				element.addChild(includeFragment)
-			})
+			}
 		}
 		element.parent.extractChild(element)
 

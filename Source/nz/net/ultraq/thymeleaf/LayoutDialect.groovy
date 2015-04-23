@@ -51,7 +51,7 @@ class LayoutDialect extends AbstractDialect {
 		Element.metaClass {
 			findElement << { String name ->
 				def search
-				search = { Element element ->
+				search = { element ->
 					if (element.originalName == name) {
 						return element
 					}
@@ -74,16 +74,7 @@ class LayoutDialect extends AbstractDialect {
 		}
 	}
 
-	/**
-	 * Return the layout prefix.
-	 * 
-	 * @return <tt>layout</tt>
-	 */
-	@Override
-	String getPrefix() {
-
-		return DIALECT_PREFIX_LAYOUT
-	}
+	final String prefix = DIALECT_PREFIX_LAYOUT
 
 	/**
 	 * {@inheritDoc}
