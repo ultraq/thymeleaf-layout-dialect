@@ -73,7 +73,7 @@ class TitlePatternProcessor extends AbstractAttrProcessor {
 		def parser = StandardExpressions.getExpressionParser(configuration)
 
 		// Process the decorator and content title parts
-		def processTitle = { String title ->
+		def processTitle = { title ->
 			try {
 				return title ?
 					parser.parseExpression(configuration, arguments, title)
@@ -85,8 +85,8 @@ class TitlePatternProcessor extends AbstractAttrProcessor {
 				return title?.trim()
 			}
 		}
-		def decoratorTitle = processTitle((String)element.getNodeProperty(DECORATOR_TITLE))
-		def contentTitle = processTitle((String)element.getNodeProperty(CONTENT_TITLE))
+		def decoratorTitle = processTitle(element.getNodeProperty(DECORATOR_TITLE))
+		def contentTitle = processTitle(element.getNodeProperty(CONTENT_TITLE))
 
 		// Replace the <title> text with an expanded title pattern expression,
 		// only using the pattern if both the decorator and content have a title.

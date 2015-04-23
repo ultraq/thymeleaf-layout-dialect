@@ -18,7 +18,7 @@ package nz.net.ultraq.thymeleaf.decorators
 
 import nz.net.ultraq.thymeleaf.decorators.html.HtmlDocumentDecorator
 import nz.net.ultraq.thymeleaf.decorators.xml.XmlDocumentDecorator
-import nz.net.ultraq.thymeleaf.fragments.FragmentLocator
+import nz.net.ultraq.thymeleaf.fragments.FragmentFinder
 import nz.net.ultraq.thymeleaf.fragments.FragmentMap
 import static nz.net.ultraq.thymeleaf.fragments.FragmentProcessor.PROCESSOR_NAME_FRAGMENT
 import static nz.net.ultraq.thymeleaf.LayoutDialect.DIALECT_PREFIX_LAYOUT
@@ -79,8 +79,9 @@ class DecoratorProcessor extends AbstractAttrProcessor {
 		//       lead to unexpected results.
 		if (!(element.parent instanceof Document) &&
 			arguments.templateResolution.templateMode != 'LEGACYHTML5') {
-			logger.error('layout:decorator attribute must appear in the root element of your content page')
-			throw new IllegalArgumentException('layout:decorator attribute must appear in the root element of your content page')
+			def message = 'layout:decorator attribute must appear in the root element of your content page'
+			logger.error(message)
+			throw new IllegalArgumentException(message)
 		}
 
 		def document = arguments.document
@@ -94,7 +95,7 @@ class DecoratorProcessor extends AbstractAttrProcessor {
 		element.removeAttribute(attributeName)
 
 		// Gather all fragment parts from this page
-		FragmentMap.forContext(arguments.context) << new FragmentLocator(document.elementChildren).locate()
+		FragmentMap.forContext(arguments.context) << new FragmentFinder(document.elementChildren).find()
 
 		// Decide which kind of decorator to use, then apply it
 		def decoratorRootElement = decoratorTemplate.document.firstElementChild

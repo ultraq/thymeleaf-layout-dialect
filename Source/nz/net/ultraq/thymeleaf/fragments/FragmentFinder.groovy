@@ -32,7 +32,7 @@ import groovy.transform.Immutable
  * @author Emanuel Rabina
  */
 @Immutable
-class FragmentLocator {
+class FragmentFinder {
 
 	/**
 	 * List of elements to search.
@@ -45,7 +45,7 @@ class FragmentLocator {
 	 * 
 	 * @return Map of fragment names and their elements.
 	 */
-	Map<String,Element> locate() {
+	Map<String,Element> find() {
 
 		def fragments = [:]
 		def findFragments
