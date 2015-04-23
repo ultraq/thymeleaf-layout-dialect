@@ -63,6 +63,13 @@ dependencies {
 		'org.thymeleaf:thymeleaf-testing:2.1.4.RELEASE'
 	)
 	testRuntime(
-		'net.sourceforge.nekohtml:nekohtml:1.9.21'
+		'net.sourceforge.nekohtml:nekohtml:1.9.21',
+		'org.slf4j:slf4j-simple:1.7.12'
 	)
+}
+
+test {
+	testLogging {
+		events 'standard_out'
+	}
 }

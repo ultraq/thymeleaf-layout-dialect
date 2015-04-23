@@ -2,11 +2,3 @@ language: java
 jdk:
   - oraclejdk7
   - oraclejdk8
-
-# No need to run tasks for dependencies
-install:
-  - true
-
-# Run test
-script:
-  - gradle -i --stacktrace test
