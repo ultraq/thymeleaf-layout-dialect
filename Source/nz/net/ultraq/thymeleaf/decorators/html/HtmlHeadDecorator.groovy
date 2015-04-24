@@ -92,9 +92,14 @@ class HtmlHeadDecorator extends XmlElementDecorator {
 		// Merge the content's HEAD elements with the decorator's HEAD section,
 		// placing the resulting title at the beginning of it
 		if (contentHead) {
-			contentHead.elementChildren.each { contentHeadElement ->
-				int insertionpoint = findBestInsertionPoint(decoratorHead, contentHeadElement)
-				insertElementWithWhitespace(decoratorHead, contentHeadElement, insertionpoint)
+			contentHead.children.each { contentHeadNode ->
+				if (contentHeadNode instanceof Element) {
+					int insertionpoint = findBestInsertionPoint(decoratorHead, contentHeadNode)
+					insertElementWithWhitespace(decoratorHead, contentHeadNode, insertionpoint)
+				}
+				else {
+					decoratorHead.addChild(contentHeadNode)
+				}				
 			}
 		}
 		if (resultingTitle) {
