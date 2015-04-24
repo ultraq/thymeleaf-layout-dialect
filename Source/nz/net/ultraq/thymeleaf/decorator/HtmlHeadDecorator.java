@@ -94,9 +94,14 @@ public class HtmlHeadDecorator extends XmlElementDecorator {
 		// Merge the content's HEAD elements with the decorator's HEAD section,
 		// placing the resulting title at the beginning of it
 		if (contenthead != null) {
-			for (Element contentheadelement: contenthead.getElementChildren()) {
-				int insertionpoint = findBestInsertionPoint(decoratorhead, contentheadelement);
-				insertElementWithWhitespace(decoratorhead, contentheadelement, insertionpoint);
+			for (Node contentheadnode: contenthead.getChildren()) {
+				if (contentheadnode instanceof Element) {
+					int insertionpoint = findBestInsertionPoint(decoratorhead, (Element)contentheadnode);
+					insertElementWithWhitespace(decoratorhead, (Element)contentheadnode, insertionpoint);
+				}
+				else {
+					decoratorhead.addChild(contentheadnode);
+				}
 			}
 		}
 		if (resultingtitle != null) {
