@@ -1,5 +1,5 @@
 
-# Test the behaviour when there's no content title.
+# Test the behaviour when there's no decorator title.
 
 %TEMPLATE_MODE HTML5
 
