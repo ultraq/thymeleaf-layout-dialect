@@ -16,18 +16,18 @@
 
 package nz.net.ultraq.thymeleaf.decorators
 
+import nz.net.ultraq.thymeleaf.fragments.FragmentMerger
+
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.thymeleaf.Arguments
 import org.thymeleaf.dom.Element
 import org.thymeleaf.dom.Text
-import org.thymeleaf.exceptions.TemplateProcessingException
 import org.thymeleaf.processor.ProcessorResult
 import org.thymeleaf.processor.attr.AbstractAttrProcessor
-import org.thymeleaf.standard.expression.StandardExpressions
 
 /**
- * Allows for greater control of the resulting &lttitle&gt element by
+ * Allows for greater control of the resulting &lt;title&gt; element by
  * specifying a pattern with some special tokens.  This can be used to extend
  * the decorator's title with the content's one, instead of simply overriding
  * it.
@@ -43,8 +43,9 @@ class TitlePatternProcessor extends AbstractAttrProcessor {
 
 	static final String PROCESSOR_NAME_TITLEPATTERN = 'title-pattern'
 
-	static final String DECORATOR_TITLE = 'title-pattern::decorator-title'
-	static final String CONTENT_TITLE   = 'title-pattern::content-title'
+	static final String TITLE_TYPE           = 'title-pattern::type'
+	static final String TITLE_TYPE_DECORATOR = 'decorator-title'
+	static final String TITLE_TYPE_CONTENT   = 'content-title'
 
 	final int precedence = 1
 
@@ -69,36 +70,39 @@ class TitlePatternProcessor extends AbstractAttrProcessor {
 			throw new IllegalArgumentException(message)
 		}
 
-		def configuration = arguments.configuration
-		def parser = StandardExpressions.getExpressionParser(configuration)
+		// Merge the <title> with the expanded content/decorator titles
+		def titlePattern   = element.getAttributeValue(attributeName)
+		def head           = element.parent
+		def titleContainer = head.findElement('title-container')
+		def titleElements  = titleContainer?.elementChildren ?: []
 
-		// Process the decorator and content title parts
-		def processTitle = { title ->
-			try {
-				return title ?
-					parser.parseExpression(configuration, arguments, title)
-						.execute(configuration, arguments)
-						.toString()?.trim() :
-					null
-			}
-			catch (TemplateProcessingException ex) {
-				return title?.trim()
+		def findTitleType = { titleType ->
+			return { childElement ->
+				childElement.getNodeProperty(TITLE_TYPE) == titleType
 			}
 		}
-		def decoratorTitle = processTitle(element.getNodeProperty(DECORATOR_TITLE))
-		def contentTitle = processTitle(element.getNodeProperty(CONTENT_TITLE))
+		def decoratorTitleElement = titleElements.find(findTitleType(TITLE_TYPE_DECORATOR))
+		def decoratorTitle        = decoratorTitleElement?.firstChild?.content
+		def contentTitleElement   = titleElements.find(findTitleType(TITLE_TYPE_CONTENT))
+		def contentTitle          = contentTitleElement?.firstChild?.content
 
-		// Replace the <title> text with an expanded title pattern expression,
-		// only using the pattern if both the decorator and content have a title.
-		def titlePattern = element.getAttributeValue(attributeName)
-		def title = decoratorTitle && contentTitle ?
+		new FragmentMerger().mergeAttributes(element, decoratorTitleElement)
+		new FragmentMerger().mergeAttributes(element, contentTitleElement)
+
+		def title = titlePattern && decoratorTitle && contentTitle ?
 			titlePattern
 				.replace(PARAM_TITLE_DECORATOR, decoratorTitle)
 				.replace(PARAM_TITLE_CONTENT, contentTitle) :
-			decoratorTitle ?: contentTitle ?: ''
+			contentTitle ?: decoratorTitle ?: ''
+		if (title) {
+			element.addChild(new Text(title))
+		}
+		else {
+			element.parent.removeChildWithWhitespace(element)
+		}
 
-		element.clearChildren()
-		element.addChild(new Text(title))
+		// Remove the processed <title> elements
+		head.removeChildWithWhitespace(titleContainer)
 
 		element.removeAttribute(attributeName)
 		return ProcessorResult.OK

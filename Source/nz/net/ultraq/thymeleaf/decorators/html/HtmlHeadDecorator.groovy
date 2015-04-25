@@ -17,137 +17,81 @@
 package nz.net.ultraq.thymeleaf.decorators.html
 
 import nz.net.ultraq.thymeleaf.decorators.xml.XmlElementDecorator
-import nz.net.ultraq.thymeleaf.fragments.FragmentMerger
 import static nz.net.ultraq.thymeleaf.LayoutDialect.DIALECT_PREFIX_LAYOUT
-import static nz.net.ultraq.thymeleaf.decorators.TitlePatternProcessor.CONTENT_TITLE
-import static nz.net.ultraq.thymeleaf.decorators.TitlePatternProcessor.DECORATOR_TITLE
+import static nz.net.ultraq.thymeleaf.decorators.TitlePatternProcessor.TITLE_TYPE
+import static nz.net.ultraq.thymeleaf.decorators.TitlePatternProcessor.TITLE_TYPE_CONTENT
+import static nz.net.ultraq.thymeleaf.decorators.TitlePatternProcessor.TITLE_TYPE_DECORATOR
 import static nz.net.ultraq.thymeleaf.decorators.TitlePatternProcessor.PROCESSOR_NAME_TITLEPATTERN
 
 import org.thymeleaf.dom.Element
 import org.thymeleaf.dom.Text
-import org.thymeleaf.standard.StandardDialect
-import org.thymeleaf.standard.processor.attr.StandardTextAttrProcessor
-import org.thymeleaf.standard.processor.attr.StandardUtextAttrProcessor
 
 /**
- * A decorator specific to processing an HTML HEAD element.
+ * A decorator specific to processing an HTML &lt;head&gt; element.
  * 
  * @author Emanuel Rabina
  */
 class HtmlHeadDecorator extends XmlElementDecorator {
 
 	/**
-	 * Decorate the HEAD part.  This step replaces the decorator's TITLE element
-	 * if the content has one, and appends all other content elements to the
-	 * HEAD section, after all the decorator elements.
+	 * Decorate the &lt;head&gt; part, appending all of the content
+	 * &lt;head&gt; elements on to the decorator &lt;head&gt; elements.
 	 * 
-	 * @param decoratorHtml Decorator's HTML element.
-	 * @param contentHead	Content's HEAD element.
+	 * @param decoratorHtml Decorator's &lt;html&gt; element.
+	 * @param contentHead	Content's &lt;head&gt; element.
 	 */
 	@Override
 	void decorate(Element decoratorHtml, Element contentHead) {
 
-		// If the decorator has no HEAD, then we can just use the content HEAD
+		// If the decorator has no <head>, then we can just use the content <head>
 		def decoratorHead = decoratorHtml.findElement('head')
 		if (!decoratorHead) {
 			if (contentHead) {
-				decoratorHtml.insertChild(0, new Text(System.properties.'line.separator'))
-				decoratorHtml.insertChild(1, contentHead)
-
+				decoratorHtml.insertChildWithWhitespace(contentHead, 0)
 				def contentTitle = contentHead.findElement('title')
 				if (contentTitle) {
-					def resultingTitle = new Element('title')
-					extractTitle(contentHead, contentTitle, CONTENT_TITLE, resultingTitle)
-					contentHead.insertChild(0, new Text(System.properties.'line.separator'))
-					contentHead.insertChild(1, resultingTitle)
+					contentTitle.removeAttribute(DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_TITLEPATTERN)
 				}
 			}
 			return
 		}
 
-		// Merge the content and decorator titles into a single title element
-		def decoratorTitle = decoratorHead.findElement('title')
-		def contentTitle   = null
-		if (contentHead) {
-			contentTitle = contentHead.findElement('title')
+		// Copy the content and decorator <title>s
+		def titleContainer = new Element('title-container')
+		def titlePattern = null
+		def titleExtraction = { headElement, titleType ->
+			def titleElement = headElement?.findElement('title')
+			if (titleElement) {
+				headElement.removeChildWithWhitespace(titleElement)
+				titlePattern = titleElement.getAttributeValue(DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_TITLEPATTERN) ?: titlePattern
+				titleElement.removeAttribute(DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_TITLEPATTERN)
+				titleElement.setNodeProperty(TITLE_TYPE, titleType)
+				titleContainer.addChild(titleElement)
+			}
+			return titleElement
 		}
-		def resultingTitle = null
-		if (decoratorTitle || contentTitle) {
-			resultingTitle = new Element('title')
-			if (decoratorTitle) {
-				extractTitle(decoratorHead, decoratorTitle, DECORATOR_TITLE, resultingTitle)
-			}
-			if (contentTitle != null) {
-				extractTitle(contentHead, contentTitle, CONTENT_TITLE, resultingTitle)
-			}
+		titleExtraction(decoratorHead, TITLE_TYPE_DECORATOR)
+		titleExtraction(contentHead, TITLE_TYPE_CONTENT)
 
-			// If there's a title pattern, get rid of all other text setters so
-			// they don't interfere with it
-			if (resultingTitle.hasAttribute(DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_TITLEPATTERN)) {
-				resultingTitle.removeAttribute(StandardDialect.PREFIX, StandardTextAttrProcessor.ATTR_NAME)
-				resultingTitle.removeAttribute(StandardDialect.PREFIX, StandardUtextAttrProcessor.ATTR_NAME)
-			}
-		}
+		def resultTitle = new Element('title')
+		resultTitle.setAttribute("${DIALECT_PREFIX_LAYOUT}:${PROCESSOR_NAME_TITLEPATTERN}", titlePattern)
 
-		// Merge the content's HEAD elements with the decorator's HEAD section,
-		// placing the resulting title at the beginning of it
+		// Merge the content's <head> elements with the decorator's <head>
+		// section, placing the resulting title at the beginning of it
 		if (contentHead) {
 			contentHead.children.each { contentHeadNode ->
 				if (contentHeadNode instanceof Element) {
-					int insertionpoint = findBestInsertionPoint(decoratorHead, contentHeadNode)
-					insertElementWithWhitespace(decoratorHead, contentHeadNode, insertionpoint)
+					decoratorHead.insertChildWithWhitespace(contentHeadNode, findBestInsertionPoint(decoratorHead, contentHeadNode))
 				}
 				else {
 					decoratorHead.addChild(contentHeadNode)
-				}				
+				}
 			}
 		}
-		if (resultingTitle) {
-			insertElementWithWhitespace(decoratorHead, resultingTitle, 0)
-		}
+		decoratorHead.insertChildWithWhitespace(resultTitle, 0)
+		decoratorHead.insertChildWithWhitespace(titleContainer, 0)
 
 		super.decorate(decoratorHead, contentHead)
-	}
-
-	/**
-	 * Extract the title from the given TITLE element, whether it be the text
-	 * in the tag body or a th:text in the attributes.
-	 * 
-	 * @param head     HEAD tag containing <tt>title</tt>.
-	 * @param title    TITLE tag from which to extract the title.
-	 * @param titlekey Key to store the title to as a node property in
-	 *                 <tt>result</tt>.   
-	 * @param result   The new TITLE element being constructed.
-	 */
-	private static void extractTitle(Element head, Element title, String titlekey, Element result) {
-
-		// Make the result look like the title
-		def titleText = title.firstChild
-		result.clearChildren()
-		result.addChild(titleText)
-
-		// Extract any text or processors from the title element's attributes
-		if (title.hasAttribute(StandardDialect.PREFIX, StandardUtextAttrProcessor.ATTR_NAME)) {
-			result.setNodeProperty(titlekey, title.getAttributeValue(
-				StandardDialect.PREFIX, StandardUtextAttrProcessor.ATTR_NAME))
-		}
-		else if (title.hasAttribute(StandardDialect.PREFIX, StandardTextAttrProcessor.ATTR_NAME)) {
-			result.setNodeProperty(titlekey, title.getAttributeValue(
-					StandardDialect.PREFIX, StandardTextAttrProcessor.ATTR_NAME))
-		}
-
-		// Extract text from a previously set value (deep hierarchies)
-		else if (title.hasNodeProperty(titlekey)) {
-			result.setNodeProperty(titlekey, title.getNodeProperty(titlekey))
-		}
-
-		// Extract text from the title element's content
-		else if (titleText) {
-			result.setNodeProperty(titlekey, titleText.content)
-		}
-
-		new FragmentMerger().mergeAttributes(result, title)
-		head.removeChild(title)
 	}
 
 	/**
@@ -190,31 +134,6 @@ class HtmlHeadDecorator extends XmlElementDecorator {
 		       indexOfLastElement != -1 ? indexOfLastElement + 1 :	// After last element
 		       indexOfLastGap     != -1 ? indexOfLastGap :			// At the last gap
 		       headNodes.size()										// At the end
-	}
-
-	/**
-	 * Inserts an element as a child of another element, creating a matching
-	 * whitespace node before it so that it appears in line with all the
-	 * existing children.
-	 * 
-	 * @param parent         Element group to add the child to.
-	 * @param child          Element to add.
-	 * @param insertionpoint Point at which to insert the child element.
-	 */
-	private static void insertElementWithWhitespace(Element parent, Element child, int insertionpoint) {
-
-		def children = parent.children
-
-		// Insert a whitespace gap between elements if available
-		if (children) {
-			def whitespace = children.get(Math.min(insertionpoint, children.size() - 1))
-			if (whitespace instanceof Text) {
-				parent.insertChild(insertionpoint, whitespace.cloneNode(null, false))
-				parent.insertChild(insertionpoint + 1, child)
-				return
-			}
-		}
-		parent.insertChild(insertionpoint, child)
 	}
 
 
