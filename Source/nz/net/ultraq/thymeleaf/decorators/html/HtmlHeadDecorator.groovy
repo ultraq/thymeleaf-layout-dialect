@@ -60,21 +60,31 @@ class HtmlHeadDecorator extends XmlElementDecorator {
 		def titleContainer = new Element('title-container')
 		def titlePattern = null
 		def titleExtraction = { headElement, titleType ->
-			def titleElement = headElement?.findElement('title')
-			if (titleElement) {
-				headElement.removeChildWithWhitespace(titleElement)
+			def existingContainer = headElement?.findElement('title-container')
+			if (existingContainer) {
+				def titleElement = existingContainer.children.last()
 				titlePattern = titleElement.getAttributeValue(DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_TITLEPATTERN) ?: titlePattern
-				titleElement.removeAttribute(DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_TITLEPATTERN)
 				titleElement.setNodeProperty(TITLE_TYPE, titleType)
-				titleContainer.addChild(titleElement)
+				headElement.removeChildWithWhitespace(existingContainer)
+				titleContainer.addChild(existingContainer)
 			}
-			return titleElement
+			else {
+				def titleElement = headElement?.findElement('title')
+				if (titleElement) {
+					titlePattern = titleElement.getAttributeValue(DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_TITLEPATTERN) ?: titlePattern
+					titleElement.setNodeProperty(TITLE_TYPE, titleType)
+					titleElement.removeAttribute(DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_TITLEPATTERN)
+					headElement.removeChildWithWhitespace(titleElement)
+					titleContainer.addChild(titleElement)
+				}
+			} 
 		}
 		titleExtraction(decoratorHead, TITLE_TYPE_DECORATOR)
 		titleExtraction(contentHead, TITLE_TYPE_CONTENT)
 
 		def resultTitle = new Element('title')
 		resultTitle.setAttribute("${DIALECT_PREFIX_LAYOUT}:${PROCESSOR_NAME_TITLEPATTERN}", titlePattern)
+		titleContainer.addChild(resultTitle)
 
 		// Merge the content's <head> elements with the decorator's <head>
 		// section, placing the resulting title at the beginning of it
@@ -88,7 +98,6 @@ class HtmlHeadDecorator extends XmlElementDecorator {
 				}
 			}
 		}
-		decoratorHead.insertChildWithWhitespace(resultTitle, 0)
 		decoratorHead.insertChildWithWhitespace(titleContainer, 0)
 
 		super.decorate(decoratorHead, contentHead)

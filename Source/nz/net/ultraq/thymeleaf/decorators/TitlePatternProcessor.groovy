@@ -70,11 +70,12 @@ class TitlePatternProcessor extends AbstractAttrProcessor {
 			throw new IllegalArgumentException(message)
 		}
 
-		// Merge the <title> with the expanded content/decorator titles
+		// Retrieve title values from the expanded <title> sections within this
+		// processing container (if any)
 		def titlePattern   = element.getAttributeValue(attributeName)
-		def head           = element.parent
-		def titleContainer = head.findElement('title-container')
+		def titleContainer = element.parent
 		def titleElements  = titleContainer?.elementChildren ?: []
+		element.removeAttribute(attributeName)
 
 		def findTitleType = { titleType ->
 			return { childElement ->
@@ -94,17 +95,16 @@ class TitlePatternProcessor extends AbstractAttrProcessor {
 				.replace(PARAM_TITLE_DECORATOR, decoratorTitle)
 				.replace(PARAM_TITLE_CONTENT, contentTitle) :
 			contentTitle ?: decoratorTitle ?: ''
+
+		// If there's a title, bring it up
 		if (title) {
 			element.addChild(new Text(title))
-		}
-		else {
-			element.parent.removeChildWithWhitespace(element)
+			titleContainer.parent.insertAfter(titleContainer, element.cloneNode(null, false))
 		}
 
-		// Remove the processed <title> elements
-		head.removeChildWithWhitespace(titleContainer)
+		// Remove the processing section
+		titleContainer.parent.removeChild(titleContainer)
 
-		element.removeAttribute(attributeName)
 		return ProcessorResult.OK
 	}
 }
