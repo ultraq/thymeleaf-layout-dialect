@@ -2,9 +2,8 @@
 Changelog
 =========
 
-### 2.0.0
+### 1.3.0
  - Dialect rewritten in Groovy
- - <strike>Compatible for Thymeleaf 3.0</strike> (not just yet)
  - Dropped the deprecated `substituteby` processor
 
 ### 1.2.8

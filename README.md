@@ -7,20 +7,14 @@ style your content, as well as pass entire fragment elements to included pages,
 all to help improve code reuse.  If you've ever used SiteMesh or JSF with
 Facelets, then the concepts of this library will be very familiar to you.
 
- - Current version: 2.0.0-SNAPSHOT
+ - Current version: 1.3.0-SNAPSHOT
  - Released: ?? ??? 2015
-
-> This in-development branch is intended for the upcoming Thymeleaf 3.0 which,
-> as of writing, is still under heavy development.  For now it still works with
-> Thymeleaf 2.1, but could go to 3.0 at any time while the dialect API
-> stabilizes.
 
 
 Installation
 ------------
 
-Minimum of Java 6 and Thymeleaf <strike>3.0</strike> (not just yet) 2.1
-required.
+Minimum of Java 6 and Thymeleaf 2.1 required.
 
 ### Standalone distribution
 Copy the JAR from [the latest release bundle](https://github.com/ultraq/thymeleaf-layout-dialect/releases),
@@ -32,7 +26,7 @@ Add a dependency to your project with the following co-ordinates:
 
  - GroupId: `nz.net.ultraq.thymeleaf`
  - ArtifactId: `thymeleaf-layout-dialect`
- - Version: `2.0.0-SNAPSHOT`
+ - Version: `1.3.0-SNAPSHOT`
 
 
 Usage
