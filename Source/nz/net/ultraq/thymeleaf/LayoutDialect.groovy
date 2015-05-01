@@ -18,6 +18,8 @@ package nz.net.ultraq.thymeleaf
 
 import nz.net.ultraq.thymeleaf.decorators.DecoratorProcessor
 import nz.net.ultraq.thymeleaf.decorators.TitlePatternProcessor
+import nz.net.ultraq.thymeleaf.decorators.html.head.AppendingStrategy
+import nz.net.ultraq.thymeleaf.decorators.html.head.SortingStrategy
 import nz.net.ultraq.thymeleaf.fragments.FragmentProcessor
 import nz.net.ultraq.thymeleaf.includes.IncludeProcessor
 import nz.net.ultraq.thymeleaf.includes.ReplaceProcessor
@@ -162,12 +164,24 @@ class LayoutDialect extends AbstractDialect {
 		}
 	}
 
+	private final SortingStrategy sortingStrategy
+
 	final String prefix = DIALECT_PREFIX_LAYOUT
 	final Set<IProcessor> processors = [
-		new DecoratorProcessor(),
+		new DecoratorProcessor(sortingStrategy),
 		new IncludeProcessor(),
 		new ReplaceProcessor(),
 		new FragmentProcessor(),
 		new TitlePatternProcessor()
 	]
+
+	/**
+	 * Constructor, configure the layout dialect with the given values.
+	 * 
+	 * @param sortingStrategy
+	 */
+	LayoutDialect(SortingStrategy sortingStrategy = new AppendingStrategy()) {
+
+		this.sortingStrategy = sortingStrategy
+	}
 }

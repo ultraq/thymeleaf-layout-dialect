@@ -17,6 +17,7 @@
 package nz.net.ultraq.thymeleaf.decorators
 
 import nz.net.ultraq.thymeleaf.decorators.html.HtmlDocumentDecorator
+import nz.net.ultraq.thymeleaf.decorators.html.head.SortingStrategy
 import nz.net.ultraq.thymeleaf.decorators.xml.XmlDocumentDecorator
 import nz.net.ultraq.thymeleaf.fragments.FragmentFinder
 import nz.net.ultraq.thymeleaf.fragments.FragmentMap
@@ -48,14 +49,19 @@ class DecoratorProcessor extends AbstractAttrProcessor {
 
 	static final String PROCESSOR_NAME_DECORATOR = 'decorator'
 
+	private final SortingStrategy sortingStrategy
 	final int precedence = 0
 
 	/**
-	 * Constructor, sets this processor to work on the 'decorator' attribute.
+	 * Constructor, configure this processor to work on the 'decorator'
+	 * attribute and to use the given sorting strategy.
+	 * 
+	 * @param sortingStrategy
 	 */
-	DecoratorProcessor() {
+	DecoratorProcessor(SortingStrategy sortingStrategy) {
 
 		super(PROCESSOR_NAME_DECORATOR)
+		this.sortingStrategy = sortingStrategy
 	}
 
 	/**
@@ -100,7 +106,7 @@ class DecoratorProcessor extends AbstractAttrProcessor {
 		// Decide which kind of decorator to use, then apply it
 		def decoratorRootElement = decoratorTemplate.document.firstElementChild
 		def decorator = decoratorRootElement?.originalName == 'html' ?
-				new HtmlDocumentDecorator() :
+				new HtmlDocumentDecorator(sortingStrategy) :
 				new XmlDocumentDecorator()
 		decorator.decorate(decoratorRootElement, document.firstElementChild)
 

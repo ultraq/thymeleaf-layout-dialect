@@ -16,9 +16,12 @@
 
 package nz.net.ultraq.thymeleaf.decorators.html
 
+import nz.net.ultraq.thymeleaf.decorators.html.head.SortingStrategy
 import nz.net.ultraq.thymeleaf.decorators.xml.XmlDocumentDecorator
 
 import org.thymeleaf.dom.Element
+
+import groovy.transform.TupleConstructor
 
 /**
  * A decorator made to work over whole HTML pages.  Decoration will be done in
@@ -27,7 +30,10 @@ import org.thymeleaf.dom.Element
  * 
  * @author Emanuel Rabina
  */
+@TupleConstructor
 class HtmlDocumentDecorator extends XmlDocumentDecorator {
+
+	private final SortingStrategy sortingStrategy
 
 	/**
 	 * Decorate an entire HTML page.
@@ -38,7 +44,7 @@ class HtmlDocumentDecorator extends XmlDocumentDecorator {
 	@Override
 	void decorate(Element decoratorHtml, Element contentHtml) {
 
-		new HtmlHeadDecorator().decorate(decoratorHtml, contentHtml.findElement('head'))
+		new HtmlHeadDecorator(sortingStrategy).decorate(decoratorHtml, contentHtml.findElement('head'))
 		new HtmlBodyDecorator().decorate(decoratorHtml, contentHtml.findElement('body'))
 
 		// Set the doctype from the decorator if missing from the content page

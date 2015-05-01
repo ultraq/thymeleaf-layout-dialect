@@ -16,6 +16,7 @@
 
 package nz.net.ultraq.thymeleaf.decorators.html
 
+import nz.net.ultraq.thymeleaf.decorators.html.head.SortingStrategy
 import nz.net.ultraq.thymeleaf.decorators.xml.XmlElementDecorator
 import static nz.net.ultraq.thymeleaf.LayoutDialect.DIALECT_PREFIX_LAYOUT
 import static nz.net.ultraq.thymeleaf.decorators.TitlePatternProcessor.TITLE_TYPE
@@ -24,14 +25,18 @@ import static nz.net.ultraq.thymeleaf.decorators.TitlePatternProcessor.TITLE_TYP
 import static nz.net.ultraq.thymeleaf.decorators.TitlePatternProcessor.PROCESSOR_NAME_TITLEPATTERN
 
 import org.thymeleaf.dom.Element
-import org.thymeleaf.dom.Text
+
+import groovy.transform.TupleConstructor
 
 /**
  * A decorator specific to processing an HTML &lt;head&gt; element.
  * 
  * @author Emanuel Rabina
  */
+@TupleConstructor
 class HtmlHeadDecorator extends XmlElementDecorator {
+
+	private final SortingStrategy sortingStrategy
 
 	/**
 	 * Decorate the &lt;head&gt; part, appending all of the content
@@ -87,94 +92,19 @@ class HtmlHeadDecorator extends XmlElementDecorator {
 		titleContainer.addChild(resultTitle)
 
 		// Merge the content's <head> elements with the decorator's <head>
-		// section, placing the resulting title at the beginning of it
+		// section via the given merging strategy, placing the resulting title
+		// at the beginning of it
 		if (contentHead) {
 			contentHead.children.each { contentHeadNode ->
-				if (contentHeadNode instanceof Element) {
-					decoratorHead.insertChildWithWhitespace(contentHeadNode, findBestInsertionPoint(decoratorHead, contentHeadNode))
-				}
-				else {
-					decoratorHead.addChild(contentHeadNode)
+				def decoratorChildren = decoratorHead.children
+				def position = sortingStrategy.findPositionForContent(decoratorChildren, contentHeadNode)
+				if (position != -1) {
+					decoratorHead.insertChildWithWhitespace(contentHeadNode, position)
 				}
 			}
 		}
 		decoratorHead.insertChildWithWhitespace(titleContainer, 0)
 
 		super.decorate(decoratorHead, contentHead)
-	}
-
-	/**
-	 * Attempt to find the best place to merge a content element into the
-	 * decorator HEAD section, ensuring like elements are grouped together.
-	 * Currently, only stylesheets and scripts are subject to this logic.
-	 * Everything else just results in a value that would put it at the end of
-	 * the HEAD section.
-	 * 
-	 * @param head    HEAD element.
-	 * @param element The element to insert.
-	 * @return Best guess at where the node should be inserted in the HEAD.
-	 */
-	private static int findBestInsertionPoint(Element head, Element element) {
-
-		// TODO: Expand this to include all other element types.  Will likely
-		//       leave this until the Groovy rewrite as I know how to solve this
-		//       problem in a functional programming style - it'll be too much
-		//       code in plain Java.
-
-		def type = HeadElement.findMatchingType(element)
-
-		def indexOfLastOfType  = -1
-		def indexOfLastElement = -1
-		def indexOfLastGap     = -1
-		def headNodes = head.children
-		headNodes.eachWithIndex { headnode, i ->
-			if (headnode instanceof Element) {
-				indexOfLastElement = i
-				if (HeadElement.findMatchingType(headnode) == type) {
-					indexOfLastOfType = i
-				}
-			}
-			if (i == headNodes.size() - 1 && headnode instanceof Text) {
-				indexOfLastGap = i
-			}
-		}
-
-		return indexOfLastOfType  != -1 ? indexOfLastOfType  + 1 :	// After last matching type
-		       indexOfLastElement != -1 ? indexOfLastElement + 1 :	// After last element
-		       indexOfLastGap     != -1 ? indexOfLastGap :			// At the last gap
-		       headNodes.size()										// At the end
-	}
-
-
-	/**
-	 * Enum for the types of elements in the HEAD section that we might need to
-	 * sort.
-	 */
-	private static enum HeadElement {
-
-		STYLESHEET,
-		SCRIPT,
-		OTHER
-
-		/**
-		 * Figure out the enum for the given element type.
-		 *
-		 * @param element The element to match.
-		 * @return Matching <tt>HeadElement</tt> enum to descript the element.
-		 */
-		private static HeadElement findMatchingType(Element element) {
-
-			def elementName = element.normalizedName
-			if (elementName == 'script') {
-				return SCRIPT
-			}
-			else if (elementName == 'stylesheet' ||
-					(elementName == 'link' &&
-							element.hasAttribute('rel') &&
-							element.getAttributeValue('rel') == 'stylesheet')) {
-				return STYLESHEET
-			}
-			return OTHER
-		}
 	}
 }
