@@ -21,7 +21,7 @@
  * 
  * @author Emanuel Rabina
  */
-
+Update 
 apply plugin: 'groovy'
 apply plugin: 'maven'
 apply plugin: 'eclipse'
@@ -59,7 +59,7 @@ dependencies {
 	)
 	testCompile(
 		'junit:junit:4.12',
-		'nz.net.ultraq.thymeleaf:thymeleaf-testing-junit:1.0.1',
+		'nz.net.ultraq.thymeleaf:thymeleaf-testing-junit:1.1.1',
 		'org.thymeleaf:thymeleaf-testing:2.1.4.RELEASE'
 	)
 	testRuntime(

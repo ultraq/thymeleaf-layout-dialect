@@ -1,5 +1,5 @@
 /*
- * Copyright 2014, Emanuel Rabina (http://www.ultraq.net.nz/)
+ * Copyright 2015, Emanuel Rabina (http://www.ultraq.net.nz/)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 package nz.net.ultraq.thymeleaf.tests
 
 import nz.net.ultraq.thymeleaf.LayoutDialect
+import nz.net.ultraq.thymeleaf.decorators.html.head.GroupingStrategy
 import nz.net.ultraq.thymeleaf.testing.JUnitTestExecutor
 
 import org.junit.runners.Parameterized.Parameters
@@ -26,29 +27,28 @@ import org.thymeleaf.standard.StandardDialect
 import java.util.regex.Pattern
 
 /**
- * A parameterized JUnit test class that is run over every Thymeleaf testing
- * file (.thtest) in the test directory with the standard <tt>AppendingStrategy</tt>
- * head element sorter.
+ * A parameterized JUnit test class that is run over just the grouping strategy
+ * Thymeleaf testing files.
  * 
  * @author Emanuel Rabina
  */
-class LayoutDialectTestExecutor extends JUnitTestExecutor {
+class LayoutDialectTestExecutorGrouping extends JUnitTestExecutor {
 
 	final List<? extends IDialect> testDialects = [
 		new StandardDialect(),
-		new LayoutDialect()
+		new LayoutDialect(new GroupingStrategy())
 	]
 
 	/**
-	 * Return all Thymeleaf test files except those involved with testing the
+	 * Return only Thymeleaf testing files involved in the testing of the
 	 * <tt>GroupingStrategy</tt> &lt;head&gt; element sorter.
 	 * 
-	 * @return List of almost all Thymeleaf test files.
+	 * @return List of all the Thymeleaf testing files for the <tt>GroupingStrategy</tt>.
 	 * @throws URISyntaxException
 	 */
 	@Parameters(name = "{0}")
-	static List<String> listStandardLayoutDialectTests() throws URISyntaxException {
+	static List<String> listGroupingLayoutDialectTests() throws URISyntaxException {
 
-		return reflections.getResources(Pattern.compile('(?!GroupingStrategy).*\\.thtest')) as List
+		return reflections.getResources(Pattern.compile('GroupingStrategy.*\\.thtest')) as List
 	}
 }
