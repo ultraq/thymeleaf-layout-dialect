@@ -35,31 +35,19 @@ Usage
 Add the Layout dialect to your existing Thymeleaf template engine, eg:
 
 ```java
-ServletContextTemplateResolver templateresolver = new ServletContextTemplateResolver();
-templateresolver.setTemplateMode("HTML5");
-
-templateengine = new TemplateEngine();
-templateengine.setTemplateResolver(templateresolver);
-templateengine.addDialect(new LayoutDialect());		// This line adds the dialect to Thymeleaf
+TemplateEngine templateEngine = new TemplateEngine();
+templateEngine.addDialect(new LayoutDialect());
 ```
 
 Or, for those using Spring configuration files:
 
 ```xml
-<bean id="templateResolver" class="org.thymeleaf.templateresolver.ServletContextTemplateResolver">
-  <property name="templateMode" value="HTML5"/>
-</bean>
-
-<bean id="templateEngine" class="org.thymeleaf.spring3.SpringTemplateEngine">
-  <property name="templateResolver" ref="templateResolver"/>
-
-  <!-- These lines add the dialect to Thymeleaf -->
+<bean id="templateEngine" class="org.thymeleaf.spring4.SpringTemplateEngine">
   <property name="additionalDialects">
     <set>
       <bean class="nz.net.ultraq.thymeleaf.LayoutDialect"/>
     </set>
   </property>
-
 </bean>
 ```
 
@@ -72,11 +60,10 @@ you can use in your pages: `decorator`, `include`, `replace`, `fragment`, and
  - XML attribute: `layout:decorator`
  - Data attribute: `data-layout-decorator`
 
-Used in your content pages and declared in the root tag (usually `<html>`, but
-as of Thymeleaf 2.0.10 this is no longer a restriction), this attribute
-specifies the location of the decorator page to apply to the content page.  The
-mechanism for resolving decorator pages is the same as that used by Thymeleaf to
-resolve `th:fragment` and `th:replace` pages.
+Used in your content pages and declared in the root tag (usually `<html>`), this
+attribute specifies the location of the decorator template to apply to a page.
+The mechanism for resolving decorator pages is the same as that used by
+Thymeleaf to resolve `th:fragment` and `th:replace` pages.
 
 Check out the [Decorators and fragments](#decorators-and-fragments) example for
 how to apply a decorator to your content pages.
@@ -231,6 +218,9 @@ page (`<head>` elements from both pages with the `<title>` element from the
 content page taking place of the decorator's, all elements from the decorator,
 but replaced by all content page fragments where specified).
 
+For more on how you can control the merging of `<head>` elements, see the
+[<head> element merging](#head-element-merging) section.
+
 > The decoration process redirects processing from your content page to the
 > decorator page, picking `layout:fragment` parts out of your content page as
 > the decorator page demands them.  Because of this, anything _outside_ of a
@@ -260,10 +250,8 @@ Content2.html
 </p>
 ```
 
-And that's all you need!  The full-HTML-page restriction of Thymeleaf was lifted
-from version 2.0.10, so now you can do things like the above.  The `<p>` tag
-acts as both root element and fragment definition, resulting in a page that will
-look like this:
+And that's all you need!  The `<p>` tag acts as both root element and fragment
+definition, resulting in a page that will look like this:
 
 ```html
 <!DOCTYPE html>
@@ -439,7 +427,7 @@ page, allowing you to create defaults in your included page.
 
 ### Title pattern
 
-Given that the layout dialect automatically overrides the decorator page's `title`
+Given that the Layout dialect automatically overrides the decorator page's `title`
 element with that found in the content page, you might find yourself repeating
 parts of the title found in the decorator page, especially if you like to create
 breadcrumbs or retain the name of the website in the page title.  The `layout:title-pattern`
@@ -500,13 +488,57 @@ The resulting page would be:
 </html>
 ```
 
-> As of version 1.2, `layout:title-pattern` can work on both static and dynamic
-> title text set using `th:text` attributes.  The decoration process will look
-> for these attributes in the `<title>` tag and apply them to the respective
-> token.
+This works for both static text inside the `<title>` elements, and dynamic text
+either inlined using `th:inline="text"` or resolved using `th:text`.
 
 The pattern was specified in the decorator, so applies to all content pages that
 make use of the decorator.  If you specify another title pattern in the content
 page, then it will override the one found in the decorator, allowing for
 fine-grained control of the appearance of your title.
 
+
+Configuration
+-------------
+
+### <head> element merging
+
+By default, when decorating the `<head>` sections of the content and decorator
+pages, the result is that the content elements will come after the decorator
+ones.  Some use cases need a smarter merging of elements, such as grouping like
+elements together, having scripts with scripts and stylesheets with stylesheets.
+The Layout dialect supports both of these uses case, with the ability for
+developers to define their own sorting.
+
+This sorting is exposed by the `nz.net.ultraq.thymeleaf.decorators.html.head.SortingStrategy`
+class (hmm, this namespace is hella long... I might want to flatten that), and
+the layout dialect provides 2 implementations to choose between:
+
+ - `AppendingStrategy`, the default, appends content `<head>` elements after
+   decorator ones
+ - `GroupingStrategy`, groups like elements together
+
+To change to the grouping strategy, configure the Layout dialect like so:
+
+```java
+TemplateEngine templateEngine = new TemplateEngine();
+templateEngine.addDialect(new LayoutDialect(new GroupingStrategy()));
+```
+
+Spring XML:
+
+```xml
+<bean id="groupingStrategy" class="nz.net.ultraq.thymeleaf.decorators.html.head.GroupingStrategy"/>
+
+<bean id="templateEngine" class="org.thymeleaf.spring4.SpringTemplateEngine">
+  <property name="additionalDialects">
+    <set>
+      <bean class="nz.net.ultraq.thymeleaf.LayoutDialect">
+        <constructor-arg ref="groupingStrategy"/>
+      </bean>
+    </set>
+  </property>
+</bean>
+```
+
+If neither strategy suits your needs, you can implement your own `SortingStrategy`
+class and pass it along to the Layout dialect like above.

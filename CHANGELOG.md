@@ -5,6 +5,15 @@ Changelog
 ### 1.3.0
  - Dialect rewritten in Groovy
  - Dropped the deprecated `substituteby` processor
+ - Allow the title to be completely processed
+   ([#72](https://github.com/ultraq/thymeleaf-layout-dialect/issues/72)) before
+   expanding the value of `title-pattern`, fixing cases like that described in
+   ([#64](https://github.com/ultraq/thymeleaf-layout-dialect/issues/64))
+ - Split out the `<head>` element sorting into a customizable sorting strategy,
+   and provided strategies for each of the behaviours that the layout dialect
+   has implemented in the past.  See the
+   [<head> element merging](https://github.com/ultraq/thymeleaf-layout-dialect#head-element-merging)
+   section in the README for more details.
 
 ### 1.2.8
  - Contribution from [Oliver Niekrenz](https://github.com/oniekrenz) to fix a
