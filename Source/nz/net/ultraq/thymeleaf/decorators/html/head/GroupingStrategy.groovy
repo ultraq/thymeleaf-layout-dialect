@@ -23,7 +23,7 @@ import org.thymeleaf.dom.Text
 
 /**
  * The &lt;head&gt; merging strategy introduced in version 1.2.6 of the Layout
- * dialect, which is to group like elements together.
+ * dialect, which groups like elements together.
  * 
  * @author Emanuel Rabina
  */
@@ -36,7 +36,7 @@ class GroupingStrategy implements SortingStrategy {
 	 * 
 	 * @param decoratorHeadNodes
 	 * @param contentNodes
-	 * @return The size of the decorator nodes list.
+	 * @return Position of the end of the matching element group, or the 
 	 */
 	int findPositionForContent(List<Node> decoratorHeadNodes, Node contentNode) {
 
@@ -48,7 +48,7 @@ class GroupingStrategy implements SortingStrategy {
 		def type = HeadNodeTypes.findMatchingType(contentNode)
 		return decoratorHeadNodes.findLastIndexOf { decoratorNode ->
 			return type == HeadNodeTypes.findMatchingType(decoratorNode)
-		}
+		} + 1
 	}
 
 
@@ -56,7 +56,7 @@ class GroupingStrategy implements SortingStrategy {
 	 * Enum for the types of elements in the HEAD section that we might need to
 	 * sort.
 	 * 
-	 * TODO: Expand this to include all other element types.
+	 * TODO: Expand this to include more element types as they are requested.
 	 */
 	private static enum HeadNodeTypes {
 
@@ -67,14 +67,14 @@ class GroupingStrategy implements SortingStrategy {
 			return node instanceof Element && node.normalizedName == 'meta'
 		}),
 		STYLESHEET({ node ->
-			return node instanceof Element && node.normalizedName == 'rel' &&
+			return node instanceof Element && node.normalizedName == 'link' &&
 					node.getAttributeValue('rel') == 'stylesheet'
 		}),
 		SCRIPT({ node ->
 			return node instanceof Element && node.normalizedName == 'script'
 		}),
-		OTHER({ node ->
-			return true
+		OTHER_ELEMENT({ node ->
+			return node instanceof Element
 		})
 
 		private final Closure determinant
@@ -90,14 +90,14 @@ class GroupingStrategy implements SortingStrategy {
 		}
 
 		/**
-		 * Figure out the enum for the given element type.
+		 * Figure out the enum for the given node type.
 		 * 
-		 * @param element The element to match.
-		 * @return Matching <tt>HeadElement</tt> enum to descript the element.
+		 * @param element The node to match.
+		 * @return Matching <tt>HeadNodeTypes</tt> enum to descript the node.
 		 */
-		private static HeadNodeTypes findMatchingType(Element element) {
+		private static HeadNodeTypes findMatchingType(Node element) {
 
-			return HeadNodeTypes.values().find { headNodeType ->
+			return values().find { headNodeType ->
 				return headNodeType.determinant(element)
 			}
 		}

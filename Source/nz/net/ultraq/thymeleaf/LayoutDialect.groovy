@@ -113,13 +113,13 @@ class LayoutDialect extends AbstractDialect {
 			}
 
 			/**
-			 * Inserts a child element, creating a whitespace node before it so
+			 * Inserts a child node, creating a whitespace node before it so
 			 * that it appears in line with all the existing children.
 			 * 
-			 * @param child Element to add.
-			 * @param index Element position.
+			 * @param child Node to add.
+			 * @param index Node position.
 			 */
-			insertChildWithWhitespace << { Element child, int index ->
+			insertChildWithWhitespace << { child, int index ->
 				if (child) {
 					def parent = delegate.parent
 					def whitespace
@@ -148,12 +148,12 @@ class LayoutDialect extends AbstractDialect {
 			}
 
 			/**
-			 * Removes a child element and the whitespace node immediately
-			 * before so that the area doesn't appear too messy.
+			 * Removes a child node and the whitespace node immediately before
+			 * so that the area doesn't appear too messy.
 			 * 
-			 * @param child Element to remove
+			 * @param child Node to remove
 			 */
-			removeChildWithWhitespace << { Element child ->
+			removeChildWithWhitespace << { child ->
 				if (child) {
 					def children = delegate.children
 					def index = children.indexOf(child)

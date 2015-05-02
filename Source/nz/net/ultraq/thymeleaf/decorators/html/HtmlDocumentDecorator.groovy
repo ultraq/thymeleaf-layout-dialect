@@ -33,7 +33,7 @@ import groovy.transform.TupleConstructor
 @TupleConstructor
 class HtmlDocumentDecorator extends XmlDocumentDecorator {
 
-	private final SortingStrategy sortingStrategy
+	final SortingStrategy sortingStrategy
 
 	/**
 	 * Decorate an entire HTML page.

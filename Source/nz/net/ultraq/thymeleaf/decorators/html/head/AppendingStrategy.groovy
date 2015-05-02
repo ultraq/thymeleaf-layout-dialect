@@ -20,8 +20,8 @@ import org.thymeleaf.dom.Element
 import org.thymeleaf.dom.Node
 
 /**
- * The standard &lt;head&gt; merging strategy, which is to simply append the
- * content to the decorator.
+ * The standard &lt;head&gt; merging strategy, which simply appends the content
+ * to the decorator.
  * 
  * @author Emanuel Rabina
  */

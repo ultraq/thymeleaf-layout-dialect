@@ -36,7 +36,7 @@ import groovy.transform.TupleConstructor
 @TupleConstructor
 class HtmlHeadDecorator extends XmlElementDecorator {
 
-	private final SortingStrategy sortingStrategy
+	final SortingStrategy sortingStrategy
 
 	/**
 	 * Decorate the &lt;head&gt; part, appending all of the content
