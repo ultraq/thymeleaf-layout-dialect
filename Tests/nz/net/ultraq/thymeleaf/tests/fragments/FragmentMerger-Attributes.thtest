@@ -5,7 +5,7 @@
 %TEMPLATE_MODE HTML5
 
 %INPUT
-<div id="test-content-id" layout:decorator="layout" layout:fragment="content">
+<div layout:decorator="layout" layout:fragment="content" id="test-content-id" class="roflcopter">
 	Test content..
 </div>
 
@@ -23,7 +23,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<body>
 		Test layout:
-		<div id="test-content-id" class="container">
+		<div id="test-content-id" class="roflcopter">
 			Test content..
 		</div>
 	</body>
