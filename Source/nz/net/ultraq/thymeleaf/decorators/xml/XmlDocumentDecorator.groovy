@@ -17,7 +17,7 @@
 package nz.net.ultraq.thymeleaf.decorators.xml
 
 import nz.net.ultraq.thymeleaf.decorators.Decorator
-import nz.net.ultraq.thymeleaf.fragments.FragmentMerger
+import nz.net.ultraq.thymeleaf.fragments.mergers.ElementMerger
 
 import org.thymeleaf.dom.Comment
 import org.thymeleaf.dom.Element
@@ -61,6 +61,6 @@ class XmlDocumentDecorator implements Decorator {
 		}
 
 		// Bring the decorator into the content page (which is the one being processed)
-		new FragmentMerger().merge(contentXml, decoratorXml, decoratorXml.normalizedName != contentXml.normalizedName)
+		new ElementMerger(false, true).merge(contentXml, decoratorXml)
 	}
 }

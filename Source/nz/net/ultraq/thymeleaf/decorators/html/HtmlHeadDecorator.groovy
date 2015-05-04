@@ -16,7 +16,7 @@
 
 package nz.net.ultraq.thymeleaf.decorators.html
 
-import nz.net.ultraq.thymeleaf.decorators.html.head.SortingStrategy
+import nz.net.ultraq.thymeleaf.decorators.strategies.SortingStrategy
 import nz.net.ultraq.thymeleaf.decorators.xml.XmlElementDecorator
 import static nz.net.ultraq.thymeleaf.LayoutDialect.DIALECT_PREFIX_LAYOUT
 import static nz.net.ultraq.thymeleaf.decorators.TitlePatternProcessor.TITLE_TYPE

@@ -16,6 +16,8 @@
 
 package nz.net.ultraq.thymeleaf.fragments
 
+import nz.net.ultraq.thymeleaf.fragments.mergers.ElementMerger
+
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.thymeleaf.Arguments
@@ -74,7 +76,7 @@ class FragmentProcessor extends AbstractAttrProcessor {
 
 		// Replace the decorator/include fragment with the page fragment
 		if (pageFragment != null) {
-			new FragmentMerger().merge(element, pageFragment)
+			new ElementMerger().merge(element, pageFragment)
 		}
 
 		return ProcessorResult.OK

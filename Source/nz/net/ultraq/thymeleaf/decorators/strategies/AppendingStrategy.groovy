@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package nz.net.ultraq.thymeleaf.decorators.html.head
+package nz.net.ultraq.thymeleaf.decorators.strategies
 
 import org.thymeleaf.dom.Element
 import org.thymeleaf.dom.Node
@@ -31,13 +31,13 @@ class AppendingStrategy implements SortingStrategy {
 	 * Returns a value to append the content node to the end of the decorator
 	 * nodes.
 	 * 
-	 * @param decoratorHeadNodes
+	 * @param decoratorNodes
 	 * @param contentNodes
 	 * @return The size of the decorator nodes list.
 	 */
-	int findPositionForContent(List<Node> decoratorHeadNodes, Node contentNode) {
+	int findPositionForContent(List<Node> decoratorNodes, Node contentNode) {
 
-		return decoratorHeadNodes.findLastIndexOf { decoratorNode ->
+		return decoratorNodes.findLastIndexOf { decoratorNode ->
 			return decoratorNode instanceof Element
 		} + 1
 	}

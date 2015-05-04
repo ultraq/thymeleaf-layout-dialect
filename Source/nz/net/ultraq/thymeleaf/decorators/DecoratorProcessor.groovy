@@ -17,7 +17,7 @@
 package nz.net.ultraq.thymeleaf.decorators
 
 import nz.net.ultraq.thymeleaf.decorators.html.HtmlDocumentDecorator
-import nz.net.ultraq.thymeleaf.decorators.html.head.SortingStrategy
+import nz.net.ultraq.thymeleaf.decorators.strategies.SortingStrategy
 import nz.net.ultraq.thymeleaf.decorators.xml.XmlDocumentDecorator
 import nz.net.ultraq.thymeleaf.fragments.FragmentFinder
 import nz.net.ultraq.thymeleaf.fragments.FragmentMap
@@ -101,7 +101,7 @@ class DecoratorProcessor extends AbstractAttrProcessor {
 		element.removeAttribute(attributeName)
 
 		// Gather all fragment parts from this page
-		FragmentMap.forContext(arguments.context) << new FragmentFinder(document.elementChildren).find()
+		FragmentMap.forContext(arguments.context) << new FragmentFinder().find(document.elementChildren)
 
 		// Decide which kind of decorator to use, then apply it
 		def decoratorRootElement = decoratorTemplate.document.firstElementChild

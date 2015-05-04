@@ -16,7 +16,7 @@
 
 package nz.net.ultraq.thymeleaf.decorators
 
-import nz.net.ultraq.thymeleaf.fragments.FragmentMerger
+import nz.net.ultraq.thymeleaf.fragments.mergers.AttributeMerger
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -87,8 +87,9 @@ class TitlePatternProcessor extends AbstractAttrProcessor {
 		def contentTitleElement   = titleElements.find(findTitleType(TITLE_TYPE_CONTENT))
 		def contentTitle          = contentTitleElement?.firstChild?.content
 
-		new FragmentMerger().mergeAttributes(element, decoratorTitleElement)
-		new FragmentMerger().mergeAttributes(element, contentTitleElement)
+		def attributeMerger = new AttributeMerger()
+		attributeMerger.merge(element, decoratorTitleElement)
+		attributeMerger.merge(element, contentTitleElement)
 
 		def title = titlePattern && decoratorTitle && contentTitle ?
 			titlePattern

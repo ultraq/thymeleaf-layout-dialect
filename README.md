@@ -509,7 +509,7 @@ elements together, having scripts with scripts and stylesheets with stylesheets.
 The Layout dialect supports both of these uses case, with the ability for
 developers to define their own sorting.
 
-This sorting is exposed by the `nz.net.ultraq.thymeleaf.decorators.html.head.SortingStrategy`
+This sorting is exposed by the `nz.net.ultraq.thymeleaf.decorators.strategies.SortingStrategy`
 class (hmm, this namespace is hella long... I might want to flatten that), and
 the layout dialect provides 2 implementations to choose between:
 
@@ -527,7 +527,7 @@ templateEngine.addDialect(new LayoutDialect(new GroupingStrategy()));
 Spring XML:
 
 ```xml
-<bean id="groupingStrategy" class="nz.net.ultraq.thymeleaf.decorators.html.head.GroupingStrategy"/>
+<bean id="groupingStrategy" class="nz.net.ultraq.thymeleaf.decorators.strategies.GroupingStrategy"/>
 
 <bean id="templateEngine" class="org.thymeleaf.spring4.SpringTemplateEngine">
   <property name="additionalDialects">

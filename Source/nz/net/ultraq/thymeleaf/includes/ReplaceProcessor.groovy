@@ -69,7 +69,7 @@ class ReplaceProcessor extends AbstractAttrProcessor {
 				arguments, arguments.templateRepository)
 
 		// Gather all fragment parts within the replace element
-		FragmentMap.forContext(arguments.context) << new FragmentFinder(element.elementChildren).find()
+		FragmentMap.forContext(arguments.context) << new FragmentFinder().find(element.elementChildren)
 
 		// Replace the children of this element with those of the replace page
 		// fragments, scoping any fragment parts to the immediate children

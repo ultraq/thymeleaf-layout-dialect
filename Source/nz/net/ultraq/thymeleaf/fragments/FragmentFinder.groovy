@@ -23,29 +23,22 @@ import static nz.net.ultraq.thymeleaf.includes.ReplaceProcessor.PROCESSOR_NAME_R
 
 import org.thymeleaf.dom.Element
 
-import groovy.transform.Immutable
-
 /**
  * Searches for and returns layout dialect fragments amongst a given set of
  * elements.
  * 
  * @author Emanuel Rabina
  */
-@Immutable
 class FragmentFinder {
-
-	/**
-	 * List of elements to search.
-	 */
-	final List<Element> elements
 
 	/**
 	 * Find and return clones of all fragments within the given elements without
 	 * delving into <tt>layout:include</tt> or <tt>layout:replace</tt> elements.
 	 * 
+	 * @param elements List of elements to search.
 	 * @return Map of fragment names and their elements.
 	 */
-	Map<String,Element> find() {
+	Map<String,Element> find(List<Element> elements) {
 
 		def fragments = [:]
 		def findFragments

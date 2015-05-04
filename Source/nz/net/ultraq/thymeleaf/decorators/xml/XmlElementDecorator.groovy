@@ -17,7 +17,7 @@
 package nz.net.ultraq.thymeleaf.decorators.xml
 
 import nz.net.ultraq.thymeleaf.decorators.Decorator
-import nz.net.ultraq.thymeleaf.fragments.FragmentMerger
+import nz.net.ultraq.thymeleaf.fragments.mergers.AttributeMerger
 
 import org.thymeleaf.dom.Element
 
@@ -34,6 +34,6 @@ class XmlElementDecorator implements Decorator {
 	@Override
 	void decorate(Element decoratorElement, Element contentElement) {
 
-		new FragmentMerger().mergeAttributes(decoratorElement, contentElement)
+		new AttributeMerger().merge(decoratorElement, contentElement)
 	}
 }

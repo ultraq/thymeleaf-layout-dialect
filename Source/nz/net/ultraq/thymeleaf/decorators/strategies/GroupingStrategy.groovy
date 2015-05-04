@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package nz.net.ultraq.thymeleaf.decorators.html.head
+package nz.net.ultraq.thymeleaf.decorators.strategies
 
 import org.thymeleaf.dom.Comment
 import org.thymeleaf.dom.Element
@@ -34,11 +34,11 @@ class GroupingStrategy implements SortingStrategy {
 	 * as the content node.  eg: groups scripts with scripts, stylesheets with
 	 * stylesheets, and so on.
 	 * 
-	 * @param decoratorHeadNodes
+	 * @param decoratorNodes
 	 * @param contentNodes
 	 * @return Position of the end of the matching element group, or the 
 	 */
-	int findPositionForContent(List<Node> decoratorHeadNodes, Node contentNode) {
+	int findPositionForContent(List<Node> decoratorNodes, Node contentNode) {
 
 		// Discard text/whitespace nodes
 		if (contentNode instanceof Text) {
@@ -46,7 +46,7 @@ class GroupingStrategy implements SortingStrategy {
 		}
 
 		def type = HeadNodeTypes.findMatchingType(contentNode)
-		return decoratorHeadNodes.findLastIndexOf { decoratorNode ->
+		return decoratorNodes.findLastIndexOf { decoratorNode ->
 			return type == HeadNodeTypes.findMatchingType(decoratorNode)
 		} + 1
 	}
