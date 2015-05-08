@@ -42,7 +42,7 @@ class LayoutDialect extends AbstractDialect {
 	static final String DIALECT_PREFIX_LAYOUT    = 'layout'
 
 	/**
-	 * Add the following methods to Thymeleaf's objects.  Woohoo
+	 * Add the following methods to Thymeleaf's DOM objects.  Woohoo
 	 * metaprogramming! :D
 	 */
 	static {

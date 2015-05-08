@@ -62,6 +62,8 @@ class HtmlHeadDecorator extends XmlElementDecorator {
 		}
 
 		// Copy the content and decorator <title>s
+		// TODO: Surely the code below can be simplified?  The 2 conditional
+		//       blocks are doing almost the same thing.
 		def titleContainer = new Element('title-container')
 		def titlePattern = null
 		def titleExtraction = { headElement, titleType ->

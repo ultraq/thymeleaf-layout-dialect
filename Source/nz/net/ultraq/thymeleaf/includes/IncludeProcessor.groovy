@@ -18,14 +18,12 @@ package nz.net.ultraq.thymeleaf.includes
 
 import nz.net.ultraq.thymeleaf.fragments.FragmentFinder
 import nz.net.ultraq.thymeleaf.fragments.FragmentMap
-import static nz.net.ultraq.thymeleaf.fragments.FragmentProcessor.PROCESSOR_NAME_FRAGMENT
-import static nz.net.ultraq.thymeleaf.LayoutDialect.DIALECT_PREFIX_LAYOUT
+import nz.net.ultraq.thymeleaf.fragments.FragmentMapper
 
 import org.thymeleaf.Arguments
 import org.thymeleaf.dom.Element
 import org.thymeleaf.processor.ProcessorResult
 import org.thymeleaf.processor.attr.AbstractAttrProcessor
-import org.thymeleaf.standard.fragment.StandardFragmentProcessor
 
 /**
  * Similar to Thymeleaf's <tt>th:include</tt>, but allows the passing of entire
@@ -61,14 +59,11 @@ class IncludeProcessor extends AbstractAttrProcessor {
 	protected ProcessorResult processAttribute(Arguments arguments, Element element, String attributeName) {
 
 		// Locate the page and fragment to include
-		def fragment = StandardFragmentProcessor.computeStandardFragmentSpec(
-				arguments.configuration, arguments, element.getAttributeValue(attributeName),
-				DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_FRAGMENT)
-		def includeFragments = fragment.extractFragment(arguments.configuration,
-				arguments, arguments.templateRepository)
+		def includeFragments = new FragmentFinder(arguments)
+				.findFragments(element.getAttributeValue(attributeName))
 
 		// Gather all fragment parts within the include element
-		FragmentMap.forContext(arguments.context) << new FragmentFinder().find(element.elementChildren)
+		FragmentMap.forContext(arguments.context) << new FragmentMapper().map(element.elementChildren)
 
 		// Replace the children of this element with those of the include page fragments
 		element.clearChildren()

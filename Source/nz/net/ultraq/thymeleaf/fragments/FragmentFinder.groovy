@@ -18,43 +18,62 @@ package nz.net.ultraq.thymeleaf.fragments
 
 import static nz.net.ultraq.thymeleaf.LayoutDialect.DIALECT_PREFIX_LAYOUT
 import static nz.net.ultraq.thymeleaf.fragments.FragmentProcessor.PROCESSOR_NAME_FRAGMENT
-import static nz.net.ultraq.thymeleaf.includes.IncludeProcessor.PROCESSOR_NAME_INCLUDE
-import static nz.net.ultraq.thymeleaf.includes.ReplaceProcessor.PROCESSOR_NAME_REPLACE
 
-import org.thymeleaf.dom.Element
+import org.thymeleaf.Arguments
+import org.thymeleaf.Template
+import org.thymeleaf.TemplateProcessingParameters
+import org.thymeleaf.dom.Node
+import org.thymeleaf.standard.fragment.StandardFragment
+import org.thymeleaf.standard.fragment.StandardFragmentProcessor
+
+import groovy.transform.TupleConstructor
 
 /**
- * Searches for and returns layout dialect fragments amongst a given set of
- * elements.
+ * Hides all the scaffolding business required to find a fragment or fragment
+ * template.
  * 
  * @author Emanuel Rabina
  */
+@TupleConstructor
 class FragmentFinder {
 
-	/**
-	 * Find and return clones of all fragments within the given elements without
-	 * delving into <tt>layout:include</tt> or <tt>layout:replace</tt> elements.
-	 * 
-	 * @param elements List of elements to search.
-	 * @return Map of fragment names and their elements.
-	 */
-	Map<String,Element> find(List<Element> elements) {
+	final Arguments arguments
 
-		def fragments = [:]
-		def findFragments
-		findFragments = { element ->
-			def fragmentName = element.getAttributeValue(DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_FRAGMENT)
-			if (fragmentName) {
-				def fragment = element.cloneNode(null, false)
-				fragment.removeAttribute(DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_FRAGMENT)
-				fragments << [(fragmentName): fragment]
-			}
-			else if (!element.hasAttribute(DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_INCLUDE) ||
-					 !element.hasAttribute(DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_REPLACE)) {
-				element.elementChildren.collect(findFragments)
-			}
-		}
-		elements.each(findFragments)
-		return fragments
+	/**
+	 * Computes the fragment for the given fragment spec, returning the
+	 * Thymeleaf fragment object representing a fragment.
+	 * 
+	 * @param fragmentSpec
+	 * @return Thymeleaf fragment object.
+	 */
+	private StandardFragment computeFragment(String fragmentSpec) {
+
+		return StandardFragmentProcessor.computeStandardFragmentSpec(
+				arguments.configuration, arguments, fragmentSpec,
+				DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_FRAGMENT)
+	}
+
+	/**
+	 * Returns the fragment(s) specified by the given fragment spec string.
+	 * 
+	 * @param fragmentSpec
+	 * @return List of fragment nodes matching the fragment specification.
+	 */
+	List<Node> findFragments(String fragmentSpec) {
+
+		return computeFragment(fragmentSpec).extractFragment(
+				arguments.configuration, arguments, arguments.templateRepository)
+	}
+
+	/**
+	 * Return the template specified by the given fragment spec string.
+	 * 
+	 * @param fragmentSpec
+	 * @return Template matching the fragment specification.
+	 */
+	Template findFragmentTemplate(String fragmentSpec) {
+
+		return arguments.templateRepository.getTemplate(new TemplateProcessingParameters(
+				arguments.configuration, computeFragment(fragmentSpec).templateName, arguments.context))
 	}
 }

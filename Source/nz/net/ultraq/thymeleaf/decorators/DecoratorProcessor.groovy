@@ -21,18 +21,15 @@ import nz.net.ultraq.thymeleaf.decorators.strategies.SortingStrategy
 import nz.net.ultraq.thymeleaf.decorators.xml.XmlDocumentDecorator
 import nz.net.ultraq.thymeleaf.fragments.FragmentFinder
 import nz.net.ultraq.thymeleaf.fragments.FragmentMap
-import static nz.net.ultraq.thymeleaf.fragments.FragmentProcessor.PROCESSOR_NAME_FRAGMENT
-import static nz.net.ultraq.thymeleaf.LayoutDialect.DIALECT_PREFIX_LAYOUT
+import nz.net.ultraq.thymeleaf.fragments.FragmentMapper
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.thymeleaf.Arguments
-import org.thymeleaf.TemplateProcessingParameters
 import org.thymeleaf.dom.Document
 import org.thymeleaf.dom.Element
 import org.thymeleaf.processor.ProcessorResult
 import org.thymeleaf.processor.attr.AbstractAttrProcessor
-import org.thymeleaf.standard.fragment.StandardFragmentProcessor
 
 /**
  * Specifies the name of the decorator template to apply to a content template.
@@ -49,7 +46,7 @@ class DecoratorProcessor extends AbstractAttrProcessor {
 
 	static final String PROCESSOR_NAME_DECORATOR = 'decorator'
 
-	private final SortingStrategy sortingStrategy
+	final SortingStrategy sortingStrategy
 	final int precedence = 0
 
 	/**
@@ -93,15 +90,12 @@ class DecoratorProcessor extends AbstractAttrProcessor {
 		def document = arguments.document
 
 		// Locate the decorator page
-		def fragment = StandardFragmentProcessor.computeStandardFragmentSpec(
-				arguments.configuration, arguments, element.getAttributeValue(attributeName),
-				DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_FRAGMENT)
-		def decoratorTemplate = arguments.templateRepository.getTemplate(new TemplateProcessingParameters(
-				arguments.configuration, fragment.templateName, arguments.context))
+		def decoratorTemplate = new FragmentFinder(arguments)
+				.findFragmentTemplate(element.getAttributeValue(attributeName))
 		element.removeAttribute(attributeName)
 
 		// Gather all fragment parts from this page
-		FragmentMap.forContext(arguments.context) << new FragmentFinder().find(document.elementChildren)
+		FragmentMap.forContext(arguments.context) << new FragmentMapper().map(document.elementChildren)
 
 		// Decide which kind of decorator to use, then apply it
 		def decoratorRootElement = decoratorTemplate.document.firstElementChild
