@@ -29,14 +29,6 @@ import groovy.transform.InheritConstructors
 class ElementMerger extends AttributeMerger {
 
 	/**
-	 * Constructor, configures the merger.
-	 */
-	ElementMerger() {
-
-		super(true, false)
-	}
-
-	/**
 	 * Replace the content of the target element, with the content of the source
 	 * element.
 	 * 

@@ -61,6 +61,6 @@ class XmlDocumentDecorator implements Decorator {
 		}
 
 		// Bring the decorator into the content page (which is the one being processed)
-		new ElementMerger(false, true).merge(contentXml, decoratorXml)
+		new ElementMerger(decoratorXml.normalizedName != contentXml.normalizedName).merge(contentXml, decoratorXml)
 	}
 }
