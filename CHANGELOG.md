@@ -15,6 +15,10 @@ Changelog
    [<head> element merging](https://github.com/ultraq/thymeleaf-layout-dialect#head-element-merging)
    section in the README for more details.
 
+### 1.2.9
+ - Have all non-element nodes (text, comments) included in the merging of the
+   `<head>` section ([#70](https://github.com/ultraq/thymeleaf-layout-dialect/issues/70))
+
 ### 1.2.8
  - Contribution from [Oliver Niekrenz](https://github.com/oniekrenz) to fix a
    recursion issue in the way fragments are picked out of templates
