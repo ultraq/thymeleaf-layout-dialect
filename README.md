@@ -2,6 +2,8 @@
 Thymeleaf Layout Dialect
 ========================
 
+[![Build Status](https://travis-ci.org/ultraq/thymeleaf-layout-dialect.svg?branch=dev)](https://travis-ci.org/ultraq/thymeleaf-layout-dialect)
+
 A dialect for Thymeleaf that allows you to use layout/decorator templates to
 style your content, as well as pass entire fragment elements to included pages,
 all to help improve code reuse.  If you've ever used SiteMesh or JSF with
