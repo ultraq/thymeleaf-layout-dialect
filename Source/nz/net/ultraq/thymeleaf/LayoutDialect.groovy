@@ -17,9 +17,9 @@
 package nz.net.ultraq.thymeleaf
 
 import nz.net.ultraq.thymeleaf.decorators.DecoratorProcessor
+import nz.net.ultraq.thymeleaf.decorators.SortingStrategy
 import nz.net.ultraq.thymeleaf.decorators.TitlePatternProcessor
 import nz.net.ultraq.thymeleaf.decorators.strategies.AppendingStrategy
-import nz.net.ultraq.thymeleaf.decorators.strategies.SortingStrategy
 import nz.net.ultraq.thymeleaf.fragments.FragmentProcessor
 import nz.net.ultraq.thymeleaf.includes.IncludeProcessor
 import nz.net.ultraq.thymeleaf.includes.ReplaceProcessor

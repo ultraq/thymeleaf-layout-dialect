@@ -16,6 +16,7 @@
 
 package nz.net.ultraq.thymeleaf.fragments.mergers
 
+import nz.net.ultraq.thymeleaf.fragments.FragmentMerger
 import static nz.net.ultraq.thymeleaf.LayoutDialect.DIALECT_PREFIX_LAYOUT
 import static nz.net.ultraq.thymeleaf.fragments.FragmentProcessor.PROCESSOR_NAME_FRAGMENT
 

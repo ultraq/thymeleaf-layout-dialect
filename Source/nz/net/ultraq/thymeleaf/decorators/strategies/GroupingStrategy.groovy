@@ -16,6 +16,8 @@
 
 package nz.net.ultraq.thymeleaf.decorators.strategies
 
+import nz.net.ultraq.thymeleaf.decorators.SortingStrategy
+
 import org.thymeleaf.dom.Comment
 import org.thymeleaf.dom.Element
 import org.thymeleaf.dom.Node

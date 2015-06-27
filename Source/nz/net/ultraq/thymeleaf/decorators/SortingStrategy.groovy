@@ -14,23 +14,25 @@
  * limitations under the License.
  */
 
-package nz.net.ultraq.thymeleaf.fragments.mergers
+package nz.net.ultraq.thymeleaf.decorators
 
-import org.thymeleaf.dom.Element
+import org.thymeleaf.dom.Node
 
 /**
- * Merges page fragments by bringing in source content into a target element.
+ * Interface for controlling the sort order in which elements are placed into
+ * decorator template from the content one.
  * 
  * @author Emanuel Rabina
  */
-interface FragmentMerger {
+interface SortingStrategy {
 
 	/**
-	 * Merge both the attributes and content of the source element into the
-	 * target element.
+	 * Returns the position in amongst a list of the decorator's  nodes to
+	 * insert a content child node.
 	 * 
-	 * @param targetElement
-	 * @param sourceElement
+	 * @param decoratorNodes
+	 * @param contentNode
+	 * @return Index in the list of decorator nodes to insert the content node.
 	 */
-	void merge(Element targetElement, Element sourceElement)
+	int findPositionForContent(List<Node> decoratorNodes, Node contentNode)
 }

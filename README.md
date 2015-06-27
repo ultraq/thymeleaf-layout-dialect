@@ -511,9 +511,8 @@ elements together, having scripts with scripts and stylesheets with stylesheets.
 The Layout dialect supports both of these uses case, with the ability for
 developers to define their own sorting.
 
-This sorting is exposed by the `nz.net.ultraq.thymeleaf.decorators.strategies.SortingStrategy`
-class (hmm, this namespace is hella long... I might want to flatten that), and
-the layout dialect provides 2 implementations to choose between:
+This sorting is exposed by the `nz.net.ultraq.thymeleaf.decorators.SortingStrategy`
+class and the layout dialect provides 2 implementations to choose between:
 
  - `AppendingStrategy`, the default, appends content `<head>` elements after
    decorator ones

@@ -17,7 +17,6 @@
 package nz.net.ultraq.thymeleaf.decorators
 
 import nz.net.ultraq.thymeleaf.decorators.html.HtmlDocumentDecorator
-import nz.net.ultraq.thymeleaf.decorators.strategies.SortingStrategy
 import nz.net.ultraq.thymeleaf.decorators.xml.XmlDocumentDecorator
 import nz.net.ultraq.thymeleaf.fragments.FragmentFinder
 import nz.net.ultraq.thymeleaf.fragments.FragmentMap
