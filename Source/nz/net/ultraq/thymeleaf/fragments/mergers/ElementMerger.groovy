@@ -18,15 +18,21 @@ package nz.net.ultraq.thymeleaf.fragments.mergers
 
 import org.thymeleaf.dom.Element
 
-import groovy.transform.InheritConstructors
+import groovy.transform.TupleConstructor
 
 /**
  * Merges an element and all its children into an existing element.
  * 
  * @author Emanuel Rabina
  */
-@InheritConstructors
+@TupleConstructor
 class ElementMerger extends AttributeMerger {
+
+	/**
+	 * Flag for indicating that the merge is over a root element, in which some
+	 * special rules apply.
+	 */
+	final boolean rootElementMerge
 
 	/**
 	 * Replace the content of the target element, with the content of the source
@@ -38,14 +44,17 @@ class ElementMerger extends AttributeMerger {
 	@Override
 	void merge(Element targetElement, Element sourceElement) {
 
-		// NOTE: Not really fond of how I have to merge from target to source
-		//       with an internal configuration option, but it's the only way I
-		//       know how given that the target gets replaced via the
-		//       extractChild() process
-		super.merge(sourceElement, targetElement)
-
+		// Create a new merged element to mess with
+		def mergedElement = sourceElement.cloneNode(null, false)
+		if (!rootElementMerge) {
+			mergedElement.clearAttributes()
+			targetElement.attributeMap.values().each { attribute ->
+				mergedElement.setAttribute(attribute.normalizedName, attribute.value)
+			}
+			super.merge(mergedElement, sourceElement)
+		}
 		targetElement.clearChildren()
-		targetElement.addChild(sourceElement.cloneNode(null, false))
+		targetElement.addChild(mergedElement)
 		targetElement.parent.extractChild(targetElement)
 	}
 }

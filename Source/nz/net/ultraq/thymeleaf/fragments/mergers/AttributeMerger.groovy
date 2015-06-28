@@ -24,22 +24,12 @@ import org.thymeleaf.dom.Element
 import org.thymeleaf.standard.StandardDialect
 import org.thymeleaf.standard.processor.attr.StandardWithAttrProcessor
 
-import groovy.transform.TupleConstructor
-
 /**
  * Merges a source element's attributes into a target element.
  * 
  * @author Emanuel Rabina
  */
-@TupleConstructor
 class AttributeMerger implements FragmentMerger {
-
-	/**
-	 * Set to <tt>true</tt> to pull only attributes that exist in
-	 * <tt>targetelement</tt>.  <tt>th:with</tt> values will continue to be
-	 * brought in regardless.
-	 */
-	final boolean mergeOnly
 
 	/**
 	 * Merge source element attributes into a target element, overwriting those
@@ -55,24 +45,6 @@ class AttributeMerger implements FragmentMerger {
 			return
 		}
 
-		def isNewAttribute = { attribute ->
-			return !targetElement.hasAttribute(attribute.originalName)
-		}
-		def isWithAttribute = { attribute ->
-			return attribute.equalsName(StandardDialect.PREFIX, StandardWithAttrProcessor.ATTR_NAME)
-		}
-		def attributeMerger = { attribute ->
-			targetElement.setAttribute(attribute.originalName, attribute.value)
-		}
-		def withAttributeMerger = { withAttribute ->
-			def mergedWithValue = withAttribute.value
-			def targetWithValue = targetElement.getAttributeValue(StandardDialect.PREFIX, StandardWithAttrProcessor.ATTR_NAME)
-			if (targetWithValue) {
-				mergedWithValue += ",${targetWithValue}"
-			}
-			targetElement.setAttribute("${StandardDialect.PREFIX}:${StandardWithAttrProcessor.ATTR_NAME}", mergedWithValue)
-		}
-
 		// Exclude the copying of fragment attributes
 		def sourceAttributes = sourceElement.attributeMap.values().findAll { sourceAttribute ->
 			return !sourceAttribute.equalsName(DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_FRAGMENT)
@@ -81,14 +53,18 @@ class AttributeMerger implements FragmentMerger {
 		sourceAttributes.each { sourceAttribute ->
 
 			// Merge th:with attributes to retain local variable declarations
-			if (isWithAttribute(sourceAttribute)) {
-				withAttributeMerger(sourceAttribute)
+			if (sourceAttribute.equalsName(StandardDialect.PREFIX, StandardWithAttrProcessor.ATTR_NAME)) {
+				def mergedWithValue = sourceAttribute.value
+				def targetWithValue = targetElement.getAttributeValue(StandardDialect.PREFIX, StandardWithAttrProcessor.ATTR_NAME)
+				if (targetWithValue) {
+					mergedWithValue += ",${targetWithValue}"
+				}
+				targetElement.setAttribute("${StandardDialect.PREFIX}:${StandardWithAttrProcessor.ATTR_NAME}", mergedWithValue)
 			}
 
-			// Copy only attributes that already exist in the target element, or
-			// copy any attributes
-			else if ((mergeOnly && isNewAttribute(sourceAttribute)) || !mergeOnly) {
-				attributeMerger(sourceAttribute)
+			// Copy every other attribute straight
+			else {
+				targetElement.setAttribute(sourceAttribute.originalName, sourceAttribute.value)
 			}
 		}
 	}
