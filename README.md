@@ -512,7 +512,7 @@ The Layout dialect supports both of these uses case, with the ability for
 developers to define their own sorting.
 
 This sorting is exposed by the `nz.net.ultraq.thymeleaf.decorators.SortingStrategy`
-class and the layout dialect provides 2 implementations to choose between:
+interface and the layout dialect provides 2 implementations to choose between:
 
  - `AppendingStrategy`, the default, appends content `<head>` elements after
    decorator ones
@@ -542,4 +542,4 @@ Spring XML:
 ```
 
 If neither strategy suits your needs, you can implement your own `SortingStrategy`
-class and pass it along to the Layout dialect like above.
+and pass it along to the Layout dialect like above.
