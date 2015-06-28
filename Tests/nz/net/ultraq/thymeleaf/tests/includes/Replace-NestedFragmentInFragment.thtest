@@ -1,5 +1,5 @@
 
-# Test the reference of a fragment content within a nested fragment call using replace
+# Test referencing of fragment content within a nested fragment call using replace
 # Based off GitHub issue #57 - https://github.com/ultraq/thymeleaf-layout-dialect/issues/57
 
 %TEMPLATE_MODE HTML5
@@ -35,8 +35,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<div id="fragment-outer">
 		<div id="fragment-inner">
-			<div id="ref-inner">
-				<div id="ref-outer">Outer content</div>
+			<div id="inner-content">
+				<div id="outer-content">Outer content</div>
 			</div>
 		</div>
 	</div>
