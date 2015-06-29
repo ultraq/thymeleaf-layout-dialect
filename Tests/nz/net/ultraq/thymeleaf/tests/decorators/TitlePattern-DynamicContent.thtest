@@ -1,0 +1,40 @@
+
+# Test that title patterns can continue to have dynamic content.  Regression in
+# this issue: https://github.com/ultraq/thymeleaf-layout-dialect/issues/64
+
+%TEMPLATE_MODE HTML5
+
+%CONTEXT
+someVar = "dynamic!"
+
+%INPUT
+<html data-layout-decorator="Layout">
+	<head>
+		<title data-layout-fragment="widget-title"
+			data-th-text="|Do something ${someVar}|">Download link</title>
+	</head>
+	<body>
+		<section data-layout-fragment="page-content">
+			<h3><span data-layout-include=" :: widget-title"/></h3>
+		</section>
+	</body>
+</html>
+
+%INPUT[Layout]
+<html>
+	<body>
+		<section data-layout-fragment="page-content"></section>
+	</body>
+</html>
+
+%OUTPUT
+<html>
+	<head>
+		<title>Do something dynamic!</title>
+	</head>
+	<body>
+		<section>
+			<h3><span>Do something dynamic!</span></h3>
+		</section>
+	</body>
+</html>
