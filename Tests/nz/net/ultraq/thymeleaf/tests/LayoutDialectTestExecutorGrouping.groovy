@@ -46,7 +46,7 @@ class LayoutDialectTestExecutorGrouping extends JUnitTestExecutor {
 	 * @return List of all the Thymeleaf testing files for the <tt>GroupingStrategy</tt>.
 	 * @throws URISyntaxException
 	 */
-	@Parameters(name = "{0}")
+	@Parameters(name = '{0}')
 	static List<String> listGroupingLayoutDialectTests() throws URISyntaxException {
 
 		return reflections.getResources(Pattern.compile('GroupingStrategy.*\\.thtest')) as List
