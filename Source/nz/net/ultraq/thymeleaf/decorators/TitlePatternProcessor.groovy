@@ -18,8 +18,6 @@ package nz.net.ultraq.thymeleaf.decorators
 
 import nz.net.ultraq.thymeleaf.fragments.mergers.AttributeMerger
 
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import org.thymeleaf.Arguments
 import org.thymeleaf.dom.Element
 import org.thymeleaf.dom.Text
@@ -36,14 +34,12 @@ import org.thymeleaf.processor.attr.AbstractAttrProcessor
  */
 class TitlePatternProcessor extends AbstractAttrProcessor {
 
-	private static final Logger logger = LoggerFactory.getLogger(TitlePatternProcessor)
-
 	private static final String PARAM_TITLE_DECORATOR = '$DECORATOR_TITLE'
 	private static final String PARAM_TITLE_CONTENT   = '$CONTENT_TITLE'
 
 	static final String PROCESSOR_NAME_TITLEPATTERN = 'title-pattern'
 
-	static final String TITLE_TYPE           = 'title-pattern::type'
+	static final String TITLE_TYPE           = 'LayoutDialect::TitlePattern::Type'
 	static final String TITLE_TYPE_DECORATOR = 'decorator-title'
 	static final String TITLE_TYPE_CONTENT   = 'content-title'
 
@@ -65,9 +61,7 @@ class TitlePatternProcessor extends AbstractAttrProcessor {
 
 		// Ensure this attribute is only on the <title> element
 		if (element.normalizedName != 'title') {
-			def message = 'layout:title-pattern attribute should only appear in a <title> element'
-			logger.error(message)
-			throw new IllegalArgumentException(message)
+			throw new IllegalArgumentException("${attributeName} processor should only appear in a <title> element")
 		}
 
 		// Retrieve title values from the expanded <title> sections within this

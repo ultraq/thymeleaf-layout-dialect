@@ -38,7 +38,7 @@ class GroupingStrategy implements SortingStrategy {
 	 * 
 	 * @param decoratorNodes
 	 * @param contentNodes
-	 * @return Position of the end of the matching element group, or the 
+	 * @return Position of the end of the matching element group.
 	 */
 	int findPositionForContent(List<Node> decoratorNodes, Node contentNode) {
 

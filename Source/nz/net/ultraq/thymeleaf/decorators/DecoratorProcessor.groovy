@@ -22,8 +22,6 @@ import nz.net.ultraq.thymeleaf.fragments.FragmentFinder
 import nz.net.ultraq.thymeleaf.fragments.FragmentMap
 import nz.net.ultraq.thymeleaf.fragments.FragmentMapper
 
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import org.thymeleaf.Arguments
 import org.thymeleaf.dom.Document
 import org.thymeleaf.dom.Element
@@ -40,8 +38,6 @@ import org.thymeleaf.processor.attr.AbstractAttrProcessor
  * @author Emanuel Rabina
  */
 class DecoratorProcessor extends AbstractAttrProcessor {
-
-	private static final Logger logger = LoggerFactory.getLogger(DecoratorProcessor)
 
 	static final String PROCESSOR_NAME_DECORATOR = 'decorator'
 
@@ -81,9 +77,7 @@ class DecoratorProcessor extends AbstractAttrProcessor {
 		//       lead to unexpected results.
 		if (!(element.parent instanceof Document) &&
 			arguments.templateResolution.templateMode != 'LEGACYHTML5') {
-			def message = 'layout:decorator attribute must appear in the root element of your content page'
-			logger.error(message)
-			throw new IllegalArgumentException(message)
+			throw new IllegalArgumentException('layout:decorator attribute must appear in the root element of your content page')
 		}
 
 		def document = arguments.document
