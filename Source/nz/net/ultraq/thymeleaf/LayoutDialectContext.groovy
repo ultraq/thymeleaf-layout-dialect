@@ -39,9 +39,22 @@ class LayoutDialectContext extends HashMap<String,Object> {
 	static LayoutDialectContext forContext(IContext context) {
 
 		def variables = context.variables
-		if (!variables.containsKey(CONTEXT_KEY)) {
-			variables << [(CONTEXT_KEY): new LayoutDialectContext()]
+		def dialectContext = variables[(CONTEXT_KEY)]
+
+		// Error if something has already taken this value.  Hopefully there
+		// aren't any collisions, but this name isn't exactly rare, so it *just*
+		// might happen.
+		if (dialectContext && !(dialectContext instanceof LayoutDialectContext)) {
+			throw new Error("""Name collision on the Thymeleaf processing
+				context.  An object with the key "layout" exists, but is needed
+				by the Layout Dialect to work""".stripMargin())
 		}
-		return variables[(CONTEXT_KEY)]
+
+		if (!dialectContext) {
+			dialectContext = new LayoutDialectContext()
+			variables << [(CONTEXT_KEY): dialectContext]
+		}
+
+		return dialectContext
 	}
 }
