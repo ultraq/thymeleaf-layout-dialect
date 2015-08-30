@@ -16,6 +16,7 @@
 
 package nz.net.ultraq.thymeleaf.decorators
 
+import nz.net.ultraq.thymeleaf.LayoutDialectContext
 import nz.net.ultraq.thymeleaf.fragments.mergers.AttributeMerger
 
 import org.thymeleaf.Arguments
@@ -42,6 +43,8 @@ class TitlePatternProcessor extends AbstractAttrProcessor {
 	static final String TITLE_TYPE           = 'LayoutDialect::TitlePattern::Type'
 	static final String TITLE_TYPE_DECORATOR = 'decorator-title'
 	static final String TITLE_TYPE_CONTENT   = 'content-title'
+
+	static final String RESULTING_TITLE = "resultingTitle"
 
 	final int precedence = 1
 
@@ -95,6 +98,7 @@ class TitlePatternProcessor extends AbstractAttrProcessor {
 		if (title) {
 			element.addChild(new Text(title))
 			titleContainer.parent.insertAfter(titleContainer, element.cloneNode(null, false))
+			LayoutDialectContext.forContext(arguments.context) << [(RESULTING_TITLE): title]
 		}
 
 		// Remove the processing section
