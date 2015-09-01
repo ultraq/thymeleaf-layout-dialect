@@ -1,0 +1,34 @@
+
+# Test that the resulting title from the title-pattern processor is accessible
+
+%TEMPLATE_MODE HTML5
+
+%INPUT
+<!DOCTYPE html>
+<html layout:decorator="Layout">
+	<head>
+		<title>My page</title>
+	</head>
+</html>
+
+%INPUT[Layout]
+<!DOCTYPE html>
+<html>
+	<head>
+		<title layout:title-pattern="$CONTENT_TITLE - $DECORATOR_TITLE">My website</title>
+	</head>
+	<body>
+		<h2 th:text="${layout.resultingTitle}">"My page - My website" will end-up in here</h2>
+	</body>
+</html>
+
+%OUTPUT
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>My page - My website</title>
+	</head>
+	<body>
+		<h2>My page - My website</h2>
+	</body>
+</html>

@@ -6,7 +6,3 @@ jdk:
 # No need to run tasks for dependencies
 install:
   - true
-
-# Run test
-script:
-  - gradle -i --stacktrace test

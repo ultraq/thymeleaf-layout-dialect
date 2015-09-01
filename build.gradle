@@ -22,8 +22,9 @@
  * @author Emanuel Rabina
  */
 
-apply plugin: 'java'
+apply plugin: 'groovy'
 apply plugin: 'maven'
+apply plugin: 'eclipse'
 apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/1.1.0/gradle-support.gradle'
 apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/1.1.0/maven-support.gradle'
 apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/1.1.0/bundle.gradle'
@@ -31,11 +32,11 @@ apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/1.1.0/bundl
 //project.name      = 'Thymeleaf Layout Dialect'
 project.description = 'A dialect for Thymeleaf that allows you to use layout/decorator templates to style your content.'
 project.archivesBaseName = 'thymeleaf-layout-dialect'
-project.sourceCompatibility = '1.6'
+project.sourceCompatibility = '1.7'
 
 project.group    = 'nz.net.ultraq.thymeleaf'
 project.artifact = 'thymeleaf-layout-dialect'
-project.version  = '1.2.9'
+project.version  = '1.3.0-SNAPSHOT'
 project.year     = '2012'
 project.contributors = [
 	[
@@ -53,13 +54,22 @@ project.contributors = [
 
 dependencies {
 	compile(
-		'org.thymeleaf:thymeleaf:2.1.3.RELEASE'
+		'org.codehaus.groovy:groovy:2.4.3',
+		'org.thymeleaf:thymeleaf:2.1.4.RELEASE'
 	)
 	testCompile(
-		'junit:junit:4.11',
-		'org.thymeleaf:thymeleaf-testing:2.1.3.RELEASE'
+		'junit:junit:4.12',
+		'nz.net.ultraq.thymeleaf:thymeleaf-testing-junit:1.1.1',
+		'org.thymeleaf:thymeleaf-testing:2.1.4.RELEASE'
 	)
 	testRuntime(
-		'net.sourceforge.nekohtml:nekohtml:1.9.18'
+		'net.sourceforge.nekohtml:nekohtml:1.9.21',
+		'org.slf4j:slf4j-simple:1.7.12'
 	)
+}
+
+test {
+	testLogging {
+		events 'standard_out'
+	}
 }
