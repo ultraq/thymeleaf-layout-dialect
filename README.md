@@ -6,8 +6,9 @@ Thymeleaf Layout Dialect
 
 A dialect for Thymeleaf that allows you to use layout/decorator templates to
 style your content, as well as pass entire fragment elements to included pages,
-all to help improve code reuse.  If you've ever used SiteMesh or JSF with
-Facelets, then the concepts of this library will be very familiar to you.
+all to help improve code reuse.  If you've ever used SiteMesh for your JSPs, or
+Facelets with JSFs, then the concepts of this library will be very familiar to
+you.
 
  - Current version: 1.3.0-SNAPSHOT
  - Released: ?? ??? 2015
@@ -20,8 +21,8 @@ Minimum of Java 6 and Thymeleaf 2.1 required.
 
 ### Standalone distribution
 Copy the JAR from [the latest release bundle](https://github.com/ultraq/thymeleaf-layout-dialect/releases),
-placing it in the `WEB-INF/lib` directory of your web application, or build the
-project from the source code here on GitHub.
+placing it in the classpath of your application, or build the project from the
+source code here on GitHub.
 
 ### For Maven and Maven-compatible dependency managers
 Add a dependency to your project with the following co-ordinates:
@@ -54,21 +55,21 @@ Or, for those using Spring configuration files:
 ```
 
 This will introduce the `layout` namespace, and 5 new attribute processors that
-you can use in your pages: `decorator`, `include`, `replace`, `fragment`, and
-`title-pattern`.
+you can use in your templates: `decorator`, `include`, `replace`, `fragment`,
+and `title-pattern`.
 
 ### decorator
 
  - XML attribute: `layout:decorator`
  - Data attribute: `data-layout-decorator`
 
-Used in your content pages and declared in the root tag (usually `<html>`), this
-attribute specifies the location of the decorator template to apply to a page.
-The mechanism for resolving decorator pages is the same as that used by
-Thymeleaf to resolve `th:fragment` and `th:replace` pages.
+Used in your content templates and declared in the root tag (usually `<html>`),
+this processor specifies the location of the decorator template to apply.  The
+mechanism for resolving decorator pages is the same as that used by Thymeleaf to
+resolve `th:fragment` and `th:replace` templates.
 
 Check out the [Decorators and fragments](#decorators-and-fragments) example for
-how to apply a decorator to your content pages.
+how to apply a decorator to your content templates.
 
 ### include
 
@@ -76,12 +77,12 @@ how to apply a decorator to your content pages.
  - Data attribute: `data-layout-include`
 
 Similar to Thymeleaf's `th:include`, but allows the passing of entire element
-fragments to the included page.  Useful if you have some HTML that you want to
-reuse, but whose contents are too complex to determine or construct with context
-variables alone.
+fragments to the included template.  Useful if you have some HTML that you want
+to reuse, but whose contents are too complex to determine or construct with
+context variables alone.
 
 Check out the [Includes and fragments](#includes-and-fragments) example for how
-to pass HTML code to the pages you want to include.
+to pass HTML code to the templates you want to include.
 
 ### replace
 
@@ -89,15 +90,16 @@ to pass HTML code to the pages you want to include.
  - Data attribute: `data-layout-replace`
 
 Similar to `layout:include` in that you can pass HTML content to the
-page/fragments you're replacing, but with the behaviour of Thymeleaf's `th:replace`.
+template/fragments you're replacing, but with the behaviour of Thymeleaf's `th:replace`.
 
 ### fragment
 
  - XML attribute: `layout:fragment`
  - Data attribute: `data-layout-fragment`
 
-The glue that holds everything together; it marks sections in the decorator page
-that can be replaced by sections in the content page, which share the same name.
+The glue that holds everything together; it marks sections in the decorator
+template that can be replaced by sections in the content template, which share
+the same name.
 
 ### title-pattern
 
@@ -108,8 +110,8 @@ Allows for greater control of the resulting `<title>` element by specifying a
 pattern with some special tokens.  This can be used to extend the decorator's
 title with the content's one, instead of simply overriding it.
 
-Check out the [Title pattern](#title-pattern) example for how to create a
-configurable title pattern.
+Check out the [Configuring your Title](#configuring-your-title) example for how
+to control the final title of your page.
 
 
 Examples
@@ -121,16 +123,15 @@ Examples
 
 ### Decorators and fragments
 
-Create a page that will contain a layout that will be shared between pages.
-Often this will be a template that contains a page header, navigation, a footer,
-and a spot where your page content will go.
+Create a template that will contain a layout that will be shared across
+templates.  Often this will be a template that contains a page header,
+navigation, a footer, and a spot where your content will go.
 
 ```html
 Layout.html
 
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
   <head>
     <title>Layout page</title>
     <script src="common-script.js"></script>
@@ -151,17 +152,16 @@ Layout.html
 ```
 
 Notice how the `layout:fragment` attribute was applied to the `<section>` and
-`<p>` element in the footer.  These are the points in the decorator page that
-are candidates for replacement by matching fragments in the content pages.
+`<p>` element in the footer.  These are the points in the decorator that are
+candidates for replacement by matching fragments in your content templates.
 
-Now, create some content pages.
+Now, create some content templates.
 
 ```html
 Content1.html
 
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
   layout:decorator="Layout.html">
   <head>
     <title>Content page 1</title>
@@ -178,22 +178,22 @@ Content1.html
 </html>
 ```
 
-The `layout:decorator` in the `<html>` tag says which decorator page to apply to
-this content page.  Also, the content page defines its own title and a script,
-as well as both the `content` and `custom-footer` fragments.  The `custom-footer`
+The `layout:decorator` in the `<html>` tag says which decorator template to
+apply to this content template.  The content template defines its own title and
+script, as well as both the `content` and `custom-footer` fragments.  The `custom-footer`
 fragment is within a `<footer>` element, which isn't really necessary, but might
-be handy if you wish to do static templating of the content page which is one of
-the reasons one uses Thymeleaf in the first place :)
+be handy if you wish to do static templating of the content template which is
+one of the reasons one uses Thymeleaf in the first place :)
 
-> Fragment names must be unique within a page, otherwise fragment mismatches can
-> occur and all sorts of hilarity will ensue.
+> Fragment names must be unique within a template, otherwise fragment mismatches
+> can occur and all sorts of hilarity will ensue.
 
 Anyway, once you tell Thymeleaf to process `Content1.html`, the resulting page
 will look like this:
 
 ```html
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <title>Content page 1</title>
     <script src="common-script.js"></script>
@@ -214,20 +214,20 @@ will look like this:
 </html>
 ```
 
-The content page was 'decorated' by the elements of `Layout.html`, the result
-being a combination of the decorator page, plus the fragments of the content
-page (`<head>` elements from both pages with the `<title>` element from the
-content page taking place of the decorator's, all elements from the decorator,
-but replaced by all content page fragments where specified).
+The content template was 'decorated' by the elements of `Layout.html`, the
+result being a combination of the decorator, plus the fragments of the content
+template (`<head>` elements from both templates, with the `<title>` element from
+the content template taking place of the decorator's, all elements from the
+decorator, but replaced by all content template fragments where specified).
 
 For more on how you can control the merging of `<head>` elements, see the
 [<head> element merging](#head-element-merging) section.
 
-> The decoration process redirects processing from your content page to the
-> decorator page, picking `layout:fragment` parts out of your content page as
-> the decorator page demands them.  Because of this, anything _outside_ of a
-> `layout:fragment` within the `<body>` in your content page never actually gets
-> executed, meaning you can't do this in your content page:
+> The decoration process redirects processing from your content template to the
+> decorator, picking `layout:fragment` parts out of your content template as the
+> decorator template demands them.  Because of this, anything _outside_ of a
+> `layout:fragment` within the `<body>` in your content template never actually
+> gets executed, meaning you can't do this in your content template:
 > 
 > ```html
 > <div th:if="${user.admin}">
@@ -241,7 +241,7 @@ For more on how you can control the merging of `<head>` elements, see the
 > regardless of any conditions around it because those conditions aren't
 > executed.
 
-Say you just want to replace _only_ the footer of your decorator page with the
+Say you just want to replace _only_ the footer of your decorator with the
 absolute minimum of HTML code:
 
 ```html
@@ -257,7 +257,7 @@ definition, resulting in a page that will look like this:
 
 ```html
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <title>Layout page</title>
     <script src="common-script.js"></script>
@@ -279,26 +279,25 @@ definition, resulting in a page that will look like this:
 </html>
 ```
 
-You can think of the decorator page as your parent template that will get
-filled-up or overwritten by your content pages (child templates), but only if
-your content pages choose to fill-up/overwrite the parent.  This way the
-decorator acts as a sort of 'default', with your content pages acting as
-implementations on top of your default.
+You can think of the decorator as your parent template that will get filled-up
+or overwritten by your content (child templates), but only if your content
+chooses to fill-up/overwrite the parent.  This way the decorator acts as a sort
+of 'default', with your content acting as implementations on top of this default.
 
 
 ### Includes and fragments
 
 Say you have some HTML or structure that you find repeating over and over and
-want to make into its own page that you include from several places to reduce
-code duplication.  An example of this might be a modal panel consisting of
-several HTML elements and CSS classes to create the illusion of a new window
-within your web application:
+want to make into its own template that you include from several places to
+reduce code duplication.  (Modular Thymeleaf anybody?)  An example of this might
+be a modal panel consisting of several HTML elements and CSS classes to create
+the illusion of a new window within your web application:
 
 ```html
 Modal.html
 
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <body>
     <div id="modal-container" class="modal-container" style="display:none;">
       <section id="modal" class="modal">
@@ -334,10 +333,10 @@ in the process.
 The main thing holding you back from proper reuse is the inability to pass HTML
 elements to your included page.  That's where `layout:include` comes in.  It
 works exactly like `th:include`, but by specifying and implementing fragments
-much like with content/decorator page examples, you can create a common
-structure that can respond to the use case of the page including it.
+much like with content/decorator examples, you can create a common structure
+that can respond to the use case of the page including it.
 
-Here's an updated modal page, made more generic using Thymeleaf and the
+Here's an updated modal template, made more generic using Thymeleaf and the
 `layout:fragment` attribute to define a replaceable modal content section:
 
 ```html
@@ -367,9 +366,9 @@ Modal2.html
 </html>
 ```
 
-Now you can include the page using the `layout:include` attribute and implement
-the `modal-content` fragment however you need by creating a fragment of the same
-name _within the include element_ of the calling page:
+Now you can include the template using the `layout:include` attribute and
+implement the `modal-content` fragment however you need by creating a fragment
+of the same name _within the include element_ of the calling template:
 
 ```html
 Content.html
@@ -390,10 +389,10 @@ Content.html
 </html>
 ```
 
-Just like with the content/decorator example, the `layout:fragment` of the page
-you're including will be replaced by the element with the matching fragment
-name.  In this case, the entire `modal-content` of `Modal2.html` will be
-replaced by the custom paragraph above.  Here's the result:
+Just like with the content/decorator example, the `layout:fragment` of the
+template you're including will be replaced by the element with the matching
+fragment name.  In this case, the entire `modal-content` of `Modal2.html` will
+be replaced by the custom paragraph above.  Here's the result:
 
 ```html
 <!DOCTYPE html>
@@ -420,19 +419,19 @@ replaced by the custom paragraph above.  Here's the result:
 </html>
 ```
 
-The custom message defined in the page including `Modal2.html` was made a part
-of the contents of the modal.  Fragments in the context of an included page work
-the same as they do when used in the context of a decorator: if the fragment
-isn't defined in your page, then it won't override whatever is in the included
-page, allowing you to create defaults in your included page.
+The custom message defined in the template including `Modal2.html` was made a
+part of the contents of the modal.  Fragments in the context of an included
+template work the same as they do when used in the context of a decorator: if
+the fragment isn't defined in your template, then it won't override whatever is
+in the included page, allowing you to create defaults in your included template.
 
 
-### Title pattern
+### Configuring your title
 
-Given that the Layout dialect automatically overrides the decorator page's `title`
-element with that found in the content page, you might find yourself repeating
-parts of the title found in the decorator page, especially if you like to create
-breadcrumbs or retain the name of the website in the page title.  The `layout:title-pattern`
+Given that the Layout dialect automatically overrides the decorator's `title`
+element with that found in the content template, you might find yourself
+repeating parts of the title found in the decorator, especially if you like to
+create breadcrumbs or retain the name of the website in the page title.  The `layout:title-pattern`
 attribute can save you the trouble of repeating the decorator title by using
 some special tokens in a pattern of how you want your title to appear.
 
@@ -456,7 +455,7 @@ Layout.html
 The `layout:title-pattern` attribute is a simple string that recognizes 2
 special tokens: `$DECORATOR_TITLE` and `$CONTENT_TITLE`.  Each token will be
 replaced by their respective titles in the resulting page.  So, if you had the
-following content page:
+following content template:
 
 ```html
 Content.html
@@ -493,26 +492,31 @@ The resulting page would be:
 This works for both static text inside the `<title>` elements, and dynamic text
 either inlined using `th:inline="text"` or resolved using `th:text`.
 
-The pattern was specified in the decorator, so applies to all content pages that
-make use of the decorator.  If you specify another title pattern in the content
-page, then it will override the one found in the decorator, allowing for
-fine-grained control of the appearance of your title.
+The pattern was specified in the decorator, so applies to all content templates
+that make use of the decorator.  If you specify another title pattern in the
+content template, then it will override the one found in the decorator, allowing
+for fine-grained control of the appearance of your title.
+
+> As of 1.3.0, the resulting title is accessible via `layout.resultingTitle`.
+> `layout` is a special object added by this dialect (just like how Thymeleaf
+> adds `session`, `param`, and `application` objects), to expose some internals.
+> Right now, `resultingTitle` is the only value on this object.
 
 
 Configuration
 -------------
 
-### <head> element merging
+### `<head>` element merging
 
 By default, when decorating the `<head>` sections of the content and decorator
-pages, the result is that the content elements will come after the decorator
+templates, the result is that the content elements will come after the decorator
 ones.  Some use cases need a smarter merging of elements, such as grouping like
-elements together, having scripts with scripts and stylesheets with stylesheets.
+elements together (having scripts with scripts and stylesheets with stylesheets).
 The Layout dialect supports both of these uses case, with the ability for
 developers to define their own sorting.
 
 This sorting is exposed by the `nz.net.ultraq.thymeleaf.decorators.SortingStrategy`
-interface and the layout dialect provides 2 implementations to choose between:
+interface and the layout dialect provides 2 implementations to choose from:
 
  - `AppendingStrategy`, the default, appends content `<head>` elements after
    decorator ones
