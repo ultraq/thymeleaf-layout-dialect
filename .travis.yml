@@ -1,8 +1,9 @@
 language: java
 jdk:
-  - oraclejdk7
-  - oraclejdk8
+ - openjdk6
+ - oraclejdk7
+ - oraclejdk8
 
 # No need to run tasks for dependencies
 install:
-  - true
+ - true

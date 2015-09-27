@@ -2,6 +2,9 @@
 Changelog
 =========
 
+### 1.3.1
+ - Restore Java 6 support ([#85](https://github.com/ultraq/thymeleaf-layout-dialect/issues/85))
+
 ### 1.3.0
  - Dialect rewritten in Groovy
  - Dropped the deprecated `substituteby` processor
