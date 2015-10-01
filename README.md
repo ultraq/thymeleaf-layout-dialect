@@ -10,8 +10,8 @@ all to help improve code reuse.  If you've ever used SiteMesh for your JSPs, or
 Facelets with JSFs, then the concepts of this library will be very familiar to
 you.
 
- - Current version: 1.3.1-SNAPSHOT
- - Released: ?? ??? 2015
+ - Current version: 1.3.1
+ - Released: 1 October 2015
 
 
 Installation
