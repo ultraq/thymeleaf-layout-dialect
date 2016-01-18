@@ -437,9 +437,9 @@ some special tokens in a pattern of how you want your title to appear.
 
 Here's an example:
 
+```html
 Layout.html
 
-```html
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
@@ -512,7 +512,7 @@ By default, when decorating the `<head>` sections of the content and decorator
 templates, the result is that the content elements will come after the decorator
 ones.  Some use cases need a smarter merging of elements, such as grouping like
 elements together (having scripts with scripts and stylesheets with stylesheets).
-The Layout dialect supports both of these uses case, with the ability for
+The Layout dialect supports both of these use cases, with the ability for
 developers to define their own sorting.
 
 This sorting is exposed by the `nz.net.ultraq.thymeleaf.decorators.SortingStrategy`
