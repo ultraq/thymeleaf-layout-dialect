@@ -2,7 +2,7 @@
 Thymeleaf Layout Dialect
 ========================
 
-[![Build Status](https://travis-ci.org/ultraq/thymeleaf-layout-dialect.svg?branch=master)](https://travis-ci.org/ultraq/thymeleaf-layout-dialect)
+[![Build Status](https://travis-ci.org/ultraq/thymeleaf-layout-dialect.svg?branch=dev)](https://travis-ci.org/ultraq/thymeleaf-layout-dialect)
 
 A dialect for Thymeleaf that allows you to use layout/decorator templates to
 style your content, as well as pass entire fragment elements to included pages,
@@ -10,14 +10,14 @@ all to help improve code reuse.  If you've ever used SiteMesh for your JSPs, or
 Facelets with JSFs, then the concepts of this library will be very familiar to
 you.
 
- - Current version: 1.3.1
- - Released: 1 October 2015
+ - Current version: 2.0.0-SNAPSHOT
+ - Released: ?? ??? 2016
 
 
 Installation
 ------------
 
-Minimum of Java 6 and Thymeleaf 2.1 required.
+Minimum of Java 6 and Thymeleaf 3.0 required.
 
 ### Standalone distribution
 Copy the JAR from [the latest release bundle](https://github.com/ultraq/thymeleaf-layout-dialect/releases),
@@ -29,7 +29,7 @@ Add a dependency to your project with the following co-ordinates:
 
  - GroupId: `nz.net.ultraq.thymeleaf`
  - ArtifactId: `thymeleaf-layout-dialect`
- - Version: `1.3.1`
+ - Version: `2.0.0-SNAPSHOT`
 
 
 Usage
@@ -343,8 +343,7 @@ Here's an updated modal template, made more generic using Thymeleaf and the
 Modal2.html
 
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:th="http://www.thymeleaf.org"
+<html xmlns:th="http://www.thymeleaf.org"
   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
   <body layout:fragment="modal(modalId, modalHeader)">
     <div th:id="${modalId} + '-container'" class="modal-container" style="display:none;">
@@ -374,8 +373,7 @@ of the same name _within the include element_ of the calling template:
 Content.html
 
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:th="http://www.thymeleaf.org"
+<html xmlns:th="http://www.thymeleaf.org"
   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
   ...
@@ -396,7 +394,7 @@ be replaced by the custom paragraph above.  Here's the result:
 
 ```html
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
   ...
 
@@ -441,8 +439,7 @@ Here's an example:
 Layout.html
 
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
   <head>
     <title layout:title-pattern="$DECORATOR_TITLE - $CONTENT_TITLE">My website</title>
   </head>
@@ -461,8 +458,7 @@ following content template:
 Content.html
 
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
   layout:decorator="Layout.html">
 
   <head>
@@ -478,7 +474,7 @@ The resulting page would be:
 
 ```html
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
   <head>
     <title>My website - My blog</title>
