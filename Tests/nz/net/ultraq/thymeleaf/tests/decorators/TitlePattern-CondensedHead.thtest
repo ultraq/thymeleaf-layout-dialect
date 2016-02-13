@@ -3,7 +3,6 @@
 # doesn't cause IllegalArgumentException.  Made to fix this issue:
 # https://github.com/ultraq/thymeleaf-layout-dialect/issues/90
 
-
 %TEMPLATE_MODE HTML5
 
 %INPUT
