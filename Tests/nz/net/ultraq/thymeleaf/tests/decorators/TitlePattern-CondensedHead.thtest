@@ -1,0 +1,23 @@
+
+# Tests that title extraction from a <head> section without any whitespace
+# doesn't cause IllegalArgumentException.  Made to fix this issue:
+# https://github.com/ultraq/thymeleaf-layout-dialect/issues/90
+
+
+%TEMPLATE_MODE HTML5
+
+%INPUT
+<html layout:decorator="Decorator">
+	<head><title>Content title</title></head>
+</html>
+
+%INPUT[Decorator]
+<html>
+	<head><title>Layout title</title>
+	</head>
+</html>
+
+%OUTPUT
+<html>
+	<head><title>Content title</title></head>
+</html>
