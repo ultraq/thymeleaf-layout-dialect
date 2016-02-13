@@ -3,7 +3,8 @@ Changelog
 =========
 
 ### 1.3.2
- - 
+ - Prevent `IllegalArgumentException` when using a template with a condensed
+   `<head>` section ([#90](https://github.com/ultraq/thymeleaf-layout-dialect/issues/90))
 
 ### 1.3.1
  - Restore Java 6 support ([#85](https://github.com/ultraq/thymeleaf-layout-dialect/issues/85))

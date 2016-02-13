@@ -19,5 +19,7 @@
 
 %OUTPUT
 <html>
-	<head><title>Content title</title></head>
+	<head>
+		<title>Content title</title>
+	</head>
 </html>

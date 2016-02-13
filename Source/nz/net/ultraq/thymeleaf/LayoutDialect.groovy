@@ -158,7 +158,9 @@ class LayoutDialect extends AbstractDialect {
 					def children = delegate.children
 					def index = children.indexOf(child)
 					delegate.removeChild(index)
-					delegate.removeChild(index - 1)
+					if (index > 0) {
+						delegate.removeChild(index - 1)
+					}
 				}
 			}
 		}
