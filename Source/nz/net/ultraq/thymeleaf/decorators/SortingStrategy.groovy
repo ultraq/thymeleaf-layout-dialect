@@ -27,8 +27,8 @@ import org.thymeleaf.dom.Node
 interface SortingStrategy {
 
 	/**
-	 * Returns the position in amongst a list of the decorator's  nodes to
-	 * insert a content child node.
+	 * Returns the position in amongst a list of the decorator's nodes to insert
+	 * a content child node.
 	 * 
 	 * @param decoratorNodes
 	 * @param contentNode
