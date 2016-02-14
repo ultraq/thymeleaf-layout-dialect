@@ -117,9 +117,12 @@ to control the final title of your page.
 Examples
 --------
 
-> All the examples here use the XML attribute version of the processors, but
-> can just as easily be swapped for their HTML data attribute equivalents if
-> that's more your style.
+> The following examples:
+>  - use the XML attribute version of the processors, but can just as easily be
+>    swapped for their HTML data attribute equivalents if that's more your style
+>  - assume that the Thymeleaf template engine is configured with `.html` as a
+>    suffix.  This is the default in a lot of framework configurations, such as
+>    Spring Boot.
 
 ### Decorators and fragments
 
@@ -162,7 +165,7 @@ Content1.html
 
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-  layout:decorator="Layout.html">
+  layout:decorator="Layout">
   <head>
     <title>Content page 1</title>
     <script src="content-script.js"></script>
@@ -247,7 +250,7 @@ absolute minimum of HTML code:
 ```html
 Content2.html
 
-<p layout:decorator="Layout.html" layout:fragment="custom-footer">
+<p layout:decorator="Layout" layout:fragment="custom-footer">
   This is some footer text from content page 2.
 </p>
 ```
@@ -380,7 +383,7 @@ Content.html
 
   ...
 
-  <div layout:include="Modal2.html :: modal(modalId='message', modalHeader='Message')" th:remove="tag">
+  <div layout:include="Modal2 :: modal(modalId='message', modalHeader='Message')" th:remove="tag">
     <p layout:fragment="modal-content">Message goes here!</p>
   </div>
 
@@ -463,7 +466,7 @@ Content.html
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-  layout:decorator="Layout.html">
+  layout:decorator="Layout">
 
   <head>
     <title>My blog</title>
