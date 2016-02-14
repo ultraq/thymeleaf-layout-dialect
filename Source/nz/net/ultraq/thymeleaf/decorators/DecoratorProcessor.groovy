@@ -87,8 +87,9 @@ class DecoratorProcessor extends AbstractAttrProcessor {
 				.findFragmentTemplate(element.getAttributeValue(attributeName))
 		element.removeAttribute(attributeName)
 
-		// Gather all fragment parts from this page
-		FragmentMap.forContext(arguments.context) << new FragmentMapper().map(document.elementChildren)
+		// Gather all fragment parts from this page to apply to the new document
+		// after decoration has taken place
+		def pageFragments = new FragmentMapper().map(document.elementChildren)
 
 		// Decide which kind of decorator to use, then apply it
 		def decoratorRootElement = decoratorTemplate.document.firstElementChild
@@ -96,6 +97,8 @@ class DecoratorProcessor extends AbstractAttrProcessor {
 				new HtmlDocumentDecorator(sortingStrategy) :
 				new XmlDocumentDecorator()
 		decorator.decorate(decoratorRootElement, document.firstElementChild)
+
+		FragmentMap.updateForNode(arguments, document.firstElementChild, pageFragments)
 
 		return ProcessorResult.OK
 	}

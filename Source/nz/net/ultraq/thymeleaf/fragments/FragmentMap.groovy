@@ -16,8 +16,9 @@
 
 package nz.net.ultraq.thymeleaf.fragments
 
-import org.thymeleaf.context.IContext
+import org.thymeleaf.Arguments
 import org.thymeleaf.dom.Element
+import org.thymeleaf.dom.Node
 
 /**
  * Holds the layout fragments encountered across layout/decorator and content
@@ -34,15 +35,24 @@ class FragmentMap extends HashMap<String,Element> {
 	 * exists, a new collection is created, applied to the context, and
 	 * returned.
 	 * 
-	 * @param context
+	 * @param arguments
 	 * @return A new or existing fragment collection for the context.
 	 */
-	static FragmentMap forContext(IContext context) {
+	static FragmentMap get(Arguments arguments) {
 
-		def variables = context.variables
-		if (!variables.containsKey(FRAGMENT_COLLECTION_KEY)) {
-			variables << [(FRAGMENT_COLLECTION_KEY): new FragmentMap()]
-		}
-		return variables[(FRAGMENT_COLLECTION_KEY)]
+		return arguments.getLocalVariable(FRAGMENT_COLLECTION_KEY) ?: [:]
+	}
+
+	/**
+	 * Updates the fragment collection just for the current node.
+	 * 
+	 * @param arguments
+	 * @param node
+	 * @param fragments The new fragments to add to the map.
+	 */
+	static void updateForNode(Arguments arguments, Node node, Map<String,Element> fragments) {
+
+		node.setNodeLocalVariable(FRAGMENT_COLLECTION_KEY, get(arguments) << fragments)
+		
 	}
 }

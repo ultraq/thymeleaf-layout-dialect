@@ -62,10 +62,15 @@ class IncludeProcessor extends AbstractAttrProcessor {
 		def includeFragments = new FragmentFinder(arguments)
 				.findFragments(element.getAttributeValue(attributeName))
 
-		// Gather all fragment parts within the include element
-		FragmentMap.forContext(arguments.context) << new FragmentMapper().map(element.elementChildren)
+		// Gather all fragment parts within the include element, scoping them to
+		// this element
+		def elementFragments = new FragmentMapper().map(element.elementChildren)
+		FragmentMap.updateForNode(arguments, element, elementFragments)
 
-		// Replace the children of this element with those of the include page fragments
+		// Replace the children of this element with those of the include page
+		// fragments.  The 'container' element is copied from how Thymeleaf does
+		// it's include processor, which is to maintain internal structures like
+		// local variables
 		element.clearChildren()
 		if (includeFragments) {
 			def containerElement = new Element('container')
