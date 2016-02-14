@@ -4,10 +4,15 @@ Changelog
 
 ### 1.3.2
  - Prevent `IllegalArgumentException` when using a template with a condensed
-   `<head>` section ([#90](https://github.com/ultraq/thymeleaf-layout-dialect/issues/90))
+   `<head>` section
+   ([#90](https://github.com/ultraq/thymeleaf-layout-dialect/issues/90))
+ - Fix fragment scoping so that fragments from one decorator/include/replace
+   operation aren't shared with other ones
+   ([#87](https://github.com/ultraq/thymeleaf-layout-dialect/issues/87))
 
 ### 1.3.1
- - Restore Java 6 support ([#85](https://github.com/ultraq/thymeleaf-layout-dialect/issues/85))
+ - Restore Java 6 support
+   ([#85](https://github.com/ultraq/thymeleaf-layout-dialect/issues/85))
 
 ### 1.3.0
  - Dialect rewritten in Groovy
@@ -24,7 +29,8 @@ Changelog
 
 ### 1.2.9
  - Have all non-element nodes (text, comments) included in the merging of the
-   `<head>` section ([#70](https://github.com/ultraq/thymeleaf-layout-dialect/issues/70))
+   `<head>` section
+   ([#70](https://github.com/ultraq/thymeleaf-layout-dialect/issues/70))
 
 ### 1.2.8
  - Contribution from [Oliver Niekrenz](https://github.com/oniekrenz) to fix a
@@ -175,4 +181,3 @@ Changelog
 
 ### 1.0
  - Initial release.
-
