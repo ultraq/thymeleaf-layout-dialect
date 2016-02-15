@@ -1,0 +1,63 @@
+
+# Test case which keeps calling a fragment within a loop to make sure that
+# iterations don't mess with the fragment.  Based off a bug report from GitHub:
+# https://github.com/ultraq/thymeleaf-layout-dialect/issues/87
+
+%TEMPLATE_MODE HTML5
+
+%CONTEXT
+var texts = {"TEST 0", "TEST 1", "TEST 2", "TEST 3"}
+
+%INPUT
+<html>
+	<body>
+		<div th:each="text, itr: ${texts}">
+			<div th:if="${itr.index != 1}" th:remove="tag">
+				<div layout:include="fragment :: text" th:remove="tag">
+					<!-- DEFAULT -->
+				</div>
+			</div>
+			<div th:if="${itr.index == 1}" th:remove="tag">
+				<div layout:include="fragment :: text" th:remove="tag">
+					<div layout:fragment="field">
+						<input type="text" th:value="${text}" />
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
+
+%INPUT[fragment]
+<html>
+	<body>
+		<div layout:fragment="text">
+			<label th:text="${text}"></label>
+			<div layout:fragment="field" th:remove="tag">
+				<span th:text="${text}"></span>
+			</div>
+		</div>
+	</body>
+</html>
+
+%OUTPUT
+<html>
+	<body>
+		<div>
+			<label>TEST 0</label>
+			<span>TEST 0</span>
+		</div>
+		<div>
+			<label>TEST 1</label>
+			<input type="text" value="TEST 1" />
+		</div>
+		<div>
+			<label>TEST 2</label>
+			<span>TEST 2</span>
+		</div>
+		<div>
+			<label>TEST 3</label>
+			<span>TEST 3</span>
+		</div>
+	</body>
+</html>
