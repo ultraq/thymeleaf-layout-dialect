@@ -21,7 +21,6 @@ import nz.net.ultraq.thymeleaf.decorators.SortingStrategy
 import org.thymeleaf.dom.Comment
 import org.thymeleaf.dom.Element
 import org.thymeleaf.dom.Node
-import org.thymeleaf.dom.Text
 
 /**
  * The &lt;head&gt; merging strategy introduced in version 1.2.6 of the Layout
