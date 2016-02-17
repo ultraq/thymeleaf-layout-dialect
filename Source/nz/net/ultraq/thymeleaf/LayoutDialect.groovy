@@ -28,6 +28,7 @@ import org.thymeleaf.dialect.AbstractDialect
 import org.thymeleaf.dom.Attribute
 import org.thymeleaf.dom.Document
 import org.thymeleaf.dom.Element
+import org.thymeleaf.dom.Node
 import org.thymeleaf.dom.Text
 import org.thymeleaf.processor.IProcessor
 
@@ -162,6 +163,31 @@ class LayoutDialect extends AbstractDialect {
 						delegate.removeChild(index - 1)
 					}
 				}
+			}
+		}
+
+		Node.metaClass {
+
+			/**
+			 * Returns whether or not this node represents collapsible
+			 * whitespace.
+			 *
+			 * @return <tt>true</tt> if this is a collapsible text node.
+			 */
+			isWhitespaceNode << {
+				return delegate instanceof Text && delegate.whitespace
+			}
+		}
+
+		Text.metaClass {
+
+			/**
+			 * Returns whether or not this text node is collapsible whitespace.
+			 * 
+			 * @return <tt>true</tt> if, when trimmed, the text content is empty.
+			 */
+			isWhitespace << {
+				return delegate.content.trim().empty
 			}
 		}
 	}

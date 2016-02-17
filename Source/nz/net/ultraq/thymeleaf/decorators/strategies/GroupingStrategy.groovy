@@ -43,7 +43,7 @@ class GroupingStrategy implements SortingStrategy {
 	int findPositionForContent(List<Node> decoratorNodes, Node contentNode) {
 
 		// Discard text/whitespace nodes
-		if (contentNode instanceof Text) {
+		if (contentNode.whitespaceNode) {
 			return -1
 		}
 

@@ -18,7 +18,6 @@ package nz.net.ultraq.thymeleaf.decorators.strategies
 
 import nz.net.ultraq.thymeleaf.decorators.SortingStrategy
 
-import org.thymeleaf.dom.Element
 import org.thymeleaf.dom.Node
 
 /**
@@ -39,8 +38,9 @@ class AppendingStrategy implements SortingStrategy {
 	 */
 	int findPositionForContent(List<Node> decoratorNodes, Node contentNode) {
 
-		return decoratorNodes.findLastIndexOf { decoratorNode ->
-			return decoratorNode instanceof Element
-		} + 1
+		return contentNode.whitespaceNode ? -1 :
+			decoratorNodes.findLastIndexOf { decoratorNode ->
+				return !decoratorNode.whitespaceNode
+			} + 1
 	}
 }

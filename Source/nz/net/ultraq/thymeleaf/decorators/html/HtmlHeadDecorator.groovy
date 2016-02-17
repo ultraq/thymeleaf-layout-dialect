@@ -84,7 +84,7 @@ class HtmlHeadDecorator extends XmlElementDecorator {
 					headElement.removeChildWithWhitespace(titleElement)
 					titleContainer.addChild(titleElement)
 				}
-			} 
+			}
 		}
 		titleExtraction(decoratorHead, TITLE_TYPE_DECORATOR)
 		titleExtraction(contentHead, TITLE_TYPE_CONTENT)
@@ -97,11 +97,11 @@ class HtmlHeadDecorator extends XmlElementDecorator {
 		// section via the given merging strategy, placing the resulting title
 		// at the beginning of it
 		if (contentHead) {
-			contentHead.children.each { contentHeadNode ->
-				def decoratorChildren = decoratorHead.children
-				def position = sortingStrategy.findPositionForContent(decoratorChildren, contentHeadNode)
+			contentHead.children.each { contentHeadChild ->
+				def decoratorHeadChildren = decoratorHead.children
+				def position = sortingStrategy.findPositionForContent(decoratorHeadChildren, contentHeadChild)
 				if (position != -1) {
-					decoratorHead.insertChildWithWhitespace(contentHeadNode, position)
+					decoratorHead.insertChildWithWhitespace(contentHeadChild, position)
 				}
 			}
 		}
