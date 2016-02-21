@@ -2,6 +2,10 @@
 Changelog
 =========
 
+### 1.3.3
+ - Don't copy collapsible whitespace between `<head>` elements during decoration
+   ([#92](https://github.com/ultraq/thymeleaf-layout-dialect/issues/92))
+
 ### 1.3.2
  - Prevent `IllegalArgumentException` when using a template with a condensed
    `<head>` section

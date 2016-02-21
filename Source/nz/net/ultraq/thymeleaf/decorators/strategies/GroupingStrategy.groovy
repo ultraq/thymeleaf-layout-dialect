@@ -21,7 +21,6 @@ import nz.net.ultraq.thymeleaf.decorators.SortingStrategy
 import org.thymeleaf.dom.Comment
 import org.thymeleaf.dom.Element
 import org.thymeleaf.dom.Node
-import org.thymeleaf.dom.Text
 
 /**
  * The &lt;head&gt; merging strategy introduced in version 1.2.6 of the Layout
@@ -43,7 +42,7 @@ class GroupingStrategy implements SortingStrategy {
 	int findPositionForContent(List<Node> decoratorNodes, Node contentNode) {
 
 		// Discard text/whitespace nodes
-		if (contentNode instanceof Text) {
+		if (contentNode.whitespaceNode) {
 			return -1
 		}
 

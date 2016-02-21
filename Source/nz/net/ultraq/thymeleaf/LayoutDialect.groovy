@@ -163,6 +163,31 @@ class LayoutDialect extends AbstractProcessorDialect {
 //				}
 //			}
 //		}
+//
+//		Node.metaClass {
+//
+//			/**
+//			 * Returns whether or not this node represents collapsible
+//			 * whitespace.
+//			 *
+//			 * @return <tt>true</tt> if this is a collapsible text node.
+//			 */
+//			isWhitespaceNode << {
+//				return delegate instanceof Text && delegate.whitespace
+//			}
+//		}
+//
+//		Text.metaClass {
+//
+//			/**
+//			 * Returns whether or not this text node is collapsible whitespace.
+//			 *
+//			 * @return <tt>true</tt> if, when trimmed, the text content is empty.
+//			 */
+//			isWhitespace << {
+//				return delegate.content.trim().empty
+//			}
+//		}
 //	}
 
 	private final SortingStrategy sortingStrategy
