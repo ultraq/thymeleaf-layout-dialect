@@ -10,8 +10,8 @@ all to help improve code reuse.  If you've ever used SiteMesh for your JSPs, or
 Facelets with JSFs, then the concepts of this library will be very familiar to
 you.
 
- - Current version: 1.3.3-SNAPSHOT
- - Released: ?? ??? 2016
+ - Current version: 1.3.3
+ - Released: 21 February 2016
 
 
 Installation
@@ -29,7 +29,7 @@ Add a dependency to your project with the following co-ordinates:
 
  - GroupId: `nz.net.ultraq.thymeleaf`
  - ArtifactId: `thymeleaf-layout-dialect`
- - Version: `1.3.3-SNAPSHOT`
+ - Version: `1.3.3`
 
 
 Usage
