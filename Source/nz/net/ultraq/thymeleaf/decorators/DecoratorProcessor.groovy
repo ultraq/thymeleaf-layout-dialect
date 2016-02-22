@@ -69,14 +69,7 @@ class DecoratorProcessor extends AbstractAttrProcessor {
 	protected ProcessorResult processAttribute(Arguments arguments, Element element, String attributeName) {
 
 		// Ensure the decorator attribute is in the root element of the document
-		// NOTE: The NekoHTML parser adds <html> and <body> elements to template
-		//       fragments that don't already have them, potentially failing
-		//       this restriction.  For now I'll relax it for the LEGACYHTML5
-		//       template mode, but developers should be aware that putting the
-		//       layout:decorator attribute anywhere but the root element can
-		//       lead to unexpected results.
-		if (!(element.parent instanceof Document) &&
-			arguments.templateResolution.templateMode != 'LEGACYHTML5') {
+		if (!(element.parent instanceof Document)) {
 			throw new IllegalArgumentException('layout:decorator attribute must appear in the root element of your content page')
 		}
 
