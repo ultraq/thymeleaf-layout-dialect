@@ -52,13 +52,10 @@ class AttributeMerger implements FragmentMerger {
 
 		sourceAttributes.each { sourceAttribute ->
 
-			// Merge th:with attributes to retain local variable declarations
+			// Merge th:with attributes
 			if (sourceAttribute.equalsName(StandardDialect.PREFIX, StandardWithAttrProcessor.ATTR_NAME)) {
-				def mergedWithValue = sourceAttribute.value
-				def targetWithValue = targetElement.getAttributeValue(StandardDialect.PREFIX, StandardWithAttrProcessor.ATTR_NAME)
-				if (targetWithValue) {
-					mergedWithValue += ",${targetWithValue}"
-				}
+				def mergedWithValue = new VariableDeclarationMerger().merge(sourceAttribute.value,
+						targetElement.getAttributeValue(StandardDialect.PREFIX, StandardWithAttrProcessor.ATTR_NAME))
 				targetElement.setAttribute("${StandardDialect.PREFIX}:${StandardWithAttrProcessor.ATTR_NAME}", mergedWithValue)
 			}
 
