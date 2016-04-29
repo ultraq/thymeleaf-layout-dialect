@@ -14,14 +14,6 @@
  * limitations under the License.
  */
 
-/**
- * Gradle build script for the Thymeleaf Layout Dialect.  Creates the standalone
- * download file through the 'bundle' task, as well as all artifacts necessary
- * to deploy to a Maven repository through the Gradle Maven tasks.
- * 
- * @author Emanuel Rabina
- */
-
 apply plugin: 'groovy'
 apply plugin: 'maven'
 apply plugin: 'eclipse'
@@ -54,13 +46,13 @@ project.contributors = [
 
 dependencies {
 	compile(
-		'org.codehaus.groovy:groovy:2.4.5',
-		'org.thymeleaf:thymeleaf:3.0.0.BETA01'
+		'org.codehaus.groovy:groovy:2.4.6',
+		'org.thymeleaf:thymeleaf:3.0.0.BETA03'
 	)
 	testCompile(
 		'junit:junit:4.12',
 		'nz.net.ultraq.thymeleaf:thymeleaf-testing-junit:2.0.0-SNAPSHOT',
-		'org.thymeleaf:thymeleaf-testing:3.0.0.BETA1'
+		'org.thymeleaf:thymeleaf-testing:3.0.0.BETA03'
 	)
 	testRuntime(
 		'org.slf4j:slf4j-simple:1.7.12'
