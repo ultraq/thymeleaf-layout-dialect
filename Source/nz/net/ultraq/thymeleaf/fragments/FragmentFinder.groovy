@@ -16,41 +16,41 @@
 
 package nz.net.ultraq.thymeleaf.fragments
 
-import static nz.net.ultraq.thymeleaf.LayoutDialect.DIALECT_PREFIX_LAYOUT
-import static nz.net.ultraq.thymeleaf.fragments.FragmentProcessor.PROCESSOR_NAME_FRAGMENT
-
-import org.thymeleaf.Arguments
-import org.thymeleaf.Template
-import org.thymeleaf.TemplateProcessingParameters
-import org.thymeleaf.dom.Node
-import org.thymeleaf.standard.fragment.StandardFragment
-import org.thymeleaf.standard.fragment.StandardFragmentProcessor
+import org.thymeleaf.context.ITemplateContext
+import org.thymeleaf.engine.TemplateModel
+import org.thymeleaf.standard.expression.Fragment
+import org.thymeleaf.standard.expression.FragmentExpression
+import org.thymeleaf.standard.expression.StandardExpressionExecutionContext
+import org.thymeleaf.standard.expression.StandardExpressions
+import org.thymeleaf.templatemode.TemplateMode
 
 import groovy.transform.TupleConstructor
 
 /**
- * Hides all the scaffolding business required to find a fragment or fragment
- * template.
+ * Hides all the scaffolding business required to find fragments or fragment
+ * templates.
  * 
  * @author Emanuel Rabina
  */
 @TupleConstructor
 class FragmentFinder {
 
-	final Arguments arguments
+	final ITemplateContext context
 
 	/**
-	 * Computes the fragment for the given fragment spec, returning the
-	 * Thymeleaf fragment object representing a fragment.
+	 * Computes the fragment for the given fragment spec, returning a Thymeleaf
+	 * fragment expression object that can be used to further resolve fragments or
+	 * templates.
 	 * 
 	 * @param fragmentSpec
-	 * @return Thymeleaf fragment object.
+	 * @return Thymeleaf fragment expression object.
 	 */
-	private StandardFragment computeFragment(String fragmentSpec) {
+	private FragmentExpression.ExecutedFragmentExpression computeFragment(String fragmentSpec) {
 
-		return StandardFragmentProcessor.computeStandardFragmentSpec(
-				arguments.configuration, arguments, fragmentSpec,
-				DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_FRAGMENT)
+		return FragmentExpression.createExecutedFragmentExpression(context,
+			StandardExpressions.getExpressionParser(context.configuration).parseExpression(context,
+				fragmentSpec.matches(~/~{.+}/) ? fragmentSpec : "~{${fragmentSpec}}"),
+			StandardExpressionExecutionContext.NORMAL)
 	}
 
 	/**
@@ -59,21 +59,23 @@ class FragmentFinder {
 	 * @param fragmentSpec
 	 * @return List of fragment nodes matching the fragment specification.
 	 */
-	List<Node> findFragments(String fragmentSpec) {
+	Fragment findFragment(String fragmentSpec) {
 
-		return computeFragment(fragmentSpec).extractFragment(
-				arguments.configuration, arguments, arguments.templateRepository)
+		return FragmentExpression.resolveExecutedFragmentExpression(context,
+			computeFragment(fragmentSpec), true)
 	}
 
 	/**
-	 * Return the template specified by the given fragment spec string.
+	 * Return the template model specified by the given fragment spec string.
 	 * 
 	 * @param fragmentSpec
-	 * @return Template matching the fragment specification.
+	 * @param templateMode
+	 * @return Template model matching the fragment specification.
 	 */
-	Template findFragmentTemplate(String fragmentSpec) {
+	TemplateModel findFragmentTemplateModel(String fragmentSpec, TemplateMode templateMode) {
 
-		return arguments.templateRepository.getTemplate(new TemplateProcessingParameters(
-				arguments.configuration, computeFragment(fragmentSpec).templateName, arguments.context))
+		return context.configuration.templateManager.parseStandalone(context,
+			FragmentExpression.resolveTemplateName(computeFragment(fragmentSpec)),
+			null, templateMode, true, true)
 	}
 }

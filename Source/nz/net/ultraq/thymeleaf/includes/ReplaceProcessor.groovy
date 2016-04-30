@@ -35,7 +35,7 @@ import org.thymeleaf.processor.attr.AbstractAttrProcessor
  */
 class ReplaceProcessor extends AbstractAttrProcessor {
 
-	static final String PROCESSOR_NAME_REPLACE = 'replace'
+	static final String PROCESSOR_NAME = 'replace'
 
 	final int precedence = 0
 

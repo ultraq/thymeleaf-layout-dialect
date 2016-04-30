@@ -1,4 +1,4 @@
-/*
+/* 
  * Copyright 2015, Emanuel Rabina (http://www.ultraq.net.nz/)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,7 +26,7 @@ import org.thymeleaf.context.IContext
  */
 class LayoutDialectContext extends HashMap<String,Object> {
 
-	private static final String CONTEXT_KEY = "layout"
+	private static final String CONTEXT_KEY = 'layout'
 
 	/**
 	 * Retrieve the layout dialect context specific to the given Thymeleaf
@@ -45,9 +45,9 @@ class LayoutDialectContext extends HashMap<String,Object> {
 		// aren't any collisions, but this name isn't exactly rare, so it *just*
 		// might happen.
 		if (dialectContext && !(dialectContext instanceof LayoutDialectContext)) {
-			throw new Error("""Name collision on the Thymeleaf processing
+			throw new Error('''Name collision on the Thymeleaf processing
 				context.  An object with the key "layout" exists, but is needed
-				by the Layout Dialect to work""".stripMargin())
+				by the Layout Dialect to work'''.stripMargin())
 		}
 
 		if (!dialectContext) {

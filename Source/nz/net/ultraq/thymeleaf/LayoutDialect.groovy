@@ -1,4 +1,4 @@
-/*
+/* 
  * Copyright 2012, Emanuel Rabina (http://www.ultraq.net.nz/)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -210,12 +210,13 @@ class LayoutDialect extends AbstractProcessorDialect {
 	Set<IProcessor> getProcessors(String dialectPrefix) {
 
 		return [
-		    new StandardXmlNsTagProcessor(this, TemplateMode.HTML, dialectPrefix),
-			new DecoratorProcessor(this, dialectPrefix, sortingStrategy),
-			new IncludeProcessor(this, dialectPrefix),
-			new ReplaceProcessor(this, dialectPrefix),
-			new FragmentProcessor(this, dialectPrefix),
-			new TitlePatternProcessor(this, dialectPrefix)
+			// Processors available in the HTML template mode
+			new StandardXmlNsTagProcessor(TemplateMode.HTML, dialectPrefix),
+			new DecoratorProcessor(TemplateMode.HTML, dialectPrefix, sortingStrategy)/*,
+			new IncludeProcessor(dialectPrefix),
+			new ReplaceProcessor(dialectPrefix),
+			new FragmentProcessor(dialectPrefix),
+			new TitlePatternProcessor(dialectPrefix)*/
 		]
 	}
 }

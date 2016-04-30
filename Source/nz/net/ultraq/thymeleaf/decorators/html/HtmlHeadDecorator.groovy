@@ -22,7 +22,7 @@ import static nz.net.ultraq.thymeleaf.LayoutDialect.DIALECT_PREFIX_LAYOUT
 import static nz.net.ultraq.thymeleaf.decorators.TitlePatternProcessor.TITLE_TYPE
 import static nz.net.ultraq.thymeleaf.decorators.TitlePatternProcessor.TITLE_TYPE_CONTENT
 import static nz.net.ultraq.thymeleaf.decorators.TitlePatternProcessor.TITLE_TYPE_DECORATOR
-import static nz.net.ultraq.thymeleaf.decorators.TitlePatternProcessor.PROCESSOR_NAME_TITLEPATTERN
+import static nz.net.ultraq.thymeleaf.decorators.TitlePatternProcessor.PROCESSOR_NAME
 
 import org.thymeleaf.dom.Element
 
@@ -55,7 +55,7 @@ class HtmlHeadDecorator extends XmlElementDecorator {
 				decoratorHtml.insertChildWithWhitespace(contentHead, 0)
 				def contentTitle = contentHead.findElement('title')
 				if (contentTitle) {
-					contentTitle.removeAttribute(DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_TITLEPATTERN)
+					contentTitle.removeAttribute(DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME)
 				}
 			}
 			return
@@ -70,7 +70,7 @@ class HtmlHeadDecorator extends XmlElementDecorator {
 			def existingContainer = headElement?.findElement('title-container')
 			if (existingContainer) {
 				def titleElement = existingContainer.children.last()
-				titlePattern = titleElement.getAttributeValue(DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_TITLEPATTERN) ?: titlePattern
+				titlePattern = titleElement.getAttributeValue(DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME) ?: titlePattern
 				titleElement.setNodeProperty(TITLE_TYPE, titleType)
 				headElement.removeChildWithWhitespace(existingContainer)
 				titleContainer.addChild(existingContainer)
@@ -78,9 +78,9 @@ class HtmlHeadDecorator extends XmlElementDecorator {
 			else {
 				def titleElement = headElement?.findElement('title')
 				if (titleElement) {
-					titlePattern = titleElement.getAttributeValue(DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_TITLEPATTERN) ?: titlePattern
+					titlePattern = titleElement.getAttributeValue(DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME) ?: titlePattern
 					titleElement.setNodeProperty(TITLE_TYPE, titleType)
-					titleElement.removeAttribute(DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_TITLEPATTERN)
+					titleElement.removeAttribute(DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME)
 					headElement.removeChildWithWhitespace(titleElement)
 					titleContainer.addChild(titleElement)
 				}
@@ -90,7 +90,7 @@ class HtmlHeadDecorator extends XmlElementDecorator {
 		titleExtraction(contentHead, TITLE_TYPE_CONTENT)
 
 		def resultTitle = new Element('title')
-		resultTitle.setAttribute("${DIALECT_PREFIX_LAYOUT}:${PROCESSOR_NAME_TITLEPATTERN}", titlePattern)
+		resultTitle.setAttribute("${DIALECT_PREFIX_LAYOUT}:${PROCESSOR_NAME}", titlePattern)
 		titleContainer.addChild(resultTitle)
 
 		// Merge the content's <head> elements with the decorator's <head>

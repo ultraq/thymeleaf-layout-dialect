@@ -16,9 +16,9 @@
 
 package nz.net.ultraq.thymeleaf.fragments
 
-import org.thymeleaf.Arguments
-import org.thymeleaf.dom.Element
-import org.thymeleaf.dom.Node
+import org.thymeleaf.context.IContext
+import org.thymeleaf.model.IModel
+import org.thymeleaf.processor.element.IElementModelStructureHandler
 
 /**
  * Holds the layout fragments encountered across layout/decorator and content
@@ -26,7 +26,7 @@ import org.thymeleaf.dom.Node
  * 
  * @author Emanuel Rabina
  */
-class FragmentMap extends HashMap<String,Element> {
+class FragmentMap extends HashMap<String,IModel> {
 
 	private static final String FRAGMENT_COLLECTION_KEY = 'LayoutDialect::FragmentCollection'
 
@@ -35,24 +35,24 @@ class FragmentMap extends HashMap<String,Element> {
 	 * exists, a new collection is created, applied to the context, and
 	 * returned.
 	 * 
-	 * @param arguments
+	 * @param context
 	 * @return A new or existing fragment collection for the context.
 	 */
-	static FragmentMap get(Arguments arguments) {
+	static FragmentMap get(IContext context) {
 
-		return arguments.getLocalVariable(FRAGMENT_COLLECTION_KEY) ?: [:]
+		return context.getVariable(FRAGMENT_COLLECTION_KEY) ?: [:]
 	}
 
 	/**
 	 * Updates the fragment collection just for the current node.
 	 * 
-	 * @param arguments
-	 * @param node
+	 * @param context
+	 * @param structureHandler
 	 * @param fragments The new fragments to add to the map.
 	 */
-	static void updateForNode(Arguments arguments, Node node, Map<String,Element> fragments) {
+	static void updateForNode(IContext context, IElementModelStructureHandler structureHandler,
+		Map<String,IModel> fragments) {
 
-		node.setNodeLocalVariable(FRAGMENT_COLLECTION_KEY, get(arguments) << fragments)
-		
+		structureHandler.setLocalVariable(FRAGMENT_COLLECTION_KEY, get(context) << fragments)
 	}
 }

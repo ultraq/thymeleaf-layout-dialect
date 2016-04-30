@@ -22,11 +22,12 @@ import nz.net.ultraq.thymeleaf.fragments.FragmentFinder
 import nz.net.ultraq.thymeleaf.fragments.FragmentMap
 import nz.net.ultraq.thymeleaf.fragments.FragmentMapper
 
-import org.thymeleaf.Arguments
-import org.thymeleaf.dom.Document
-import org.thymeleaf.dom.Element
-import org.thymeleaf.processor.ProcessorResult
-import org.thymeleaf.processor.attr.AbstractAttrProcessor
+import org.thymeleaf.context.ITemplateContext
+import org.thymeleaf.engine.AttributeName
+import org.thymeleaf.model.IModel
+import org.thymeleaf.processor.element.AbstractAttributeModelProcessor
+import org.thymeleaf.processor.element.IElementModelStructureHandler
+import org.thymeleaf.templatemode.TemplateMode
 
 /**
  * Specifies the name of the decorator template to apply to a content template.
@@ -37,62 +38,69 @@ import org.thymeleaf.processor.attr.AbstractAttrProcessor
  * 
  * @author Emanuel Rabina
  */
-class DecoratorProcessor extends AbstractAttrProcessor {
+class DecoratorProcessor extends AbstractAttributeModelProcessor {
 
-	static final String PROCESSOR_NAME_DECORATOR = 'decorator'
+	static final String PROCESSOR_NAME = 'decorator'
+	static final int PROCESSOR_PRECEDENCE = 0
 
 	final SortingStrategy sortingStrategy
-	final int precedence = 0
+	final Decorator decorator
 
 	/**
 	 * Constructor, configure this processor to work on the 'decorator'
 	 * attribute and to use the given sorting strategy.
 	 * 
+	 * @param templateMode
+	 * @param dialectPrefix
 	 * @param sortingStrategy
 	 */
-	DecoratorProcessor(SortingStrategy sortingStrategy) {
+	DecoratorProcessor(TemplateMode templateMode, String dialectPrefix, SortingStrategy sortingStrategy) {
 
-		super(PROCESSOR_NAME_DECORATOR)
+		super(templateMode, dialectPrefix, null, false, PROCESSOR_NAME, true, PROCESSOR_PRECEDENCE, true)
 		this.sortingStrategy = sortingStrategy
+
+		// Set decorator to use based on template mode
+		decorator =
+			templateMode == TemplateMode.HTML ? new HtmlDocumentDecorator(sortingStrategy) :
+			templateMode == TemplateMode.XML ? new XmlDocumentDecorator() :
+			null
+		if (!decorator) {
+			throw new IllegalStateException('''
+				Layout dialect cannot be applied to the current template mode, only HTML
+				and XML template modes are currently supported
+				'''.stripMargin())
+		}
 	}
 
 	/**
 	 * Locates the decorator page specified by the layout attribute and applies
 	 * it to the current page being processed.
 	 * 
-	 * @param arguments
-	 * @param element
+	 * @param context
+	 * @param model
 	 * @param attributeName
-	 * @return Result of the processing.
+	 * @param attributeValue
+	 * @param structureHandler
 	 */
 	@Override
-	protected ProcessorResult processAttribute(Arguments arguments, Element element, String attributeName) {
+	protected void doProcess(ITemplateContext context, IModel model, AttributeName attributeName,
+		String attributeValue, IElementModelStructureHandler structureHandler) {
 
-		// Ensure the decorator attribute is in the root element of the document
-		if (!(element.parent instanceof Document)) {
-			throw new IllegalArgumentException('layout:decorator attribute must appear in the root element of your content page')
-		}
-
-		def document = arguments.document
-
-		// Locate the decorator page
-		def decoratorTemplate = new FragmentFinder(arguments)
-				.findFragmentTemplate(element.getAttributeValue(attributeName))
-		element.removeAttribute(attributeName)
+		// Locate the template to decorate
+		def decoratorTemplateModel = new FragmentFinder(context)
+			.findFragmentTemplateModel(attributeValue, templateMode)
 
 		// Gather all fragment parts from this page to apply to the new document
 		// after decoration has taken place
-		def pageFragments = new FragmentMapper().map(document.elementChildren)
+		def pageFragments = new FragmentMapper().map(model)
 
-		// Decide which kind of decorator to use, then apply it
-		def decoratorRootElement = decoratorTemplate.document.firstElementChild
-		def decorator = decoratorRootElement?.originalName == 'html' ?
-				new HtmlDocumentDecorator(sortingStrategy) :
-				new XmlDocumentDecorator()
-		decorator.decorate(decoratorRootElement, document.firstElementChild)
+		// Apply decorator
+		decorator.decorate(decoratorTemplateModel, model, structureHandler)
 
-		FragmentMap.updateForNode(arguments, document.firstElementChild, pageFragments)
+		// Replace the page contents with those of the template we're decorating
+//		structureHandler.setTemplateData(decoratorTemplateModel.templateData)
+//		structureHandler.setBody(decoratorTemplateModel, true)
 
-		return ProcessorResult.OK
+		FragmentMap.updateForNode(context, structureHandler, pageFragments)
 	}
 }

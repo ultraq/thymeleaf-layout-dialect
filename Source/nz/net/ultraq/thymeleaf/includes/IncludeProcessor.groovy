@@ -35,7 +35,7 @@ import org.thymeleaf.processor.attr.AbstractAttrProcessor
  */
 class IncludeProcessor extends AbstractAttrProcessor {
 
-	static final String PROCESSOR_NAME_INCLUDE = 'include'
+	static final String PROCESSOR_NAME = 'include'
 
 	final int precedence = 0
 

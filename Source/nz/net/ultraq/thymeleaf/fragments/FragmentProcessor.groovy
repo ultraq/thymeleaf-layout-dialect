@@ -36,7 +36,7 @@ class FragmentProcessor extends AbstractAttrProcessor {
 
 	private static final Logger logger = LoggerFactory.getLogger(FragmentProcessor)
 
-	static final String PROCESSOR_NAME_FRAGMENT = 'fragment'
+	static final String PROCESSOR_NAME = 'fragment'
 
 	final int precedence = 1
 

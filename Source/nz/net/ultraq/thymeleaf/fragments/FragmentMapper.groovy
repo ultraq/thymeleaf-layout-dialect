@@ -16,46 +16,70 @@
 
 package nz.net.ultraq.thymeleaf.fragments
 
-import static nz.net.ultraq.thymeleaf.LayoutDialect.DIALECT_PREFIX_LAYOUT
-import static nz.net.ultraq.thymeleaf.fragments.FragmentProcessor.PROCESSOR_NAME_FRAGMENT
-import static nz.net.ultraq.thymeleaf.includes.IncludeProcessor.PROCESSOR_NAME_INCLUDE
-import static nz.net.ultraq.thymeleaf.includes.ReplaceProcessor.PROCESSOR_NAME_REPLACE
+import nz.net.ultraq.thymeleaf.fragments.FragmentProcessor
+import nz.net.ultraq.thymeleaf.includes.IncludeProcessor
+import nz.net.ultraq.thymeleaf.includes.ReplaceProcessor
+import static nz.net.ultraq.thymeleaf.LayoutDialect.DIALECT_PREFIX
 
-import org.thymeleaf.dom.Element
+import org.thymeleaf.context.IContext
+import org.thymeleaf.context.ITemplateContext
+import org.thymeleaf.model.IElementTag
+import org.thymeleaf.model.IModel
+import org.thymeleaf.model.IModelVisitor
+import org.thymeleaf.model.IOpenElementTag
+import org.thymeleaf.standard.expression.Fragment
+
+import groovy.transform.TupleConstructor
 
 /**
- * Searches for and returns layout dialect fragments amongst a given set of
- * elements.
+ * Searches for and returns layout dialect fragments within a given element.
  * 
  * @author Emanuel Rabina
  */
+@TupleConstructor
 class FragmentMapper {
 
+	final ITemplateContext context
+
 	/**
-	 * Find and return clones of all fragments within the given elements,
-	 * without delving into <tt>layout:include</tt> or <tt>layout:replace</tt>
-	 * elements, mapped by the name of each fragment.
+	 * Find and return fragments within the given element, without delving into
+	 * <tt>layout:include</tt> or <tt>layout:replace</tt> elements, mapped by the
+	 * name of each fragment.
 	 * 
-	 * @param elements List of elements to search.
+	 * @param model Element whose children are to be searched.
 	 * @return Map of fragment names and their elements.
 	 */
-	Map<String,Element> map(List<Element> elements) {
+	Map<String,IModel> map(IModel model) {
 
 		def fragments = [:]
-		def findFragments
-		findFragments = { element ->
-			def fragmentName = element.getAttributeValue(DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_FRAGMENT)
-			if (fragmentName) {
-				def fragment = element.cloneNode(null, false)
-				fragment.removeAttribute(DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_FRAGMENT)
-				fragments << [(fragmentName): fragment]
-			}
-			else if (!element.hasAttribute(DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_INCLUDE) ||
-					 !element.hasAttribute(DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_REPLACE)) {
-				element.elementChildren.collect(findFragments)
-			}
+		def isLayoutElement = { elementTag ->
+			return elementTag.hasAttribute(DIALECT_PREFIX, IncludeProcessor.PROCESSOR_NAME) ||
+			       elementTag.hasAttribute(DIALECT_PREFIX, ReplaceProcessor.PROCESSOR_NAME)
 		}
-		elements.each(findFragments)
+
+		// NOTE: Using element definitions to match open and close tags, probably
+		//       not going to work...
+		def insideLayoutElementDefinition = null
+
+		model.accept({ event ->
+			if (event instanceof IOpenElementTag) {
+
+				if (!insideLayoutElementDefinition) {
+					def fragmentAttributeValue = event.getAttribute(DIALECT_PREFIX, FragmentProcessor.PROCESSOR_NAME)
+					if (fragmentAttributeValue) {
+						fragments << [(fragmentAttributeValue): context.modelFactory.createModel(event)]
+					}
+
+					if (isLayoutElement(event)) {
+						insideLayoutElementDefinition = event.elementDefinition
+					}
+				}
+				else if (isLayoutElement(event) && event.elementDefinition == event.elementDefinition) {
+					insideLayoutElementDefinition = null
+				}
+			}
+		} as IModelVisitor)
+
 		return fragments
 	}
 }

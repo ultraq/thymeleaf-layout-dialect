@@ -19,11 +19,12 @@ package nz.net.ultraq.thymeleaf.decorators
 import nz.net.ultraq.thymeleaf.LayoutDialectContext
 import nz.net.ultraq.thymeleaf.fragments.mergers.AttributeMerger
 
-import org.thymeleaf.Arguments
-import org.thymeleaf.dom.Element
-import org.thymeleaf.dom.Text
-import org.thymeleaf.processor.ProcessorResult
-import org.thymeleaf.processor.attr.AbstractAttrProcessor
+import org.thymeleaf.context.ITemplateContext
+import org.thymeleaf.engine.AttributeName
+import org.thymeleaf.model.IProcessableElementTag
+import org.thymeleaf.processor.element.AbstractAttributeTagProcessor
+import org.thymeleaf.processor.element.IElementTagStructureHandler
+import org.thymeleaf.templatemode.TemplateMode
 
 /**
  * Allows for greater control of the resulting &lt;title&gt; element by
@@ -33,34 +34,36 @@ import org.thymeleaf.processor.attr.AbstractAttrProcessor
  * 
  * @author Emanuel Rabina
  */
-class TitlePatternProcessor extends AbstractAttrProcessor {
+class TitlePatternProcessor extends AbstractAttributeTagProcessor {
 
 	private static final String PARAM_TITLE_DECORATOR = '$DECORATOR_TITLE'
 	private static final String PARAM_TITLE_CONTENT   = '$CONTENT_TITLE'
 
-	static final String PROCESSOR_NAME_TITLEPATTERN = 'title-pattern'
+	static final String PROCESSOR_NAME = 'title-pattern'
+	static final int PROCESSOR_PRECEDENCE = 1
 
 	static final String TITLE_TYPE           = 'LayoutDialect::TitlePattern::Type'
 	static final String TITLE_TYPE_DECORATOR = 'decorator-title'
 	static final String TITLE_TYPE_CONTENT   = 'content-title'
 
-	static final String RESULTING_TITLE = "resultingTitle"
-
-	final int precedence = 1
+	static final String RESULTING_TITLE = 'resultingTitle'
 
 	/**
 	 * Constructor, sets this processor to work on the 'title-pattern' attribute.
+	 * 
+	 * @param dialectPrefix
 	 */
-	TitlePatternProcessor() {
+	TitlePatternProcessor(String dialectPrefix) {
 
-		super(PROCESSOR_NAME_TITLEPATTERN)
+		super(TemplateMode.HTML, dialectPrefix, null, false, PROCESSOR_NAME, true, PROCESSOR_PRECEDENCE, true)
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected ProcessorResult processAttribute(Arguments arguments, Element element, String attributeName) {
+	protected void doProcess(ITemplateContext context, IProcessableElementTag tag,
+		AttributeName attributeName, String attributeValue, IElementTagStructureHandler structureHandler) {
 
 		// Ensure this attribute is only on the <title> element
 		if (element.normalizedName != 'title') {
