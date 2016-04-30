@@ -44,15 +44,16 @@ class FragmentMap extends HashMap<String,IModel> {
 	}
 
 	/**
-	 * Updates the fragment collection just for the current node.
+	 * Set the fragment collection to contain whatever it initially had, plus the
+	 * given fragments, just for the scope of the current node.
 	 * 
 	 * @param context
 	 * @param structureHandler
 	 * @param fragments The new fragments to add to the map.
 	 */
-	static void updateForNode(IContext context, IElementModelStructureHandler structureHandler,
+	static void setForNode(IContext context, IElementModelStructureHandler structureHandler,
 		Map<String,IModel> fragments) {
 
-		structureHandler.setLocalVariable(FRAGMENT_COLLECTION_KEY, get(context) << fragments)
+		structureHandler.setLocalVariable(FRAGMENT_COLLECTION_KEY, get(context) + fragments)
 	}
 }

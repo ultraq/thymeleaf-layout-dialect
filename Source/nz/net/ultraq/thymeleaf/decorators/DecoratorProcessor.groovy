@@ -101,6 +101,6 @@ class DecoratorProcessor extends AbstractAttributeModelProcessor {
 //		structureHandler.setTemplateData(decoratorTemplateModel.templateData)
 //		structureHandler.setBody(decoratorTemplateModel, true)
 
-		FragmentMap.updateForNode(context, structureHandler, pageFragments)
+		FragmentMap.setForNode(context, structureHandler, pageFragments)
 	}
 }

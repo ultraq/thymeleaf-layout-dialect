@@ -72,7 +72,7 @@ class ReplaceProcessor extends AbstractAttrProcessor {
 		if (replaceFragments) {
 			replaceFragments.each { replaceFragment ->
 				element.addChild(replaceFragment)
-				FragmentMap.updateForNode(arguments, replaceFragment, elementFragments)
+				FragmentMap.setForNode(arguments, replaceFragment, elementFragments)
 			}
 		}
 		element.parent.extractChild(element)
