@@ -21,10 +21,10 @@ import nz.net.ultraq.thymeleaf.decorators.strategies.GroupingStrategy
 import nz.net.ultraq.thymeleaf.testing.JUnitTestExecutor
 
 import org.junit.runners.Parameterized.Parameters
+import org.reflections.Reflections
+import org.reflections.scanners.ResourcesScanner
 import org.thymeleaf.dialect.IDialect
 import org.thymeleaf.standard.StandardDialect
-
-import java.util.regex.Pattern
 
 /**
  * A parameterized JUnit test class that is run over just the grouping strategy
@@ -44,11 +44,11 @@ class LayoutDialectTestExecutorGrouping extends JUnitTestExecutor {
 	 * <tt>GroupingStrategy</tt> &lt;head&gt; element sorter.
 	 * 
 	 * @return List of all the Thymeleaf testing files for the <tt>GroupingStrategy</tt>.
-	 * @throws URISyntaxException
 	 */
 	@Parameters(name = '{0}')
-	static List<String> listGroupingLayoutDialectTests() throws URISyntaxException {
+	static List<String> listGroupingLayoutDialectTests() {
 
-		return reflections.getResources(Pattern.compile('GroupingStrategy.*\\.thtest')) as List
+		return new Reflections('', new ResourcesScanner())
+			.getResources(~/GroupingStrategy.*\\.thtest/) as List
 	}
 }
