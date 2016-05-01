@@ -52,6 +52,7 @@ dependencies {
 	testCompile(
 		'junit:junit:4.12',
 		'nz.net.ultraq.thymeleaf:thymeleaf-testing-junit:2.0.0-SNAPSHOT',
+		'org.mockito:mockito-core:2.0.+',
 		'org.thymeleaf:thymeleaf-testing:3.0.0.BETA03'
 	)
 	testRuntime(
