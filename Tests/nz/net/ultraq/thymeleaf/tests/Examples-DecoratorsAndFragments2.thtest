@@ -1,0 +1,57 @@
+
+# Test based on the first example in the readme for introducing the
+# layout:decorator and layout:fragment processors
+
+%TEMPLATE_MODE HTML
+
+
+%INPUT
+<p layout:decorator="Layout" layout:fragment="custom-footer">
+	This is some footer text from content page 2.
+</p>
+
+
+%INPUT[Layout]
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	<head>
+		<title>Layout page</title>
+		<script src="common-script.js"></script>
+	</head>
+	<body>
+		<header>
+			<h1>My website</h1>
+		</header>
+		<section layout:fragment="content">
+			<p>Page content goes here</p>
+		</section>
+		<footer>
+			<p>My footer</p>
+			<p layout:fragment="custom-footer">Custom footer here</p>
+		</footer>	
+	</body>
+</html>
+
+
+%OUTPUT
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Layout page</title>
+		<script src="common-script.js"></script>
+	</head>
+	<body>
+		<header>
+			<h1>My website</h1>
+		</header>
+		<section>
+			<p>Page content goes here</p>
+		</section>
+		<footer>
+			<p>My footer</p>
+			<p>
+				This is some footer text from content page 2.
+			</p>
+		</footer>  
+	</body>
+</html>
