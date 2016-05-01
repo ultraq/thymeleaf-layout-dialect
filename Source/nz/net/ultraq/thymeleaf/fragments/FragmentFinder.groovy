@@ -49,7 +49,7 @@ class FragmentFinder {
 
 		return FragmentExpression.createExecutedFragmentExpression(context,
 			StandardExpressions.getExpressionParser(context.configuration).parseExpression(context,
-				fragmentSpec.matches(~/~{.+}/) ? fragmentSpec : "~{${fragmentSpec}}"),
+				fragmentSpec.matches(~/~\{.+\}/) ? fragmentSpec : "~{${fragmentSpec}}"),
 			StandardExpressionExecutionContext.NORMAL)
 	}
 

@@ -16,30 +16,33 @@
 
 package nz.net.ultraq.thymeleaf.fragments
 
-import nz.net.ultraq.thymeleaf.fragments.FragmentProcessor
 import nz.net.ultraq.thymeleaf.includes.IncludeProcessor
 import nz.net.ultraq.thymeleaf.includes.ReplaceProcessor
 import static nz.net.ultraq.thymeleaf.LayoutDialect.DIALECT_PREFIX
 
 import org.thymeleaf.context.IContext
-import org.thymeleaf.context.ITemplateContext
-import org.thymeleaf.model.IElementTag
 import org.thymeleaf.model.IModel
 import org.thymeleaf.model.IModelVisitor
 import org.thymeleaf.model.IOpenElementTag
-import org.thymeleaf.standard.expression.Fragment
-
-import groovy.transform.TupleConstructor
 
 /**
  * Searches for and returns layout dialect fragments within a given element.
  * 
  * @author Emanuel Rabina
  */
-@TupleConstructor
 class FragmentMapper {
 
-	final ITemplateContext context
+	private final IContext context
+
+	/**
+	 * Constructor, set the required context.
+	 * 
+	 * @param context
+	 */
+	FragmentMapper(IContext context) {
+
+		this.context = context
+	}
 
 	/**
 	 * Find and return fragments within the given element, without delving into

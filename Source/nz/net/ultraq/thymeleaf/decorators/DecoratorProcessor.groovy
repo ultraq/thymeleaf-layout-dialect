@@ -43,8 +43,8 @@ class DecoratorProcessor extends AbstractAttributeModelProcessor {
 	static final String PROCESSOR_NAME = 'decorator'
 	static final int PROCESSOR_PRECEDENCE = 0
 
-	final SortingStrategy sortingStrategy
-	final Decorator decorator
+	private final SortingStrategy sortingStrategy
+	private final Decorator decorator
 
 	/**
 	 * Constructor, configure this processor to work on the 'decorator'
@@ -60,15 +60,17 @@ class DecoratorProcessor extends AbstractAttributeModelProcessor {
 		this.sortingStrategy = sortingStrategy
 
 		// Set decorator to use based on template mode
-		decorator =
-			templateMode == TemplateMode.HTML ? new HtmlDocumentDecorator(sortingStrategy) :
-			templateMode == TemplateMode.XML ? new XmlDocumentDecorator() :
-			null
-		if (!decorator) {
-			throw new IllegalStateException('''
-				Layout dialect cannot be applied to the current template mode, only HTML
-				and XML template modes are currently supported
-				'''.stripMargin())
+		if (templateMode == TemplateMode.HTML) {
+			decorator = new HtmlDocumentDecorator(sortingStrategy)
+		}
+		else if (templateMode == TemplateMode.XML) {
+			decorator = new XmlDocumentDecorator()
+		}
+		else {
+			throw new IllegalStateException("""
+				Layout dialect cannot be applied to the ${templateMode} template mode,
+				only HTML and XML template modes are currently supported
+				""".stripMargin())
 		}
 	}
 
@@ -92,10 +94,10 @@ class DecoratorProcessor extends AbstractAttributeModelProcessor {
 
 		// Gather all fragment parts from this page to apply to the new document
 		// after decoration has taken place
-		def pageFragments = new FragmentMapper().map(model)
+		def pageFragments = new FragmentMapper(context).map(model)
 
 		// Apply decorator
-		decorator.decorate(decoratorTemplateModel, model, structureHandler)
+		decorator.decorate(decoratorTemplateModel, model)
 
 		// Replace the page contents with those of the template we're decorating
 //		structureHandler.setTemplateData(decoratorTemplateModel.templateData)
