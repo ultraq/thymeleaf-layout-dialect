@@ -16,7 +16,7 @@
 
 package nz.net.ultraq.thymeleaf.decorators
 
-import org.thymeleaf.dom.Element
+import org.thymeleaf.model.IModel
 
 /**
  * The contract for all decorators.
@@ -32,5 +32,5 @@ interface Decorator {
 	 * 					content template which is currently being processed.
 	 * @param content	Element from the content template.
 	 */
-	void decorate(Element decorator, Element content)
+	void decorate(IModel decorator, IModel content)
 }

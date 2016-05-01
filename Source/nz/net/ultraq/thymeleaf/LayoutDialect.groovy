@@ -25,6 +25,8 @@ import nz.net.ultraq.thymeleaf.includes.IncludeProcessor
 import nz.net.ultraq.thymeleaf.includes.ReplaceProcessor
 
 import org.thymeleaf.dialect.AbstractProcessorDialect
+import org.thymeleaf.model.IModel
+import org.thymeleaf.model.IText
 import org.thymeleaf.processor.IProcessor
 import org.thymeleaf.standard.processor.StandardXmlNsTagProcessor
 import org.thymeleaf.templatemode.TemplateMode
@@ -41,11 +43,36 @@ class LayoutDialect extends AbstractProcessorDialect {
 	static final int DIALECT_PRECEDENCE = 0
 
 	/**
-	 * Add the following methods to Thymeleaf's DOM objects.  Woohoo
-	 * metaprogramming! :D
+	 * Add the following methods to Thymeleaf's model objects.
 	 */
-//	static {
-//		Attribute.metaClass {
+	static {
+
+		IModel.metaClass {
+
+			/**
+			 * Returns whether or not this event represents collapsible whitespace.
+			 * 
+			 * @return <tt>true</tt> if this is a collapsible text node.
+			 */
+			isWhitespaceNode << {
+				def thisEvent = delegate.get(0)
+				return thisEvent instanceof IText && thisEvent.whitespace
+			}
+		}
+
+		IText.metaClass {
+
+			/**
+			 * Returns whether or not this text event is collapsible whitespace.
+			 * 
+			 * @return <tt>true</tt> if, when trimmed, the text content is empty.
+			 */
+			isWhitespace << {
+				return delegate.text.trim().empty
+			}
+		}
+
+		//		Attribute.metaClass {
 //
 //			/**
 //			 * Returns whether or not an attribute is an attribute processor of
@@ -188,7 +215,7 @@ class LayoutDialect extends AbstractProcessorDialect {
 //				return delegate.content.trim().empty
 //			}
 //		}
-//	}
+	}
 
 	private final SortingStrategy sortingStrategy
 
@@ -212,11 +239,18 @@ class LayoutDialect extends AbstractProcessorDialect {
 		return [
 			// Processors available in the HTML template mode
 			new StandardXmlNsTagProcessor(TemplateMode.HTML, dialectPrefix),
-			new DecoratorProcessor(TemplateMode.HTML, dialectPrefix, sortingStrategy)/*,
-			new IncludeProcessor(dialectPrefix),
-			new ReplaceProcessor(dialectPrefix),
-			new FragmentProcessor(dialectPrefix),
-			new TitlePatternProcessor(dialectPrefix)*/
+			new DecoratorProcessor(TemplateMode.HTML, dialectPrefix, sortingStrategy),
+			new IncludeProcessor(TemplateMode.XML, dialectPrefix),
+			new ReplaceProcessor(TemplateMode.XML, dialectPrefix),
+			new FragmentProcessor(TemplateMode.XML, dialectPrefix),
+			new TitlePatternProcessor(TemplateMode.XML, dialectPrefix),
+
+			// Processors available in the XML template mode
+			new StandardXmlNsTagProcessor(TemplateMode.XML, dialectPrefix),
+			new DecoratorProcessor(TemplateMode.XML, dialectPrefix, sortingStrategy),
+			new IncludeProcessor(TemplateMode.XML, dialectPrefix),
+			new ReplaceProcessor(TemplateMode.XML, dialectPrefix),
+			new FragmentProcessor(TemplateMode.XML, dialectPrefix)
 		]
 	}
 }

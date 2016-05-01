@@ -16,7 +16,7 @@
 
 package nz.net.ultraq.thymeleaf.decorators
 
-import org.thymeleaf.dom.Node
+import org.thymeleaf.model.IModel
 
 /**
  * Interface for controlling the sort order in which elements are placed into
@@ -34,5 +34,5 @@ interface SortingStrategy {
 	 * @param contentNode
 	 * @return Index in the list of decorator nodes to insert the content node.
 	 */
-	int findPositionForContent(List<Node> decoratorNodes, Node contentNode)
+	int findPositionForContent(List<IModel> decoratorNodes, IModel contentNode)
 }

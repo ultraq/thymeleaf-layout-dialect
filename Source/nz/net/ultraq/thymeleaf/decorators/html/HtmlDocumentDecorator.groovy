@@ -19,7 +19,7 @@ package nz.net.ultraq.thymeleaf.decorators.html
 import nz.net.ultraq.thymeleaf.decorators.SortingStrategy
 import nz.net.ultraq.thymeleaf.decorators.xml.XmlDocumentDecorator
 
-import org.thymeleaf.dom.Element
+import org.thymeleaf.model.IModel
 
 import groovy.transform.TupleConstructor
 
@@ -42,9 +42,9 @@ class HtmlDocumentDecorator extends XmlDocumentDecorator {
 	 * @param contentHtml	Content's HTML element.
 	 */
 	@Override
-	void decorate(Element decoratorHtml, Element contentHtml) {
+	void decorate(IModel decoratorHtml, IModel contentHtml) {
 
-		new HtmlHeadDecorator(sortingStrategy).decorate(decoratorHtml, contentHtml.findElement('head'))
+/*		new HtmlHeadDecorator(sortingStrategy).decorate(decoratorHtml, contentHtml.findElement('head'))
 		new HtmlBodyDecorator().decorate(decoratorHtml, contentHtml.findElement('body'))
 
 		// Set the doctype from the decorator if missing from the content page
@@ -55,5 +55,5 @@ class HtmlDocumentDecorator extends XmlDocumentDecorator {
 		}
 
 		super.decorate(decoratorHtml, contentHtml)
-	}
+*/	}
 }

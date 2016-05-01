@@ -19,8 +19,7 @@ package nz.net.ultraq.thymeleaf.decorators.xml
 import nz.net.ultraq.thymeleaf.decorators.Decorator
 import nz.net.ultraq.thymeleaf.fragments.mergers.ElementMerger
 
-import org.thymeleaf.dom.Comment
-import org.thymeleaf.dom.Element
+import org.thymeleaf.model.IModel
 
 /**
  * A decorator made to work over any Thymeleaf document.
@@ -33,9 +32,9 @@ class XmlDocumentDecorator implements Decorator {
 	 * {@inheritDoc}
 	 */
 	@Override
-	void decorate(Element decoratorXml, Element contentXml) {
+	void decorate(IModel decoratorXml, IModel contentXml) {
 
-		def decoratorDocument = decoratorXml.parent
+/*		def decoratorDocument = decoratorXml.parent
 		def contentDocument   = contentXml.parent
 
 		// Copy text outside of the root element, keeping whitespace copied to a minimum
@@ -62,5 +61,5 @@ class XmlDocumentDecorator implements Decorator {
 
 		// Bring the decorator into the content page (which is the one being processed)
 		new ElementMerger(decoratorXml.normalizedName != contentXml.normalizedName).merge(contentXml, decoratorXml)
-	}
+*/	}
 }

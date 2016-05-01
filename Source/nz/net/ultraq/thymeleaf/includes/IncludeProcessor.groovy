@@ -20,10 +20,12 @@ import nz.net.ultraq.thymeleaf.fragments.FragmentFinder
 import nz.net.ultraq.thymeleaf.fragments.FragmentMap
 import nz.net.ultraq.thymeleaf.fragments.FragmentMapper
 
-import org.thymeleaf.Arguments
-import org.thymeleaf.dom.Element
-import org.thymeleaf.processor.ProcessorResult
-import org.thymeleaf.processor.attr.AbstractAttrProcessor
+import org.thymeleaf.context.ITemplateContext
+import org.thymeleaf.engine.AttributeName
+import org.thymeleaf.model.IModel
+import org.thymeleaf.processor.element.AbstractAttributeModelProcessor
+import org.thymeleaf.processor.element.IElementModelStructureHandler
+import org.thymeleaf.templatemode.TemplateMode
 
 /**
  * Similar to Thymeleaf's <tt>th:include</tt>, but allows the passing of entire
@@ -33,33 +35,37 @@ import org.thymeleaf.processor.attr.AbstractAttrProcessor
  * 
  * @author Emanuel Rabina
  */
-class IncludeProcessor extends AbstractAttrProcessor {
+class IncludeProcessor extends AbstractAttributeModelProcessor {
 
 	static final String PROCESSOR_NAME = 'include'
-
-	final int precedence = 0
+	static final int PROCESSOR_PRECEDENCE = 0
 
 	/**
 	 * Constructor, sets this processor to work on the 'include' attribute.
+	 * 
+	 * @param templateMode
+	 * @param dialectPrefix
 	 */
-	IncludeProcessor() {
+	IncludeProcessor(TemplateMode templateMode, String dialectPrefix) {
 
-		super(PROCESSOR_NAME_INCLUDE)
+		super(templateMode, dialectPrefix, null, false, PROCESSOR_NAME, true, PROCESSOR_PRECEDENCE, true)
 	}
 
 	/**
-	 * Locates the specified page and includes it into the current template.
+	 * Locates a page fragment and includes it in the current template.
 	 * 
-	 * @param arguments
-	 * @param element
+	 * @param context
+	 * @param model
 	 * @param attributeName
-	 * @return Result of the processing.
+	 * @param attributeValue
+	 * @param structureHandler
 	 */
 	@Override
-	protected ProcessorResult processAttribute(Arguments arguments, Element element, String attributeName) {
+	protected void doProcess(ITemplateContext context, IModel model, AttributeName attributeName,
+		String attributeValue, IElementModelStructureHandler structureHandler) {
 
 		// Locate the page and fragment to include
-		def includeFragments = new FragmentFinder(arguments)
+/*		def includeFragments = new FragmentFinder(arguments)
 				.findFragments(element.getAttributeValue(attributeName))
 
 		// Gather all fragment parts within the include element, scoping them to
@@ -85,5 +91,5 @@ class IncludeProcessor extends AbstractAttrProcessor {
 
 		element.removeAttribute(attributeName)
 		return ProcessorResult.OK
-	}
+*/	}
 }

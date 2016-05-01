@@ -1,4 +1,4 @@
-/*
+/* 
  * Copyright 2013, Emanuel Rabina (http://www.ultraq.net.nz/)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +19,7 @@ package nz.net.ultraq.thymeleaf.decorators.xml
 import nz.net.ultraq.thymeleaf.decorators.Decorator
 import nz.net.ultraq.thymeleaf.fragments.mergers.AttributeMerger
 
-import org.thymeleaf.dom.Element
+import org.thymeleaf.model.IModel
 
 /**
  * A decorator made to work over any Thymeleaf element.
@@ -32,7 +32,7 @@ class XmlElementDecorator implements Decorator {
 	 * {@inheritDoc}
 	 */
 	@Override
-	void decorate(Element decoratorElement, Element contentElement) {
+	void decorate(IModel decoratorElement, IModel contentElement) {
 
 		new AttributeMerger().merge(decoratorElement, contentElement)
 	}

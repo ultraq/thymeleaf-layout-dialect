@@ -31,9 +31,8 @@ class FragmentMap extends HashMap<String,IModel> {
 	private static final String FRAGMENT_COLLECTION_KEY = 'LayoutDialect::FragmentCollection'
 
 	/**
-	 * Retrieve the fragment collection specific to the given context.  If none
-	 * exists, a new collection is created, applied to the context, and
-	 * returned.
+	 * Retrieves either the fragment map for the current context, or a new
+	 * fragment map.
 	 * 
 	 * @param context
 	 * @return A new or existing fragment collection for the context.

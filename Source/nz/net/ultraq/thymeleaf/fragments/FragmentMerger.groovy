@@ -16,7 +16,7 @@
 
 package nz.net.ultraq.thymeleaf.fragments
 
-import org.thymeleaf.dom.Element
+import org.thymeleaf.model.IModel
 
 /**
  * Merges page fragments by bringing in source content into a target element.
@@ -32,5 +32,5 @@ interface FragmentMerger {
 	 * @param targetElement
 	 * @param sourceElement
 	 */
-	void merge(Element targetElement, Element sourceElement)
+	void merge(IModel targetElement, IModel sourceElement)
 }

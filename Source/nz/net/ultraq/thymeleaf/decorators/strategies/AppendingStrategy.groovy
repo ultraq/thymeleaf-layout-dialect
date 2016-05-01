@@ -18,7 +18,7 @@ package nz.net.ultraq.thymeleaf.decorators.strategies
 
 import nz.net.ultraq.thymeleaf.decorators.SortingStrategy
 
-import org.thymeleaf.dom.Node
+import org.thymeleaf.model.IModel
 
 /**
  * The standard &lt;head&gt; merging strategy, which simply appends the content
@@ -36,7 +36,7 @@ class AppendingStrategy implements SortingStrategy {
 	 * @param contentNodes
 	 * @return The size of the decorator nodes list.
 	 */
-	int findPositionForContent(List<Node> decoratorNodes, Node contentNode) {
+	int findPositionForContent(List<IModel> decoratorNodes, IModel contentNode) {
 
 		return contentNode.whitespaceNode ? -1 :
 			decoratorNodes.findLastIndexOf { decoratorNode ->

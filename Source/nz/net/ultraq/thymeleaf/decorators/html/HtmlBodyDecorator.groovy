@@ -18,8 +18,7 @@ package nz.net.ultraq.thymeleaf.decorators.html
 
 import nz.net.ultraq.thymeleaf.decorators.xml.XmlElementDecorator
 
-import org.thymeleaf.dom.Element
-import org.thymeleaf.dom.Text
+import org.thymeleaf.model.IModel
 
 /**
  * A decorator specific to processing an HTML BODY element.
@@ -38,10 +37,10 @@ class HtmlBodyDecorator extends XmlElementDecorator {
 	 * @param contentBody	Content's BODY element.
 	 */
 	@Override
-	void decorate(Element decoratorHtml, Element contentBody) {
+	void decorate(IModel decoratorHtml, IModel contentBody) {
 
 		// If the page has no BODY, then we don't need to do anything
-		if (!contentBody) {
+/*		if (!contentBody) {
 			return
 		}
 
@@ -54,5 +53,5 @@ class HtmlBodyDecorator extends XmlElementDecorator {
 		}
 
 		super.decorate(decoratorBody, contentBody)
-	}
+*/	}
 }

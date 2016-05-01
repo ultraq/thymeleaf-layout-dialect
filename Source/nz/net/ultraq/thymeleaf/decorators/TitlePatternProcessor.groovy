@@ -51,11 +51,12 @@ class TitlePatternProcessor extends AbstractAttributeTagProcessor {
 	/**
 	 * Constructor, sets this processor to work on the 'title-pattern' attribute.
 	 * 
+	 * @param templateMode
 	 * @param dialectPrefix
 	 */
-	TitlePatternProcessor(String dialectPrefix) {
+	TitlePatternProcessor(TemplateMode templateMode, String dialectPrefix) {
 
-		super(TemplateMode.HTML, dialectPrefix, null, false, PROCESSOR_NAME, true, PROCESSOR_PRECEDENCE, true)
+		super(templateMode, dialectPrefix, null, false, PROCESSOR_NAME, true, PROCESSOR_PRECEDENCE, true)
 	}
 
 	/**
@@ -66,7 +67,7 @@ class TitlePatternProcessor extends AbstractAttributeTagProcessor {
 		AttributeName attributeName, String attributeValue, IElementTagStructureHandler structureHandler) {
 
 		// Ensure this attribute is only on the <title> element
-		if (element.normalizedName != 'title') {
+/*		if (element.normalizedName != 'title') {
 			throw new IllegalArgumentException("${attributeName} processor should only appear in a <title> element")
 		}
 
@@ -108,5 +109,5 @@ class TitlePatternProcessor extends AbstractAttributeTagProcessor {
 		titleContainer.parent.removeChild(titleContainer)
 
 		return ProcessorResult.OK
-	}
+*/	}
 }

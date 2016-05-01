@@ -20,10 +20,12 @@ import nz.net.ultraq.thymeleaf.fragments.mergers.ElementMerger
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import org.thymeleaf.Arguments
-import org.thymeleaf.dom.Element
-import org.thymeleaf.processor.ProcessorResult
-import org.thymeleaf.processor.attr.AbstractAttrProcessor
+import org.thymeleaf.context.ITemplateContext
+import org.thymeleaf.engine.AttributeName
+import org.thymeleaf.model.IProcessableElementTag
+import org.thymeleaf.processor.element.AbstractAttributeTagProcessor
+import org.thymeleaf.processor.element.IElementTagStructureHandler
+import org.thymeleaf.templatemode.TemplateMode
 
 /**
  * Marks sections of the template that can be replaced by sections in the
@@ -32,36 +34,40 @@ import org.thymeleaf.processor.attr.AbstractAttrProcessor
  * 
  * @author Emanuel Rabina
  */
-class FragmentProcessor extends AbstractAttrProcessor {
+class FragmentProcessor extends AbstractAttributeTagProcessor {
 
 	private static final Logger logger = LoggerFactory.getLogger(FragmentProcessor)
 
 	static final String PROCESSOR_NAME = 'fragment'
-
-	final int precedence = 1
+	static final int PROCESSOR_PRECEDENCE = 1
 
 	/**
 	 * Constructor, sets this processor to work on the 'fragment' attribute.
+	 * 
+	 * @param templateMode
+	 * @param dialectPrefix
 	 */
-	FragmentProcessor() {
+	FragmentProcessor(TemplateMode templateMode, String dialectPrefix) {
 
-		super(PROCESSOR_NAME_FRAGMENT)
+		super(templateMode, dialectPrefix, null, false, PROCESSOR_NAME, true, PROCESSOR_PRECEDENCE, true)
 	}
 
 	/**
 	 * Includes or replaces the content of fragments into the corresponding
 	 * fragment placeholder.
 	 * 
-	 * @param arguments
-	 * @param element
+	 * @param context
+	 * @param tag
 	 * @param attributeName
-	 * @return Processing result
+	 * @param attributeValue
+	 * @param structureHandler
 	 */
 	@Override
-	protected ProcessorResult processAttribute(Arguments arguments, Element element, String attributeName) {
+	void doProcess(ITemplateContext context, IProcessableElementTag tag, AttributeName attributeName,
+		String attributeValue, IElementTagStructureHandler structureHandler) {
 
 		// Emit a warning if found in the <title> element
-		if (element.originalName == 'title') {
+/*		if (element.originalName == 'title') {
 			logger.warn("""
 				You don't need to put the layout:fragment attribute into the <title> element -
 				the decoration process will automatically override the <title> with the one in
@@ -80,5 +86,5 @@ class FragmentProcessor extends AbstractAttrProcessor {
 		}
 
 		return ProcessorResult.OK
-	}
+*/	}
 }

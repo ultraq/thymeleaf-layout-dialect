@@ -17,12 +17,11 @@
 package nz.net.ultraq.thymeleaf.fragments.mergers
 
 import nz.net.ultraq.thymeleaf.fragments.FragmentMerger
-import static nz.net.ultraq.thymeleaf.LayoutDialect.DIALECT_PREFIX_LAYOUT
-import static nz.net.ultraq.thymeleaf.fragments.FragmentProcessor.PROCESSOR_NAME_FRAGMENT
+import nz.net.ultraq.thymeleaf.fragments.FragmentProcessor
+import static nz.net.ultraq.thymeleaf.LayoutDialect.DIALECT_PREFIX
 
-import org.thymeleaf.dom.Element
+import org.thymeleaf.model.IModel
 import org.thymeleaf.standard.StandardDialect
-import org.thymeleaf.standard.processor.attr.StandardWithAttrProcessor
 
 /**
  * Merges a source element's attributes into a target element.
@@ -39,9 +38,9 @@ class AttributeMerger implements FragmentMerger {
 	 * @param targetElement
 	 */
 	@Override
-	void merge(Element targetElement, Element sourceElement) {
+	void merge(IModel targetElement, IModel sourceElement) {
 
-		if (!sourceElement || !targetElement) {
+/*		if (!sourceElement || !targetElement) {
 			return
 		}
 
@@ -67,5 +66,5 @@ class AttributeMerger implements FragmentMerger {
 				targetElement.setAttribute(sourceAttribute.originalName, sourceAttribute.value)
 			}
 		}
-	}
+*/	}
 }

@@ -18,9 +18,11 @@ package nz.net.ultraq.thymeleaf.decorators.strategies
 
 import nz.net.ultraq.thymeleaf.decorators.SortingStrategy
 
-import org.thymeleaf.dom.Comment
-import org.thymeleaf.dom.Element
-import org.thymeleaf.dom.Node
+import org.thymeleaf.model.IComment
+import org.thymeleaf.model.IElementTag
+import org.thymeleaf.model.IModel
+import org.thymeleaf.model.IProcessableElementTag
+import org.thymeleaf.model.ITemplateEvent
 
 /**
  * The &lt;head&gt; merging strategy introduced in version 1.2.6 of the Layout
@@ -39,7 +41,7 @@ class GroupingStrategy implements SortingStrategy {
 	 * @param contentNodes
 	 * @return Position of the end of the matching element group.
 	 */
-	int findPositionForContent(List<Node> decoratorNodes, Node contentNode) {
+	int findPositionForContent(List<IModel> decoratorNodes, IModel contentNode) {
 
 		// Discard text/whitespace nodes
 		if (contentNode.whitespaceNode) {
@@ -56,26 +58,24 @@ class GroupingStrategy implements SortingStrategy {
 	/**
 	 * Enum for the types of elements in the HEAD section that we might need to
 	 * sort.
-	 * 
-	 * TODO: Expand this to include more element types as they are requested.
 	 */
 	private static enum HeadNodeTypes {
 
 		COMMENT({ node ->
-			return node instanceof Comment
+			return node instanceof IComment
 		}),
 		META({ node ->
-			return node instanceof Element && node.normalizedName == 'meta'
+			return node instanceof IProcessableElementTag && node.elementCompleteName == 'meta'
 		}),
 		STYLESHEET({ node ->
-			return node instanceof Element && node.normalizedName == 'link' &&
+			return node instanceof IProcessableElementTag && node.elementCompleteName == 'link' &&
 					node.getAttributeValue('rel') == 'stylesheet'
 		}),
 		SCRIPT({ node ->
-			return node instanceof Element && node.normalizedName == 'script'
+			return node instanceof IProcessableElementTag && node.elementCompleteName == 'script'
 		}),
 		OTHER_ELEMENT({ node ->
-			return node instanceof Element
+			return node instanceof IElementTag
 		})
 
 		private final Closure determinant
@@ -96,7 +96,7 @@ class GroupingStrategy implements SortingStrategy {
 		 * @param element The node to match.
 		 * @return Matching <tt>HeadNodeTypes</tt> enum to descript the node.
 		 */
-		private static HeadNodeTypes findMatchingType(Node element) {
+		private static HeadNodeTypes findMatchingType(ITemplateEvent element) {
 
 			return values().find { headNodeType ->
 				return headNodeType.determinant(element)

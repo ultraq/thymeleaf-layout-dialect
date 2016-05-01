@@ -50,21 +50,10 @@ class FragmentMapTests {
 	@Test
 	void newMap() {
 
-		assertNull(context.variableNames.empty)
+		assertTrue(context.variableNames.empty)
 
 		def newMap = FragmentMap.get(context)
 		assertNotNull(newMap)
-	}
-
-	/**
-	 * Test that when requested, any existing fragment map will be returned.
-	 */
-	@Test
-	void existingMap() {
-
-		def newMap = FragmentMap.get(context)
-		def sameMap = FragmentMap.get(context)
-		assertSame(newMap, sameMap)
 	}
 
 	/**

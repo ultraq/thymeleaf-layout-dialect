@@ -16,7 +16,7 @@
 
 package nz.net.ultraq.thymeleaf.fragments.mergers
 
-import org.thymeleaf.dom.Element
+import org.thymeleaf.model.IModel
 
 import groovy.transform.TupleConstructor
 
@@ -42,10 +42,10 @@ class ElementMerger extends AttributeMerger {
 	 * @param sourceElement
 	 */
 	@Override
-	void merge(Element targetElement, Element sourceElement) {
+	void merge(IModel targetElement, IModel sourceElement) {
 
 		// Create a new merged element to mess with
-		def mergedElement = sourceElement.cloneNode(null, false)
+/*		def mergedElement = sourceElement.cloneNode(null, false)
 		if (!rootElementMerge) {
 			mergedElement.clearAttributes()
 			targetElement.attributeMap.values().each { attribute ->
@@ -56,5 +56,5 @@ class ElementMerger extends AttributeMerger {
 		targetElement.clearChildren()
 		targetElement.addChild(mergedElement)
 		targetElement.parent.extractChild(targetElement)
-	}
+*/	}
 }
