@@ -1,4 +1,4 @@
-/*
+/* 
  * Copyright 2012, Emanuel Rabina (http://www.ultraq.net.nz/)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,9 +17,9 @@
 apply plugin: 'groovy'
 apply plugin: 'maven'
 apply plugin: 'eclipse'
-apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/1.2.1/gradle-support.gradle'
-apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/1.2.1/maven-support.gradle'
-apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/1.2.1/bundle.gradle'
+apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/1.2.2/gradle-support.gradle'
+apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/1.2.2/maven-support.gradle'
+apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/1.2.2/bundle.gradle'
 
 //project.name      = 'Thymeleaf Layout Dialect'
 project.description = 'A dialect for Thymeleaf that allows you to use layout/decorator templates to style your content.'
