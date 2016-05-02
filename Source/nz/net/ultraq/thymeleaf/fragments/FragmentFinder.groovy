@@ -20,6 +20,7 @@ import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.engine.TemplateModel
 import org.thymeleaf.standard.expression.Fragment
 import org.thymeleaf.standard.expression.FragmentExpression
+import org.thymeleaf.standard.expression.FragmentExpression.ExecutedFragmentExpression
 import org.thymeleaf.standard.expression.StandardExpressionExecutionContext
 import org.thymeleaf.standard.expression.StandardExpressions
 import org.thymeleaf.templatemode.TemplateMode
@@ -45,7 +46,7 @@ class FragmentFinder {
 	 * @param fragmentSpec
 	 * @return Thymeleaf fragment expression object.
 	 */
-	private FragmentExpression.ExecutedFragmentExpression computeFragment(String fragmentSpec) {
+	private ExecutedFragmentExpression computeFragment(String fragmentSpec) {
 
 		return FragmentExpression.createExecutedFragmentExpression(context,
 			StandardExpressions.getExpressionParser(context.configuration).parseExpression(context,
