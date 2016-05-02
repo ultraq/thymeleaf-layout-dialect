@@ -2,7 +2,7 @@
 # Test that the title pattern tokens are replaced correctly when using th:text
 # to set the decorator/content titles.
 
-%TEMPLATE_MODE HTML5
+%TEMPLATE_MODE HTML
 
 %CONTEXT
 layoutTitle  = "My website"

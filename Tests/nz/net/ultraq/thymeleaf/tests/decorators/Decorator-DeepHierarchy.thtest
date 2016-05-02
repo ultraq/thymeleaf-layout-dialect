@@ -1,7 +1,7 @@
 
 # Test a deep layout hierarchy (3 levels).
 
-%TEMPLATE_MODE HTML5
+%TEMPLATE_MODE HTML
 
 %INPUT
 <!DOCTYPE html>

@@ -1,7 +1,7 @@
 
 # Test that variable passing works in the XML document decorator.
 
-%TEMPLATE_MODE HTML5
+%TEMPLATE_MODE HTML
 
 %INPUT
 <body layout:decorator="layout" th:with="hello='world'">

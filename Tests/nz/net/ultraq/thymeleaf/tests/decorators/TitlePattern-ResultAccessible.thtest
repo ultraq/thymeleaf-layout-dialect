@@ -1,7 +1,7 @@
 
 # Test that the resulting title from the title-pattern processor is accessible
 
-%TEMPLATE_MODE HTML5
+%TEMPLATE_MODE HTML
 
 %INPUT
 <!DOCTYPE html>

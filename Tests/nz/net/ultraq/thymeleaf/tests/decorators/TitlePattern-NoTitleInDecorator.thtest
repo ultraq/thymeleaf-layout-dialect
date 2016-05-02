@@ -1,7 +1,7 @@
 
 # Test the behaviour when there's no decorator title.
 
-%TEMPLATE_MODE HTML5
+%TEMPLATE_MODE HTML
 
 %INPUT
 <!DOCTYPE html>

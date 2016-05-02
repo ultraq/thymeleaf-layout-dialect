@@ -1,7 +1,7 @@
 
 # Test passing up a title value in a deep layout hierarchy (3 levels).
 
-%TEMPLATE_MODE HTML5
+%TEMPLATE_MODE HTML
 
 %CONTEXT
 pageTitle = "Page title"

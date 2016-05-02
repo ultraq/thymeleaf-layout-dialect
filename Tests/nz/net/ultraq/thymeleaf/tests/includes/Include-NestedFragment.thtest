@@ -2,7 +2,7 @@
 # Test the use of a nested fragment section defined and used in one go.
 # Based off GitHub issue #37 - https://github.com/ultraq/thymeleaf-layout-dialect/issues/37
 
-%TEMPLATE_MODE HTML5
+%TEMPLATE_MODE HTML
 
 %INPUT
 <!DOCTYPE html>

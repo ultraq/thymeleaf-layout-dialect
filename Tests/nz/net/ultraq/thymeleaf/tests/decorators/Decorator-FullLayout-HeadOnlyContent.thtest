@@ -1,7 +1,7 @@
 
 # Test decoration of a page with head content only, using a full-page layout.
 
-%TEMPLATE_MODE HTML5
+%TEMPLATE_MODE HTML
 
 %INPUT
 <!DOCTYPE html>

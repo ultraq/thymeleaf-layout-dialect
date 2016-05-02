@@ -2,7 +2,7 @@
 # Test decoration of a page with both head and body content, using a full-page
 # layout.
 
-%TEMPLATE_MODE HTML5
+%TEMPLATE_MODE HTML
 
 %INPUT
 <!DOCTYPE html>

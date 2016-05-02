@@ -2,7 +2,7 @@
 # Test that conditional comments make it through when merged from content page
 # to decorator page
 
-%TEMPLATE_MODE HTML5
+%TEMPLATE_MODE HTML
 
 %INPUT
 <!DOCTYPE html>

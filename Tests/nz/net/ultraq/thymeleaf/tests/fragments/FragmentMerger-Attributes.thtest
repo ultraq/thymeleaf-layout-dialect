@@ -2,7 +2,7 @@
 # Test the merging of attributes from layout fragments up the decorator
 # hierarchy.
 
-%TEMPLATE_MODE HTML5
+%TEMPLATE_MODE HTML
 
 %INPUT
 <div layout:decorator="layout" layout:fragment="content" id="test-content-id" class="roflcopter">

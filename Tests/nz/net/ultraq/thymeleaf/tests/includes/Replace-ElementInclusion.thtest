@@ -1,7 +1,7 @@
 
 # Test that fragment elements get copied over to the included page.
 
-%TEMPLATE_MODE HTML5
+%TEMPLATE_MODE HTML
 
 %INPUT
 <!DOCTYPE html>

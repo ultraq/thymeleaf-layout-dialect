@@ -1,7 +1,7 @@
 
 # Test the merging of the DOCTYPE, so that the result always tries to have one.
 
-%TEMPLATE_MODE HTML5
+%TEMPLATE_MODE HTML
 
 
 %INPUT

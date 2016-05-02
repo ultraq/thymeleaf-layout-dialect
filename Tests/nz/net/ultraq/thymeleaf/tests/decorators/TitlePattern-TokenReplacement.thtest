@@ -1,7 +1,7 @@
 
 # Test that the title pattern tokens are replaced correctly.
 
-%TEMPLATE_MODE HTML5
+%TEMPLATE_MODE HTML
 
 %INPUT
 <!DOCTYPE html>

@@ -1,7 +1,7 @@
 
 # Test the behaviour when there's no content head.
 
-%TEMPLATE_MODE HTML5
+%TEMPLATE_MODE HTML
 
 %INPUT
 <!DOCTYPE html>

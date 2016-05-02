@@ -2,7 +2,7 @@
 # Test whether comments found outside the HTML element are included in the final
 # output.
 
-%TEMPLATE_MODE HTML5
+%TEMPLATE_MODE HTML
 %EXACT_MATCH
 
 %INPUT

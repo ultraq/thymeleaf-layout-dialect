@@ -1,7 +1,7 @@
 
 # Test the sort order imposed on elements in the head section
 
-%TEMPLATE_MODE HTML5
+%TEMPLATE_MODE HTML
 
 %INPUT
 <!DOCTYPE html>

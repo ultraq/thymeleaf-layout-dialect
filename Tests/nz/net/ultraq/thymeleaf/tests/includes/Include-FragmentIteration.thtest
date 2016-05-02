@@ -3,7 +3,7 @@
 # iterations don't mess with the fragment.  Based off a bug report from GitHub:
 # https://github.com/ultraq/thymeleaf-layout-dialect/issues/87
 
-%TEMPLATE_MODE HTML5
+%TEMPLATE_MODE HTML
 
 %CONTEXT
 var texts = {"TEST 0", "TEST 1", "TEST 2", "TEST 3"}

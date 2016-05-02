@@ -2,7 +2,7 @@
 # Test referencing of fragment content within a nested fragment call using include
 # Based off GitHub issue #57 - https://github.com/ultraq/thymeleaf-layout-dialect/issues/57
 
-%TEMPLATE_MODE HTML5
+%TEMPLATE_MODE HTML
 
 %INPUT
 <!DOCTYPE html>

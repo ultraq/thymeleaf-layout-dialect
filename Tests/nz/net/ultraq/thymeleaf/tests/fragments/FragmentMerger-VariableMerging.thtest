@@ -2,7 +2,7 @@
 # Test the merging of local variables set with the th:with processor, across
 # content and fragment pages.
 
-%TEMPLATE_MODE HTML5
+%TEMPLATE_MODE HTML
 
 %CONTEXT
 var1 = "Content variable"

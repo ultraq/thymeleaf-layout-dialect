@@ -1,7 +1,7 @@
 
 # Test the use of th:text in the title tag of a page decorated with a layout.
 
-%TEMPLATE_MODE HTML5
+%TEMPLATE_MODE HTML
 
 %INPUT
 <!DOCTYPE html>

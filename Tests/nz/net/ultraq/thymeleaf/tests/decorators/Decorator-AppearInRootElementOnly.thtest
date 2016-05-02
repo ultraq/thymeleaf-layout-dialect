@@ -1,7 +1,7 @@
 
 # Test that the decorator processor must appear in the root element only.
 
-%TEMPLATE_MODE HTML5
+%TEMPLATE_MODE HTML
 
 %INPUT
 <!DOCTYPE html>

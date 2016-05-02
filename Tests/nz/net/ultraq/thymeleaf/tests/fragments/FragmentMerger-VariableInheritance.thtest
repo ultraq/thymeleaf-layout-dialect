@@ -2,7 +2,7 @@
 # Test the inheritance of local variables, where those set in the decorator page
 # using th:with are also available in the content pages.
 
-%TEMPLATE_MODE HTML5
+%TEMPLATE_MODE HTML
 
 %CONTEXT
 var2 = "Decorator variable"
