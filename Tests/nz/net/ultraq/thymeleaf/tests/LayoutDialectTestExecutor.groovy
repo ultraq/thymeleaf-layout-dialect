@@ -49,6 +49,6 @@ class LayoutDialectTestExecutor extends JUnitTestExecutor {
 	static List<String> listStandardLayoutDialectTests() {
 
 		return new Reflections('', new ResourcesScanner())
-			.getResources(~/(?!GroupingStrategy|TitlePattern-DynamicContent).*\\.thtest/) as List
+			.getResources(~/(?!GroupingStrategy|Examples).*\.thtest/) as List
 	}
 }
