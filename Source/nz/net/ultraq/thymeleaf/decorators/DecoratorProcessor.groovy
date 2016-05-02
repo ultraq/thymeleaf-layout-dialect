@@ -67,7 +67,7 @@ class DecoratorProcessor extends AbstractAttributeModelProcessor {
 			decorator = new XmlDocumentDecorator()
 		}
 		else {
-			throw new IllegalStateException("""
+			throw new IllegalArgumentException("""
 				Layout dialect cannot be applied to the ${templateMode} template mode,
 				only HTML and XML template modes are currently supported
 				""".stripMargin())
