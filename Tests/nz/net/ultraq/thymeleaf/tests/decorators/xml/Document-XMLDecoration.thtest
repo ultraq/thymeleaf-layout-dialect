@@ -3,16 +3,18 @@
 
 %TEMPLATE_MODE XML
 
+
 %INPUT
 <?xml version="1.0" encoding="utf-8"?>
 <root xmlns="http://www.example.org/"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorator="Decorator">
-	<item layout:fragment="item">
-		<name>Tomatoes</name>
-		<price>3.99</price>
-	</item>
+<item layout:fragment="item">
+	<name>Tomatoes</name>
+	<price>3.99</price>
+</item>
 </root>
+
 
 %INPUT[Decorator]
 <?xml version="1.0" encoding="utf-8"?>
@@ -25,6 +27,7 @@
 		</item>
 	</list>
 </root>
+
 
 %OUTPUT
 # Can't check against encoding just yet as it's lost in parsing

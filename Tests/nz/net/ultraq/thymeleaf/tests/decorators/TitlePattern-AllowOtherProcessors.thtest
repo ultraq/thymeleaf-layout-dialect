@@ -4,31 +4,36 @@
 
 %TEMPLATE_MODE HTML
 
+
 %INPUT
-<html layout:decorator="Decorator">
-	<head>
-		<title th:include="Titles :: title1">Extracted title goes here</title>
-	</head>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+ layout:decorator="Layout">
+<head>
+	<title th:include="Titles :: title1">Extracted title goes here</title>
+</head>
 </html>
 
-%INPUT[Decorator]
-<html>
-	<head>
-		<title layout:title-pattern="$CONTENT_TITLE - $DECORATOR_TITLE">My website</title>
-	</head>
+
+%INPUT[Layout]
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+	<title layout:title-pattern="$CONTENT_TITLE - $DECORATOR_TITLE">My website</title>
+</head>
 </html>
+
 
 %INPUT[Titles]
 <html>
-	<head>
-		<title th:fragment="title1">Special title 1</title>
-		<title th:fragment="title2">Special title 2</title>
-	</head>
+<head>
+	<title th:fragment="title1">Special title 1</title>
+	<title th:fragment="title2">Special title 2</title>
+</head>
 </html>
+
 
 %OUTPUT
 <html>
-	<head>
-		<title>Special title 1 - My website</title>
-	</head>
+<head>
+	<title>Special title 1 - My website</title>
+</head>
 </html>

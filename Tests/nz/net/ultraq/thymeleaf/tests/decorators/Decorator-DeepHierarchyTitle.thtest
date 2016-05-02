@@ -6,38 +6,39 @@
 %CONTEXT
 pageTitle = "Page title"
 
+
 %INPUT
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorator="Parent">
-	<head>
-		<title th:text="${pageTitle}">Replaceable title</title>
-	</head>
+<head>
+	<title th:text="${pageTitle}">Replaceable title</title>
+</head>
 </html>
+
 
 %INPUT[Parent]
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorator="Grandparent">
-	<head>
-		<title layout:title-pattern="$CONTENT_TITLE">Layout parent</title>
-	</head>
+<head>
+	<title layout:title-pattern="$CONTENT_TITLE">Layout parent</title>
+</head>
 </html>
+
 
 %INPUT[Grandparent]
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-	<head>
-		<title layout:title-pattern="$CONTENT_TITLE">Layout grandparent</title>
-	</head>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+	<title layout:title-pattern="$CONTENT_TITLE">Layout grandparent</title>
+</head>
 </html>
+
 
 %OUTPUT
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 	<head>
 		<title>Page title</title>
 	</head>

@@ -4,11 +4,12 @@
 
 %TEMPLATE_MODE HTML
 
+
 %INPUT
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" 
-	xmlns:th="http://www.thymeleaf.org" 
+<html xmlns:th="http://www.thymeleaf.org" 
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<body>
 
 	<!--/* accordion-group layout defined */-->
 	<div layout:fragment="accordion-group" th:remove="all">
@@ -39,12 +40,14 @@
 			</div>
 		</div>
 	</div>
+</body>
 </html>
 
 
 %OUTPUT
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
+<body>
 	<div>
 		<div>accordion header</div>
 		<div>accordion inner
@@ -62,4 +65,5 @@
 			</div>
 		</div>
 	</div>
+</body>
 </html>

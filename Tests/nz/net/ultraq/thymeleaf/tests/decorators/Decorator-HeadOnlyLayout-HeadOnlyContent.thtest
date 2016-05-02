@@ -3,33 +3,34 @@
 
 %TEMPLATE_MODE HTML
 
+
 %INPUT
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorator="Layout">
-	<head>
-		<title>Content page 1</title>
-		<script src="content-script.js"></script>
-	</head>
+<head>
+	<title>Content page</title>
+	<script src="content-script.js"></script>
+</head>
 </html>
+
 
 %INPUT[Layout]
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-	<head>
-		<title>Layout page</title>
-		<script src="common-script.js"></script>
-	</head>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+	<title>Layout page</title>
+	<script src="common-script.js"></script>
+</head>
 </html>
+
 
 %OUTPUT
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-	<head>
-		<title>Content page 1</title>
-		<script src="common-script.js"></script>
-		<script src="content-script.js"></script>
-	</head>
+<html>
+<head>
+	<title>Content page</title>
+	<script src="common-script.js"></script>
+	<script src="content-script.js"></script>
+</head>
 </html>

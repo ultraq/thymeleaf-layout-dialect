@@ -4,28 +4,29 @@
 
 %TEMPLATE_MODE HTML
 
+
 %INPUT
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorator="Layout">
-	<head>
-		<meta name="test" content="roflcopter"/>
-	</head>
+<head>
+	<meta name="test" content="roflcopter"/>
+</head>
 </html>
+
 
 %INPUT[Layout]
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-	<head>
-	</head>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+</head>
 </html>
+
 
 %OUTPUT
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-	<head>
-		<meta name="test" content="roflcopter"/>
-	</head>
+<html>
+<head>
+	<meta name="test" content="roflcopter"/>
+</head>
 </html>

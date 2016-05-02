@@ -5,20 +5,24 @@
 
 %TEMPLATE_MODE HTML
 
+
 %INPUT
-<html layout:decorator="Decorator">
-	<head><title>Content title</title></head>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+ layout:decorator="Layout">
+<head><title>Content title</title></head>
 </html>
 
-%INPUT[Decorator]
+
+%INPUT[Layout]
 <html>
-	<head><title>Layout title</title>
-	</head>
+<head><title>Layout title</title>
+</head>
 </html>
+
 
 %OUTPUT
 <html>
-	<head>
-		<title>Content title</title>
-	</head>
+<head>
+	<title>Content title</title>
+</head>
 </html>

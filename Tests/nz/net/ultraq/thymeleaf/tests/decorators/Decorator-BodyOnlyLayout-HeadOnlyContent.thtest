@@ -3,52 +3,53 @@
 
 %TEMPLATE_MODE HTML
 
+
 %INPUT
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorator="Layout">
-	<head>
-		<title>Content page 1</title>
-		<script src="content-script.js"></script>
-	</head>
+<head>
+	<title>Content page</title>
+	<script src="content-script.js"></script>
+</head>
 </html>
+
 
 %INPUT[Layout]
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-	<body>
-		<header>
-			<h1>My website</h1>
-		</header>
-		<section layout:fragment="content">
-			<p>Page content goes here</p>
-		</section>
-		<footer>
-			<p>My footer</p>
-			<p layout:fragment="custom-footer">Custom footer here</p>
-		</footer>
-	</body>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<body>
+	<header>
+		<h1>My website</h1>
+	</header>
+	<section layout:fragment="content">
+		<p>Page content goes here</p>
+	</section>
+	<footer>
+		<p>My footer</p>
+		<p layout:fragment="custom-footer">Custom footer here</p>
+	</footer>
+</body>
 </html>
+
 
 %OUTPUT
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-	<head>
-		<title>Content page 1</title>
-		<script src="content-script.js"></script>
-	</head>
-	<body>
-		<header>
-			<h1>My website</h1>
-		</header>
-		<section>
-			<p>Page content goes here</p>
-		</section>
-		<footer>
-			<p>My footer</p>
-			<p>Custom footer here</p>
-		</footer>
-	</body>
+<html>
+<head>
+	<title>Content page</title>
+	<script src="content-script.js"></script>
+</head>
+<body>
+	<header>
+		<h1>My website</h1>
+	</header>
+	<section>
+		<p>Page content goes here</p>
+	</section>
+	<footer>
+		<p>My footer</p>
+		<p>Custom footer here</p>
+	</footer>
+</body>
 </html>

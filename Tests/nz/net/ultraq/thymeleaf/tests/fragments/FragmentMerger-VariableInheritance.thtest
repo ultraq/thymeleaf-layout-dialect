@@ -7,39 +7,40 @@
 %CONTEXT
 var2 = "Decorator variable"
 
+
 %INPUT
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorator="Layout">
-	<body>
-		<section layout:fragment="content">
-			<p th:text="${decoratorvar}"></p>
-		</section>
-	</body>
+<body>
+	<section layout:fragment="content">
+		<p th:text="${decoratorvar}"></p>
+	</section>
+</body>
 </html>
+
 
 %INPUT[Layout]
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-	<head>
-		<title>Local variable merging test</title>
-	</head>
-	<body th:with="decoratorvar=${var2}">
-		<section layout:fragment="content"></section>
-	</body>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+	<title>Local variable merging test</title>
+</head>
+<body th:with="decoratorvar=${var2}">
+	<section layout:fragment="content"></section>
+</body>
 </html>
+
 
 %OUTPUT
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-	<head>
-		<title>Local variable merging test</title>
-	</head>
-	<body>
-		<section>
-			<p>Decorator variable</p>
-		</section>
-	</body>
+<html>
+<head>
+	<title>Local variable merging test</title>
+</head>
+<body>
+	<section>
+		<p>Decorator variable</p>
+	</section>
+</body>
 </html>

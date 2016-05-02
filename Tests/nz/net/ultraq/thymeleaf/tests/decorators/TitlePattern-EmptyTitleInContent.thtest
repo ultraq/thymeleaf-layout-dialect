@@ -3,44 +3,45 @@
 
 %TEMPLATE_MODE HTML
 
+
 %INPUT
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorator="Layout">
-	<head>
-		<title></title>
-	</head>
-	<body>
-		<section layout:fragment="content">
-			<p>This is a paragraph from the content page</p>
-		</section>
-	</body>
+<head>
+	<title></title>
+</head>
+<body>
+	<section layout:fragment="content">
+		<p>This is a paragraph from the content page</p>
+	</section>
+</body>
 </html>
+
 
 %INPUT[Layout]
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-	<head>
-		<title layout:title-pattern="$DECORATOR_TITLE - $CONTENT_TITLE">Layout title</title>
-	</head>
-	<body>
-		<section layout:fragment="content">
-			<p>Page content goes here</p>
-		</section>
-	</body>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+	<title layout:title-pattern="$DECORATOR_TITLE - $CONTENT_TITLE">Layout title</title>
+</head>
+<body>
+	<section layout:fragment="content">
+		<p>Page content goes here</p>
+	</section>
+</body>
 </html>
+
 
 %OUTPUT
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-	<head>
-		<title>Layout title</title>
-	</head>
-	<body>
-		<section>
-			<p>This is a paragraph from the content page</p>
-		</section>
-	</body>
+<html>
+<head>
+	<title>Layout title</title>
+</head>
+<body>
+	<section>
+		<p>This is a paragraph from the content page</p>
+	</section>
+</body>
 </html>

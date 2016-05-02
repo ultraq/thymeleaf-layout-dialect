@@ -3,19 +3,23 @@
 
 %TEMPLATE_MODE HTML
 
+
 %INPUT
-<body layout:decorator="layout" th:with="hello='world'">
-    <div layout:fragment="content">...</div>
+<body xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout" th:with="hello='world'">
+	<div layout:fragment="content">...</div>
 </body>
 
+
 %INPUT[layout]
-<body>
+<body xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 	<h1 th:text="${hello}">Hello</h1>
 	<div layout:fragment="content"></div>
 </body>
 
+
 %OUTPUT
 <body>
-    <h1>world</h1>
-    <div>...</div>
+	<h1>world</h1>
+	<div>...</div>
 </body>

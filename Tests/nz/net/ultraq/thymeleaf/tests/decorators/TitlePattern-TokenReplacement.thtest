@@ -3,29 +3,29 @@
 
 %TEMPLATE_MODE HTML
 
+
 %INPUT
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorator="Layout">
-	<head>
-		<title>My blog</title>
-	</head>
+<head>
+	<title>My blog</title>
+</head>
 </html>
+
 
 %INPUT[Layout]
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-	<head>
-		<title layout:title-pattern="$DECORATOR_TITLE - $CONTENT_TITLE">My website</title>
-	</head>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+	<title layout:title-pattern="$DECORATOR_TITLE - $CONTENT_TITLE">My website</title>
+</head>
 </html>
 
 %OUTPUT
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-	<head>
-		<title>My website - My blog</title>
-	</head>
+<html>
+<head>
+	<title>My website - My blog</title>
+</head>
 </html>

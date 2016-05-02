@@ -4,11 +4,12 @@
 
 %TEMPLATE_MODE HTML
 
+
 %INPUT
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" 
-	xmlns:th="http://www.thymeleaf.org" 
+<html xmlns:th="http://www.thymeleaf.org" 
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<body>
 
 	<th:block th:remove="all">
 		<div id="fragment-outer" layout:fragment="outer">
@@ -27,12 +28,15 @@
 	<div id="replace-outer" layout:replace="this :: outer">
 		<div id="outer-content" layout:fragment="outer-content">Outer content</div>
 	</div>
+
+</body>
 </html>
 
 
 %OUTPUT
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
+<body>
 	<div id="fragment-outer">
 		<div id="fragment-inner">
 			<div id="inner-content">
@@ -40,4 +44,5 @@
 			</div>
 		</div>
 	</div>
+</body>
 </html>
