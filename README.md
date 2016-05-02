@@ -3,15 +3,15 @@ Thymeleaf Layout Dialect
 ========================
 
 [![Build Status](https://travis-ci.org/ultraq/thymeleaf-layout-dialect.svg?branch=master)](https://travis-ci.org/ultraq/thymeleaf-layout-dialect)
+[![GitHub Release](https://img.shields.io/github/release/ultraq/thymeleaf-layout-dialect.svg?maxAge=3600)](https://github.com/ultraq/thymeleaf-layout-dialect/releases/latest)
+[![Maven Central](https://img.shields.io/maven-central/v/nz.net.ultraq.thymeleaf/thymeleaf-layout-dialect.svg?maxAge=3600)](http://search.maven.org/#search|ga|1|g%3A%22nz.net.ultraq.thymeleaf%22%20AND%20a%3A%22thymeleaf-layout-dialect%22)
+[![License](https://img.shields.io/github/license/ultraq/thymeleaf-layout-dialect.svg?maxAge=2592000)](https://github.com/ultraq/thymeleaf-layout-dialect/blob/master/LICENSE.txt)
 
 A dialect for Thymeleaf that allows you to use layout/decorator templates to
 style your content, as well as pass entire fragment elements to included pages,
 all to help improve code reuse.  If you've ever used SiteMesh for your JSPs, or
 Facelets with JSFs, then the concepts of this library will be very familiar to
 you.
-
- - Current version: 1.3.3
- - Released: 21 February 2016
 
 
 Installation
@@ -20,7 +20,7 @@ Installation
 Minimum of Java 6 and Thymeleaf 2.1 required.
 
 ### Standalone distribution
-Copy the JAR from [the latest release bundle](https://github.com/ultraq/thymeleaf-layout-dialect/releases),
+Copy the JAR from [one of the release bundles](https://github.com/ultraq/thymeleaf-layout-dialect/releases),
 placing it in the classpath of your application, or build the project from the
 source code here on GitHub.
 
@@ -29,7 +29,7 @@ Add a dependency to your project with the following co-ordinates:
 
  - GroupId: `nz.net.ultraq.thymeleaf`
  - ArtifactId: `thymeleaf-layout-dialect`
- - Version: `1.3.3`
+ - Version: (as per the badges above)
 
 
 Usage
