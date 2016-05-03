@@ -47,7 +47,7 @@ project.contributors = [
 dependencies {
 	compile(
 		'org.codehaus.groovy:groovy:2.4.6',
-		'org.thymeleaf:thymeleaf:3.0.0.BETA03'
+		'org.thymeleaf:thymeleaf:3.0.0-SNAPSHOT'
 	)
 	testCompile(
 		'junit:junit:4.12',

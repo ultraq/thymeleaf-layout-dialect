@@ -88,9 +88,14 @@ class DecoratorProcessor extends AbstractAttributeModelProcessor {
 	protected void doProcess(ITemplateContext context, IModel model, AttributeName attributeName,
 		String attributeValue, IElementModelStructureHandler structureHandler) {
 
-		// Locate the template to decorate
-		def decoratorTemplateModel = new FragmentFinder(context)
-			.findFragmentTemplateModel(attributeValue, templateMode)
+		// Ensure the decorator attribute is in the root element of the document
+		if (context.elementStack.size() != 1) {
+			throw new IllegalArgumentException('layout:decorator attribute must appear in the root element of your content page')
+		}
+
+		// Locate the template to 'redirect' processing to by completely replacing
+		// the current document with it
+		def decoratorTemplate = new FragmentFinder(context).findFragment(attributeValue)
 
 		// Gather all fragment parts from this page to apply to the new document
 		// after decoration has taken place
