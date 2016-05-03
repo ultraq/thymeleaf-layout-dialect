@@ -22,14 +22,15 @@ import nz.net.ultraq.thymeleaf.fragments.mergers.AttributeMerger
 import org.thymeleaf.model.IModel
 
 /**
- * A decorator made to work over any Thymeleaf element.
+ * A decorator made to work over an element.
  * 
  * @author Emanuel Rabina
  */
 class XmlElementDecorator implements Decorator {
 
 	/**
-	 * {@inheritDoc}
+	 * Decorates the target element with the source element.  This means copying
+	 * or merging any attributes, plus replacing any parts of the element body.
 	 */
 	@Override
 	void decorate(IModel decoratorElement, IModel contentElement) {

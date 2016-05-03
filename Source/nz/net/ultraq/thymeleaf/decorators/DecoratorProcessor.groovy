@@ -18,9 +18,9 @@ package nz.net.ultraq.thymeleaf.decorators
 
 import nz.net.ultraq.thymeleaf.decorators.html.HtmlDocumentDecorator
 import nz.net.ultraq.thymeleaf.decorators.xml.XmlDocumentDecorator
-import nz.net.ultraq.thymeleaf.fragments.FragmentFinder
 import nz.net.ultraq.thymeleaf.fragments.FragmentMap
 import nz.net.ultraq.thymeleaf.fragments.FragmentMapper
+import nz.net.ultraq.thymeleaf.models.ModelFinder
 
 import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.engine.AttributeName
@@ -95,14 +95,14 @@ class DecoratorProcessor extends AbstractAttributeModelProcessor {
 
 		// Locate the template to 'redirect' processing to by completely replacing
 		// the current document with it
-		def decoratorTemplate = new FragmentFinder(context).findFragment(attributeValue)
+		def decoratorTemplate = new ModelFinder(context).findTemplate(attributeValue, templateMode)
 
 		// Gather all fragment parts from this page to apply to the new document
 		// after decoration has taken place
 		def pageFragments = new FragmentMapper(context).map(model)
 
 		// Apply decorator
-		decorator.decorate(decoratorTemplateModel, model)
+		decorator.decorate(decoratorTemplate, model)
 
 		// Replace the page contents with those of the template we're decorating
 //		structureHandler.setTemplateData(decoratorTemplateModel.templateData)
