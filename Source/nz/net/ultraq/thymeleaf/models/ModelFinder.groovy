@@ -29,15 +29,18 @@ import org.thymeleaf.templatemode.TemplateMode
 class ModelFinder {
 
 	final ITemplateContext context
+	final TemplateMode templateMode
 
 	/**
 	 * Constructor, set the template context we're working in.
 	 * 
 	 * @param context
+	 * @param templateMode
 	 */
-	ModelFinder(ITemplateContext context) {
+	ModelFinder(ITemplateContext context, TemplateMode templateMode) {
 
-		this.context = context
+		this.context      = context
+		this.templateMode = templateMode
 	}
 
 	/**
@@ -58,14 +61,15 @@ class ModelFinder {
 	 * Return the fragment model specified by the given fragment name expression.
 	 * 
 	 * @param fragmentNameExpression
-	 * @param templateMode
+	 * @param dialectPrefix
 	 * @return Fragment matching the fragment specification.
 	 */
-	TemplateModel findFragment(String fragmentNameExpression, TemplateMode templateMode) {
+	TemplateModel findFragment(String fragmentNameExpression, String dialectPrefix) {
 
 		def fragmentName = resolveExpression(fragmentNameExpression)
-		return context.configuration.templateManager.parseStandalone(context, context.templateData.template,
-			["//[layout:fragment='${fragmentName}' or data-layout-fragment='${fragmentName}']"] as Set,
+		def fragmentSelector = "//[${dialectPrefix}:fragment='${fragmentName}' or data-${dialectPrefix}-fragment='${fragmentName}']"
+		return context.configuration.templateManager.parseStandalone(context,
+			context.templateData.template, [fragmentSelector.toString()] as Set,
 			templateMode, true, true)
 	}
 
@@ -73,10 +77,9 @@ class ModelFinder {
 	 * Return the template model specified by the given template name expression.
 	 * 
 	 * @param templateNameExpression
-	 * @param templateMode
 	 * @return Template model matching the fragment specification.
 	 */
-	TemplateModel findTemplate(String templateNameExpression, TemplateMode templateMode) {
+	TemplateModel findTemplate(String templateNameExpression) {
 
 		return context.configuration.templateManager.parseStandalone(context,
 			resolveExpression(templateNameExpression), null, templateMode, true, true)

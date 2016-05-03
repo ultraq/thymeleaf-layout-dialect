@@ -24,15 +24,17 @@ import org.thymeleaf.model.IModel
 import org.thymeleaf.standard.StandardDialect
 
 /**
- * Merges a source element's attributes into a target element.
+ * Merges attributes from one element into another.
  * 
  * @author Emanuel Rabina
  */
 class AttributeMerger implements FragmentMerger {
 
 	/**
-	 * Merge source element attributes into a target element, overwriting those
-	 * attributes found in the target with those from the source.
+	 * Merge the attributes of the source element with those of the target
+	 * element.  In most cases, this means overwriting the target attributes with
+	 * the source ones, except for some special merging on <tt>th:with</tt>
+	 * attributes so that variable declarations are preserved.
 	 * 
 	 * @param sourceElement
 	 * @param targetElement
@@ -40,7 +42,7 @@ class AttributeMerger implements FragmentMerger {
 	@Override
 	void merge(IModel targetElement, IModel sourceElement) {
 
-/*		if (!sourceElement || !targetElement) {
+		if (!sourceElement || !targetElement) {
 			return
 		}
 
@@ -66,5 +68,5 @@ class AttributeMerger implements FragmentMerger {
 				targetElement.setAttribute(sourceAttribute.originalName, sourceAttribute.value)
 			}
 		}
-*/	}
+	}
 }

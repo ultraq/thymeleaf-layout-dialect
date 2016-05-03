@@ -19,7 +19,7 @@ package nz.net.ultraq.thymeleaf.decorators
 import nz.net.ultraq.thymeleaf.decorators.html.HtmlDocumentDecorator
 import nz.net.ultraq.thymeleaf.decorators.xml.XmlDocumentDecorator
 import nz.net.ultraq.thymeleaf.fragments.FragmentMap
-import nz.net.ultraq.thymeleaf.fragments.FragmentMapper
+import nz.net.ultraq.thymeleaf.fragments.FragmentFinder
 import nz.net.ultraq.thymeleaf.models.ModelFinder
 
 import org.thymeleaf.context.ITemplateContext
@@ -43,6 +43,9 @@ class DecoratorProcessor extends AbstractAttributeModelProcessor {
 	static final String PROCESSOR_NAME = 'decorator'
 	static final int PROCESSOR_PRECEDENCE = 0
 
+	// NOTE: Hopefully my PR gets merged so I don't have to keep this around
+	//       https://github.com/thymeleaf/thymeleaf/pull/494
+	private final String dialectPrefix
 	private final SortingStrategy sortingStrategy
 	private final Decorator decorator
 
@@ -57,6 +60,8 @@ class DecoratorProcessor extends AbstractAttributeModelProcessor {
 	DecoratorProcessor(TemplateMode templateMode, String dialectPrefix, SortingStrategy sortingStrategy) {
 
 		super(templateMode, dialectPrefix, null, false, PROCESSOR_NAME, true, PROCESSOR_PRECEDENCE, true)
+
+		this.dialectPrefix   = dialectPrefix
 		this.sortingStrategy = sortingStrategy
 
 		// Set decorator to use based on template mode
@@ -95,11 +100,12 @@ class DecoratorProcessor extends AbstractAttributeModelProcessor {
 
 		// Locate the template to 'redirect' processing to by completely replacing
 		// the current document with it
-		def decoratorTemplate = new ModelFinder(context).findTemplate(attributeValue, templateMode)
+		def modelFinder = new ModelFinder(context, templateMode)
+		def decoratorTemplate = modelFinder.findTemplate(attributeValue)
 
 		// Gather all fragment parts from this page to apply to the new document
 		// after decoration has taken place
-		def pageFragments = new FragmentMapper(context).map(model)
+		def pageFragments = new FragmentFinder(modelFinder, dialectPrefix).findFragments(model)
 
 		// Apply decorator
 		decorator.decorate(decoratorTemplate, model)
