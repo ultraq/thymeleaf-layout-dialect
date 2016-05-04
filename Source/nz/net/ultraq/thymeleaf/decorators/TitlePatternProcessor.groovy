@@ -24,7 +24,7 @@ import org.thymeleaf.processor.element.IElementTagStructureHandler
 import org.thymeleaf.templatemode.TemplateMode
 
 /**
- * Allows for greater control of the resulting &lt;title&gt; element by
+ * Allows for greater control of the resulting {@code <title>} element by
  * specifying a pattern with some special tokens.  This can be used to extend
  * the decorator's title with the content's one, instead of simply overriding
  * it.

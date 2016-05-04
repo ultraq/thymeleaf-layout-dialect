@@ -25,10 +25,10 @@ import org.thymeleaf.model.IProcessableElementTag
 import org.thymeleaf.model.ITemplateEvent
 
 /**
- * The &lt;head&gt; merging strategy introduced in version 1.2.6 of the Layout
- * dialect, which groups like elements together.
+ * The {@code <head>} merging strategy which groups like elements together.
  * 
  * @author Emanuel Rabina
+ * @since 1.2.6
  */
 class GroupingStrategy implements SortingStrategy {
 

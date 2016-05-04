@@ -2,6 +2,13 @@
 Changelog
 =========
 
+### 1.4.0
+ - Change the behaviour of merging `th:with` attributes so that child pages can
+   override layout values
+   ([#99](https://github.com/ultraq/thymeleaf-layout-dialect/issues/99))
+ - Fixed lack of a 'groovydoc' archive being included with the download bundle
+   and Maven artifacts
+
 ### 1.3.3
  - Don't copy collapsible whitespace between `<head>` elements during decoration
    ([#92](https://github.com/ultraq/thymeleaf-layout-dialect/issues/92))

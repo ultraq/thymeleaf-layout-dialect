@@ -24,7 +24,7 @@ import org.thymeleaf.engine.TemplateModel
 import groovy.transform.TupleConstructor
 
 /**
- * A decorator specific to processing an HTML &lt;head&gt; element.
+ * A decorator specific to processing an HTML {@code <head>} element.
  * 
  * @author Emanuel Rabina
  */
@@ -34,11 +34,11 @@ class HtmlHeadDecorator extends XmlElementDecorator {
 	final SortingStrategy sortingStrategy
 
 	/**
-	 * Decorate the &lt;head&gt; part, appending all of the content
-	 * &lt;head&gt; elements on to the decorator &lt;head&gt; elements.
+	 * Decorate the {@code <head>} part, appending all of the content
+	 * {@code <head>} elements on to the decorator {@code <head>} elements.
 	 * 
-	 * @param decoratorHtml Decorator's &lt;html&gt; element.
-	 * @param contentHead	Content's &lt;head&gt; element.
+	 * @param decoratorHtml Decorator's {@code <head>} element.
+	 * @param contentHead	Content's {@code <head>} element.
 	 */
 	@Override
 	void decorate(TemplateModel decoratorHtml, TemplateModel contentHead) {

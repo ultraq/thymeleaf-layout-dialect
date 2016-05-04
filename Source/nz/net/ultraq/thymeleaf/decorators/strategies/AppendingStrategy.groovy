@@ -21,8 +21,8 @@ import nz.net.ultraq.thymeleaf.decorators.SortingStrategy
 import org.thymeleaf.model.IModel
 
 /**
- * The standard &lt;head&gt; merging strategy, which simply appends the content
- * to the decorator.
+ * The standard {@code <head>} merging strategy, which simply appends the
+ * content to the decorator.
  * 
  * @author Emanuel Rabina
  */
