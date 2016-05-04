@@ -41,7 +41,7 @@ class LayoutDialectTestExecutorGrouping extends JUnitTestExecutor {
 
 	/**
 	 * Return only Thymeleaf testing files involved in the testing of the
-	 * <tt>GroupingStrategy</tt> &lt;head&gt; element sorter.
+	 * <tt>GroupingStrategy</tt> {@code <head>} element sorter.
 	 * 
 	 * @return List of all the Thymeleaf testing files for the <tt>GroupingStrategy</tt>.
 	 * @throws URISyntaxException
