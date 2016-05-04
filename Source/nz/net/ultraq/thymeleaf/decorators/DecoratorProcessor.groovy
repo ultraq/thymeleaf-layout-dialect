@@ -47,7 +47,6 @@ class DecoratorProcessor extends AbstractAttributeModelProcessor {
 	//       https://github.com/thymeleaf/thymeleaf/pull/494
 	private final String dialectPrefix
 	private final SortingStrategy sortingStrategy
-	private final Decorator decorator
 
 	/**
 	 * Constructor, configure this processor to work on the 'decorator'
@@ -63,20 +62,6 @@ class DecoratorProcessor extends AbstractAttributeModelProcessor {
 
 		this.dialectPrefix   = dialectPrefix
 		this.sortingStrategy = sortingStrategy
-
-		// Set decorator to use based on template mode
-		if (templateMode == TemplateMode.HTML) {
-			decorator = new HtmlDocumentDecorator(sortingStrategy)
-		}
-		else if (templateMode == TemplateMode.XML) {
-			decorator = new XmlDocumentDecorator()
-		}
-		else {
-			throw new IllegalArgumentException("""
-				Layout dialect cannot be applied to the ${templateMode} template mode,
-				only HTML and XML template modes are currently supported
-				""".stripMargin())
-		}
 	}
 
 	/**
@@ -107,7 +92,17 @@ class DecoratorProcessor extends AbstractAttributeModelProcessor {
 		// after decoration has taken place
 		def pageFragments = new FragmentFinder(modelFinder, dialectPrefix).findFragments(model)
 
-		// Apply decorator
+		// Choose the decorator to use based on template mode, then apply it
+		def decorator =
+			templateMode == TemplateMode.HTML ? new HtmlDocumentDecorator(modelFinder, sortingStrategy) :
+			templateMode == TemplateMode.XML  ? new XmlDocumentDecorator() :
+			null
+		if (!decorator) {
+			throw new IllegalArgumentException("""
+				Layout dialect cannot be applied to the ${templateMode} template mode,
+				only HTML and XML template modes are currently supported
+				""".stripMargin())
+		}
 		decorator.decorate(decoratorTemplate, model)
 
 		// Replace the page contents with those of the template we're decorating

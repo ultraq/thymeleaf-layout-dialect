@@ -14,11 +14,7 @@
  * limitations under the License.
  */
 
-package nz.net.ultraq.thymeleaf.fragments.mergers
-
-import nz.net.ultraq.thymeleaf.fragments.FragmentMerger
-import nz.net.ultraq.thymeleaf.fragments.FragmentProcessor
-import static nz.net.ultraq.thymeleaf.LayoutDialect.DIALECT_PREFIX
+package nz.net.ultraq.thymeleaf.models
 
 import org.thymeleaf.model.IModel
 import org.thymeleaf.standard.StandardDialect
@@ -28,26 +24,27 @@ import org.thymeleaf.standard.StandardDialect
  * 
  * @author Emanuel Rabina
  */
-class AttributeMerger implements FragmentMerger {
+class AttributeMerger implements ModelMerger {
 
 	/**
 	 * Merge the attributes of the source element with those of the target
-	 * element.  In most cases, this means overwriting the target attributes with
-	 * the source ones, except for some special merging on <tt>th:with</tt>
-	 * attributes so that variable declarations are preserved.
+	 * element.  This is basically a copy of all attributes in the source model
+	 * with those in the target model, overwriting any attributes that have the
+	 * same name, except for the case of {@code th:with} where variable
+	 * declarations are preserved, only overwriting same-named declarations.
 	 * 
-	 * @param sourceElement
-	 * @param targetElement
+	 * @param sourceModel
+	 * @param targetModel
 	 */
 	@Override
-	void merge(IModel targetElement, IModel sourceElement) {
+	void merge(IModel targetModel, IModel sourceModel) {
 
-		if (!sourceElement || !targetElement) {
+		if (!sourceModel || !targetModel) {
 			return
 		}
 
 		// Exclude the copying of fragment attributes
-		def sourceAttributes = sourceElement.attributeMap.values().findAll { sourceAttribute ->
+		def sourceAttributes = sourceModel.attributeMap.values().findAll { sourceAttribute ->
 			return !sourceAttribute.equalsName(DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME_FRAGMENT)
 		}
 
@@ -56,16 +53,16 @@ class AttributeMerger implements FragmentMerger {
 			// Merge th:with attributes to retain local variable declarations
 			if (sourceAttribute.equalsName(StandardDialect.PREFIX, StandardWithAttrProcessor.ATTR_NAME)) {
 				def mergedWithValue = sourceAttribute.value
-				def targetWithValue = targetElement.getAttributeValue(StandardDialect.PREFIX, StandardWithAttrProcessor.ATTR_NAME)
+				def targetWithValue = targetModel.getAttributeValue(StandardDialect.PREFIX, StandardWithAttrProcessor.ATTR_NAME)
 				if (targetWithValue) {
 					mergedWithValue += ",${targetWithValue}"
 				}
-				targetElement.setAttribute("${StandardDialect.PREFIX}:${StandardWithAttrProcessor.ATTR_NAME}", mergedWithValue)
+				targetModel.setAttribute("${StandardDialect.PREFIX}:${StandardWithAttrProcessor.ATTR_NAME}", mergedWithValue)
 			}
 
 			// Copy every other attribute straight
 			else {
-				targetElement.setAttribute(sourceAttribute.originalName, sourceAttribute.value)
+				targetModel.setAttribute(sourceAttribute.originalName, sourceAttribute.value)
 			}
 		}
 	}

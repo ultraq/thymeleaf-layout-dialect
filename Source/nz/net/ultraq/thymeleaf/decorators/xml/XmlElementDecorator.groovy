@@ -17,24 +17,28 @@
 package nz.net.ultraq.thymeleaf.decorators.xml
 
 import nz.net.ultraq.thymeleaf.decorators.Decorator
-import nz.net.ultraq.thymeleaf.fragments.mergers.AttributeMerger
+import nz.net.ultraq.thymeleaf.models.AttributeMerger
 
-import org.thymeleaf.model.IModel
+import org.thymeleaf.engine.TemplateModel
 
 /**
- * A decorator made to work over an element.
+ * A decorator made to work over a Thymeleaf event/element.
  * 
  * @author Emanuel Rabina
  */
 class XmlElementDecorator implements Decorator {
 
 	/**
-	 * Decorates the target element with the source element.  This means copying
-	 * or merging any attributes, plus replacing any parts of the element body.
+	 * Decorates the target element with the source element.  This step only
+	 * merges the element attributes.  The body decoration is handled later on by
+	 * fragment processors.
+	 * 
+	 * @param targetElement
+	 * @param sourceElement
 	 */
 	@Override
-	void decorate(IModel decoratorElement, IModel contentElement) {
+	void decorate(TemplateModel targetElement, TemplateModel sourceElement) {
 
-		new AttributeMerger().merge(decoratorElement, contentElement)
+		new AttributeMerger().merge(targetElement, sourceElement)
 	}
 }

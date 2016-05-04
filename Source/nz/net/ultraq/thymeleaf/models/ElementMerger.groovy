@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package nz.net.ultraq.thymeleaf.fragments.mergers
+package nz.net.ultraq.thymeleaf.models
 
 import org.thymeleaf.model.IModel
 
@@ -38,11 +38,11 @@ class ElementMerger extends AttributeMerger {
 	 * Replace the content of the target element, with the content of the source
 	 * element.
 	 * 
-	 * @param targetElement
-	 * @param sourceElement
+	 * @param targetModel
+	 * @param sourceModel
 	 */
 	@Override
-	void merge(IModel targetElement, IModel sourceElement) {
+	void merge(IModel targetModel, IModel sourceModel) {
 
 		// Create a new merged element to mess with
 /*		def mergedElement = sourceElement.cloneNode(null, false)

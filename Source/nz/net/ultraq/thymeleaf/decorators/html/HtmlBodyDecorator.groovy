@@ -1,4 +1,4 @@
-/*
+/* 
  * Copyright 2013, Emanuel Rabina (http://www.ultraq.net.nz/)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,40 +18,34 @@ package nz.net.ultraq.thymeleaf.decorators.html
 
 import nz.net.ultraq.thymeleaf.decorators.xml.XmlElementDecorator
 
-import org.thymeleaf.model.IModel
+import org.thymeleaf.engine.TemplateModel
 
 /**
- * A decorator specific to processing an HTML BODY element.
+ * A decorator specific to processing an HTML {@code <body>} element.
  * 
  * @author Emanuel Rabina
  */
 class HtmlBodyDecorator extends XmlElementDecorator {
 
 	/**
-	 * Decorate the BODY part.  This step merges the decorator and content BODY
-	 * attributes, ensuring only that a BODY element actually exists in the
-	 * result.  The bulk of the body decoration is actually performed by the
-	 * fragment replacements.
+	 * Decorate the {@code <body>} part.
 	 * 
-	 * @param decoratorHtml Decorator's HTML element.
-	 * @param contentBody	Content's BODY element.
+	 * @param targetBodyModel
+	 * @param sourceBodyModel
 	 */
 	@Override
-	void decorate(IModel decoratorHtml, IModel contentBody) {
+	void decorate(TemplateModel targetBodyModel, TemplateModel sourceBodyModel) {
 
-		// If the page has no BODY, then we don't need to do anything
-/*		if (!contentBody) {
-			return
+		// Try to ensure there is a body as a result of decoration, applying the
+		// source body, or just using what is in the target
+		if (sourceBodyModel.hasBody()) {
+			if (targetBodyModel.hasBody()) {
+				super.decorate(targetBodyModel, sourceBodyModel)
+			}
+			else {
+				targetBodyModel.reset()
+				targetBodyModel.addModel(sourceBodyModel)
+			}
 		}
-
-		// If the decorator has no BODY, we can just copy the page BODY
-		def decoratorBody = decoratorHtml.findElement('body')
-		if (!decoratorBody) {
-			decoratorHtml.addChild(contentBody)
-			decoratorHtml.addChild(new Text(System.properties.'line.separator'))
-			return
-		}
-
-		super.decorate(decoratorBody, contentBody)
-*/	}
+	}
 }

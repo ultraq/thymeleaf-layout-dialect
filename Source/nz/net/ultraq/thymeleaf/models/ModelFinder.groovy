@@ -22,7 +22,7 @@ import org.thymeleaf.standard.expression.StandardExpressions
 import org.thymeleaf.templatemode.TemplateMode
 
 /**
- * Hides all the scaffolding business required to find fragments.
+ * Hides all the scaffolding business required to retrieve models.
  * 
  * @author Emanuel Rabina
  */
@@ -44,6 +44,45 @@ class ModelFinder {
 	}
 
 	/**
+	 * Return a model for any arbitrary item in a template.
+	 *
+	 * @param templateName
+	 * @param selector     A Thymeleaf DOM selector, which in turn is an
+	 *                     AttoParser DOM selector.  See the Appendix in the Using
+	 *                     Thymeleaf docs for the DOM selector syntax.
+	 * @return Model for the selected template and element.
+	 */
+	TemplateModel find(String templateName, String selector = null) {
+
+		return context.configuration.templateManager.parseStandalone(context,
+			templateName, selector ? [selector] as Set : null, templateMode, true, true)
+	}
+
+	/**
+	 * Return the fragment model specified by the given fragment name expression.
+	 * 
+	 * @param fragmentNameExpression
+	 * @param dialectPrefix
+	 * @return Fragment matching the fragment specification.
+	 */
+	TemplateModel findFragment(String templateName, String fragmentNameExpression, String dialectPrefix) {
+
+		def fragmentName = resolveExpression(fragmentNameExpression)
+		return find(templateName, "//[${dialectPrefix}:fragment='${fragmentName}' or data-${dialectPrefix}-fragment='${fragmentName}']")
+	}
+
+	/**
+	 * Return the template model specified by the given template name expression.
+	 * 
+	 * @param templateNameExpression
+	 * @return Template model matching the fragment specification.
+	 */
+	TemplateModel findTemplate(String templateNameExpression) {
+
+		return find(resolveExpression(templateNameExpression))
+	}
+
+	/**
 	 * Process the expression to resolve the template or fragment name.
 	 * 
 	 * @param expression
@@ -55,33 +94,5 @@ class ModelFinder {
 			.parseExpression(context, expression)
 			.execute(context)
 			.toString()
-	}
-
-	/**
-	 * Return the fragment model specified by the given fragment name expression.
-	 * 
-	 * @param fragmentNameExpression
-	 * @param dialectPrefix
-	 * @return Fragment matching the fragment specification.
-	 */
-	TemplateModel findFragment(String fragmentNameExpression, String dialectPrefix) {
-
-		def fragmentName = resolveExpression(fragmentNameExpression)
-		def fragmentSelector = "//[${dialectPrefix}:fragment='${fragmentName}' or data-${dialectPrefix}-fragment='${fragmentName}']"
-		return context.configuration.templateManager.parseStandalone(context,
-			context.templateData.template, [fragmentSelector.toString()] as Set,
-			templateMode, true, true)
-	}
-
-	/**
-	 * Return the template model specified by the given template name expression.
-	 * 
-	 * @param templateNameExpression
-	 * @return Template model matching the fragment specification.
-	 */
-	TemplateModel findTemplate(String templateNameExpression) {
-
-		return context.configuration.templateManager.parseStandalone(context,
-			resolveExpression(templateNameExpression), null, templateMode, true, true)
 	}
 }

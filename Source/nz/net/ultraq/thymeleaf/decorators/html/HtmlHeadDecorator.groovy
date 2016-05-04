@@ -1,4 +1,4 @@
-/*
+/* 
  * Copyright 2013, Emanuel Rabina (http://www.ultraq.net.nz/)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,13 +18,6 @@ package nz.net.ultraq.thymeleaf.decorators.html
 
 import nz.net.ultraq.thymeleaf.decorators.SortingStrategy
 import nz.net.ultraq.thymeleaf.decorators.xml.XmlElementDecorator
-import static nz.net.ultraq.thymeleaf.LayoutDialect.DIALECT_PREFIX
-import static nz.net.ultraq.thymeleaf.decorators.TitlePatternProcessor.TITLE_TYPE
-import static nz.net.ultraq.thymeleaf.decorators.TitlePatternProcessor.TITLE_TYPE_CONTENT
-import static nz.net.ultraq.thymeleaf.decorators.TitlePatternProcessor.TITLE_TYPE_DECORATOR
-import static nz.net.ultraq.thymeleaf.decorators.TitlePatternProcessor.PROCESSOR_NAME
-
-import org.thymeleaf.model.IModel
 
 import groovy.transform.TupleConstructor
 
@@ -46,7 +39,7 @@ class HtmlHeadDecorator extends XmlElementDecorator {
 	 * @param contentHead	Content's &lt;head&gt; element.
 	 */
 	@Override
-	void decorate(IModel decoratorHtml, IModel contentHead) {
+	void decorate(TemplateModel decoratorHtml, TemplateModel contentHead) {
 
 		// If the decorator has no <head>, then we can just use the content <head>
 /*		def decoratorHead = decoratorHtml.findElement('head')

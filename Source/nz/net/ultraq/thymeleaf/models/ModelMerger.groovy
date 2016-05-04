@@ -14,23 +14,23 @@
  * limitations under the License.
  */
 
-package nz.net.ultraq.thymeleaf.fragments
+package nz.net.ultraq.thymeleaf.models
 
 import org.thymeleaf.model.IModel
 
 /**
- * Merges page fragments by bringing in source content into a target element.
+ * Merges template models by applying the source model to the target model, with
+ * the result being implementation-dependant.
  * 
  * @author Emanuel Rabina
  */
-interface FragmentMerger {
+interface ModelMerger {
 
 	/**
-	 * Merge both the attributes and content of the source element into the
-	 * target element.
+	 * Merge the source model into the target model.
 	 * 
-	 * @param targetElement
-	 * @param sourceElement
+	 * @param targetModel
+	 * @param sourceModel
 	 */
-	void merge(IModel targetElement, IModel sourceElement)
+	void merge(IModel targetModel, IModel sourceModel)
 }

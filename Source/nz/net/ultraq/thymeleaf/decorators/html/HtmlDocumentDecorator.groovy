@@ -1,4 +1,4 @@
-/*
+/* 
  * Copyright 2013, Emanuel Rabina (http://www.ultraq.net.nz/)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,42 +18,59 @@ package nz.net.ultraq.thymeleaf.decorators.html
 
 import nz.net.ultraq.thymeleaf.decorators.SortingStrategy
 import nz.net.ultraq.thymeleaf.decorators.xml.XmlDocumentDecorator
+import nz.net.ultraq.thymeleaf.models.ModelFinder
 
-import org.thymeleaf.model.IModel
-
-import groovy.transform.TupleConstructor
+import org.thymeleaf.engine.TemplateModel
 
 /**
- * A decorator made to work over whole HTML pages.  Decoration will be done in
- * 2 phases: a special one for the HEAD element, and a generic one for the BODY
- * element.
+ * A decorator made to work over an <tt>&lt;html&gt;</tt> document.  Decoration
+ * for a document involves 2 sub-decorators, a special one of the
+ * <tt>&lt;head&gt;</tt> element, and a standard one for the
+ * <tt>&lt;body&gt;</tt> element.
  * 
  * @author Emanuel Rabina
  */
-@TupleConstructor
 class HtmlDocumentDecorator extends XmlDocumentDecorator {
 
-	final SortingStrategy sortingStrategy
+	private final ModelFinder modelFinder
+	private final SortingStrategy sortingStrategy
+
+	/**
+	 * Constructor, apply the given sorting strategy to the decorator.
+	 * 
+	 * @param sortingStrategy
+	 * @param modelFinder
+	 */
+	HtmlDocumentDecorator(ModelFinder modelFinder, SortingStrategy sortingStrategy) {
+
+		this.modelFinder     = modelFinder
+		this.sortingStrategy = sortingStrategy
+	}
 
 	/**
 	 * Decorate an entire HTML page.
 	 * 
-	 * @param decoratorHtml Decorator's HTML element.
-	 * @param contentHtml	Content's HTML element.
+	 * @param decoratorDocumentModel
+	 * @param contentDocumentModel
 	 */
 	@Override
-	void decorate(IModel decoratorHtml, IModel contentHtml) {
+	void decorate(TemplateModel decoratorDocumentModel, TemplateModel contentDocumentModel) {
 
-/*		new HtmlHeadDecorator(sortingStrategy).decorate(decoratorHtml, contentHtml.findElement('head'))
-		new HtmlBodyDecorator().decorate(decoratorHtml, contentHtml.findElement('body'))
+		// TODO
+//		new HtmlHeadDecorator(sortingStrategy).decorate(decoratorModel, contentModel.findElement('head'))
 
+		new HtmlBodyDecorator().decorate(
+			modelFinder.find(decoratorDocumentModel.templateData.template, 'body'),
+			modelFinder.find(contentDocumentModel.templateData.template, 'body'))
+
+		// TODO
 		// Set the doctype from the decorator if missing from the content page
-		def decoratorDocument = decoratorHtml.parent
-		def contentDocument   = contentHtml.parent
-		if (!contentDocument.docType && decoratorDocument.docType) {
-			contentDocument.docType = decoratorDocument.docType
-		}
+//		def decoratorDocument = decoratorModel.parent
+//		def contentDocument   = contentModel.parent
+//		if (!contentDocument.docType && decoratorDocument.docType) {
+//			contentDocument.docType = decoratorDocument.docType
+//		}
 
-		super.decorate(decoratorHtml, contentHtml)
-*/	}
+		super.decorate(decoratorDocumentModel, contentDocumentModel)
+	}
 }

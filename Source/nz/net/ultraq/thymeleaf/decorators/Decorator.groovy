@@ -16,7 +16,7 @@
 
 package nz.net.ultraq.thymeleaf.decorators
 
-import org.thymeleaf.model.IModel
+import org.thymeleaf.engine.TemplateModel
 
 /**
  * The contract for all decorators.
@@ -28,8 +28,8 @@ interface Decorator {
 	/**
 	 * Decorate the target model with the contents of the source model.
 	 * 
-	 * @param target The base model to be decorated.
-	 * @param source The content model to use for decorating.
+	 * @param targetModel The base model to be decorated.
+	 * @param sourceModel The content model to use for decorating.
 	 */
-	void decorate(IModel target, IModel source)
+	void decorate(TemplateModel targetModel, TemplateModel sourceModel)
 }
