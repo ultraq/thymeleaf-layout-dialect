@@ -32,7 +32,7 @@ class VariableDeclarationMerger {
 	 * @return A list of variable declaration objects that make up the declaration
 	 *         string.
 	 */
-	private static ArrayList<VariableDeclaration> deriveDeclarations(declarationString) {
+	private static ArrayList<VariableDeclaration> deriveDeclarations(String declarationString) {
 
 		def attributeTokens = declarationString.split(',')
 		return attributeTokens.collect { attributeToken ->
