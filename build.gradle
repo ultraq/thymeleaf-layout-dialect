@@ -25,9 +25,9 @@
 apply plugin: 'groovy'
 apply plugin: 'maven'
 apply plugin: 'eclipse'
-apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/1.1.0/gradle-support.gradle'
-apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/1.1.0/maven-support.gradle'
-apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/1.1.0/bundle.gradle'
+apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/1.2.3/gradle-support.gradle'
+apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/1.2.3/maven-support.gradle'
+apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/1.2.3/bundle.gradle'
 
 //project.name      = 'Thymeleaf Layout Dialect'
 project.description = 'A dialect for Thymeleaf that allows you to use layout/decorator templates to style your content.'
@@ -36,7 +36,7 @@ project.sourceCompatibility = '1.6'
 
 project.group    = 'nz.net.ultraq.thymeleaf'
 project.artifact = 'thymeleaf-layout-dialect'
-project.version  = '1.4.0-SNAPSHOT'
+project.version  = '1.4.0'
 project.year     = '2012'
 project.contributors = [
 	[
@@ -66,6 +66,10 @@ dependencies {
 		'net.sourceforge.nekohtml:nekohtml:1.9.21',
 		'org.slf4j:slf4j-simple:1.7.12'
 	)
+}
+
+groovydoc {
+	link('http://www.thymeleaf.org/apidocs/thymeleaf/2.1.4.RELEASE/', 'org.thymeleaf.')
 }
 
 test {
