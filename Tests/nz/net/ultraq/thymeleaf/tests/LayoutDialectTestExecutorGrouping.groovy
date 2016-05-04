@@ -27,8 +27,8 @@ import org.thymeleaf.dialect.IDialect
 import org.thymeleaf.standard.StandardDialect
 
 /**
- * A parameterized JUnit test class that is run over just the grouping strategy
- * Thymeleaf testing files.
+ * A parameterized JUnit test class that is run over just the files involved in
+ * testing the {@link GroupingStrategy} head element sorter.
  * 
  * @author Emanuel Rabina
  */
@@ -41,9 +41,10 @@ class LayoutDialectTestExecutorGrouping extends JUnitTestExecutor {
 
 	/**
 	 * Return only Thymeleaf testing files involved in the testing of the
-	 * <tt>GroupingStrategy</tt> &lt;head&gt; element sorter.
+	 * {@link GroupingStrategy} head element sorter.
 	 * 
-	 * @return List of all the Thymeleaf testing files for the <tt>GroupingStrategy</tt>.
+	 * @return List of all the Thymeleaf testing files for the grouping head
+	 *         element sorter.
 	 */
 	@Parameters(name = '{0}')
 	static List<String> listGroupingLayoutDialectTests() {

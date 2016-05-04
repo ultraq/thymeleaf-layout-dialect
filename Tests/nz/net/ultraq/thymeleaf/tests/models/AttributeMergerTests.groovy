@@ -23,7 +23,7 @@ import org.thymeleaf.dom.Element
 import static org.junit.Assert.*
 
 /**
- * Tests for the attribute merger (outside of testing <tt>th:with</tt> behaviour
+ * Tests for the attribute merger (outside of testing {@code th:with} behaviour
  * which is covered by the {@link VariableDeclarationMergerTests} class).
  * 
  * @author Emanuel Rabina

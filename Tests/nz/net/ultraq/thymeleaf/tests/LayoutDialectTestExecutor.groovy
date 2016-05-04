@@ -17,6 +17,7 @@
 package nz.net.ultraq.thymeleaf.tests
 
 import nz.net.ultraq.thymeleaf.LayoutDialect
+import nz.net.ultraq.thymeleaf.decorators.strategies.AppendingStrategy
 import nz.net.ultraq.thymeleaf.testing.JUnitTestExecutor
 
 import org.junit.runners.Parameterized.Parameters
@@ -27,8 +28,8 @@ import org.thymeleaf.standard.StandardDialect
 
 /**
  * A parameterized JUnit test class that is run over every Thymeleaf testing
- * file (.thtest) in the test directory with the standard <tt>AppendingStrategy</tt>
- * head element sorter.
+ * file (.thtest) in the test directory with the standard
+ * {@link AppendingStrategy} head element sorter.
  * 
  * @author Emanuel Rabina
  */
@@ -40,10 +41,11 @@ class LayoutDialectTestExecutor extends JUnitTestExecutor {
 	]
 
 	/**
-	 * Return all Thymeleaf test files except those involved with testing the
-	 * <tt>GroupingStrategy</tt> &lt;head&gt; element sorter.
+	 * Return all Thymeleaf test files that use the standard
+	 * {@link AppendingStrategy} head element sorter.
 	 * 
-	 * @return List of almost all Thymeleaf test files.
+	 * @return List of all Thymeleaf test files for the standard head element
+	 *         sorter.
 	 */
 	@Parameters(name = '{0}')
 	static List<String> listStandardLayoutDialectTests() {

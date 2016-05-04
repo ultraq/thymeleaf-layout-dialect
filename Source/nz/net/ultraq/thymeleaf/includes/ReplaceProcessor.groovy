@@ -16,10 +16,6 @@
 
 package nz.net.ultraq.thymeleaf.includes
 
-import nz.net.ultraq.thymeleaf.fragments.FragmentFinder
-import nz.net.ultraq.thymeleaf.fragments.FragmentMap
-import nz.net.ultraq.thymeleaf.fragments.FragmentMapper
-
 import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.engine.AttributeName
 import org.thymeleaf.model.IModel
@@ -28,7 +24,7 @@ import org.thymeleaf.processor.element.IElementModelStructureHandler
 import org.thymeleaf.templatemode.TemplateMode
 
 /**
- * Similar to Thymeleaf's <tt>th:replace</tt>, but allows the passing of entire
+ * Similar to Thymeleaf's {@code th:replace}, but allows the passing of entire
  * element fragments to the included template.  Useful if you have some HTML
  * that you want to reuse, but whose contents are too complex to determine or
  * construct with context variables alone.

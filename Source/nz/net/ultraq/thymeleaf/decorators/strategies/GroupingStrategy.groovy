@@ -94,7 +94,7 @@ class GroupingStrategy implements SortingStrategy {
 		 * Figure out the enum for the given node type.
 		 * 
 		 * @param element The node to match.
-		 * @return Matching <tt>HeadNodeTypes</tt> enum to descript the node.
+		 * @return Matching enum to describe the node.
 		 */
 		private static HeadNodeTypes findMatchingType(ITemplateEvent element) {
 

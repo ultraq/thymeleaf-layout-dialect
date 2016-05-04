@@ -23,10 +23,9 @@ import nz.net.ultraq.thymeleaf.models.ModelFinder
 import org.thymeleaf.engine.TemplateModel
 
 /**
- * A decorator made to work over an <tt>&lt;html&gt;</tt> document.  Decoration
- * for a document involves 2 sub-decorators, a special one of the
- * <tt>&lt;head&gt;</tt> element, and a standard one for the
- * <tt>&lt;body&gt;</tt> element.
+ * A decorator made to work over an HTML document.  Decoration for a document
+ * involves 2 sub-decorators: a special one of the {@code <head>} element, and a
+ * standard one for the {@code <body>} element.
  * 
  * @author Emanuel Rabina
  */

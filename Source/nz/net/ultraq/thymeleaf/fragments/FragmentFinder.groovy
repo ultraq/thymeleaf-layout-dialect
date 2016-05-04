@@ -66,8 +66,8 @@ class FragmentFinder {
 
 	/**
 	 * Find and return models for layout dialect fragments within the scope of the
-	 * given element, without delving into <tt>layout:include</tt> or
-	 * <tt>layout:replace</tt> elements, mapped by the name of each fragment.
+	 * given element, without delving into {@code layout:include} or
+	 * {@code layout:replace} elements, mapped by the name of each fragment.
 	 * 
 	 * @param model Element whose children are to be searched.
 	 * @return Map of fragment names and their elements.

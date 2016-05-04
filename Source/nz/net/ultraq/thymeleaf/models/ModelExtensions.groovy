@@ -47,7 +47,7 @@ class ModelExtensions {
 			/**
 			 * Returns whether or not this event represents collapsible whitespace.
 			 * 
-			 * @return <tt>true</tt> if this is a collapsible text node.
+			 * @return {@code true} if this is a collapsible text node.
 			 */
 			isWhitespaceNode << {
 				def thisEvent = delegate.get(0)
@@ -60,7 +60,7 @@ class ModelExtensions {
 			/**
 			 * Returns whether or not this text event is collapsible whitespace.
 			 * 
-			 * @return <tt>true</tt> if, when trimmed, the text content is empty.
+			 * @return {@code true} if, when trimmed, the text content is empty.
 			 */
 			isWhitespace << {
 				return delegate.text.trim().empty
