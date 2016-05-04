@@ -71,10 +71,10 @@ class LayoutDialect extends AbstractProcessorDialect {
 			// Processors available in the HTML template mode
 			new StandardXmlNsTagProcessor(TemplateMode.HTML, dialectPrefix),
 			new DecoratorProcessor(TemplateMode.HTML, dialectPrefix, sortingStrategy),
-			new IncludeProcessor(TemplateMode.XML, dialectPrefix),
-			new ReplaceProcessor(TemplateMode.XML, dialectPrefix),
-			new FragmentProcessor(TemplateMode.XML, dialectPrefix),
-			new TitlePatternProcessor(TemplateMode.XML, dialectPrefix),
+			new IncludeProcessor(TemplateMode.HTML, dialectPrefix),
+			new ReplaceProcessor(TemplateMode.HTML, dialectPrefix),
+			new FragmentProcessor(TemplateMode.HTML, dialectPrefix),
+			new TitlePatternProcessor(TemplateMode.HTML, dialectPrefix),
 
 			// Processors available in the XML template mode
 			new StandardXmlNsTagProcessor(TemplateMode.XML, dialectPrefix),
