@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package nz.net.ultraq.thymeleaf.fragments.mergers
+package nz.net.ultraq.thymeleaf.models
 
 /**
- * Merges variable declarations in a <tt>th:with</tt> attribute processor,
- * taking the declarations in the source and overriding same-named declarations
- * in the target.
+ * Merges variable declarations in a {@code th:with} attribute processor, taking
+ * the declarations in the source and overriding same-named declarations in the
+ * target.
  * 
  * @author Emanuel Rabina
  */
@@ -41,7 +41,7 @@ class VariableDeclarationMerger {
 	}
 
 	/**
-	 * Merge <tt>th:with</tt> attributes so that names from the source value
+	 * Merge {@code th:with} attributes so that names from the source value
 	 * overwrite the same names in the target value.
 	 */
 	String merge(String target, String source) {

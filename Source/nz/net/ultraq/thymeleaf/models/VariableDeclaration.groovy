@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package nz.net.ultraq.thymeleaf.fragments.mergers
+package nz.net.ultraq.thymeleaf.models
 
 import java.util.regex.Pattern
 
 /**
- * Representation of a scoped variable declaration made through
- * <tt>th:with</tt> attributes.
+ * Representation of a scoped variable declaration made through {@code th:with}
+ * attributes.
  * 
  * @author Emanuel Rabina
  */
@@ -49,7 +49,7 @@ class VariableDeclaration {
 	}
 
 	/**
-	 * Reconstructs the variable for use with <tt>th:with</tt>.
+	 * Reconstructs the variable for use with {@code th:with}.
 	 * 
 	 * @return {name}=${value}
 	 */

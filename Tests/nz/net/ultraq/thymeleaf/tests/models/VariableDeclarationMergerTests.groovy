@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package nz.net.ultraq.thymeleaf.tests.fragments.mergers
+package nz.net.ultraq.thymeleaf.tests.models
 
-import nz.net.ultraq.thymeleaf.fragments.mergers.VariableDeclarationMerger
+import nz.net.ultraq.thymeleaf.models.VariableDeclarationMerger
 
 import org.junit.Test
 import static org.junit.Assert.*
