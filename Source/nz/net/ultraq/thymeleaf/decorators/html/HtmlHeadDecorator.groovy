@@ -19,6 +19,8 @@ package nz.net.ultraq.thymeleaf.decorators.html
 import nz.net.ultraq.thymeleaf.decorators.SortingStrategy
 import nz.net.ultraq.thymeleaf.decorators.xml.XmlElementDecorator
 
+import org.thymeleaf.engine.TemplateModel
+
 import groovy.transform.TupleConstructor
 
 /**

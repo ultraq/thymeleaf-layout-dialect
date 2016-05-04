@@ -16,9 +16,6 @@
 
 package nz.net.ultraq.thymeleaf.decorators
 
-import nz.net.ultraq.thymeleaf.LayoutDialectContext
-import nz.net.ultraq.thymeleaf.fragments.mergers.AttributeMerger
-
 import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.engine.AttributeName
 import org.thymeleaf.model.IProcessableElementTag

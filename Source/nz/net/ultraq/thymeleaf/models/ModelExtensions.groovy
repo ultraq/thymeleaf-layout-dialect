@@ -16,6 +16,7 @@
 
 package nz.net.ultraq.thymeleaf.models
 
+import org.thymeleaf.model.IAttribute
 import org.thymeleaf.model.IModel
 import org.thymeleaf.model.IText
 
@@ -35,12 +36,22 @@ class ModelExtensions {
 		IModel.metaClass {
 
 			/**
-			 * Return whether or not a model has a body, but checking if it has any
+			 * Returns the first event in the model, which is the element the model
+			 * represents.
+			 * 
+			 * @return This model's main event/element.
+			 */
+			getRootEvent << {
+				return delegate.get(0)
+			}
+
+			/**
+			 * Return whether or not a model has content by checking if it has any
 			 * underlying events.
 			 * 
 			 * @return {@code true} if the model contains events.
 			 */
-			hasBody << {
+			hasContent << {
 				return delegate.size() > 0
 			}
 
@@ -52,6 +63,44 @@ class ModelExtensions {
 			isWhitespaceNode << {
 				def thisEvent = delegate.get(0)
 				return thisEvent instanceof IText && thisEvent.whitespace
+			}
+
+			/**
+			 * Sets the first event in the model, which is the element the model
+			 * represents.
+			 * 
+			 * @param event
+			 */
+			setRootEvent << { event ->
+				return delegate.replace(0, event)
+			}
+		}
+
+		IAttribute.metaClass {
+
+			/**
+			 * Returns whether or not an attribute is an attribute processor of
+			 * the given name, checks both prefix:processor and
+			 * data-prefix-processor variants.
+			 * 
+			 * @param prefix
+			 * @param name
+			 * @return {@code true} if this attribute is an attribute processor of the
+			 *         matching name.
+			 */
+			equalsName << { String prefix, String name ->
+				def attributeName = delegate.completeName
+				return attributeName == "${prefix}:${name}" ?:
+				       attributeName == "data-${prefix}-${name}"
+			}
+
+			/**
+			 * Shortcut to the attribute name class on the attribute definition.
+			 * 
+			 * @return Attribute name object.
+			 */
+			getAttributeName << {
+				return delegate.definition.attributeName
 			}
 		}
 
