@@ -50,14 +50,11 @@ class AttributeMerger implements ModelMerger {
 
 		sourceAttributes.each { sourceAttribute ->
 
-			// Merge th:with attributes to retain local variable declarations
+			// Merge th:with attributes
 			if (sourceAttribute.equalsName(StandardDialect.PREFIX, StandardWithAttrProcessor.ATTR_NAME)) {
-				def mergedWithValue = sourceAttribute.value
-				def targetWithValue = targetModel.getAttributeValue(StandardDialect.PREFIX, StandardWithAttrProcessor.ATTR_NAME)
-				if (targetWithValue) {
-					mergedWithValue += ",${targetWithValue}"
-				}
-				targetModel.setAttribute("${StandardDialect.PREFIX}:${StandardWithAttrProcessor.ATTR_NAME}", mergedWithValue)
+				def mergedWithValue = new VariableDeclarationMerger().merge(sourceAttribute.value,
+						targetElement.getAttributeValue(StandardDialect.PREFIX, StandardWithAttrProcessor.ATTR_NAME))
+				targetElement.setAttribute("${StandardDialect.PREFIX}:${StandardWithAttrProcessor.ATTR_NAME}", mergedWithValue)
 			}
 
 			// Copy every other attribute straight
