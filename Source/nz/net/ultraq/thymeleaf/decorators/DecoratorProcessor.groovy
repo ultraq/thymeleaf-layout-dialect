@@ -16,18 +16,20 @@
 
 package nz.net.ultraq.thymeleaf.decorators
 
+import nz.net.ultraq.thymeleaf.LayoutDialectContext
 import nz.net.ultraq.thymeleaf.decorators.html.HtmlDocumentDecorator
 import nz.net.ultraq.thymeleaf.decorators.xml.XmlDocumentDecorator
 import nz.net.ultraq.thymeleaf.fragments.FragmentMap
 import nz.net.ultraq.thymeleaf.fragments.FragmentFinder
 import nz.net.ultraq.thymeleaf.models.ModelFinder
+import nz.net.ultraq.thymeleaf.utilities.ExpressionProcessor
 
+import org.thymeleaf.context.IEngineContext
 import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.engine.AttributeName
 import org.thymeleaf.model.IModel
 import org.thymeleaf.processor.element.AbstractAttributeModelProcessor
 import org.thymeleaf.processor.element.IElementModelStructureHandler
-import org.thymeleaf.standard.StandardDialect
 import org.thymeleaf.templatemode.TemplateMode
 
 /**
@@ -80,28 +82,22 @@ class DecoratorProcessor extends AbstractAttributeModelProcessor {
 			throw new IllegalArgumentException('layout:decorator attribute must appear in the root element of your content page')
 		}
 
+		def contentTemplateName   = context.templateData.template
+		def decoratorTemplateName = new ExpressionProcessor(context).process(attributeValue)
+
 		// Locate the template to 'redirect' processing to by completely replacing
 		// the current document with it
 		def modelFinder = new ModelFinder(context, templateMode)
-		def decoratorTemplate = modelFinder.findTemplate(attributeValue)
+		def decoratorTemplate = modelFinder.findTemplate(decoratorTemplateName)
 
 		// Gather all fragment parts from this page to apply to the new document
 		// after decoration has taken place
 		def pageFragments = new FragmentFinder(modelFinder, dialectPrefix)
-			.findFragments(context.templateData.template, model)
-
-		// Figure out the standard dialect prefix
-		// TODO: Move to a context object
-		def standardDialectConfiguration = context.configuration.dialectConfigurations.find { dialectConfiguration ->
-			def dialect = dialectConfiguration.dialect
-			return dialect.name == 'Standard' || dialect.name == 'SpringStandard'
-		}
-		def standardDialectPrefix = standardDialectConfiguration.prefix ?: standardDialectConfiguration.dialect.prefix
+			.findFragments(contentTemplateName, model)
 
 		// Choose the decorator to use based on template mode, then apply it
 		def decorator =
-			templateMode == TemplateMode.HTML ? new HtmlDocumentDecorator(
-				context.modelFactory, modelFinder, standardDialectPrefix, dialectPrefix, sortingStrategy) :
+			templateMode == TemplateMode.HTML ? new HtmlDocumentDecorator(context.modelFactory, modelFinder, sortingStrategy) :
 			templateMode == TemplateMode.XML  ? new XmlDocumentDecorator() :
 			null
 		if (!decorator) {
@@ -110,7 +106,7 @@ class DecoratorProcessor extends AbstractAttributeModelProcessor {
 				only HTML and XML template modes are currently supported
 				""".stripMargin())
 		}
-		decorator.decorate(decoratorTemplate, model)
+		decorator.decorate(decoratorTemplate, decoratorTemplateName, model, contentTemplateName)
 
 		// Replace the page contents with those of the template we're decorating
 //		structureHandler.setTemplateData(decoratorTemplateModel.templateData)

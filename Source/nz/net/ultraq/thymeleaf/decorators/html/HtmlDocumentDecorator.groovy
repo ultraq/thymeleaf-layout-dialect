@@ -20,7 +20,7 @@ import nz.net.ultraq.thymeleaf.decorators.SortingStrategy
 import nz.net.ultraq.thymeleaf.decorators.xml.XmlDocumentDecorator
 import nz.net.ultraq.thymeleaf.models.ModelFinder
 
-import org.thymeleaf.engine.TemplateModel
+import org.thymeleaf.model.IModel
 import org.thymeleaf.model.IModelFactory
 
 /**
@@ -35,8 +35,6 @@ class HtmlDocumentDecorator extends XmlDocumentDecorator {
 	private final IModelFactory modelFactory
 	private final ModelFinder modelFinder
 	private final SortingStrategy sortingStrategy
-	private final String standardDialectPrefix
-	private final String layoutDialectPrefix
 
 	/**
 	 * Constructor, apply the given sorting strategy to the decorator.
@@ -45,34 +43,34 @@ class HtmlDocumentDecorator extends XmlDocumentDecorator {
 	 * @param modelFinder
 	 * @param sortingStrategy
 	 */
-	HtmlDocumentDecorator(IModelFactory modelFactory, ModelFinder modelFinder, String standardDialectPrefix,
-		String layoutDialectPrefix, SortingStrategy sortingStrategy) {
+	HtmlDocumentDecorator(IModelFactory modelFactory, ModelFinder modelFinder, SortingStrategy sortingStrategy) {
 
-		this.modelFactory          = modelFactory
-		this.modelFinder           = modelFinder
-		this.standardDialectPrefix = standardDialectPrefix
-		this.layoutDialectPrefix   = layoutDialectPrefix
-		this.sortingStrategy       = sortingStrategy
+		this.modelFactory    = modelFactory
+		this.modelFinder     = modelFinder
+		this.sortingStrategy = sortingStrategy
 	}
 
 	/**
 	 * Decorate an entire HTML page.
 	 * 
-	 * @param decoratorDocumentModel
-	 * @param contentDocumentModel
+	 * @param targetDocumentModel
+	 * @param targetDocumentTemplate
+	 * @param sourceDocumentModel
+	 * @param sourceDocumentTemplate
 	 */
 	@Override
-	void decorate(TemplateModel decoratorDocumentModel, TemplateModel contentDocumentModel) {
+	void decorate(IModel targetDocumentModel, String targetDocumentTemplate,
+		IModel sourceDocumentModel, String sourceDocumentTemplate) {
 
 		// TODO
 //		new HtmlHeadDecorator(sortingStrategy).decorate(decoratorModel, contentModel.findElement('head'))
 
-		new HtmlBodyDecorator(modelFactory, standardDialectPrefix, layoutDialectPrefix)
-			.decorate(
-				// TODO: Expand the model finder to locate models within models so I
-				//       don't have to go through the template manager
-				modelFinder.find(decoratorDocumentModel.templateName, 'body'),
-				modelFinder.find(contentDocumentModel.templateName, 'body'))
+		new HtmlBodyDecorator(modelFactory).decorate(
+			// TODO: Expand the model finder to locate models within models so I
+			//       don't have to go through the template manager.  I think it'll
+			//       also reduce the need for me to pass these template names around.
+			modelFinder.find(targetDocumentTemplate, 'body'), targetDocumentTemplate,
+			modelFinder.find(sourceDocumentTemplate, 'body'), sourceDocumentTemplate)
 
 		// TODO
 		// Set the doctype from the decorator if missing from the content page
@@ -82,6 +80,6 @@ class HtmlDocumentDecorator extends XmlDocumentDecorator {
 //			contentDocument.docType = decoratorDocument.docType
 //		}
 
-		super.decorate(decoratorDocumentModel, contentDocumentModel)
+		super.decorate(targetDocumentModel, targetDocumentTemplate, sourceDocumentModel, sourceDocumentTemplate)
 	}
 }

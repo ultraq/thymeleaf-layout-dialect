@@ -34,17 +34,11 @@ class ModelExtensions {
 	 */
 	static void apply() {
 
-		IModel.metaClass {
+		// TODO: Not too much of a fan of working with indexed events.  Come up with
+		//       some way of editing the first and last events (surrounding tags) in
+		//       one go.
 
-			/**
-			 * Returns the first event in the model, which is the element the model
-			 * represents.
-			 * 
-			 * @return This model's main event/element.
-			 */
-			getRootEvent << {
-				return delegate.get(0)
-			}
+		IModel.metaClass {
 
 			/**
 			 * Return whether or not a model has content by checking if it has any
@@ -64,16 +58,6 @@ class ModelExtensions {
 			isWhitespaceNode << {
 				def thisEvent = delegate.get(0)
 				return thisEvent instanceof IText && thisEvent.whitespace
-			}
-
-			/**
-			 * Sets the first event in the model, which is the element the model
-			 * represents.
-			 * 
-			 * @param event
-			 */
-			setRootEvent << { event ->
-				return delegate.replace(0, event)
 			}
 		}
 

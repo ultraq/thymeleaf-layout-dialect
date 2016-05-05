@@ -16,7 +16,7 @@
 
 package nz.net.ultraq.thymeleaf.decorators
 
-import org.thymeleaf.engine.TemplateModel
+import org.thymeleaf.model.IModel
 
 /**
  * The contract for all decorators.
@@ -25,11 +25,16 @@ import org.thymeleaf.engine.TemplateModel
  */
 interface Decorator {
 
+	// TODO: Might need to find a way to join source model and template into a
+	//       single object so we don't have excessive method signatures.
+
 	/**
 	 * Decorate the target model with the contents of the source model.
 	 * 
-	 * @param targetModel The base model to be decorated.
-	 * @param sourceModel The content model to use for decorating.
+	 * @param targetModel    The target model to be decorated.
+	 * @param targetTemplate Name of the template from which the target model came.
+	 * @param sourceModel    The source model to use for decorating.
+	 * @param sourceTemplate Name of the template from which the source model came.
 	 */
-	void decorate(TemplateModel targetModel, TemplateModel sourceModel)
+	void decorate(IModel targetModel, String targetTemplate, IModel sourceModel, String sourceTemplate)
 }

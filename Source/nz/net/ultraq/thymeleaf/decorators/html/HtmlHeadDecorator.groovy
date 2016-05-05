@@ -19,29 +19,41 @@ package nz.net.ultraq.thymeleaf.decorators.html
 import nz.net.ultraq.thymeleaf.decorators.SortingStrategy
 import nz.net.ultraq.thymeleaf.decorators.xml.XmlElementDecorator
 
-import org.thymeleaf.engine.TemplateModel
-
-import groovy.transform.TupleConstructor
+import org.thymeleaf.model.IModel
+import org.thymeleaf.model.IModelFactory
 
 /**
  * A decorator specific to processing an HTML {@code <head>} element.
  * 
  * @author Emanuel Rabina
  */
-@TupleConstructor
 class HtmlHeadDecorator extends XmlElementDecorator {
 
-	final SortingStrategy sortingStrategy
+	private final SortingStrategy sortingStrategy
+
+	/**
+	 * Constructor, sets up the element decorator context.
+	 *
+	 * @param modelFactory
+	 * @param sortingStrategy
+	 */
+	HtmlHeadDecorator(IModelFactory modelFactory, SortingStrategy sortingStrategy) {
+
+		super(modelFactory)
+		this.sortingStrategy = sortingStrategy
+	}
 
 	/**
 	 * Decorate the {@code <head>} part, appending all of the content
 	 * {@code <head>} elements on to the decorator {@code <head>} elements.
 	 * 
-	 * @param decoratorHtml Decorator's {@code <head>} element.
-	 * @param contentHead	Content's {@code <head>} element.
+	 * @param targetHeadModel    Decorator's {@code <head>} element.
+	 * @param targetHeadTemplate
+	 * @param sourceHeadModel	   Content's {@code <head>} element.
+	 * @param sourceHeadTemplate
 	 */
 	@Override
-	void decorate(TemplateModel decoratorHtml, TemplateModel contentHead) {
+	void decorate(IModel targetHeadModel, String targetHeadTemplate, IModel sourceHeadModel, String sourceHeadTemplate) {
 
 		// If the decorator has no <head>, then we can just use the content <head>
 /*		def decoratorHead = decoratorHtml.findElement('head')

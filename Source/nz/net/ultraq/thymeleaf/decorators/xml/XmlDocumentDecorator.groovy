@@ -18,7 +18,7 @@ package nz.net.ultraq.thymeleaf.decorators.xml
 
 import nz.net.ultraq.thymeleaf.decorators.Decorator
 
-import org.thymeleaf.engine.TemplateModel
+import org.thymeleaf.model.IModel
 
 /**
  * A decorator made to work over any Thymeleaf document.
@@ -31,7 +31,8 @@ class XmlDocumentDecorator implements Decorator {
 	 * {@inheritDoc}
 	 */
 	@Override
-	void decorate(TemplateModel decoratorXml, TemplateModel contentXml) {
+	void decorate(IModel targetDocument, String targetDocumentTemplate,
+		IModel sourceDocument, String sourceDocumentTemplate) {
 
 /*		def decoratorDocument = decoratorXml.parent
 		def contentDocument   = contentXml.parent

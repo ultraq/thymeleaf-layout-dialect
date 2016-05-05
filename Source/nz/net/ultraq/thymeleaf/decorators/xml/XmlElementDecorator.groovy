@@ -19,7 +19,7 @@ package nz.net.ultraq.thymeleaf.decorators.xml
 import nz.net.ultraq.thymeleaf.decorators.Decorator
 import nz.net.ultraq.thymeleaf.models.AttributeMerger
 
-import org.thymeleaf.engine.TemplateModel
+import org.thymeleaf.model.IModel
 import org.thymeleaf.model.IModelFactory
 
 /**
@@ -30,22 +30,15 @@ import org.thymeleaf.model.IModelFactory
 class XmlElementDecorator implements Decorator {
 
 	private final IModelFactory modelFactory
-	private final String standardDialectPrefix
-	private final String layoutDialectPrefix
 
 	/**
 	 * Constructor, sets up the element decorator context.
 	 * 
 	 * @param modelFactory
-	 * @param standardDialectPrefix
-	 * @param layoutDialectPrefix
 	 */
-	XmlElementDecorator(IModelFactory modelFactory, String standardDialectPrefix, String layoutDialectPrefix) {
+	XmlElementDecorator(IModelFactory modelFactory) {
 
-		// TODO: Passing around all these variables... time I made a context object!
-		this.modelFactory          = modelFactory
-		this.standardDialectPrefix = standardDialectPrefix
-		this.layoutDialectPrefix   = layoutDialectPrefix
+		this.modelFactory = modelFactory
 	}
 
 	/**
@@ -53,13 +46,15 @@ class XmlElementDecorator implements Decorator {
 	 * merges the element attributes.  The body decoration is handled later on by
 	 * fragment processors.
 	 * 
-	 * @param targetElement
-	 * @param sourceElement
+	 * @param targetElementModel
+	 * @param targetElementTemplate
+	 * @param sourceElementModel
+	 * @param sourceElementTemplate
 	 */
 	@Override
-	void decorate(TemplateModel targetElement, TemplateModel sourceElement) {
+	void decorate(IModel targetElementModel, String targetElementTemplate,
+		IModel sourceElementModel, String sourceElementTemplate) {
 
-		new AttributeMerger(modelFactory, standardDialectPrefix, layoutDialectPrefix)
-			.merge(targetElement, sourceElement)
+		new AttributeMerger().merge(modelFactory, targetElementModel, sourceElementModel)
 	}
 }

@@ -37,9 +37,9 @@ import org.thymeleaf.templatemode.TemplateMode
  */
 class LayoutDialect extends AbstractProcessorDialect {
 
-	private static final String DIALECT_NAME = 'Layout'
-	private static final String DIALECT_PREFIX = 'layout'
-	private static final int DIALECT_PRECEDENCE = 10
+	static final String DIALECT_NAME = 'Layout'
+	static final String DIALECT_PREFIX = 'layout'
+	static final int DIALECT_PRECEDENCE = 10
 
 	/**
 	 * Apply model extensions.
@@ -66,6 +66,9 @@ class LayoutDialect extends AbstractProcessorDialect {
 	 */
 	@Override
 	Set<IProcessor> getProcessors(String dialectPrefix) {
+
+		// TODO: Many of the underlying classes don't respect the runtime-configured
+		//       dialect prefix, so I'll need to do something about that later.
 
 		return [
 			// Processors available in the HTML template mode

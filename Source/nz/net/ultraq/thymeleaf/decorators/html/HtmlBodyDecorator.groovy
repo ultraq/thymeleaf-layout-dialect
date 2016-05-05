@@ -18,7 +18,7 @@ package nz.net.ultraq.thymeleaf.decorators.html
 
 import nz.net.ultraq.thymeleaf.decorators.xml.XmlElementDecorator
 
-import org.thymeleaf.engine.TemplateModel
+import org.thymeleaf.model.IModel
 import org.thymeleaf.model.IModelFactory
 
 /**
@@ -30,24 +30,24 @@ class HtmlBodyDecorator extends XmlElementDecorator {
 
 	/**
 	 * Constructor, sets up the element decorator context.
-	 *
+	 * 
 	 * @param modelFactory
-	 * @param standardDialectPrefix
-	 * @param layoutDialectPrefix
 	 */
-	HtmlBodyDecorator(IModelFactory modelFactory, String standardDialectPrefix, String layoutDialectPrefix) {
+	HtmlBodyDecorator(IModelFactory modelFactory) {
 
-		super(modelFactory, standardDialectPrefix, layoutDialectPrefix)
+		super(modelFactory)
 	}
 
 	/**
 	 * Decorate the {@code <body>} part.
 	 * 
 	 * @param targetBodyModel
+	 * @param targetBodyTemplate
 	 * @param sourceBodyModel
+	 * @param targetBodyTemplate
 	 */
 	@Override
-	void decorate(TemplateModel targetBodyModel, TemplateModel sourceBodyModel) {
+	void decorate(IModel targetBodyModel, String targetBodyTemplate, IModel sourceBodyModel, String sourceBodyTemplate) {
 
 		// Try to ensure there is a body as a result of decoration, applying the
 		// source body, or just using what is in the target
@@ -57,7 +57,7 @@ class HtmlBodyDecorator extends XmlElementDecorator {
 
 		if (sourceBodyModel.hasContent()) {
 			if (targetBodyModel.hasContent()) {
-				super.decorate(targetBodyModel, sourceBodyModel)
+				super.decorate(targetBodyModel, targetBodyTemplate, sourceBodyModel, sourceBodyTemplate)
 			}
 			else {
 				targetBodyModel.reset()

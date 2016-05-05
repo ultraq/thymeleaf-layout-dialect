@@ -17,6 +17,7 @@
 package nz.net.ultraq.thymeleaf.models
 
 import org.thymeleaf.model.IModel
+import org.thymeleaf.model.IModelFactory
 
 /**
  * Merges template models by applying the source model to the target model, with
@@ -29,8 +30,9 @@ interface ModelMerger {
 	/**
 	 * Merge the source model into the target model.
 	 * 
+	 * @param modelFactory
 	 * @param targetModel
 	 * @param sourceModel
 	 */
-	void merge(IModel targetModel, IModel sourceModel)
+	void merge(IModelFactory modelFactory, IModel targetModel, IModel sourceModel)
 }

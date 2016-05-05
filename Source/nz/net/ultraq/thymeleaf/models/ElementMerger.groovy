@@ -17,6 +17,7 @@
 package nz.net.ultraq.thymeleaf.models
 
 import org.thymeleaf.model.IModel
+import org.thymeleaf.model.IModelFactory
 
 import groovy.transform.TupleConstructor
 
@@ -42,7 +43,7 @@ class ElementMerger extends AttributeMerger {
 	 * @param sourceModel
 	 */
 	@Override
-	void merge(IModel targetModel, IModel sourceModel) {
+	void merge(IModelFactory modelFactory, IModel targetModel, IModel sourceModel) {
 
 		// Create a new merged element to mess with
 /*		def mergedElement = sourceElement.cloneNode(null, false)
