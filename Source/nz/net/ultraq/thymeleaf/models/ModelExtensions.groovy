@@ -16,6 +16,7 @@
 
 package nz.net.ultraq.thymeleaf.models
 
+import org.thymeleaf.engine.TemplateModel
 import org.thymeleaf.model.IAttribute
 import org.thymeleaf.model.IModel
 import org.thymeleaf.model.IText
@@ -73,6 +74,21 @@ class ModelExtensions {
 			 */
 			setRootEvent << { event ->
 				return delegate.replace(0, event)
+			}
+		}
+
+		TemplateModel.metaClass {
+
+			/**
+			 * Shortcut to the template name found on the template data object.  Only
+			 * works if the template was resolved via a name, rather than a string
+			 * (eg: anonymous template), in which case this can return the entire
+			 * template!
+			 * 
+			 * @return Template name.
+			 */
+			getTemplate << {
+				return delegate.templateData.template
 			}
 		}
 

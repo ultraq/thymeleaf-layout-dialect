@@ -21,6 +21,7 @@ import nz.net.ultraq.thymeleaf.decorators.xml.XmlDocumentDecorator
 import nz.net.ultraq.thymeleaf.models.ModelFinder
 
 import org.thymeleaf.engine.TemplateModel
+import org.thymeleaf.model.IModelFactory
 
 /**
  * A decorator made to work over an HTML document.  Decoration for a document
@@ -31,19 +32,27 @@ import org.thymeleaf.engine.TemplateModel
  */
 class HtmlDocumentDecorator extends XmlDocumentDecorator {
 
+	private final IModelFactory modelFactory
 	private final ModelFinder modelFinder
 	private final SortingStrategy sortingStrategy
+	private final String standardDialectPrefix
+	private final String layoutDialectPrefix
 
 	/**
 	 * Constructor, apply the given sorting strategy to the decorator.
 	 * 
-	 * @param sortingStrategy
+	 * @param modelFactory
 	 * @param modelFinder
+	 * @param sortingStrategy
 	 */
-	HtmlDocumentDecorator(ModelFinder modelFinder, SortingStrategy sortingStrategy) {
+	HtmlDocumentDecorator(IModelFactory modelFactory, ModelFinder modelFinder, String standardDialectPrefix,
+		String layoutDialectPrefix, SortingStrategy sortingStrategy) {
 
-		this.modelFinder     = modelFinder
-		this.sortingStrategy = sortingStrategy
+		this.modelFactory          = modelFactory
+		this.modelFinder           = modelFinder
+		this.standardDialectPrefix = standardDialectPrefix
+		this.layoutDialectPrefix   = layoutDialectPrefix
+		this.sortingStrategy       = sortingStrategy
 	}
 
 	/**
@@ -58,9 +67,12 @@ class HtmlDocumentDecorator extends XmlDocumentDecorator {
 		// TODO
 //		new HtmlHeadDecorator(sortingStrategy).decorate(decoratorModel, contentModel.findElement('head'))
 
-		new HtmlBodyDecorator().decorate(
-			modelFinder.find(decoratorDocumentModel.templateData.template, 'body'),
-			modelFinder.find(contentDocumentModel.templateData.template, 'body'))
+		new HtmlBodyDecorator(modelFactory, standardDialectPrefix, layoutDialectPrefix)
+			.decorate(
+				// TODO: Expand the model finder to locate models within models so I
+				//       don't have to go through the template manager
+				modelFinder.find(decoratorDocumentModel.templateName, 'body'),
+				modelFinder.find(contentDocumentModel.templateName, 'body'))
 
 		// TODO
 		// Set the doctype from the decorator if missing from the content page

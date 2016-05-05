@@ -20,7 +20,6 @@ import nz.net.ultraq.thymeleaf.fragments.FragmentProcessor
 
 import org.thymeleaf.model.IModel
 import org.thymeleaf.model.IModelFactory
-import org.thymeleaf.standard.StandardDialect
 import org.thymeleaf.standard.processor.StandardWithTagProcessor
 
 /**

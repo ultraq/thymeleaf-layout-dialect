@@ -19,6 +19,7 @@ package nz.net.ultraq.thymeleaf.decorators.html
 import nz.net.ultraq.thymeleaf.decorators.xml.XmlElementDecorator
 
 import org.thymeleaf.engine.TemplateModel
+import org.thymeleaf.model.IModelFactory
 
 /**
  * A decorator specific to processing an HTML {@code <body>} element.
@@ -26,6 +27,18 @@ import org.thymeleaf.engine.TemplateModel
  * @author Emanuel Rabina
  */
 class HtmlBodyDecorator extends XmlElementDecorator {
+
+	/**
+	 * Constructor, sets up the element decorator context.
+	 *
+	 * @param modelFactory
+	 * @param standardDialectPrefix
+	 * @param layoutDialectPrefix
+	 */
+	HtmlBodyDecorator(IModelFactory modelFactory, String standardDialectPrefix, String layoutDialectPrefix) {
+
+		super(modelFactory, standardDialectPrefix, layoutDialectPrefix)
+	}
 
 	/**
 	 * Decorate the {@code <body>} part.

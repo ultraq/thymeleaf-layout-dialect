@@ -27,6 +27,7 @@ import org.thymeleaf.engine.AttributeName
 import org.thymeleaf.model.IModel
 import org.thymeleaf.processor.element.AbstractAttributeModelProcessor
 import org.thymeleaf.processor.element.IElementModelStructureHandler
+import org.thymeleaf.standard.StandardDialect
 import org.thymeleaf.templatemode.TemplateMode
 
 /**
@@ -86,11 +87,21 @@ class DecoratorProcessor extends AbstractAttributeModelProcessor {
 
 		// Gather all fragment parts from this page to apply to the new document
 		// after decoration has taken place
-		def pageFragments = new FragmentFinder(modelFinder, dialectPrefix).findFragments(model)
+		def pageFragments = new FragmentFinder(modelFinder, dialectPrefix)
+			.findFragments(context.templateData.template, model)
+
+		// Figure out the standard dialect prefix
+		// TODO: Move to a context object
+		def standardDialectConfiguration = context.configuration.dialectConfigurations.find { dialectConfiguration ->
+			def dialect = dialectConfiguration.dialect
+			return dialect.name == 'Standard' || dialect.name == 'SpringStandard'
+		}
+		def standardDialectPrefix = standardDialectConfiguration.prefix ?: standardDialectConfiguration.dialect.prefix
 
 		// Choose the decorator to use based on template mode, then apply it
 		def decorator =
-			templateMode == TemplateMode.HTML ? new HtmlDocumentDecorator(modelFinder, sortingStrategy) :
+			templateMode == TemplateMode.HTML ? new HtmlDocumentDecorator(
+				context.modelFactory, modelFinder, standardDialectPrefix, dialectPrefix, sortingStrategy) :
 			templateMode == TemplateMode.XML  ? new XmlDocumentDecorator() :
 			null
 		if (!decorator) {

@@ -69,10 +69,11 @@ class FragmentFinder {
 	 * given element, without delving into {@code layout:include} or
 	 * {@code layout:replace} elements, mapped by the name of each fragment.
 	 * 
-	 * @param model Element whose children are to be searched.
+	 * @param templateName Name of the current template
+	 * @param model        Element whose children are to be searched.
 	 * @return Map of fragment names and their elements.
 	 */
-	Map<String,TemplateModel> findFragments(IModel model) {
+	Map<String,TemplateModel> findFragments(String templateName, IModel model) {
 
 		def fragments = [:]
 		def isLayoutElement = { elementTag ->
@@ -92,7 +93,7 @@ class FragmentFinder {
 					def fragmentAttribute = event.getAttribute(dialectPrefix, FragmentProcessor.PROCESSOR_NAME)
 					if (fragmentAttribute) {
 						def fragmentName = fragmentAttribute.value
-						fragments << [(fragmentName): modelFinder.findFragment(fragmentName, dialectPrefix)]
+						fragments << [(fragmentName): modelFinder.findFragment(templateName, fragmentName, dialectPrefix)]
 					}
 
 					if (isLayoutElement(event)) {

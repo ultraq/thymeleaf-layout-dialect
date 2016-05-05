@@ -37,7 +37,7 @@ import org.thymeleaf.templatemode.TemplateMode
  */
 class LayoutDialect extends AbstractProcessorDialect {
 
-	private static final String DIALECT_NAME = 'layout'
+	private static final String DIALECT_NAME = 'Layout'
 	private static final String DIALECT_PREFIX = 'layout'
 	private static final int DIALECT_PRECEDENCE = 10
 

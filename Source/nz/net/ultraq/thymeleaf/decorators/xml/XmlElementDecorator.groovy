@@ -20,6 +20,7 @@ import nz.net.ultraq.thymeleaf.decorators.Decorator
 import nz.net.ultraq.thymeleaf.models.AttributeMerger
 
 import org.thymeleaf.engine.TemplateModel
+import org.thymeleaf.model.IModelFactory
 
 /**
  * A decorator made to work over a Thymeleaf event/element.
@@ -27,6 +28,25 @@ import org.thymeleaf.engine.TemplateModel
  * @author Emanuel Rabina
  */
 class XmlElementDecorator implements Decorator {
+
+	private final IModelFactory modelFactory
+	private final String standardDialectPrefix
+	private final String layoutDialectPrefix
+
+	/**
+	 * Constructor, sets up the element decorator context.
+	 * 
+	 * @param modelFactory
+	 * @param standardDialectPrefix
+	 * @param layoutDialectPrefix
+	 */
+	XmlElementDecorator(IModelFactory modelFactory, String standardDialectPrefix, String layoutDialectPrefix) {
+
+		// TODO: Passing around all these variables... time I made a context object!
+		this.modelFactory          = modelFactory
+		this.standardDialectPrefix = standardDialectPrefix
+		this.layoutDialectPrefix   = layoutDialectPrefix
+	}
 
 	/**
 	 * Decorates the target element with the source element.  This step only
@@ -39,6 +59,7 @@ class XmlElementDecorator implements Decorator {
 	@Override
 	void decorate(TemplateModel targetElement, TemplateModel sourceElement) {
 
-		new AttributeMerger().merge(targetElement, sourceElement)
+		new AttributeMerger(modelFactory, standardDialectPrefix, layoutDialectPrefix)
+			.merge(targetElement, sourceElement)
 	}
 }
