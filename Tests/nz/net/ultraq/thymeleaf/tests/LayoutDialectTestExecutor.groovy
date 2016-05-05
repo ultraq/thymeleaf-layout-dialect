@@ -20,6 +20,7 @@ import nz.net.ultraq.thymeleaf.LayoutDialect
 import nz.net.ultraq.thymeleaf.decorators.strategies.AppendingStrategy
 import nz.net.ultraq.thymeleaf.testing.JUnitTestExecutor
 
+import org.junit.Ignore
 import org.junit.runners.Parameterized.Parameters
 import org.reflections.Reflections
 import org.reflections.scanners.ResourcesScanner
@@ -33,6 +34,7 @@ import org.thymeleaf.standard.StandardDialect
  * 
  * @author Emanuel Rabina
  */
+@Ignore
 class LayoutDialectTestExecutor extends JUnitTestExecutor {
 
 	final List<? extends IDialect> testDialects = [
