@@ -43,9 +43,6 @@ class DecoratorProcessor extends AbstractAttributeModelProcessor {
 	static final String PROCESSOR_NAME = 'decorator'
 	static final int PROCESSOR_PRECEDENCE = 0
 
-	// NOTE: Hopefully my PR gets merged so I don't have to keep this around
-	//       https://github.com/thymeleaf/thymeleaf/pull/494
-	private final String dialectPrefix
 	private final SortingStrategy sortingStrategy
 
 	/**
@@ -60,7 +57,6 @@ class DecoratorProcessor extends AbstractAttributeModelProcessor {
 
 		super(templateMode, dialectPrefix, null, false, PROCESSOR_NAME, true, PROCESSOR_PRECEDENCE, true)
 
-		this.dialectPrefix   = dialectPrefix
 		this.sortingStrategy = sortingStrategy
 	}
 
