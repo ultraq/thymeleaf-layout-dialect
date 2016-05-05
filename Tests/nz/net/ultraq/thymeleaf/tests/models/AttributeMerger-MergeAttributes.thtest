@@ -1,0 +1,16 @@
+
+# Test that attributes in the source element override those of the target
+
+%TEMPLATE_MODE HTML
+
+
+%INPUT
+<div layout-test:attribute-merger="target" class="roflcopter"></div>
+
+
+%INPUT[target]
+<div class="container"></div>
+
+
+%OUTPUT
+<div class="roflcopter"></div>
