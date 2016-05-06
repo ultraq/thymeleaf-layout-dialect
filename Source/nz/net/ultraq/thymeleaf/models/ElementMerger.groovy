@@ -19,21 +19,29 @@ package nz.net.ultraq.thymeleaf.models
 import org.thymeleaf.model.IModel
 import org.thymeleaf.model.IModelFactory
 
-import groovy.transform.TupleConstructor
-
 /**
  * Merges an element and all its children into an existing element.
  * 
  * @author Emanuel Rabina
  */
-@TupleConstructor
 class ElementMerger extends AttributeMerger {
+
+	/**
+	 * Constructor, sets up the attribute merger tools.
+	 *
+	 * @param modelFactory
+	 */
+	ElementMerger(IModelFactory modelFactory) {
+
+		super(modelFactory)
+	}
 
 	/**
 	 * Flag for indicating that the merge is over a root element, in which some
 	 * special rules apply.
 	 */
-	final boolean rootElementMerge
+	// TODO: Do I need this?  Let's try get by without it...
+//	final boolean rootElementMerge
 
 	/**
 	 * Replace the content of the target element, with the content of the source
@@ -43,7 +51,21 @@ class ElementMerger extends AttributeMerger {
 	 * @param sourceModel
 	 */
 	@Override
-	void merge(IModelFactory modelFactory, IModel targetModel, IModel sourceModel) {
+	void merge(IModel targetModel, IModel sourceModel) {
+
+		// Because we're basically replacing targetModel with sourceModel, we'll
+		// lose the attributes in the target.  So, create a copy of those attributes
+		// for that merge after.
+		def targetInitialRootElement = modelFactory.createModel(targetModel.get(0))
+
+		// TODO: Shouldn't all this be done with the structureHandler?  I should
+		//       make another code branch that does that, and then I can compare.
+
+		// Replace the target model with the source model
+		targetModel.reset()
+		targetModel.addModel(sourceModel)
+
+		super.merge(targetModel, targetInitialRootElement)
 
 		// Create a new merged element to mess with
 /*		def mergedElement = sourceElement.cloneNode(null, false)

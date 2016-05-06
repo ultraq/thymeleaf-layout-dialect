@@ -1,4 +1,4 @@
-/*
+/* 
  * Copyright 2013, Emanuel Rabina (http://www.ultraq.net.nz/)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,15 +17,34 @@
 package nz.net.ultraq.thymeleaf.decorators.xml
 
 import nz.net.ultraq.thymeleaf.decorators.Decorator
+import nz.net.ultraq.thymeleaf.models.ElementMerger
+import nz.net.ultraq.thymeleaf.models.ModelFinder
 
 import org.thymeleaf.model.IModel
+import org.thymeleaf.model.IModelFactory
+import org.thymeleaf.model.IOpenElementTag
 
 /**
- * A decorator made to work over any Thymeleaf document.
+ * A decorator made to work over an XML document.
  * 
  * @author Emanuel Rabina
  */
 class XmlDocumentDecorator implements Decorator {
+
+	protected final IModelFactory modelFactory
+	protected final ModelFinder modelFinder
+
+	/**
+	 * Constructor, set up the document decorator context.
+	 * 
+	 * @param modelFactory
+	 * @param modelFinder
+	 */
+	XmlDocumentDecorator(IModelFactory modelFactory, ModelFinder modelFinder) {
+
+		this.modelFactory = modelFactory
+		this.modelFinder  = modelFinder
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -34,32 +53,40 @@ class XmlDocumentDecorator implements Decorator {
 	void decorate(IModel targetDocument, String targetDocumentTemplate,
 		IModel sourceDocument, String sourceDocumentTemplate) {
 
-/*		def decoratorDocument = decoratorXml.parent
-		def contentDocument   = contentXml.parent
-
+		// TODO
 		// Copy text outside of the root element, keeping whitespace copied to a minimum
-		def beforeHtml = true
-		def allowNext = false
-		def lastNode = contentXml
-		decoratorDocument.children.each { externalNode ->
-			if (externalNode == decoratorXml) {
-				beforeHtml = false
-				allowNext = true
-				return
-			}
-			if (externalNode instanceof Comment || allowNext) {
-				if (beforeHtml) {
-					contentDocument.insertBefore(contentXml, externalNode)
-				}
-				else {
-					contentDocument.insertAfter(lastNode, externalNode)
-					lastNode = externalNode
-				}
-				allowNext = externalNode instanceof Comment
-			}
+//		def beforeHtml = true
+//		def allowNext = false
+//		def lastNode = contentXml
+//		decoratorDocument.children.each { externalNode ->
+//			if (externalNode == decoratorXml) {
+//				beforeHtml = false
+//				allowNext = true
+//				return
+//			}
+//			if (externalNode instanceof Comment || allowNext) {
+//				if (beforeHtml) {
+//					contentDocument.insertBefore(contentXml, externalNode)
+//				}
+//				else {
+//					contentDocument.insertAfter(lastNode, externalNode)
+//					lastNode = externalNode
+//				}
+//				allowNext = externalNode instanceof Comment
+//			}
+//		}
+
+		// Find the root element of the target document to merge
+		// TODO: Way of obtaining a model from within a model
+		def targetDocumentRootElement = targetDocument.find { targetDocumentEvent ->
+			return targetDocumentEvent instanceof IOpenElementTag
 		}
 
 		// Bring the decorator into the content page (which is the one being processed)
-		new ElementMerger(decoratorXml.normalizedName != contentXml.normalizedName).merge(contentXml, decoratorXml)
-*/	}
+		// NOTE: Next line for the 'rootElementMerge' property, which I'm trying to get by without
+		// targetDocument.get(0).elementCompleteName != sourceDocument.get(0).elementCompleteName
+		new ElementMerger(modelFactory).merge(
+			modelFinder.find(targetDocumentTemplate, targetDocumentRootElement.elementCompleteName),
+			sourceDocument)
+	}
 }

@@ -32,8 +32,6 @@ import org.thymeleaf.model.IModelFactory
  */
 class HtmlDocumentDecorator extends XmlDocumentDecorator {
 
-	private final IModelFactory modelFactory
-	private final ModelFinder modelFinder
 	private final SortingStrategy sortingStrategy
 
 	/**
@@ -45,8 +43,7 @@ class HtmlDocumentDecorator extends XmlDocumentDecorator {
 	 */
 	HtmlDocumentDecorator(IModelFactory modelFactory, ModelFinder modelFinder, SortingStrategy sortingStrategy) {
 
-		this.modelFactory    = modelFactory
-		this.modelFinder     = modelFinder
+		super(modelFactory, modelFinder)
 		this.sortingStrategy = sortingStrategy
 	}
 

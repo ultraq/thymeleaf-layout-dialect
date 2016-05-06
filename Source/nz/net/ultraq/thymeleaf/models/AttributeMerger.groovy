@@ -31,6 +31,18 @@ import org.thymeleaf.standard.processor.StandardWithTagProcessor
  */
 class AttributeMerger implements ModelMerger {
 
+	protected final IModelFactory modelFactory
+
+	/**
+	 * Constructor, sets up the attribute merger tools.
+	 * 
+	 * @param modelFactory
+	 */
+	AttributeMerger(IModelFactory modelFactory) {
+
+		this.modelFactory = modelFactory
+	}
+
 	/**
 	 * Merge the attributes of the source element with those of the target
 	 * element.  This is basically a copy of all attributes in the source model
@@ -38,12 +50,11 @@ class AttributeMerger implements ModelMerger {
 	 * same name, except for the case of {@code th:with} where variable
 	 * declarations are preserved, only overwriting same-named declarations.
 	 * 
-	 * @param modelFactory
 	 * @param sourceModel
 	 * @param targetModel
 	 */
 	@Override
-	void merge(IModelFactory modelFactory, IModel targetModel, IModel sourceModel) {
+	void merge(IModel targetModel, IModel sourceModel) {
 
 		if (!targetModel.hasContent() || !sourceModel.hasContent()) {
 			return

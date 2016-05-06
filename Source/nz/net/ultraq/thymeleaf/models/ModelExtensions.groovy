@@ -41,6 +41,25 @@ class ModelExtensions {
 		IModel.metaClass {
 
 			/**
+			 * Returns the first event in the model that meets the criteria of the
+			 * given closure.
+			 * 
+			 * @param closure
+			 * @return The first event to match the closure criteria, or {@code null}
+			 *         if nothing matched.
+			 */
+			find << { Closure closure ->
+				for (def i = 0; i < delegate.size(); i++) {
+					def event = delegate.get(i)
+					def result = closure(event)
+					if (result) {
+						return event;
+					}
+				}
+				return null
+			}
+
+			/**
 			 * Return whether or not a model has content by checking if it has any
 			 * underlying events.
 			 * 

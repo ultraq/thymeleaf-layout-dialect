@@ -81,6 +81,7 @@ class FragmentFinder {
 			       elementTag.hasAttribute(dialectPrefix, ReplaceProcessor.PROCESSOR_NAME)
 		}
 
+		// TODO: Replace with some way of extracting models from models
 		// NOTE: Using element definitions to match open and close tags, probably
 		//       not going to work...  Other options include counting the level
 		//       we're at.

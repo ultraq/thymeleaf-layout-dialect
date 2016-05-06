@@ -47,7 +47,7 @@ class SingleLayoutTestExecutor extends JUnitTestExecutor {
 	static List<String> listGroupingLayoutDialectTests() {
 
 		return [
-		  'nz/net/ultraq/thymeleaf/tests/decorators/Decorator-FullLayout-FullContent.thtest'
+		  'nz/net/ultraq/thymeleaf/tests/decorators/xml/Document-XmlDecoration.thtest'
 		]
 	}
 }

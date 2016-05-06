@@ -82,6 +82,7 @@ class DecoratorProcessor extends AbstractAttributeModelProcessor {
 			throw new IllegalArgumentException('layout:decorator attribute must appear in the root element of your content page')
 		}
 
+		def modelFactory          = context.modelFactory
 		def contentTemplateName   = context.templateData.template
 		def decoratorTemplateName = new ExpressionProcessor(context).process(attributeValue)
 
@@ -97,8 +98,8 @@ class DecoratorProcessor extends AbstractAttributeModelProcessor {
 
 		// Choose the decorator to use based on template mode, then apply it
 		def decorator =
-			templateMode == TemplateMode.HTML ? new HtmlDocumentDecorator(context.modelFactory, modelFinder, sortingStrategy) :
-			templateMode == TemplateMode.XML  ? new XmlDocumentDecorator() :
+			templateMode == TemplateMode.HTML ? new HtmlDocumentDecorator(modelFactory, modelFinder, sortingStrategy) :
+			templateMode == TemplateMode.XML  ? new XmlDocumentDecorator(modelFactory, modelFinder) :
 			null
 		if (!decorator) {
 			throw new IllegalArgumentException("""
@@ -108,10 +109,7 @@ class DecoratorProcessor extends AbstractAttributeModelProcessor {
 		}
 		decorator.decorate(decoratorTemplate, decoratorTemplateName, model, contentTemplateName)
 
-		// Replace the page contents with those of the template we're decorating
-//		structureHandler.setTemplateData(decoratorTemplateModel.templateData)
-//		structureHandler.setBody(decoratorTemplateModel, true)
-
+		// Save layout fragments for use later by layout:fragment processors
 		FragmentMap.setForNode(context, structureHandler, pageFragments)
 	}
 }

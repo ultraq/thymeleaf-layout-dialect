@@ -55,6 +55,6 @@ class XmlElementDecorator implements Decorator {
 	void decorate(IModel targetElementModel, String targetElementTemplate,
 		IModel sourceElementModel, String sourceElementTemplate) {
 
-		new AttributeMerger().merge(modelFactory, targetElementModel, sourceElementModel)
+		new AttributeMerger(modelFactory).merge(targetElementModel, sourceElementModel)
 	}
 }
