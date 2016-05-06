@@ -62,8 +62,7 @@ class ElementMerger extends AttributeMerger {
 		//       make another code branch that does that, and then I can compare.
 
 		// Replace the target model with the source model
-		targetModel.reset()
-		targetModel.addModel(sourceModel)
+		targetModel.replaceModel(sourceModel)
 
 		super.merge(targetModel, targetInitialRootElement)
 

@@ -16,7 +16,6 @@
 
 package nz.net.ultraq.thymeleaf.decorators
 
-import nz.net.ultraq.thymeleaf.LayoutDialectContext
 import nz.net.ultraq.thymeleaf.decorators.html.HtmlDocumentDecorator
 import nz.net.ultraq.thymeleaf.decorators.xml.XmlDocumentDecorator
 import nz.net.ultraq.thymeleaf.fragments.FragmentMap
@@ -24,7 +23,6 @@ import nz.net.ultraq.thymeleaf.fragments.FragmentFinder
 import nz.net.ultraq.thymeleaf.models.ModelFinder
 import nz.net.ultraq.thymeleaf.utilities.ExpressionProcessor
 
-import org.thymeleaf.context.IEngineContext
 import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.engine.AttributeName
 import org.thymeleaf.model.IModel

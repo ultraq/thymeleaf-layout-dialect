@@ -78,6 +78,16 @@ class ModelExtensions {
 				def thisEvent = delegate.get(0)
 				return thisEvent instanceof IText && thisEvent.whitespace
 			}
+
+			/**
+			 * Replaces the enture model with a new one.
+			 * 
+			 * @param model
+			 */
+			replaceModel << { IModel model ->
+				delegate.reset()
+				delegate.addModel(model)
+			}
 		}
 
 		TemplateModel.metaClass {
