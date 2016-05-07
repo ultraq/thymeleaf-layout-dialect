@@ -98,10 +98,10 @@ class AttributeMergerTestExecutor extends JUnitTestExecutor {
 			def modelFactory = context.modelFactory
 			def targetModel = new ModelFinder(context, templateMode).findTemplate(attributeValue)
 			def sourceModel = modelFactory.createModel(tag)
+			sourceModel.replace(0, modelFactory.removeAttribute(sourceModel.get(0), 'layout-test', 'attribute-merger'))
 
 			new AttributeMerger(modelFactory).merge(targetModel, sourceModel)
 
-			targetModel.replace(0, modelFactory.removeAttribute(targetModel.get(0), 'layout-test', 'attribute-merger'))
 			structureHandler.replaceWith(targetModel, false)
 		}
 	}
