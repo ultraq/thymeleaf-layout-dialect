@@ -24,16 +24,18 @@ import org.thymeleaf.model.IModelFactory
  * 
  * @author Emanuel Rabina
  */
-class ElementMerger extends AttributeMerger {
+class ElementMerger implements ModelMerger {
+
+	private final IModelFactory modelFactory
 
 	/**
 	 * Constructor, sets up the attribute merger tools.
-	 *
+	 * 
 	 * @param modelFactory
 	 */
 	ElementMerger(IModelFactory modelFactory) {
 
-		super(modelFactory)
+		this.modelFactory = modelFactory
 	}
 
 	/**
@@ -64,7 +66,7 @@ class ElementMerger extends AttributeMerger {
 		// Replace the target model with the source model
 		targetModel.replaceModel(sourceModel)
 
-		super.merge(targetModel, targetInitialRootElement)
+		new AttributeMerger(modelFactory).merge(targetModel, targetInitialRootElement)
 
 		// Create a new merged element to mess with
 /*		def mergedElement = sourceElement.cloneNode(null, false)

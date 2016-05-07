@@ -31,7 +31,7 @@ import org.thymeleaf.standard.processor.StandardWithTagProcessor
  */
 class AttributeMerger implements ModelMerger {
 
-	protected final IModelFactory modelFactory
+	private final IModelFactory modelFactory
 
 	/**
 	 * Constructor, sets up the attribute merger tools.
