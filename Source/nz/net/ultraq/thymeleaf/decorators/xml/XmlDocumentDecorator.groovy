@@ -84,9 +84,6 @@ class XmlDocumentDecorator implements Decorator {
 		def targetDocumentRootModel = modelFinder.find(targetDocumentTemplate, targetDocumentRootElement.elementCompleteName)
 
 		// Bring the decorator into the content page (which is the one being processed)
-		// NOTE: Next line for the 'rootElementMerge' property, which I'm trying to get by without
-		// targetDocument.get(0).elementCompleteName != sourceDocument.get(0).elementCompleteName
-//		new ElementMerger(modelFactory).merge(targetDocumentRootModel, sourceDocument)
 		new AttributeMerger(modelFactory).merge(targetDocumentRootModel, sourceDocument)
 		targetDocument.replaceModel(targetDocumentRootModel)
 	}

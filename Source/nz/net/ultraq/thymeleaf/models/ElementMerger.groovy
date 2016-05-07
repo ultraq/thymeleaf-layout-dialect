@@ -39,13 +39,6 @@ class ElementMerger implements ModelMerger {
 	}
 
 	/**
-	 * Flag for indicating that the merge is over a root element, in which some
-	 * special rules apply.
-	 */
-	// TODO: Do I need this?  Let's try get by without it...
-//	final boolean rootElementMerge
-
-	/**
 	 * Replace the content of the target element, with the content of the source
 	 * element.
 	 * 
@@ -67,18 +60,5 @@ class ElementMerger implements ModelMerger {
 		targetModel.replaceModel(sourceModel)
 
 		new AttributeMerger(modelFactory).merge(targetModel, targetInitialRootElement)
-
-		// Create a new merged element to mess with
-/*		def mergedElement = sourceElement.cloneNode(null, false)
-		if (!rootElementMerge) {
-			mergedElement.clearAttributes()
-			targetElement.attributeMap.values().each { attribute ->
-				mergedElement.setAttribute(attribute.normalizedName, attribute.value)
-			}
-			super.merge(mergedElement, sourceElement)
-		}
-		targetElement.clearChildren()
-		targetElement.addChild(mergedElement)
-		targetElement.parent.extractChild(targetElement)
-*/	}
+	}
 }
