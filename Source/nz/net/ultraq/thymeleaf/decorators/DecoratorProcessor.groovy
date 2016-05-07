@@ -107,6 +107,12 @@ class DecoratorProcessor extends AbstractAttributeModelProcessor {
 		}
 		decorator.decorate(decoratorTemplate, decoratorTemplateName, model, contentTemplateName)
 
+		// TODO: Should probably return a new object so this doesn't look so
+		//       confusing, ie: why am I changing the source model when it's the
+		//       decorator model we are targeting???  See the point about
+		//       immutability in https://github.com/ultraq/thymeleaf-layout-dialect/issues/102
+		model.replaceModel(decoratorTemplate)
+
 		// Save layout fragments for use later by layout:fragment processors
 		FragmentMap.setForNode(context, structureHandler, pageFragments)
 	}

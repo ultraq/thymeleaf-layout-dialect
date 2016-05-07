@@ -80,7 +80,7 @@ class FragmentProcessor extends AbstractAttributeModelProcessor {
 		// Locate the fragment that corresponds to this decorator/include fragment
 		def fragmentName = new ExpressionProcessor(context).process(attributeValue)
 		def fragment = FragmentMap.get(context)[(fragmentName)]
-		
+
 		// Replace this model with the fragment
 		if (fragment) {
 			new ElementMerger(context.modelFactory).merge(model, fragment)

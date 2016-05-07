@@ -89,14 +89,12 @@ class FragmentFinder {
 
 		model.accept({ event ->
 			if (event instanceof IOpenElementTag) {
-
 				if (!insideLayoutElementDefinition) {
 					def fragmentAttribute = event.getAttribute(dialectPrefix, FragmentProcessor.PROCESSOR_NAME)
 					if (fragmentAttribute) {
 						def fragmentName = fragmentAttribute.value
 						fragments << [(fragmentName): modelFinder.findFragment(templateName, fragmentName, dialectPrefix)]
 					}
-
 					if (isLayoutElement(event)) {
 						insideLayoutElementDefinition = event.elementDefinition
 					}
@@ -106,7 +104,6 @@ class FragmentFinder {
 				if (insideLayoutElementDefinition == event.elementDefinition) {
 					insideLayoutElementDefinition = null
 				}
-
 			}
 		} as IModelVisitor)
 
