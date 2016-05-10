@@ -47,13 +47,13 @@ project.contributors = [
 dependencies {
 	compile(
 		'org.codehaus.groovy:groovy:2.4.6',
-		'org.thymeleaf:thymeleaf:3.0.0-SNAPSHOT'
+		'org.thymeleaf:thymeleaf:3.0.0.RELEASE'
 	)
 	testCompile(
 		'junit:junit:4.12',
-		'nz.net.ultraq.thymeleaf:thymeleaf-testing-junit:2.0.0-SNAPSHOT',
+		'nz.net.ultraq.thymeleaf:thymeleaf-testing-junit:2.0.0',
 		'org.mockito:mockito-core:2.0.+',
-		'org.thymeleaf:thymeleaf-testing:3.0.0.BETA03'
+		'org.thymeleaf:thymeleaf-testing:3.0.0.RELEASE'
 	)
 	testRuntime(
 		'org.slf4j:slf4j-simple:1.7.12'
@@ -61,5 +61,5 @@ dependencies {
 }
 
 groovydoc {
-	link('http://www.thymeleaf.org/apidocs/thymeleaf/2.1.4.RELEASE/', 'org.thymeleaf.')
+	link('http://www.thymeleaf.org/apidocs/thymeleaf/3.0.0.RELEASE/', 'org.thymeleaf.')
 }
