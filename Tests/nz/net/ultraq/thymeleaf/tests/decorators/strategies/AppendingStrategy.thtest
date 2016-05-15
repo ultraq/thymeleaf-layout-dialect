@@ -1,0 +1,39 @@
+
+# Test appending of elements in the head section
+
+%TEMPLATE_MODE HTML
+
+
+%INPUT
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="Layout">
+<head>
+	<link rel="stylesheet" src="content-styles.css"/>
+	<script src="content-script.js"></script>
+</head>
+</html>
+
+
+%INPUT[Layout]
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Appending test</title>
+	<link rel="stylesheet" src="common-styles.css"/>
+	<script src="common-script.js"></script>
+</head>
+</html>
+
+
+%OUTPUT
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Appending test</title>
+	<link rel="stylesheet" src="common-styles.css"/>
+	<script src="common-script.js"></script>
+	<link rel="stylesheet" src="content-styles.css"/>
+	<script src="content-script.js"></script>
+</head>
+</html>
