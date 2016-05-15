@@ -9,7 +9,7 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorator="Layout">
 <head>
-	<title>Content page</title>
+	<title>Grouping test</title>
 
 	<link rel="stylesheet" src="content-styles1.css"/>
 	<link rel="stylesheet" src="content-styles2.css"/>
@@ -24,7 +24,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Layout page</title>
+	<title>Grouping test</title>
 	<meta charset="UTF-8"/>
 	<base href="http://www.thymeleaf.org/test/"/>
 	<link rel="icon" href="images/icon.png"/>
@@ -42,7 +42,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Content page</title>
+	<title>Grouping test</title>
 	<meta charset="UTF-8"/>
 	<base href="http://www.thymeleaf.org/test/"/>
 	<link rel="icon" href="images/icon.png"/>
