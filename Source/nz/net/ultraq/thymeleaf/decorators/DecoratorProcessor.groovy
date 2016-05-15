@@ -77,7 +77,7 @@ class DecoratorProcessor extends AbstractAttributeModelProcessor {
 
 		// Ensure the decorator attribute is in the root element of the document
 		if (context.elementStack.size() != 1) {
-			throw new IllegalArgumentException('layout:decorator attribute must appear in the root element of your content page')
+			throw new IllegalArgumentException('layout:decorator attribute must appear in the root element of your template')
 		}
 
 		def modelFactory          = context.modelFactory

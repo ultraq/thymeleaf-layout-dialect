@@ -15,4 +15,4 @@
 </html>
 
 %EXCEPTION java.lang.IllegalArgumentException
-%EXCEPTION_MESSAGE_PATTERN layout:decorator attribute must appear in the root element of your content page
+%EXCEPTION_MESSAGE_PATTERN layout:decorator attribute must appear in the root element of your template
