@@ -16,8 +16,8 @@
 
 package nz.net.ultraq.thymeleaf.fragments
 
+import nz.net.ultraq.thymeleaf.expressions.ExpressionProcessor
 import nz.net.ultraq.thymeleaf.models.ElementMerger
-import nz.net.ultraq.thymeleaf.utilities.ExpressionProcessor
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -69,11 +69,11 @@ class FragmentProcessor extends AbstractAttributeModelProcessor {
 		// Emit a warning if found in the <head> section
 		if (templateMode == TemplateMode.HTML) {
 			if (context.elementStack.any { element -> element.elementCompleteName == 'head' }) {
-				logger.warn("""
+				logger.warn('''
 					You don't need to put the layout:fragment attribute into the <head>
 					section - the decoration process will automatically copy the <head>
 					section of your content templates into your layout page.
-				""".stripMargin())
+				'''.stripMargin())
 			}
 		}
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package nz.net.ultraq.thymeleaf.utilities
+package nz.net.ultraq.thymeleaf.expressions
 
 import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.standard.expression.StandardExpressions
