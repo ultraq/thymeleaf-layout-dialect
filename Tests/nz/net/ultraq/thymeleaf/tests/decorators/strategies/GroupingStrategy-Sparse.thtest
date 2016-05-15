@@ -17,7 +17,7 @@
 
 %INPUT[Layout]
 <!DOCTYPE html>
-<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html>
 <head>
 </head>
 </html>
