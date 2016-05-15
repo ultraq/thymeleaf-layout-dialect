@@ -25,13 +25,13 @@ import org.thymeleaf.dialect.IDialect
 import org.thymeleaf.standard.StandardDialect
 
 /**
- * Temporary test class that executes just one of my test files so I can make
- * sure that the Thymeleaf 3 migration is making some progress instead of being
- * overwhelmed with test failures everywhere!
+ * Temporary test class that executes a handful of Thymeleaf test files so I can
+ * make sure that the Thymeleaf 3 migration is making some progress instead of
+ * being overwhelmed with test failures everywhere!
  * 
  * @author Emanuel Rabina
  */
-class SingleLayoutTestExecutor extends JUnitTestExecutor {
+class GradualLayoutTestExecutor extends JUnitTestExecutor {
 
 	final List<? extends IDialect> testDialects = [
 		new StandardDialect(),
@@ -47,7 +47,10 @@ class SingleLayoutTestExecutor extends JUnitTestExecutor {
 	static List<String> listGroupingLayoutDialectTests() {
 
 		return [
-		  'nz/net/ultraq/thymeleaf/tests/decorators/xml/Document-XmlDecoration.thtest'
+//			'nz/net/ultraq/thymeleaf/tests/decorators/strategies/AppendingStrategy.thtest',
+//			'nz/net/ultraq/thymeleaf/tests/decorators/strategies/GroupingStrategy.thtest',
+			'nz/net/ultraq/thymeleaf/tests/decorators/xml/Document-XmlDecoration.thtest',
+			'nz/net/ultraq/thymeleaf/tests/decorators/Decorator-BodyOnlyLayout-BodyOnlyContent.thtest'
 		]
 	}
 }
