@@ -50,8 +50,8 @@ class XmlDocumentDecorator implements Decorator {
 	 * {@inheritDoc}
 	 */
 	@Override
-	void decorate(IModel targetDocument, String targetDocumentTemplate,
-		IModel sourceDocument, String sourceDocumentTemplate) {
+	void decorate(IModel targetDocumentModel, String targetDocumentTemplate,
+		IModel sourceDocumentModel, String sourceDocumentTemplate) {
 
 		// TODO
 		// Copy text outside of the root element, keeping whitespace copied to a minimum
@@ -78,13 +78,13 @@ class XmlDocumentDecorator implements Decorator {
 
 		// Find the root element of the target document to merge
 		// TODO: Way of obtaining a model from within a model
-		def targetDocumentRootElement = targetDocument.find { targetDocumentEvent ->
+		def targetDocumentRootElement = targetDocumentModel.find { targetDocumentEvent ->
 			return targetDocumentEvent instanceof IOpenElementTag
 		}
 		def targetDocumentRootModel = modelFinder.find(targetDocumentTemplate, targetDocumentRootElement.elementCompleteName)
 
 		// Bring the decorator into the content page (which is the one being processed)
-		new AttributeMerger(modelFactory).merge(targetDocumentRootModel, sourceDocument)
-		targetDocument.replaceModel(targetDocumentRootModel)
+		new AttributeMerger(modelFactory).merge(targetDocumentRootModel, sourceDocumentModel)
+		targetDocumentModel.replaceModel(targetDocumentRootModel)
 	}
 }

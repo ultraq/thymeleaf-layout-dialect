@@ -25,7 +25,9 @@ import nz.net.ultraq.thymeleaf.models.ModelFinder
 
 import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.engine.AttributeName
+import org.thymeleaf.model.ICloseElementTag
 import org.thymeleaf.model.IModel
+import org.thymeleaf.model.IOpenElementTag
 import org.thymeleaf.processor.element.AbstractAttributeModelProcessor
 import org.thymeleaf.processor.element.IElementModelStructureHandler
 import org.thymeleaf.templatemode.TemplateMode
@@ -106,6 +108,17 @@ class DecoratorProcessor extends AbstractAttributeModelProcessor {
 				""".stripMargin())
 		}
 		decorator.decorate(decoratorTemplate, decoratorTemplateName, model, contentTemplateName)
+
+		// TODO: The modified decorator template includes anything outside the root
+		//       element, which we don't want for the next step.  Strip those events
+		//       out for now,  but for future I should find a better way to merge
+		//       documents.
+		while (!(decoratorTemplate.first() instanceof IOpenElementTag)) {
+			decoratorTemplate.removeFirst()
+		}
+		while (!(decoratorTemplate.last() instanceof ICloseElementTag)) {
+			decoratorTemplate.removeLast()
+		}
 
 		// TODO: Should probably return a new object so this doesn't look so
 		//       confusing, ie: why am I changing the source model when it's the

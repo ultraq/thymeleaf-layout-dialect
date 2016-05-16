@@ -19,8 +19,11 @@ package nz.net.ultraq.thymeleaf.decorators.html
 import nz.net.ultraq.thymeleaf.decorators.SortingStrategy
 import nz.net.ultraq.thymeleaf.decorators.xml.XmlElementDecorator
 
+import org.thymeleaf.model.ICloseElementTag
+import org.thymeleaf.model.IElementTag
 import org.thymeleaf.model.IModel
 import org.thymeleaf.model.IModelFactory
+import org.thymeleaf.model.IOpenElementTag
 
 /**
  * A decorator specific to processing an HTML {@code <head>} element.
@@ -44,30 +47,28 @@ class HtmlHeadDecorator extends XmlElementDecorator {
 	}
 
 	/**
-	 * Decorate the {@code <head>} part, appending all of the content
-	 * {@code <head>} elements on to the decorator {@code <head>} elements.
+	 * Decorate the {@code <head>} part.
 	 * 
-	 * @param targetHeadModel    Decorator's {@code <head>} element.
+	 * @param targetHeadModel
 	 * @param targetHeadTemplate
-	 * @param sourceHeadModel	   Content's {@code <head>} element.
+	 * @param sourceHeadModel
 	 * @param sourceHeadTemplate
 	 */
 	@Override
-	void decorate(IModel targetHeadModel, String targetHeadTemplate, IModel sourceHeadModel, String sourceHeadTemplate) {
+	void decorate(IModel targetHeadModel, String targetHeadTemplate,
+		IModel sourceHeadModel, String sourceHeadTemplate) {
 
-		// If the decorator has no <head>, then we can just use the content <head>
-/*		def decoratorHead = decoratorHtml.findElement('head')
-		if (!decoratorHead) {
-			if (contentHead) {
-				decoratorHtml.insertChildWithWhitespace(contentHead, 0)
-				def contentTitle = contentHead.findElement('title')
-				if (contentTitle) {
-					contentTitle.removeAttribute(DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME)
-				}
+		// Try to ensure there is a head as a result of decoration, applying the
+		// source head, or just using what is in the target
+		if (!targetHeadModel.hasContent()) {
+			if (sourceHeadModel.hasContent()) {
+				targetHeadModel.replaceModel(sourceHeadModel)
 			}
 			return
 		}
 
+		// TODO
+/*
 		// Copy the content and decorator <title>s
 		// TODO: Surely the code below can be simplified?  The 2 conditional
 		//       blocks are doing almost the same thing.
@@ -99,21 +100,34 @@ class HtmlHeadDecorator extends XmlElementDecorator {
 		def resultTitle = new Element('title')
 		resultTitle.setAttribute("${DIALECT_PREFIX_LAYOUT}:${PROCESSOR_NAME}", titlePattern)
 		titleContainer.addChild(resultTitle)
+*/
+		// Merge the source <head> elements with the target <head> elements using
+		// the current merging strategy, placing the resulting title at the
+		// beginning of it
+		if (sourceHeadModel.hasContent()) {
+			sourceHeadModel.each { event ->
 
-		// Merge the content's <head> elements with the decorator's <head>
-		// section via the given merging strategy, placing the resulting title
-		// at the beginning of it
-		if (contentHead) {
-			contentHead.children.each { contentHeadChild ->
-				def decoratorHeadChildren = decoratorHead.children
-				def position = sortingStrategy.findPositionForContent(decoratorHeadChildren, contentHeadChild)
-				if (position != -1) {
-					decoratorHead.insertChildWithWhitespace(contentHeadChild, position)
+				// The visitor will encounter the head start/end tags, so exclude processing those
+				if (!(event instanceof IElementTag && event.elementCompleteName == 'head')) {
+					def position = sortingStrategy.findPositionForContent(targetHeadModel, event)
+					if (position != -1) {
+
+						// Special checks for closing script tags
+						if (event instanceof ICloseElementTag && event.elementCompleteName == 'script') {
+							def previousEvent = targetHeadModel.get(position - 1)
+							if (previousEvent instanceof IOpenElementTag && previousEvent.elementCompleteName == 'script') {
+								targetHeadModel.insert(position, event)
+								return
+							}
+						}
+						targetHeadModel.insertWithWhitespace(position, event, modelFactory)
+					}
 				}
 			}
 		}
-		decoratorHead.insertChildWithWhitespace(titleContainer, 0)
+		// TODO
+//		decoratorHead.insertChildWithWhitespace(titleContainer, 0)
 
-		super.decorate(decoratorHead, contentHead)
-*/	}
+		super.decorate(targetHeadModel, targetHeadTemplate, sourceHeadModel, sourceHeadTemplate)
+	}
 }

@@ -47,7 +47,8 @@ class HtmlBodyDecorator extends XmlElementDecorator {
 	 * @param targetBodyTemplate
 	 */
 	@Override
-	void decorate(IModel targetBodyModel, String targetBodyTemplate, IModel sourceBodyModel, String sourceBodyTemplate) {
+	void decorate(IModel targetBodyModel, String targetBodyTemplate,
+		IModel sourceBodyModel, String sourceBodyTemplate) {
 
 		// Try to ensure there is a body as a result of decoration, applying the
 		// source body, or just using what is in the target

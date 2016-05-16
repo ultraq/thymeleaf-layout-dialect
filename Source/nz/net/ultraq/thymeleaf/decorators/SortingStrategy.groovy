@@ -17,22 +17,23 @@
 package nz.net.ultraq.thymeleaf.decorators
 
 import org.thymeleaf.model.IModel
+import org.thymeleaf.model.ITemplateEvent
 
 /**
- * Interface for controlling the sort order in which elements are placed into
- * decorator template from the content one.
+ * Interface for controlling the sort order in which {@code <head>} elements
+ * from one source are placed into another.
  * 
  * @author Emanuel Rabina
  */
 interface SortingStrategy {
 
 	/**
-	 * Returns the position in amongst a list of the decorator's nodes to insert
-	 * a content child node.
+	 * Returns the position in a {@code <head>} element model to insert a child
+	 * element.
 	 * 
-	 * @param decoratorNodes
-	 * @param contentNode
-	 * @return Index in the list of decorator nodes to insert the content node.
+	 * @param headModel
+	 * @param event
+	 * @return Position to insert the element into.
 	 */
-	int findPositionForContent(List<IModel> decoratorNodes, IModel contentNode)
+	int findPositionForContent(IModel headModel, ITemplateEvent event)
 }

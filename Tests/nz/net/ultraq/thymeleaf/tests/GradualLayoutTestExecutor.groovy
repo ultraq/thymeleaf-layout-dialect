@@ -17,7 +17,6 @@
 package nz.net.ultraq.thymeleaf.tests
 
 import nz.net.ultraq.thymeleaf.LayoutDialect
-import nz.net.ultraq.thymeleaf.decorators.strategies.GroupingStrategy
 import nz.net.ultraq.thymeleaf.testing.JUnitTestExecutor
 
 import org.junit.runners.Parameterized
@@ -35,7 +34,7 @@ class GradualLayoutTestExecutor extends JUnitTestExecutor {
 
 	final List<? extends IDialect> testDialects = [
 		new StandardDialect(),
-		new LayoutDialect(new GroupingStrategy())
+		new LayoutDialect()
 	]
 
 	/**
@@ -47,8 +46,7 @@ class GradualLayoutTestExecutor extends JUnitTestExecutor {
 	static List<String> listGroupingLayoutDialectTests() {
 
 		return [
-//			'nz/net/ultraq/thymeleaf/tests/decorators/strategies/AppendingStrategy.thtest',
-//			'nz/net/ultraq/thymeleaf/tests/decorators/strategies/GroupingStrategy.thtest',
+			'nz/net/ultraq/thymeleaf/tests/decorators/strategies/AppendingStrategy.thtest',
 			'nz/net/ultraq/thymeleaf/tests/decorators/xml/Document-XmlDecoration.thtest',
 			'nz/net/ultraq/thymeleaf/tests/decorators/Decorator-BodyOnlyLayout-BodyOnlyContent.thtest'
 		]

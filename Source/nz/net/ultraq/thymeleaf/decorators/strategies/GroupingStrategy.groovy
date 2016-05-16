@@ -37,29 +37,29 @@ class GroupingStrategy implements SortingStrategy {
 	 * as the content node.  eg: groups scripts with scripts, stylesheets with
 	 * stylesheets, and so on.
 	 * 
-	 * @param decoratorNodes
-	 * @param contentNodes
+	 * @param headModel
+	 * @param event
 	 * @return Position of the end of the matching element group.
 	 */
-	int findPositionForContent(List<IModel> decoratorNodes, IModel contentNode) {
+	int findPositionForContent(IModel headModel, ITemplateEvent event) {
 
 		// Discard text/whitespace nodes
-		if (contentNode.whitespaceNode) {
+		if (event.whitespace) {
 			return -1
 		}
 
-		def type = HeadNodeTypes.findMatchingType(contentNode)
-		return decoratorNodes.findLastIndexOf { decoratorNode ->
-			return type == HeadNodeTypes.findMatchingType(decoratorNode)
+		def type = HeadEventTypes.findMatchingType(event)
+		return headModel.findLastIndexOf { decoratorNode ->
+			return type == HeadEventTypes.findMatchingType(decoratorNode)
 		} + 1
 	}
 
 
 	/**
-	 * Enum for the types of elements in the HEAD section that we might need to
-	 * sort.
+	 * Enum for the types of elements in the {@code <head>} section that we might
+	 * need to sort.
 	 */
-	private static enum HeadNodeTypes {
+	private static enum HeadEventTypes {
 
 		COMMENT({ node ->
 			return node instanceof IComment
@@ -85,21 +85,21 @@ class GroupingStrategy implements SortingStrategy {
 		 * 
 		 * @param determinant
 		 */
-		private HeadNodeTypes(Closure determinant) {
+		private HeadEventTypes(Closure determinant) {
 
 			this.determinant = determinant
 		}
 
 		/**
-		 * Figure out the enum for the given node type.
+		 * Figure out the enum for the given event type.
 		 * 
-		 * @param element The node to match.
-		 * @return Matching enum to describe the node.
+		 * @param event The event to match.
+		 * @return Matching enum to describe the event.
 		 */
-		private static HeadNodeTypes findMatchingType(ITemplateEvent element) {
+		private static HeadEventTypes findMatchingType(ITemplateEvent event) {
 
-			return values().find { headNodeType ->
-				return headNodeType.determinant(element)
+			return values().find { headEventType ->
+				return headEventType.determinant(event)
 			}
 		}
 	}

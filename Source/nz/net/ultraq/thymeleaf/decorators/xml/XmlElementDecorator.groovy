@@ -25,11 +25,14 @@ import org.thymeleaf.model.IModelFactory
 /**
  * A decorator made to work over a Thymeleaf event/element.
  * 
+ * TODO: I'm thinking this file is very redundant, given it's just an attribute
+ *       merger.  See if I can delete this file and we use that instead.
+ * 
  * @author Emanuel Rabina
  */
 class XmlElementDecorator implements Decorator {
 
-	private final IModelFactory modelFactory
+	protected final IModelFactory modelFactory
 
 	/**
 	 * Constructor, sets up the element decorator context.
