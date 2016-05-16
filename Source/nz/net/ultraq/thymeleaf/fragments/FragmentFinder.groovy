@@ -24,7 +24,6 @@ import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.engine.TemplateModel
 import org.thymeleaf.model.ICloseElementTag
 import org.thymeleaf.model.IModel
-import org.thymeleaf.model.IModelVisitor
 import org.thymeleaf.model.IOpenElementTag
 import org.thymeleaf.templatemode.TemplateMode
 
@@ -87,7 +86,7 @@ class FragmentFinder {
 		//       we're at.
 		def insideLayoutElementDefinition = null
 
-		model.accept({ event ->
+		model.each { event ->
 			if (event instanceof IOpenElementTag) {
 				if (!insideLayoutElementDefinition) {
 					def fragmentAttribute = event.getAttribute(dialectPrefix, FragmentProcessor.PROCESSOR_NAME)
@@ -105,7 +104,7 @@ class FragmentFinder {
 					insideLayoutElementDefinition = null
 				}
 			}
-		} as IModelVisitor)
+		}
 
 		return fragments
 	}
