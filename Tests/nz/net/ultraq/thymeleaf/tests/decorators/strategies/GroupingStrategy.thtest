@@ -9,8 +9,6 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorator="Layout">
 <head>
-	<title>Grouping test</title>
-
 	<link rel="stylesheet" src="content-styles1.css"/>
 	<link rel="stylesheet" src="content-styles2.css"/>
 
