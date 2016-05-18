@@ -17,7 +17,6 @@
 package nz.net.ultraq.thymeleaf.decorators
 
 import org.thymeleaf.model.IModel
-import org.thymeleaf.model.ITemplateEvent
 
 /**
  * Interface for controlling the sort order in which {@code <head>} elements
@@ -29,11 +28,11 @@ interface SortingStrategy {
 
 	/**
 	 * Returns the position in a {@code <head>} element model to insert a child
-	 * element.
+	 * model.
 	 * 
-	 * @param headModel
-	 * @param event
-	 * @return Position to insert the element into.
+	 * @param headModel  Model of a {@code <head>} element.
+	 * @param childModel A model that can be found in a {@code <head>} element.
+	 * @return Position to insert the childe model into.
 	 */
-	int findPositionForContent(IModel headModel, ITemplateEvent event)
+	int findPositionForModel(IModel headModel, IModel childModel)
 }

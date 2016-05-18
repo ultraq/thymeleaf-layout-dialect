@@ -19,11 +19,8 @@ package nz.net.ultraq.thymeleaf.decorators.html
 import nz.net.ultraq.thymeleaf.decorators.SortingStrategy
 import nz.net.ultraq.thymeleaf.decorators.xml.XmlElementDecorator
 
-import org.thymeleaf.model.ICloseElementTag
-import org.thymeleaf.model.IElementTag
 import org.thymeleaf.model.IModel
 import org.thymeleaf.model.IModelFactory
-import org.thymeleaf.model.IOpenElementTag
 
 /**
  * A decorator specific to processing an HTML {@code <head>} element.
@@ -105,23 +102,12 @@ class HtmlHeadDecorator extends XmlElementDecorator {
 		// the current merging strategy, placing the resulting title at the
 		// beginning of it
 		if (sourceHeadModel.hasContent()) {
-			sourceHeadModel.each { event ->
-
-				// The visitor will encounter the head start/end tags, so exclude processing those
-				if (!(event instanceof IElementTag && event.elementCompleteName == 'head')) {
-					def position = sortingStrategy.findPositionForContent(targetHeadModel, event)
-					if (position != -1) {
-
-						// Special checks for closing script tags
-						if (event instanceof ICloseElementTag && event.elementCompleteName == 'script') {
-							def previousEvent = targetHeadModel.get(position - 1)
-							if (previousEvent instanceof IOpenElementTag && previousEvent.elementCompleteName == 'script') {
-								targetHeadModel.insert(position, event)
-								return
-							}
-						}
-						targetHeadModel.insertWithWhitespace(position, event, modelFactory)
-					}
+			def sourceHeadModelIterator = sourceHeadModel.modelIterator(modelFactory)
+			while (sourceHeadModelIterator.hasNext()) {
+				def sourceHeadSubModel = sourceHeadModelIterator.next()
+				def position = sortingStrategy.findPositionForModel(targetHeadModel, sourceHeadSubModel)
+				if (position != -1) {
+					targetHeadModel.insertModelWithWhitespace(position, sourceHeadSubModel)
 				}
 			}
 		}

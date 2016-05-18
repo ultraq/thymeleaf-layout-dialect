@@ -21,8 +21,8 @@ import nz.net.ultraq.thymeleaf.decorators.SortingStrategy
 import org.thymeleaf.model.IComment
 import org.thymeleaf.model.IElementTag
 import org.thymeleaf.model.IModel
+import org.thymeleaf.model.IOpenElementTag
 import org.thymeleaf.model.IProcessableElementTag
-import org.thymeleaf.model.ITemplateEvent
 
 /**
  * The {@code <head>} merging strategy which groups like elements together.
@@ -38,20 +38,21 @@ class GroupingStrategy implements SortingStrategy {
 	 * stylesheets, and so on.
 	 * 
 	 * @param headModel
-	 * @param event
+	 * @param childModel
 	 * @return Position of the end of the matching element group.
 	 */
-	int findPositionForContent(IModel headModel, ITemplateEvent event) {
+	int findPositionForModel(IModel headModel, IModel childModel) {
 
 		// Discard text/whitespace nodes
-		if (event.whitespace) {
+		if (childModel.whitespace) {
 			return -1
 		}
 
-		def type = HeadEventTypes.findMatchingType(event)
-		return headModel.findLastIndexOf { decoratorNode ->
-			return type == HeadEventTypes.findMatchingType(decoratorNode)
-		} + 1
+		def type = HeadEventTypes.findMatchingType(childModel)
+		def headModelIterator = headModel.modelIterator().reverse()
+		return headModelIterator.find { headSubModel ->
+			return type == HeadEventTypes.findMatchingType(headSubModel)
+		}.endIndex
 	}
 
 
@@ -61,21 +62,24 @@ class GroupingStrategy implements SortingStrategy {
 	 */
 	private static enum HeadEventTypes {
 
-		COMMENT({ node ->
-			return node instanceof IComment
+		COMMENT({ event ->
+			return event instanceof IComment
 		}),
-		META({ node ->
-			return node instanceof IProcessableElementTag && node.elementCompleteName == 'meta'
+		META({ event ->
+			return event instanceof IProcessableElementTag && event.elementCompleteName == 'meta'
 		}),
-		STYLESHEET({ node ->
-			return node instanceof IProcessableElementTag && node.elementCompleteName == 'link' &&
-					node.getAttributeValue('rel') == 'stylesheet'
+		SCRIPT({ event ->
+			return event instanceof IOpenElementTag && event.elementCompleteName == 'script'
 		}),
-		SCRIPT({ node ->
-			return node instanceof IProcessableElementTag && node.elementCompleteName == 'script'
+		STYLE({ event ->
+			return event instanceof IOpenElementTag && event.elementCompleteName == 'style'
 		}),
-		OTHER_ELEMENT({ node ->
-			return node instanceof IElementTag
+		STYLESHEET({ event ->
+			return event instanceof IProcessableElementTag && event.elementCompleteName == 'link' &&
+					event.getAttributeValue('rel') == 'stylesheet'
+		}),
+		OTHER({ event ->
+			return event instanceof IElementTag
 		})
 
 		private final Closure determinant
@@ -91,15 +95,15 @@ class GroupingStrategy implements SortingStrategy {
 		}
 
 		/**
-		 * Figure out the enum for the given event type.
+		 * Figure out the enum for the given model.
 		 * 
-		 * @param event The event to match.
-		 * @return Matching enum to describe the event.
+		 * @param model
+		 * @return Matching enum to describe the model.
 		 */
-		private static HeadEventTypes findMatchingType(ITemplateEvent event) {
+		private static HeadEventTypes findMatchingType(IModel model) {
 
 			return values().find { headEventType ->
-				return headEventType.determinant(event)
+				return headEventType.determinant(model.first())
 			}
 		}
 	}

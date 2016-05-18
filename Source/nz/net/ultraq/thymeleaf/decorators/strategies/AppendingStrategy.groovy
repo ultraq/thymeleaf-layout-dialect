@@ -18,9 +18,7 @@ package nz.net.ultraq.thymeleaf.decorators.strategies
 
 import nz.net.ultraq.thymeleaf.decorators.SortingStrategy
 
-import org.thymeleaf.model.IElementTag
 import org.thymeleaf.model.IModel
-import org.thymeleaf.model.ITemplateEvent
 
 /**
  * The standard {@code <head>} merging strategy, which simply appends the
@@ -31,18 +29,14 @@ import org.thymeleaf.model.ITemplateEvent
 class AppendingStrategy implements SortingStrategy {
 
 	/**
-	 * Returns a value to append the element to the end of the {@code <head>}
-	 * section.
+	 * Returns the position at the end of the {@code <head>} section.
 	 * 
 	 * @param headModel
 	 * @param event
 	 * @return The end of the head model.
 	 */
-	int findPositionForContent(IModel headModel, ITemplateEvent event) {
+	int findPositionForModel(IModel headModel, IModel childModel) {
 
-		return event.whitespace ? -1 :
-			headModel.findLastIndexOf { headEvent ->
-				return headEvent instanceof IElementTag && headEvent.elementCompleteName != 'head'
-			} + 1
+		return !childModel.whitespace ? headModel.size() - 2 : -1
 	}
 }
