@@ -18,8 +18,9 @@ package nz.net.ultraq.thymeleaf.models
 
 import org.thymeleaf.engine.TemplateModel
 import org.thymeleaf.model.IAttribute
+import org.thymeleaf.model.ICloseElementTag
 import org.thymeleaf.model.IModel
-import org.thymeleaf.model.IModelFactory
+import org.thymeleaf.model.IOpenElementTag
 import org.thymeleaf.model.ITemplateEvent
 import org.thymeleaf.model.IText
 
@@ -118,6 +119,51 @@ class ModelExtensions {
 			}
 
 			/**
+			 * Returns the model at the given index.  If the event at the index is an
+			 * opening element, then the returned model will consist of that element
+			 * and all the way through to the matching closing element.
+			 * 
+			 * @param pos
+			 * @return Model at the given position.
+			 */
+			getModel << { int pos ->
+
+				def eventIndex = pos
+				def startIndex = eventIndex
+
+				def event = delegate.get(eventIndex++)
+
+				// Gather all element children as part of this model
+				if (event instanceof IOpenElementTag) {
+					def level = 0
+					while (true) {
+						event = delegate.get(eventIndex++)
+						if (event instanceof IOpenElementTag) {
+							level++
+						}
+						if (event instanceof ICloseElementTag) {
+							if (level == 0) {
+								break;
+							}
+							level--
+						}
+					}
+				}
+				def endIndex = eventIndex
+
+				// Create a new model that contains only the events from the start to the end indices
+				def subModel = delegate.cloneModel()
+				while (endIndex < subModel.size()) {
+					subModel.removeLast()
+				}
+				while (endIndex - startIndex < subModel.size()) {
+					subModel.removeFirst()
+				}
+
+				return subModel
+			}
+
+			/**
 			 * Return whether or not a model has content by checking if it has any
 			 * underlying events.
 			 * 
@@ -128,22 +174,48 @@ class ModelExtensions {
 			}
 
 			/**
+			 * Inserts a model, creating a whitespace event before it so that it
+			 * appears in line with all the existing events.
+			 * 
+			 * @param pos
+			 * @param model
+			 */
+			insertModelWithWhitespace << { int pos, IModel model ->
+				def whitespace = getModel(pos)  // Assumes that whitespace exists at the insertion point
+				if (whitespace.whitespace) {
+					delegate.insertModel(pos, model)
+					delegate.insertModel(pos, whitespace)
+				}
+				else {
+					delegate.insertModel(pos, model)
+				}
+			}
+
+			/**
 			 * Inserts an event, creating a whitespace event before it so that it
 			 * appears in line with all the existing events.
 			 * 
-			 * @param index
+			 * @param pos
 			 * @param event
-			 * @param modelFactory
 			 */
-			insertWithWhitespace << { int index, ITemplateEvent event, IModelFactory modelFactory ->
-				def whitespace = delegate.get(index)  // Assumes that whitespace exists at the current index
+			insertWithWhitespace << { int pos, ITemplateEvent event ->
+				def whitespace = delegate.getModel(pos)  // Assumes that whitespace exists at the insertion point
 				if (whitespace.whitespace) {
-					delegate.insert(index, event)
-					delegate.insert(index, modelFactory.createText(whitespace.text))
+					delegate.insert(pos, event)
+					delegate.insertModel(pos, whitespace)
 				}
 				else {
 					delegate.insert(event)
 				}
+			}
+
+			/**
+			 * Returns whether or not this model represents collapsible whitespace.
+			 * 
+			 * @return {@code true} if this is a collapsible text model.
+			 */
+			isWhitespace << {
+				return delegate.size() == 1 && first().whitespace
 			}
 
 			/**
@@ -154,6 +226,16 @@ class ModelExtensions {
 			 */
 			last << {
 				return delegate.get(delegate.size() - 1)
+			}
+
+			/**
+			 * Returns a new model iterator over this model.
+			 * 
+			 * @param modelFactory
+			 * @return New model iterator.
+			 */
+			modelIterator << {
+				return new ModelIterator(delegate)
 			}
 
 			/**
