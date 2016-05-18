@@ -69,4 +69,15 @@ class ModelIterator implements Iterator<IModel> {
 
 		return subModel
 	}
+
+	/**
+	 * Not applicable for this iterator.
+	 * 
+	 * @throws UnsupportedOperationException
+	 */
+	@Override
+	void remove() {
+
+		throw new UnsupportedOperationException()
+	}
 }
