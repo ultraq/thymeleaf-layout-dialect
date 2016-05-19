@@ -113,7 +113,7 @@ class HtmlDocumentDecorator implements Decorator {
 
 		// Find the root element of the target document to merge
 		// TODO: Way of obtaining a model from within a model
-		def rootElementEventIndex = targetDocumentModel.findIndex { targetDocumentEvent ->
+		def rootElementEventIndex = targetDocumentModel.findIndexOf { targetDocumentEvent ->
 			return targetDocumentEvent instanceof IOpenElementTag
 		}
 		def targetDocumentRootModel = modelFinder.find(targetDocumentTemplate,

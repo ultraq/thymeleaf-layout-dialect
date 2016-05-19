@@ -21,6 +21,7 @@ import nz.net.ultraq.thymeleaf.decorators.xml.XmlElementDecorator
 
 import org.thymeleaf.model.IModel
 import org.thymeleaf.model.IModelFactory
+import org.thymeleaf.model.IOpenElementTag
 
 /**
  * A decorator specific to processing an HTML {@code <head>} element.
@@ -64,7 +65,26 @@ class HtmlHeadDecorator extends XmlElementDecorator {
 			return
 		}
 
-		// TODO
+		// Replace the target title with the source one if present
+		def titleEventIndexFinder = { event ->
+			return event instanceof IOpenElementTag && event.elementCompleteName == 'title'
+		}
+
+		def sourceTitle;
+		def sourceTitleIndex = sourceHeadModel.findIndexOf(titleEventIndexFinder)
+		if (sourceTitleIndex != -1) {
+			sourceTitle = sourceHeadModel.getModel(sourceTitleIndex)
+			sourceHeadModel.removeModel(sourceTitleIndex)
+
+			def targetTitleIndex = targetHeadModel.findIndexOf(titleEventIndexFinder)
+			if (targetTitleIndex != -1) {
+				targetHeadModel.removeModel(targetTitleIndex)
+			}
+
+			targetHeadModel.insertModelWithWhitespace(1, sourceTitle)
+		}
+
+		// TODO: complicated title replacement
 /*
 		// Copy the content and decorator <title>s
 		// TODO: Surely the code below can be simplified?  The 2 conditional
@@ -102,17 +122,13 @@ class HtmlHeadDecorator extends XmlElementDecorator {
 		// the current merging strategy, placing the resulting title at the
 		// beginning of it
 		if (sourceHeadModel.hasContent()) {
-			def sourceHeadModelIterator = sourceHeadModel.modelIterator(modelFactory)
-			while (sourceHeadModelIterator.hasNext()) {
-				def sourceHeadSubModel = sourceHeadModelIterator.next()
+			sourceHeadModel.modelIterator().each { sourceHeadSubModel ->
 				def position = sortingStrategy.findPositionForModel(targetHeadModel, sourceHeadSubModel)
 				if (position != -1) {
 					targetHeadModel.insertModelWithWhitespace(position, sourceHeadSubModel)
 				}
 			}
 		}
-		// TODO
-//		decoratorHead.insertChildWithWhitespace(titleContainer, 0)
 
 		super.decorate(targetHeadModel, targetHeadTemplate, sourceHeadModel, sourceHeadTemplate)
 	}

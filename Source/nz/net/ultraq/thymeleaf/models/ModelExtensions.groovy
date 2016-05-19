@@ -78,7 +78,7 @@ class ModelExtensions {
 			 * @return The first event index to match the closure criteria, or
 			 *         {@code null} if nothing matched.
 			 */
-			findIndex << { Closure closure ->
+			findIndexOf << { Closure closure ->
 				for (def i = 0; i < delegate.size(); i++) {
 					def event = delegate.get(i)
 					def result = closure(event)
@@ -86,7 +86,7 @@ class ModelExtensions {
 						return i;
 					}
 				}
-				return null
+				return -1
 			}
 
 			/**
@@ -127,45 +127,24 @@ class ModelExtensions {
 			 * @return Model at the given position.
 			 */
 			getModel << { int pos ->
-
-				def eventIndex = pos
-				def startIndex = eventIndex
-
-				def event = delegate.get(eventIndex++)
-
-				// Gather all element children as part of this model
-				if (event instanceof IOpenElementTag) {
-					def level = 0
-					while (true) {
-						event = delegate.get(eventIndex++)
-						if (event instanceof IOpenElementTag) {
-							level++
-						}
-						if (event instanceof ICloseElementTag) {
-							if (level == 0) {
-								break;
-							}
-							level--
-						}
-					}
-				}
-				def endIndex = eventIndex
-
-				// Create a new model that contains only the events from the start to the end indices
+				def modelSize = calculateModelSize(delegate, pos)
 				def subModel = delegate.cloneModel()
-				while (endIndex < subModel.size()) {
+				while (pos + modelSize < subModel.size()) {
 					subModel.removeLast()
 				}
-				while (endIndex - startIndex < subModel.size()) {
+				while (modelSize < subModel.size()) {
 					subModel.removeFirst()
 				}
-
 				return subModel
 			}
 
 			/**
 			 * Return whether or not a model has content by checking if it has any
 			 * underlying events.
+			 * 
+			 * TODO: Not too fond of this name.  Maybe "hasEvents" is better.  Or, can
+			 *       I just use the asBoolean to make a model evaluate to 'false' if
+			 *       it has no events.
 			 * 
 			 * @return {@code true} if the model contains events.
 			 */
@@ -243,6 +222,22 @@ class ModelExtensions {
 			 */
 			removeFirst << {
 				delegate.remove(0)
+			}
+
+			/**
+			 * Removes a models-worth of events from the specified position.  What
+			 * this means is that, if the event at the position is an opening element,
+			 * then it, and everything up to and including its matching end element,
+			 * is removed.
+			 * 
+			 * @param pos
+			 */
+			removeModel << { int pos ->
+				def modelSize = calculateModelSize(delegate, pos)
+				while (modelSize > 0) {
+					delegate.remove(pos)
+					modelSize--
+				}
 			}
 
 			/**
@@ -329,5 +324,40 @@ class ModelExtensions {
 				return delegate.text.trim().empty
 			}
 		}
+	}
+
+	/**
+	 * If an opening element exists at the given position, this method will
+	 * return the 'size' of that element (number of events from here to its
+	 * matching closing tag).  Otherwise, a size of 1 is returned.
+	 * 
+	 * @param model
+	 * @param index
+	 * @return Size of an element from the given position, or 1 if the event
+	 *         at the position isn't an opening element.
+	 */
+	private static int calculateModelSize(IModel model, int index) {
+
+		def eventIndex = index
+		def event = model.get(eventIndex++)
+
+		if (event instanceof IOpenElementTag) {
+			def level = 0
+			while (true) {
+				event = model.get(eventIndex++)
+				if (event instanceof IOpenElementTag) {
+					level++
+				}
+				if (event instanceof ICloseElementTag) {
+					if (level == 0) {
+						break;
+					}
+					level--
+				}
+			}
+			return eventIndex - index
+		}
+
+		return 1
 	}
 }
