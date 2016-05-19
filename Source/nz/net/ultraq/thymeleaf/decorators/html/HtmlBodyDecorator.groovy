@@ -52,8 +52,8 @@ class HtmlBodyDecorator extends XmlElementDecorator {
 
 		// Try to ensure there is a body as a result of decoration, applying the
 		// source body, or just using what is in the target
-		if (sourceBodyModel.hasContent()) {
-			if (targetBodyModel.hasContent()) {
+		if (sourceBodyModel) {
+			if (targetBodyModel) {
 				super.decorate(targetBodyModel, targetBodyTemplate, sourceBodyModel, sourceBodyTemplate)
 			}
 			else {

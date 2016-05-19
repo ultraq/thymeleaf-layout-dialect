@@ -58,8 +58,8 @@ class HtmlHeadDecorator extends XmlElementDecorator {
 
 		// Try to ensure there is a head as a result of decoration, applying the
 		// source head, or just using what is in the target
-		if (!targetHeadModel.hasContent()) {
-			if (sourceHeadModel.hasContent()) {
+		if (!targetHeadModel) {
+			if (sourceHeadModel) {
 				targetHeadModel.replaceModel(sourceHeadModel)
 			}
 			return
@@ -121,7 +121,7 @@ class HtmlHeadDecorator extends XmlElementDecorator {
 		// Merge the source <head> elements with the target <head> elements using
 		// the current merging strategy, placing the resulting title at the
 		// beginning of it
-		if (sourceHeadModel.hasContent()) {
+		if (sourceHeadModel) {
 			sourceHeadModel.modelIterator().each { sourceHeadSubModel ->
 				def position = sortingStrategy.findPositionForModel(targetHeadModel, sourceHeadSubModel)
 				if (position != -1) {

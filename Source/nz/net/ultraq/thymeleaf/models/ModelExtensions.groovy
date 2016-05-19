@@ -41,11 +41,11 @@ class ModelExtensions {
 
 			/**
 			 * Set that a model evaluates to 'false' if it has no events.
-			 *
+			 * 
 			 * @return {@code true} if this model has events.
 			 */
 			asBoolean << {
-				return hasContent()
+				return delegate.size() > 0
 			}
 
 			/**
@@ -145,20 +145,6 @@ class ModelExtensions {
 					subModel.removeFirst()
 				}
 				return subModel
-			}
-
-			/**
-			 * Return whether or not a model has content by checking if it has any
-			 * underlying events.
-			 * 
-			 * TODO: Not too fond of this name.  Maybe "hasEvents" is better.  Or, can
-			 *       I just use the asBoolean to make a model evaluate to 'false' if
-			 *       it has no events.
-			 * 
-			 * @return {@code true} if the model contains events.
-			 */
-			hasContent << {
-				return delegate.size() > 0
 			}
 
 			/**

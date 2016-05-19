@@ -56,7 +56,7 @@ class AttributeMerger implements ModelMerger {
 	@Override
 	void merge(IModel targetModel, IModel sourceModel) {
 
-		if (!targetModel.hasContent() || !sourceModel.hasContent()) {
+		if (!targetModel || !sourceModel) {
 			return
 		}
 
