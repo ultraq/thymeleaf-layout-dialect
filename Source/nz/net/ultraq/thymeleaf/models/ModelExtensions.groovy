@@ -40,6 +40,15 @@ class ModelExtensions {
 		IModel.metaClass {
 
 			/**
+			 * Set that a model evaluates to 'false' if it has no events.
+			 *
+			 * @return {@code true} if this model has events.
+			 */
+			asBoolean << {
+				return hasContent()
+			}
+
+			/**
 			 * Iterate through each event in the model.  This is similar to what the
 			 * {@code accept} method does.
 			 * 
@@ -237,6 +246,20 @@ class ModelExtensions {
 				while (modelSize > 0) {
 					delegate.remove(pos)
 					modelSize--
+				}
+			}
+
+			/**
+			 * Removes a models-worth of events from the specified position, plus the
+			 * preceeding whitespace event if any.
+			 * 
+			 * @param pos
+			 */
+			removeModelWithWhitespace << { int pos ->
+				removeModel(pos)
+				def priorEvent = delegate.get(pos - 1)
+				if (priorEvent.whitespace) {
+					delegate.remove(pos - 1)
 				}
 			}
 
