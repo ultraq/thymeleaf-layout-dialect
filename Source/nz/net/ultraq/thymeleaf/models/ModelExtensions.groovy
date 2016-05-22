@@ -21,6 +21,7 @@ import org.thymeleaf.model.IAttribute
 import org.thymeleaf.model.ICloseElementTag
 import org.thymeleaf.model.IModel
 import org.thymeleaf.model.IOpenElementTag
+import org.thymeleaf.model.IStandaloneElementTag
 import org.thymeleaf.model.ITemplateEvent
 import org.thymeleaf.model.IText
 
@@ -56,8 +57,40 @@ class ModelExtensions {
 			 */
 			each << { Closure closure ->
 				for (def i = 0; i < delegate.size(); i++) {
-					closure(delegate.get(i))
+					closure(delegate.get(i), i)
 				}
+			}
+
+			/**
+			 * Compare 2 models, returning {@code true} if all of the model's events
+			 * are equal.
+			 * 
+			 * @param other
+			 * @return {@code true} if this model is the same as the other one.
+			 */
+			equals << { Object other ->
+				if (other instanceof IModel && delegate.size() == other.size()) {
+					return everyWithIndex { event, index ->
+						return event == other.get(index)
+					}
+				}
+				return false
+			}
+
+			/**
+			 * Return {@code true} only if all the events in the model return
+			 * {@code true} for the given closure.
+			 * 
+			 * @param closure
+			 * @return {@code true} if every event satisfies the closure.
+			 */
+			everyWithIndex << { Closure closure ->
+				for (def i = 0; i < delegate.size(); i++) {
+					if (!closure(delegate.get(i), i)) {
+						return false
+					}
+				}
+				return true
 			}
 
 			/**
@@ -220,6 +253,13 @@ class ModelExtensions {
 			}
 
 			/**
+			 * Removes the last event on the model.
+			 */
+			removeLast << {
+				delegate.remove(delegate.size() - 1)
+			}
+
+			/**
 			 * Removes a models-worth of events from the specified position.  What
 			 * this means is that, if the event at the position is an opening element,
 			 * then it, and everything up to and including its matching end element,
@@ -247,13 +287,6 @@ class ModelExtensions {
 				if (priorEvent.whitespace) {
 					delegate.remove(pos - 1)
 				}
-			}
-
-			/**
-			 * Removes the last event on the model.
-			 */
-			removeLast << {
-				delegate.remove(delegate.size() - 1)
 			}
 
 			/**
@@ -294,6 +327,53 @@ class ModelExtensions {
 			}
 		}
 
+		IOpenElementTag.metaClass {
+
+			/**
+			 * Compares this open tag with another.
+			 * 
+			 * @param other
+			 * @return {@code true} if this tag has the same name and attributes as
+			 *         the other element.
+			 */
+			equals << { Object other ->
+				return other instanceof IOpenElementTag &&
+						delegate.elementCompleteName == other.elementCompleteName &&
+						delegate.attributeMap == other.attributeMap;
+			}
+		}
+
+		ICloseElementTag.metaClass {
+
+			/**
+			 * Compares this close tag with another.
+			 * 
+			 * @param other
+			 * @return {@code true} if this tag has the same name as the other
+			 *         element.
+			 */
+			equals << { Object other ->
+				return other instanceof ICloseElementTag &&
+						delegate.elementCompleteName == other.elementCompleteName
+			}
+		}
+
+		IStandaloneElementTag.metaClass {
+
+			/**
+			 * Compares this standalone tag with another.
+			 * 
+			 * @param other
+			 * @return {@code true} if this tag has the same name and attributes as
+			 *         the other element.
+			 */
+			equals << { Object other ->
+				return other instanceof IStandaloneElementTag &&
+					delegate.elementCompleteName == other.elementCompleteName &&
+					delegate.attributeMap == other.attributeMap;
+			}
+		}
+
 		IAttribute.metaClass {
 
 			/**
@@ -323,6 +403,16 @@ class ModelExtensions {
 		}
 
 		IText.metaClass {
+
+			/**
+			 * Compares this text with another.
+			 * 
+			 * @param other
+			 * @return {@code true} if the text content matches.
+			 */
+			equals << { Object other ->
+				return other instanceof IText && delegate.text == other.text
+			}
 
 			/**
 			 * Returns whether or not this text event is collapsible whitespace.
