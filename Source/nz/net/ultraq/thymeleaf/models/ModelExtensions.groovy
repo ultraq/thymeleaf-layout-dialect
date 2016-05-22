@@ -57,7 +57,7 @@ class ModelExtensions {
 			 */
 			each << { Closure closure ->
 				for (def i = 0; i < delegate.size(); i++) {
-					closure(delegate.get(i), i)
+					closure(delegate.get(i))
 				}
 			}
 
