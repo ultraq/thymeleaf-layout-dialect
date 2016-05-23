@@ -84,7 +84,7 @@ class DecoratorProcessor extends AbstractAttributeModelProcessor {
 
 		def modelFactory          = context.modelFactory
 		def contentTemplateName   = context.templateData.template
-		def decoratorTemplateName = new ExpressionProcessor(context).process(attributeValue)
+		def decoratorTemplateName = new ExpressionProcessor(context).processAsString(attributeValue)
 
 		// Locate the template to 'redirect' processing to by completely replacing
 		// the current document with it

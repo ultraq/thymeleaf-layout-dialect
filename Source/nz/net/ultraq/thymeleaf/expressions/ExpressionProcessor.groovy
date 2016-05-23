@@ -21,8 +21,7 @@ import org.thymeleaf.standard.expression.StandardExpressions
 
 /**
  * Simple utility that hides the Thymeleaf scaffolding required to process
- * (parse and execute) an expression.  Used for the very basic expressions used
- * with the layout dialect that always result in a template or fragment name.
+ * (parse and execute) an expression.
  * 
  * @author Emanuel Rabina
  */
@@ -41,17 +40,29 @@ class ExpressionProcessor {
 	}
 
 	/**
-	 * Process an expression given to the layout dialect, returning the string
-	 * that names a template or a fragment.
+	 * Process an expression, returning either an expression or object that best
+	 * matches the expression being processed.
 	 * 
 	 * @param expression
-	 * @return Template or fragment name string.
+	 * @return The expression object for the expression type.
 	 */
-	String process(String expression) {
+	Object process(String expression) {
 
 		return StandardExpressions.getExpressionParser(context.configuration)
 			.parseExpression(context, expression)
 			.execute(context)
-			.toString()
+	}
+
+	/**
+	 * Process an expression and return the result as a string.  Useful for
+	 * expressions that expect a simple result, such as a template or fragment
+	 * name.
+	 * 
+	 * @param expression
+	 * @return The expression as a string.
+	 */
+	String processAsString(String expression) {
+
+		return process(expression).toString()
 	}
 }
