@@ -104,6 +104,9 @@ class ModelBuilder extends BuilderSupport {
 
 		def model = modelFactory.createModel()
 		model.add(modelFactory.createOpenElementTag(name, attributes, AttributeValueQuotes.DOUBLE, false));
+		if (value) {
+			model.add(modelFactory.createText(value))
+		}
 		model.add(modelFactory.createCloseElementTag(name));
 		return model
 	}
@@ -116,9 +119,22 @@ class ModelBuilder extends BuilderSupport {
 	 * @param child
 	 */
 	@Override
-	protected void setParent(Object parent, Object child) {
+	protected void nodeCompleted(Object parent, Object child) {
 
-		// TODO: Insert w/ whitespace?
-		parent.insertModel(parent.size() - 1, child)
+		if (parent != null) {
+
+			// TODO: Insert w/ whitespace?
+			parent.insertModel(parent.size() - 1, child)
+		}
+	}
+
+	/**
+	 * Does nothing.  Because models only copy events when added to one another,
+	 * we can't just add child events at this point - we need to wait until that
+	 * child has had it's children added, and so on.  So the parent/child link is
+	 * made in the {@link ModelBuilder#nodeCompleted} method instead.
+	 */
+	@Override
+	protected void setParent(Object parent, Object child) {
 	}
 }

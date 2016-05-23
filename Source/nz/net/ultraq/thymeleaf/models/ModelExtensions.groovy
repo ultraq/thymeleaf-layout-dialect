@@ -78,6 +78,44 @@ class ModelExtensions {
 			}
 
 			/**
+			 * Compare 2 models, returning {@code true} if all of the model's events
+			 * non-whitespace events are equal.
+			 * 
+			 * @param other
+			 * @return {@code true} if this model is the same (barring whitespace) as
+			 *         the other one.
+			 */
+			equalsIgnoreWhitespace << { IModel other ->
+
+				def thisEventIndex = 0
+				def otherEventIndex = 0
+
+				while (thisEventIndex < delegate.size() || otherEventIndex < other.size()) {
+					def thisEvent = delegate.get(thisEventIndex)
+					def otherEvent = other.get(otherEventIndex)
+					if (thisEvent.whitespace) {
+						thisEventIndex++
+						continue
+					}
+					else if (otherEvent.whitespace) {
+						otherEventIndex++
+						continue
+					}
+					if (thisEvent != otherEvent) {
+						return false
+					}
+					thisEventIndex++
+					otherEventIndex++
+				}
+
+				if (thisEventIndex != delegate.size() || otherEventIndex != other.size()) {
+					return false
+				}
+
+				return true
+			}
+
+			/**
 			 * Return {@code true} only if all the events in the model return
 			 * {@code true} for the given closure.
 			 * 
