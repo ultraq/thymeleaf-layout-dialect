@@ -16,16 +16,9 @@
 
 package nz.net.ultraq.thymeleaf.fragments
 
-import nz.net.ultraq.thymeleaf.includes.IncludeProcessor
-import nz.net.ultraq.thymeleaf.includes.ReplaceProcessor
-import nz.net.ultraq.thymeleaf.models.ModelFinder
-
-import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.engine.TemplateModel
-import org.thymeleaf.model.ICloseElementTag
 import org.thymeleaf.model.IModel
 import org.thymeleaf.model.IOpenElementTag
-import org.thymeleaf.templatemode.TemplateMode
 
 /**
  * Searches for and returns layout dialect fragments within a given
@@ -35,75 +28,45 @@ import org.thymeleaf.templatemode.TemplateMode
  */
 class FragmentFinder {
 
-	private final ModelFinder modelFinder
 	private final String dialectPrefix
-
-	/**
-	 * Constructor, create a new fragment finder for the context and template
-	 * mode.
-	 * 
-	 * @param context
-	 * @param templateMode
-	 * @param dialectPrefix
-	 */
-	FragmentFinder(ITemplateContext context, TemplateMode templateMode, String dialectPrefix) {
-
-		this(new ModelFinder(context, templateMode), dialectPrefix)
-	}
 
 	/**
 	 * Constructor, create a new fragment finder using an existing model finder.
 	 * 
-	 * @param modelFinder
 	 * @param dialectPrefix
 	 */
-	FragmentFinder(ModelFinder modelFinder, String dialectPrefix) {
+	FragmentFinder(String dialectPrefix) {
 
-		this.modelFinder   = modelFinder
 		this.dialectPrefix = dialectPrefix
 	}
 
 	/**
 	 * Find and return models for layout dialect fragments within the scope of the
-	 * given element, without delving into {@code layout:include} or
+	 * given model, without delving into {@code layout:include} or
 	 * {@code layout:replace} elements, mapped by the name of each fragment.
 	 * 
-	 * @param templateName Name of the current template
-	 * @param model        Element whose children are to be searched.
+	 * @param model Model whose events are to be searched.
 	 * @return Map of fragment names and their elements.
 	 */
-	Map<String,TemplateModel> findFragments(String templateName, IModel model) {
+	Map<String,TemplateModel> findFragments(IModel model) {
 
 		def fragments = [:]
-		def isLayoutElement = { elementTag ->
-			return elementTag.hasAttribute(dialectPrefix, IncludeProcessor.PROCESSOR_NAME) ||
-			       elementTag.hasAttribute(dialectPrefix, ReplaceProcessor.PROCESSOR_NAME)
-		}
 
-		// TODO: Replace with some way of extracting models from models
-		// NOTE: Using element definitions to match open and close tags, probably
-		//       not going to work...  Other options include counting the level
-		//       we're at.
-		def insideLayoutElementDefinition = null
+		// TODO: Don't go into layout:include/replace/insert elements
 
-		model.each { event ->
+		def eventIndex = 0
+		while (eventIndex < model.size()) {
+			def event = model.get(eventIndex)
 			if (event instanceof IOpenElementTag) {
-				if (!insideLayoutElementDefinition) {
-					def fragmentAttribute = event.getAttribute(dialectPrefix, FragmentProcessor.PROCESSOR_NAME)
-					if (fragmentAttribute) {
-						def fragmentName = fragmentAttribute.value
-						fragments << [(fragmentName): modelFinder.findFragment(templateName, fragmentName, dialectPrefix)]
-					}
-					if (isLayoutElement(event)) {
-						insideLayoutElementDefinition = event.elementDefinition
-					}
+				def fragmentName = event.getAttributeValue(dialectPrefix, FragmentProcessor.PROCESSOR_NAME)
+				if (fragmentName) {
+					def fragment = model.getModel(eventIndex)
+					fragments << [(fragmentName): fragment]
+					eventIndex += fragment.size()
+					continue
 				}
 			}
-			else if (event instanceof ICloseElementTag) {
-				if (insideLayoutElementDefinition == event.elementDefinition) {
-					insideLayoutElementDefinition = null
-				}
-			}
+			eventIndex++
 		}
 
 		return fragments

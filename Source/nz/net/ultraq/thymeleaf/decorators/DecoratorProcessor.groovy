@@ -93,8 +93,7 @@ class DecoratorProcessor extends AbstractAttributeModelProcessor {
 
 		// Gather all fragment parts from this page to apply to the new document
 		// after decoration has taken place
-		def pageFragments = new FragmentFinder(modelFinder, dialectPrefix)
-			.findFragments(contentTemplateName, model)
+		def pageFragments = new FragmentFinder(dialectPrefix).findFragments(model)
 
 		// Choose the decorator to use based on template mode, then apply it
 		def decorator =
@@ -111,7 +110,7 @@ class DecoratorProcessor extends AbstractAttributeModelProcessor {
 
 		// TODO: The modified decorator template includes anything outside the root
 		//       element, which we don't want for the next step.  Strip those events
-		//       out for now,  but for future I should find a better way to merge
+		//       out for now, but for future I should find a better way to merge
 		//       documents.
 		while (!(decoratorTemplate.first() instanceof IOpenElementTag)) {
 			decoratorTemplate.removeFirst()

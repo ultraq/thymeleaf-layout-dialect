@@ -73,12 +73,12 @@ class FragmentProcessor extends AbstractAttributeModelProcessor {
 					You don't need to put the layout:fragment attribute into the <head>
 					section - the decoration process will automatically copy the <head>
 					section of your content templates into your layout page.
-				'''.stripMargin())
+				'''.stripIndent().trim())
 			}
 		}
 
 		// Locate the fragment that corresponds to this decorator/include fragment
-		def fragmentName = new ExpressionProcessor(context).process(attributeValue)
+		def fragmentName = new ExpressionProcessor(context).processAsString(attributeValue)
 		def fragment = FragmentMap.get(context)[(fragmentName)]
 
 		// Replace this model with the fragment
