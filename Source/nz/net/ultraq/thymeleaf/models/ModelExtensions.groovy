@@ -189,6 +189,19 @@ class ModelExtensions {
 			}
 
 			/**
+			 * Returns the first instance of a model that meets the given closure
+			 * criteria.
+			 * 
+			 * @param closure
+			 * @return A model over the event that matches the closure criteria, or
+			 *         {@code null} if nothing matched.
+			 */
+			findModel << { Closure closure ->
+				def eventIndex = findIndexOf(closure)
+				return eventIndex != -1 ? getModel(eventIndex) : null
+			}
+
+			/**
 			 * Returns the first event on the model.
 			 * 
 			 * @return The model's first event, or {@code null} if the model has no

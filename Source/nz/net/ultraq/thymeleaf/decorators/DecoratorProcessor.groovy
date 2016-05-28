@@ -98,7 +98,7 @@ class DecoratorProcessor extends AbstractAttributeModelProcessor {
 		// Choose the decorator to use based on template mode, then apply it
 		def decorator =
 			templateMode == TemplateMode.HTML ? new HtmlDocumentDecorator(modelFactory, modelFinder, sortingStrategy) :
-			templateMode == TemplateMode.XML  ? new XmlDocumentDecorator(modelFactory, modelFinder) :
+			templateMode == TemplateMode.XML  ? new XmlDocumentDecorator(modelFactory) :
 			null
 		if (!decorator) {
 			throw new IllegalArgumentException("""

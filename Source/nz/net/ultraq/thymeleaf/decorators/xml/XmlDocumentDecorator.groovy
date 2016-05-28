@@ -32,18 +32,15 @@ import org.thymeleaf.model.IOpenElementTag
 class XmlDocumentDecorator implements Decorator {
 
 	protected final IModelFactory modelFactory
-	protected final ModelFinder modelFinder
 
 	/**
 	 * Constructor, set up the document decorator context.
 	 * 
 	 * @param modelFactory
-	 * @param modelFinder
 	 */
-	XmlDocumentDecorator(IModelFactory modelFactory, ModelFinder modelFinder) {
+	XmlDocumentDecorator(IModelFactory modelFactory) {
 
 		this.modelFactory = modelFactory
-		this.modelFinder  = modelFinder
 	}
 
 	/**
@@ -77,11 +74,9 @@ class XmlDocumentDecorator implements Decorator {
 //		}
 
 		// Find the root element of the target document to merge
-		// TODO: Way of obtaining a model from within a model
-		def targetDocumentRootElement = targetDocumentModel.find { targetDocumentEvent ->
+		def targetDocumentRootModel = targetDocumentModel.findModel { targetDocumentEvent ->
 			return targetDocumentEvent instanceof IOpenElementTag
 		}
-		def targetDocumentRootModel = modelFinder.find(targetDocumentTemplate, targetDocumentRootElement.elementCompleteName)
 
 		// Bring the decorator into the content page (which is the one being processed)
 		new AttributeMerger(modelFactory).merge(targetDocumentRootModel, sourceDocumentModel)
