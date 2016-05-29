@@ -108,13 +108,12 @@ class HtmlDocumentDecorator implements Decorator {
 
 
 		// Find the root element of the target document to merge
-		def rootElementEventIndex = targetDocumentModel.findIndexOf { targetDocumentEvent ->
+		def targetDocumentRootModel = targetDocumentModel.findModel { targetDocumentEvent ->
 			return targetDocumentEvent instanceof IOpenElementTag
 		}
-		def targetDocumentRootModel = targetDocumentModel.getModel(rootElementEventIndex)
 
 		// Bring the decorator into the content page (which is the one being processed)
 		new AttributeMerger(modelFactory).merge(targetDocumentRootModel, sourceDocumentModel)
-		targetDocumentModel.replace(rootElementEventIndex, targetDocumentRootModel.get(0))
+		targetDocumentModel.replace(targetDocumentRootModel.index, targetDocumentRootModel.get(0))
 	}
 }

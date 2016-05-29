@@ -135,6 +135,10 @@ class ModelExtensions {
 			 * Returns the first event in the model that meets the criteria of the
 			 * given closure.
 			 * 
+			 * Models returned via this method are also aware of their position in the
+			 * event queue of the parent model, accessible via their {@code index}
+			 * property.
+			 * 
 			 * @param closure
 			 * @return The first event to match the closure criteria, or {@code null}
 			 *         if nothing matched.
@@ -144,6 +148,7 @@ class ModelExtensions {
 					def event = delegate.get(i)
 					def result = closure(event)
 					if (result) {
+						event.metaClass.index = i
 						return event;
 					}
 				}
@@ -151,54 +156,25 @@ class ModelExtensions {
 			}
 
 			/**
-			 * Returns the index of the first event in the model that meets the
-			 * criteria of the given closure.
-			 * 
-			 * @param closure
-			 * @return The first event index to match the closure criteria, or
-			 *         {@code null} if nothing matched.
-			 */
-			findIndexOf << { Closure closure ->
-				for (def i = 0; i < delegate.size(); i++) {
-					def event = delegate.get(i)
-					def result = closure(event)
-					if (result) {
-						return i;
-					}
-				}
-				return -1
-			}
-
-			/**
-			 * Returns the index of the last event in the model that meets the
-			 * criteria of the given closure.
-			 * 
-			 * @param closure
-			 * @return The index of the last event to match the closure criteria, or
-			 *         -1 if no match was found.
-			 */
-			findLastIndexOf << { Closure closure ->
-				for (def i = delegate.size() - 1; i >= 0; i--) {
-					def event = delegate.get(i)
-					def result = closure(event)
-					if (result) {
-						return i
-					}
-				}
-				return -1
-			}
-
-			/**
 			 * Returns the first instance of a model that meets the given closure
 			 * criteria.
+			 * 
+			 * Models returned via this method are also aware of their position in the
+			 * event queue of the parent model, accessible via their {@code index}
+			 * property.
 			 * 
 			 * @param closure
 			 * @return A model over the event that matches the closure criteria, or
 			 *         {@code null} if nothing matched.
 			 */
 			findModel << { Closure closure ->
-				def eventIndex = delegate.findIndexOf(closure)
-				return eventIndex != -1 ? delegate.getModel(eventIndex) : null
+				def event = delegate.find(closure)
+				if (event) {
+					def model = delegate.getModel(event.index)
+					model.metaClass.index = event.index
+					return model
+				}
+				return null
 			}
 
 			/**

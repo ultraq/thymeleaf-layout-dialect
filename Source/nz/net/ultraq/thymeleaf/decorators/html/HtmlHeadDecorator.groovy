@@ -67,15 +67,13 @@ class HtmlHeadDecorator extends XmlElementDecorator {
 			return event instanceof IOpenElementTag && event.elementCompleteName == 'title'
 		}
 
-		def sourceTitle;
-		def sourceTitleIndex = sourceHeadModel.findIndexOf(titleEventIndexFinder)
-		if (sourceTitleIndex != -1) {
-			sourceTitle = sourceHeadModel.getModel(sourceTitleIndex)
-			sourceHeadModel.removeModelWithWhitespace(sourceTitleIndex)
+		def sourceTitle = sourceHeadModel.findModel(titleEventIndexFinder)
+		if (sourceTitle) {
+			sourceHeadModel.removeModelWithWhitespace(sourceTitle.index)
 
-			def targetTitleIndex = targetHeadModel.findIndexOf(titleEventIndexFinder)
-			if (targetTitleIndex != -1) {
-				targetHeadModel.removeModelWithWhitespace(targetTitleIndex)
+			def targetTitle = targetHeadModel.findModel(titleEventIndexFinder)
+			if (targetTitle) {
+				targetHeadModel.removeModelWithWhitespace(targetTitle.index)
 			}
 
 			targetHeadModel.insertModelWithWhitespace(1, sourceTitle)
