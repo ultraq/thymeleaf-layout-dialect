@@ -197,8 +197,8 @@ class ModelExtensions {
 			 *         {@code null} if nothing matched.
 			 */
 			findModel << { Closure closure ->
-				def eventIndex = findIndexOf(closure)
-				return eventIndex != -1 ? getModel(eventIndex) : null
+				def eventIndex = delegate.findIndexOf(closure)
+				return eventIndex != -1 ? delegate.getModel(eventIndex) : null
 			}
 
 			/**
@@ -239,7 +239,7 @@ class ModelExtensions {
 			 * @param model
 			 */
 			insertModelWithWhitespace << { int pos, IModel model ->
-				def whitespace = getModel(pos)  // Assumes that whitespace exists at the insertion point
+				def whitespace = delegate.getModel(pos)  // Assumes that whitespace exists at the insertion point
 				if (whitespace.whitespace) {
 					delegate.insertModel(pos, model)
 					delegate.insertModel(pos, whitespace)
@@ -273,7 +273,7 @@ class ModelExtensions {
 			 * @return {@code true} if this is a collapsible text model.
 			 */
 			isWhitespace << {
-				return delegate.size() == 1 && first().whitespace
+				return delegate.size() == 1 && delegate.first().whitespace
 			}
 
 			/**
