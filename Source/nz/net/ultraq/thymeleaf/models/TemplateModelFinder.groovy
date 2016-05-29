@@ -17,15 +17,16 @@
 package nz.net.ultraq.thymeleaf.models
 
 import org.thymeleaf.context.ITemplateContext
-import org.thymeleaf.model.IModel
+import org.thymeleaf.engine.TemplateModel
 import org.thymeleaf.templatemode.TemplateMode
 
 /**
- * Hides all the scaffolding business required to retrieve models.
+ * A simpler API for retrieving (immutable template) models using Thymeleaf's
+ * template manager.
  * 
  * @author Emanuel Rabina
  */
-class ModelFinder {
+class TemplateModelFinder {
 
 	final ITemplateContext context
 	final TemplateMode templateMode
@@ -36,7 +37,7 @@ class ModelFinder {
 	 * @param context
 	 * @param templateMode
 	 */
-	ModelFinder(ITemplateContext context, TemplateMode templateMode) {
+	TemplateModelFinder(ITemplateContext context, TemplateMode templateMode) {
 
 		this.context      = context
 		this.templateMode = templateMode
@@ -51,35 +52,31 @@ class ModelFinder {
 	 *                     Thymeleaf docs for the DOM selector syntax.
 	 * @return Model for the selected template and element.
 	 */
-	IModel find(String templateName, String selector = null) {
+	TemplateModel find(String templateName, String selector = null) {
 
-		def model = context.configuration.templateManager.parseStandalone(context,
+		return context.configuration.templateManager.parseStandalone(context,
 			templateName, selector ? [selector] as Set : null, templateMode, true, true)
-
-		// Clone model so that we have a mutable model instance.  Also strips the
-		// template start/end events from the event queue.
-		return model.cloneModel()
 	}
 
 	/**
-	 * Return the fragment model specified by the given fragment name expression.
+	 * Return the model specified by the given fragment name expression.
 	 * 
 	 * @param fragmentName
 	 * @param dialectPrefix
 	 * @return Fragment matching the fragment specification.
 	 */
-	IModel findFragment(String templateName, String fragmentName, String dialectPrefix) {
+	TemplateModel findFragment(String templateName, String fragmentName, String dialectPrefix) {
 
 		return find(templateName, "//[${dialectPrefix}:fragment='${fragmentName}' or data-${dialectPrefix}-fragment='${fragmentName}']")
 	}
 
 	/**
-	 * Return the template model specified by the given template name.
+	 * Return a model for an entire template.
 	 * 
 	 * @param templateName
 	 * @return Template model matching the fragment specification.
 	 */
-	IModel findTemplate(String templateName) {
+	TemplateModel findTemplate(String templateName) {
 
 		return find(templateName)
 	}
