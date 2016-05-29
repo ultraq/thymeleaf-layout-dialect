@@ -25,16 +25,11 @@ import org.thymeleaf.model.IModel
  */
 interface Decorator {
 
-	// TODO: Might need to find a way to join source model and template into a
-	//       single object so we don't have excessive method signatures.
-
 	/**
 	 * Decorate the target model with the contents of the source model.
 	 * 
-	 * @param targetModel    The target model to be decorated.
-	 * @param targetTemplate Name of the template from which the target model came.
-	 * @param sourceModel    The source model to use for decorating.
-	 * @param sourceTemplate Name of the template from which the source model came.
+	 * @param targetModel The target model to be decorated.
+	 * @param sourceModel The source model to use for decorating.
 	 */
-	void decorate(IModel targetModel, String targetTemplate, IModel sourceModel, String sourceTemplate)
+	void decorate(IModel targetModel, IModel sourceModel)
 }

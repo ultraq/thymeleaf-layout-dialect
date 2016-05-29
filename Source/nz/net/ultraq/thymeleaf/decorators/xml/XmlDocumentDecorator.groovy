@@ -18,7 +18,6 @@ package nz.net.ultraq.thymeleaf.decorators.xml
 
 import nz.net.ultraq.thymeleaf.decorators.Decorator
 import nz.net.ultraq.thymeleaf.models.AttributeMerger
-import nz.net.ultraq.thymeleaf.models.ModelFinder
 
 import org.thymeleaf.model.IModel
 import org.thymeleaf.model.IModelFactory
@@ -44,11 +43,13 @@ class XmlDocumentDecorator implements Decorator {
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Decorates the target XML document with the source one.
+	 * 
+	 * @param targetDocumentModel
+	 * @param sourceDocumentModel
 	 */
 	@Override
-	void decorate(IModel targetDocumentModel, String targetDocumentTemplate,
-		IModel sourceDocumentModel, String sourceDocumentTemplate) {
+	void decorate(IModel targetDocumentModel, IModel sourceDocumentModel) {
 
 		// TODO
 		// Copy text outside of the root element, keeping whitespace copied to a minimum
@@ -78,7 +79,7 @@ class XmlDocumentDecorator implements Decorator {
 			return targetDocumentEvent instanceof IOpenElementTag
 		}
 
-		// Bring the decorator into the content page (which is the one being processed)
+		// Decorate the target document with the source one (which is the one being processed)
 		new AttributeMerger(modelFactory).merge(targetDocumentRootModel, sourceDocumentModel)
 		targetDocumentModel.replaceModel(targetDocumentRootModel)
 	}

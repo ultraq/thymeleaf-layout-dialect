@@ -48,13 +48,10 @@ class HtmlHeadDecorator extends XmlElementDecorator {
 	 * Decorate the {@code <head>} part.
 	 * 
 	 * @param targetHeadModel
-	 * @param targetHeadTemplate
 	 * @param sourceHeadModel
-	 * @param sourceHeadTemplate
 	 */
 	@Override
-	void decorate(IModel targetHeadModel, String targetHeadTemplate,
-		IModel sourceHeadModel, String sourceHeadTemplate) {
+	void decorate(IModel targetHeadModel, IModel sourceHeadModel) {
 
 		// Try to ensure there is a head as a result of decoration, applying the
 		// source head, or just using what is in the target
@@ -130,6 +127,6 @@ class HtmlHeadDecorator extends XmlElementDecorator {
 			}
 		}
 
-		super.decorate(targetHeadModel, targetHeadTemplate, sourceHeadModel, sourceHeadTemplate)
+		super.decorate(targetHeadModel, sourceHeadModel)
 	}
 }

@@ -19,7 +19,6 @@ package nz.net.ultraq.thymeleaf.decorators.html
 import nz.net.ultraq.thymeleaf.decorators.Decorator
 import nz.net.ultraq.thymeleaf.decorators.SortingStrategy
 import nz.net.ultraq.thymeleaf.models.AttributeMerger
-import nz.net.ultraq.thymeleaf.models.ModelFinder
 
 import org.thymeleaf.model.ICloseElementTag
 import org.thymeleaf.model.IModel
@@ -36,20 +35,17 @@ import org.thymeleaf.model.IOpenElementTag
 class HtmlDocumentDecorator implements Decorator {
 
 	private final IModelFactory modelFactory
-	private final ModelFinder modelFinder
 	private final SortingStrategy sortingStrategy
 
 	/**
 	 * Constructor, apply the given sorting strategy to the decorator.
 	 * 
 	 * @param modelFactory
-	 * @param modelFinder
 	 * @param sortingStrategy
 	 */
-	HtmlDocumentDecorator(IModelFactory modelFactory, ModelFinder modelFinder, SortingStrategy sortingStrategy) {
+	HtmlDocumentDecorator(IModelFactory modelFactory, SortingStrategy sortingStrategy) {
 
 		this.modelFactory    = modelFactory
-		this.modelFinder     = modelFinder
 		this.sortingStrategy = sortingStrategy
 	}
 
@@ -57,22 +53,19 @@ class HtmlDocumentDecorator implements Decorator {
 	 * Decorate an entire HTML page.
 	 * 
 	 * @param targetDocumentModel
-	 * @param targetDocumentTemplate
 	 * @param sourceDocumentModel
-	 * @param sourceDocumentTemplate
 	 */
 	@Override
-	void decorate(IModel targetDocumentModel, String targetDocumentTemplate,
-		IModel sourceDocumentModel, String sourceDocumentTemplate) {
+	void decorate(IModel targetDocumentModel, IModel sourceDocumentModel) {
 
-		// TODO: Expand the model finder to locate models within models so I
-		//       don't have to go through the template manager.  I think it'll
-		//       also reduce the need for me to pass these template names around.
+		def headModelFinder = { event ->
+			return event instanceof IOpenElementTag && event.elementCompleteName == 'head'
+		}
 
-		def targetHeadModel = modelFinder.find(targetDocumentTemplate, 'head')
+		def targetHeadModel = targetDocumentModel.findModel(headModelFinder)
 		new HtmlHeadDecorator(modelFactory, sortingStrategy).decorate(
-			targetHeadModel, targetDocumentTemplate,
-			modelFinder.find(sourceDocumentTemplate, 'head'), sourceDocumentTemplate
+			targetHeadModel,
+			sourceDocumentModel.findModel(headModelFinder)
 		)
 
 		// Replace the head element and events with the decorated one
@@ -97,9 +90,12 @@ class HtmlDocumentDecorator implements Decorator {
 			targetDocumentModel.insertModel(headIndex, targetHeadModel)
 		}
 
+		def bodyModelFinder = { event ->
+			return event instanceof IOpenElementTag && event.elementCompleteName == 'body'
+		}
 		new HtmlBodyDecorator(modelFactory).decorate(
-			modelFinder.find(targetDocumentTemplate, 'body'), targetDocumentTemplate,
-			modelFinder.find(sourceDocumentTemplate, 'body'), sourceDocumentTemplate
+			targetDocumentModel.findModel(bodyModelFinder),
+			sourceDocumentModel.findModel(bodyModelFinder)
 		)
 
 		// TODO
@@ -112,12 +108,10 @@ class HtmlDocumentDecorator implements Decorator {
 
 
 		// Find the root element of the target document to merge
-		// TODO: Way of obtaining a model from within a model
 		def rootElementEventIndex = targetDocumentModel.findIndexOf { targetDocumentEvent ->
 			return targetDocumentEvent instanceof IOpenElementTag
 		}
-		def targetDocumentRootModel = modelFinder.find(targetDocumentTemplate,
-			targetDocumentModel.get(rootElementEventIndex).elementCompleteName)
+		def targetDocumentRootModel = targetDocumentModel.getModel(rootElementEventIndex)
 
 		// Bring the decorator into the content page (which is the one being processed)
 		new AttributeMerger(modelFactory).merge(targetDocumentRootModel, sourceDocumentModel)
