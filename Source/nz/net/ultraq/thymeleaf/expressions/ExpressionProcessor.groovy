@@ -17,6 +17,7 @@
 package nz.net.ultraq.thymeleaf.expressions
 
 import org.thymeleaf.context.ITemplateContext
+import org.thymeleaf.standard.expression.IStandardExpression
 import org.thymeleaf.standard.expression.StandardExpressions
 
 /**
@@ -40,22 +41,32 @@ class ExpressionProcessor {
 	}
 
 	/**
-	 * Process an expression, returning either an expression or object that best
-	 * matches the expression being processed.
+	 * Parses an expression, returning the matching expression type.
 	 * 
 	 * @param expression
-	 * @return The expression object for the expression type.
+	 * @return Matching expression type.
 	 */
-	Object process(String expression) {
+	IStandardExpression parse(String expression) {
 
 		return StandardExpressions.getExpressionParser(context.configuration)
 			.parseExpression(context, expression)
-			.execute(context)
 	}
 
 	/**
-	 * Process an expression and return the result as a string.  Useful for
-	 * expressions that expect a simple result, such as a template or fragment
+	 * Parses and executes an expression, returning the result of the expression
+	 * having been parsed and executed.
+	 * 
+	 * @param expression
+	 * @return The result of the expression being executed.
+	 */
+	Object process(String expression) {
+
+		return parse(expression).execute(context)
+	}
+
+	/**
+	 * Parse and execute an expression, returning the result as a string.  Useful
+	 * for expressions that expect a simple result, such as a template or fragment
 	 * name.
 	 * 
 	 * @param expression

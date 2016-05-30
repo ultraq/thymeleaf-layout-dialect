@@ -50,6 +50,25 @@ class ModelExtensions {
 			}
 
 			/**
+			 * Clears all the events from the model.
+			 */
+			clear << {
+				delegate.reset()
+			}
+
+			/**
+			 * If the model represents an element open to close tags, then this method
+			 * removes all of the inner events.  Otherwise, it does nothing.
+			 */
+			clearBody << {
+				if (delegate.element) {
+					while (delegate.size() > 2) {
+						delegate.remove(1)
+					}
+				}
+			}
+
+			/**
 			 * Iterate through each event in the model.  This is similar to what the
 			 * {@code accept} method does.
 			 * 
@@ -178,6 +197,30 @@ class ModelExtensions {
 			}
 
 			/**
+			 * Returns the first event in the model that meets the criteria of the
+			 * given closure.
+			 * 
+			 * Models returned via this method are also aware of their position in the
+			 * event queue of the parent model, accessible via their {@code index}
+			 * property.
+			 * 
+			 * @param closure
+			 * @return The first event to match the closure criteria, or {@code null}
+			 *         if nothing matched.
+			 */
+			findWithIndex << { Closure closure ->
+				for (def i = 0; i < delegate.size(); i++) {
+					def event = delegate.get(i)
+					def result = closure(event, i)
+					if (result) {
+						event.metaClass.index = i
+						return event;
+					}
+				}
+				return null
+			}
+
+			/**
 			 * Returns the first event on the model.
 			 * 
 			 * @return The model's first event, or {@code null} if the model has no
@@ -241,6 +284,17 @@ class ModelExtensions {
 				else {
 					delegate.insert(event)
 				}
+			}
+
+			/**
+			 * Returns whether or not this model represents an element with potential
+			 * child elements.
+			 * 
+			 * @return {@code true} if the first event in this model is an opening tag
+			 *         and the last event is the matching closing tag.
+			 */
+			isElement << {
+				return delegate.first() instanceof IOpenElementTag && delegate.last() instanceof ICloseElementTag
 			}
 
 			/**

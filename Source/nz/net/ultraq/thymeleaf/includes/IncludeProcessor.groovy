@@ -16,6 +16,11 @@
 
 package nz.net.ultraq.thymeleaf.includes
 
+import nz.net.ultraq.thymeleaf.expressions.ExpressionProcessor
+import nz.net.ultraq.thymeleaf.fragments.FragmentFinder
+import nz.net.ultraq.thymeleaf.fragments.FragmentMap
+import nz.net.ultraq.thymeleaf.models.TemplateModelFinder
+
 import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.engine.AttributeName
 import org.thymeleaf.model.IModel
@@ -30,7 +35,9 @@ import org.thymeleaf.templatemode.TemplateMode
  * construct with context variables alone.
  * 
  * @author Emanuel Rabina
+ * @deprecated Use {@link InsertProcessor} ({@code layout:insert}) instead.
  */
+@Deprecated
 class IncludeProcessor extends AbstractAttributeModelProcessor {
 
 	static final String PROCESSOR_NAME = 'include'
@@ -61,31 +68,25 @@ class IncludeProcessor extends AbstractAttributeModelProcessor {
 		String attributeValue, IElementModelStructureHandler structureHandler) {
 
 		// Locate the page and fragment to include
-/*		def includeFragments = new FragmentFinder(arguments)
-				.findFragments(element.getAttributeValue(attributeName))
+		def fragmentExpression = new ExpressionProcessor(context).parse(attributeValue)
+		def fragmentToInclude = new TemplateModelFinder(context, templateMode).findFragment(
+			fragmentExpression.templateName.toString(), fragmentExpression.fragmentSelector.toString(),
+			dialectPrefix)
 
-		// Gather all fragment parts within the include element, scoping them to
-		// this element
-		def elementFragments = new FragmentMapper().map(element.elementChildren)
-		FragmentMap.setForNode(arguments, element, elementFragments)
+		// Gather all fragment parts within the include element, scoping them to this element
+		def includeFragments = new FragmentFinder(dialectPrefix).findFragments(model)
+		FragmentMap.setForNode(context, structureHandler, includeFragments);
 
-		// Replace the children of this element with those of the include page
-		// fragments.  The 'container' element is copied from how Thymeleaf does
-		// it's include processor, which is to maintain internal structures like
-		// local variables
-		element.clearChildren()
-		if (includeFragments) {
-			def containerElement = new Element('container')
-			includeFragments.each { includeFragment ->
-				containerElement.addChild(includeFragment)
-				containerElement.extractChild(includeFragment)
-			}
-			containerElement.children.each { extractedChild ->
-				element.addChild(extractedChild)
-			}
+		// Keep track of what template is being processed?  Thymeleaf does this for
+		// its include processor, so I'm just doing the same here.
+		structureHandler.templateData = fragmentToInclude.templateData
+
+		// Replace the children of this element with those of the include page fragment
+		model.clearBody()
+
+		// TODO: Probably an easier method of doing this...
+		fragmentToInclude.cloneModel().modelIterator().each { fragmentChildModel ->
+			model.insertModel(model.size() - 1, fragmentChildModel)
 		}
-
-		element.removeAttribute(attributeName)
-		return ProcessorResult.OK
-*/	}
+	}
 }

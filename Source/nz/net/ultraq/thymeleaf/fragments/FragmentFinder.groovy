@@ -16,7 +16,6 @@
 
 package nz.net.ultraq.thymeleaf.fragments
 
-import org.thymeleaf.engine.TemplateModel
 import org.thymeleaf.model.IModel
 import org.thymeleaf.model.IOpenElementTag
 
@@ -48,7 +47,7 @@ class FragmentFinder {
 	 * @param model Model whose events are to be searched.
 	 * @return Map of fragment names and their elements.
 	 */
-	Map<String,TemplateModel> findFragments(IModel model) {
+	Map<String,IModel> findFragments(IModel model) {
 
 		def fragments = [:]
 
