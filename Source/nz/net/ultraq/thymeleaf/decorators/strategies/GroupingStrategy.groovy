@@ -49,7 +49,7 @@ class GroupingStrategy implements SortingStrategy {
 		}
 
 		def type = HeadEventTypes.findMatchingType(childModel)
-		headModel.modelIterator().reverse().find { headSubModel ->
+		headModel.childModelIterator().reverse().find { headSubModel ->
 			return type == HeadEventTypes.findMatchingType(headSubModel)
 		}.endIndex
 	}

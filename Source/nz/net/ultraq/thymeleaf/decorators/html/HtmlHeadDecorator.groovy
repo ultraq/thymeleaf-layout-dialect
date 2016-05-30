@@ -117,7 +117,7 @@ class HtmlHeadDecorator extends XmlElementDecorator {
 		// the current merging strategy, placing the resulting title at the
 		// beginning of it
 		if (sourceHeadModel) {
-			sourceHeadModel.modelIterator().each { sourceHeadSubModel ->
+			sourceHeadModel.childModelIterator().each { sourceHeadSubModel ->
 				def position = sortingStrategy.findPositionForModel(targetHeadModel, sourceHeadSubModel)
 				if (position != -1) {
 					targetHeadModel.insertModelWithWhitespace(position, sourceHeadSubModel)

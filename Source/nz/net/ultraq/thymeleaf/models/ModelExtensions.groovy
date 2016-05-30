@@ -50,6 +50,28 @@ class ModelExtensions {
 			}
 
 			/**
+			 * If this model represents an element, then this method returns an
+			 * iterator over those child events.
+			 * 
+			 * @return An iterator over this model's child events, or an empty
+			 *         iterator for all other model types.
+			 */
+			childEventIterator << {
+				return delegate.element ? new ChildEventIterator(delegate) : new NullIterator()
+			}
+
+			/**
+			 * If this model represents an element, then this method returns an
+			 * iterator over any potential child items as models of their own.
+			 * 
+			 * @param modelFactory
+			 * @return New model iterator.
+			 */
+			childModelIterator << {
+				return delegate.element ? new ChildModelIterator(delegate) : new NullIterator()
+			}
+
+			/**
 			 * Clears all the events from the model.
 			 */
 			clear << {
@@ -60,7 +82,7 @@ class ModelExtensions {
 			 * If the model represents an element open to close tags, then this method
 			 * removes all of the inner events.  Otherwise, it does nothing.
 			 */
-			clearBody << {
+			clearChildren << {
 				if (delegate.element) {
 					while (delegate.size() > 2) {
 						delegate.remove(1)
@@ -314,16 +336,6 @@ class ModelExtensions {
 			 */
 			last << {
 				return delegate.get(delegate.size() - 1)
-			}
-
-			/**
-			 * Returns a new model iterator over this model.
-			 * 
-			 * @param modelFactory
-			 * @return New model iterator.
-			 */
-			modelIterator << {
-				return new ModelIterator(delegate)
 			}
 
 			/**

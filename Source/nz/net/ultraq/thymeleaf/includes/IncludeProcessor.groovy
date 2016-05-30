@@ -82,11 +82,9 @@ class IncludeProcessor extends AbstractAttributeModelProcessor {
 		structureHandler.templateData = fragmentToInclude.templateData
 
 		// Replace the children of this element with those of the include page fragment
-		model.clearBody()
-
-		// TODO: Probably an easier method of doing this...
-		fragmentToInclude.cloneModel().modelIterator().each { fragmentChildModel ->
-			model.insertModel(model.size() - 1, fragmentChildModel)
+		model.clearChildren()
+		fragmentToInclude.cloneModel().childEventIterator().each { fragmentChildEvent ->
+			model.insert(model.size() - 1, fragmentChildEvent)
 		}
 	}
 }

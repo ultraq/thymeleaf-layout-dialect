@@ -17,59 +17,55 @@
 package nz.net.ultraq.thymeleaf.models
 
 import org.thymeleaf.model.IModel
+import org.thymeleaf.model.ITemplateEvent
 
 /**
- * This class provides a way for working with a model's immediate children, by
- * converting events into sub-models of their own.
- * 
- * Models returned by this iterator are also aware of their start/end positions
- * within the event queue of the parent model, accessible via their
- * {@code startIndex}/{@code endIndex} properties.
+ * An iterator over a model's child events, if that model represents an element
+ * with open/close tags at either end.
+ *
+ * Models returned by this iterator are also aware of their position within the
+ * event queue of the parent model, accessible via their {@code index} property.
  * 
  * @author Emanuel Rabina
  */
-class ModelIterator implements Iterator<IModel> {
+class ChildEventIterator implements Iterator<ITemplateEvent> {
 
-	private final IModel model
+	private final IModel parent
 
 	private int currentIndex = 1  // Starts after the root element
 
 	/**
 	 * Constructor, sets the model to iterate over.
 	 * 
-	 * @param model
+	 * @param parent
 	 */
-	ModelIterator(IModel model) {
+	ChildEventIterator(IModel parent) {
 
-		this.model = model
+		this.parent = parent
 	}
 
 	/**
-	 * Returns whether or not there is another sub-model to be retrieved.
+	 * Returns whether or not there is another event to be retrieved.
 	 * 
-	 * @return {@code true} if there are more events to process as models.
+	 * @return {@code true} if there are more events to process.
 	 */
 	@Override
 	boolean hasNext() {
 
-		return currentIndex < (model.size() - 1)
+		return currentIndex < (parent.size() - 1)
 	}
 
 	/**
-	 * Returns the next immediate child model of this model.
+	 * Returns the next event of this model.
 	 * 
-	 * @return The next model in the iteration.
+	 * @return The next event.
 	 */
 	@Override
-	IModel next() {
+	ITemplateEvent next() {
 
-		def subModel = model.getModel(currentIndex)
-
-		subModel.metaClass.startIndex = currentIndex
-		currentIndex += subModel.size()
-		subModel.metaClass.endIndex = currentIndex
-
-		return subModel
+		def event = parent.get(currentIndex)
+		event.metaClass.index = currentIndex++
+		return event
 	}
 
 	/**
