@@ -21,7 +21,6 @@ import nz.net.ultraq.thymeleaf.models.ModelBuilder
 
 import org.junit.Before
 import org.junit.BeforeClass
-import org.junit.Ignore
 import org.junit.Test
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.engine.TemplateData
@@ -32,11 +31,8 @@ import static org.junit.Assert.*
  * Tests the model builder against Thymeleaf's normal model-creation mechanisms
  * to make sure they're equivalent.
  * 
- * TODO: Find a way to get models for templates via Thymeleaf.
- * 
  * @author Emanuel Rabina
  */
-@Ignore
 class ModelBuilderTests {
 
 	private static TemplateEngine templateEngine
