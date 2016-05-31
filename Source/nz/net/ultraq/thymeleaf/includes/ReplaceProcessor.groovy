@@ -16,6 +16,11 @@
 
 package nz.net.ultraq.thymeleaf.includes
 
+import nz.net.ultraq.thymeleaf.expressions.ExpressionProcessor
+import nz.net.ultraq.thymeleaf.fragments.FragmentFinder
+import nz.net.ultraq.thymeleaf.fragments.FragmentMap
+import nz.net.ultraq.thymeleaf.models.TemplateModelFinder
+
 import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.engine.AttributeName
 import org.thymeleaf.model.IModel
@@ -48,7 +53,7 @@ class ReplaceProcessor extends AbstractAttributeModelProcessor {
 	}
 
 	/**
-	 * Locates a page fragment and includes it in the current template.
+	 * Locates a page fragment and uses it to replace the current element.
 	 * 
 	 * @param context
 	 * @param model
@@ -61,24 +66,21 @@ class ReplaceProcessor extends AbstractAttributeModelProcessor {
 		String attributeValue, IElementModelStructureHandler structureHandler) {
 
 		// Locate the page and fragment to include
-/*		def replaceFragments = new FragmentFinder(arguments)
-				.findFragments(element.getAttributeValue(attributeName))
+		def fragmentExpression = new ExpressionProcessor(context).parse(attributeValue)
+		def fragmentToInclude = new TemplateModelFinder(context, templateMode).findFragment(
+			fragmentExpression.templateName.toString(), fragmentExpression.fragmentSelector.toString(),
+			dialectPrefix)
 
-		// Gather all fragment parts within the replace element
-		def elementFragments = new FragmentMapper().map(element.elementChildren)
+		// Gather all fragment parts within the include element, scoping them to this element
+		def includeFragments = new FragmentFinder(dialectPrefix).findFragments(model)
+		FragmentMap.setForNode(context, structureHandler, includeFragments);
 
-		// Replace the children of this element with those of the replace page
-		// fragments, scoping any fragment parts to the immediate children
-		element.clearChildren()
-		if (replaceFragments) {
-			replaceFragments.each { replaceFragment ->
-				element.addChild(replaceFragment)
-				FragmentMap.setForNode(arguments, replaceFragment, elementFragments)
-			}
-		}
-		element.parent.extractChild(element)
+		// Keep track of what template is being processed?  Thymeleaf does this for
+		// its include processor, so I'm just doing the same here.
+		structureHandler.templateData = fragmentToInclude.templateData
 
-		element.removeAttribute(attributeName)
-		return ProcessorResult.OK
-*/	}
+		// Replace the children of this element with those of the include page fragment
+		model.clear()
+		model.addModel(fragmentToInclude.cloneModel())
+	}
 }
