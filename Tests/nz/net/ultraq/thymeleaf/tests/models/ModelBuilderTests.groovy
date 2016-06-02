@@ -75,6 +75,7 @@ class ModelBuilderTests {
 					<header>
 						<h1>Hello!</h1>
 					</header>
+					<hr/>
 					<div class="content">
 						<p>Some random text</p>
 					</div>
@@ -87,6 +88,7 @@ class ModelBuilderTests {
 				header {
 					h1('Hello!')
 				}
+				hr(standalone: true)
 				div(class: 'content') {
 					p('Some random text')
 				}

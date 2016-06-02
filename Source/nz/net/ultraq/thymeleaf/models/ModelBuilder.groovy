@@ -103,11 +103,22 @@ class ModelBuilder extends BuilderSupport {
 	protected IModel createNode(Object name, Map attributes, Object value) {
 
 		def model = modelFactory.createModel()
-		model.add(modelFactory.createOpenElementTag(name, attributes, AttributeValueQuotes.DOUBLE, false));
-		if (value) {
-			model.add(modelFactory.createText(value))
+
+		// Standalone element
+		if (attributes && attributes['standalone']) {
+			attributes.remove('standalone')
+			model.add(modelFactory.createStandaloneElementTag(name, attributes, AttributeValueQuotes.DOUBLE, false, true))
 		}
-		model.add(modelFactory.createCloseElementTag(name));
+
+		// Open/close element and potential text content
+		else {
+			model.add(modelFactory.createOpenElementTag(name, attributes, AttributeValueQuotes.DOUBLE, false));
+			if (value) {
+				model.add(modelFactory.createText(value))
+			}
+			model.add(modelFactory.createCloseElementTag(name));
+		}
+
 		return model
 	}
 
