@@ -40,6 +40,16 @@ class ModelBuilder extends BuilderSupport {
 	}
 
 	/**
+	 * Appends an existing model to the model being built.
+	 * 
+	 * @param model
+	 */
+	public void add(IModel model) {
+
+		current.insertModel(current.size() - 1, model)
+	}
+
+	/**
 	 * Captures the top `build` call so that it doesn't end up as a node in the
 	 * final model.
 	 * 
