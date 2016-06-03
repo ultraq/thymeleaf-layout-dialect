@@ -119,6 +119,10 @@ class ModelBuilder extends BuilderSupport {
 			attributes.remove('standalone')
 			model.add(modelFactory.createStandaloneElementTag(name, attributes, AttributeValueQuotes.DOUBLE, false, true))
 		}
+		else if (attributes && attributes['void']) {
+			attributes.remove('void')
+			model.add(modelFactory.createStandaloneElementTag(name, attributes, AttributeValueQuotes.DOUBLE, false, false))
+		}
 
 		// Open/close element and potential text content
 		else {

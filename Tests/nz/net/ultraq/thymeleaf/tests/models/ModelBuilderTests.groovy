@@ -71,26 +71,42 @@ class ModelBuilderTests {
 		def modelFromTemplate = templateManager.parseString(
 			new TemplateData('test', null, null, TemplateMode.HTML, null),
 			'''
-				<main>
-					<header>
-						<h1>Hello!</h1>
-					</header>
-					<hr/>
-					<div class="content">
-						<p>Some random text</p>
-					</div>
-				</main>
+				<html>
+				<head>
+					<title>Model comparison</title>
+					<meta charset="utf-8">
+				</head>
+				<body>
+					<main>
+						<header>
+							<h1>Hello!</h1>
+						</header>
+						<hr/>
+						<div class="content">
+							<p>Some random text</p>
+						</div>
+					</main>
+				</body>
+				</html>
 			'''.stripIndent().trim(), 0, 0, TemplateMode.HTML, false)
 			.cloneModel() // To drop the template start/end events
 
 		def modelFromBuilder = modelBuilder.build {
-			main {
-				header {
-					h1('Hello!')
+			html {
+				head {
+					title('Model comparison')
+					meta(charset: 'utf-8', void: true)
 				}
-				hr(standalone: true)
-				div(class: 'content') {
-					p('Some random text')
+				body {
+					main {
+						header {
+							h1('Hello!')
+						}
+						hr(standalone: true)
+						div(class: 'content') {
+							p('Some random text')
+						}
+					}
 				}
 			}
 		}
