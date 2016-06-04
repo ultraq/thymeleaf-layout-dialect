@@ -16,6 +16,7 @@
 
 package nz.net.ultraq.thymeleaf.models
 
+import org.thymeleaf.engine.HTMLElementType
 import org.thymeleaf.engine.TemplateModel
 import org.thymeleaf.model.IAttribute
 import org.thymeleaf.model.ICloseElementTag
@@ -24,6 +25,7 @@ import org.thymeleaf.model.IOpenElementTag
 import org.thymeleaf.model.IStandaloneElementTag
 import org.thymeleaf.model.ITemplateEvent
 import org.thymeleaf.model.IText
+import org.thymeleaf.templatemode.TemplateMode
 
 /**
  * Additional methods applied to the Thymeleaf model classes via Groovy
@@ -541,10 +543,17 @@ class ModelExtensions {
 					level++
 				}
 				if (event instanceof ICloseElementTag) {
-					if (level == 0) {
+					if (event.templateMode == TemplateMode.HTML && event.elementDefinition.type == HTMLElementType.VOID) {
+						// Do nothing.  This is to capture closing tags for HTML void
+						// elements which shouldn't be specified according to the HTML spec.
+						// https://html.spec.whatwg.org/multipage/syntax.html#void-elements
+					}
+					else if (level == 0) {
 						break;
 					}
-					level--
+					else {
+						level--
+					}
 				}
 			}
 			return eventIndex - index

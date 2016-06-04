@@ -16,6 +16,8 @@
 
 package nz.net.ultraq.thymeleaf.models
 
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.thymeleaf.engine.ElementDefinitions
 import org.thymeleaf.engine.HTMLElementType
 import org.thymeleaf.model.AttributeValueQuotes
@@ -29,6 +31,8 @@ import org.thymeleaf.templatemode.TemplateMode
  * @author Emanuel Rabina
  */
 class ModelBuilder extends BuilderSupport {
+
+	private static final Logger logger = LoggerFactory.getLogger(ModelBuilder)
 
 	private final ElementDefinitions elementDefinitions
 	private final IModelFactory modelFactory
@@ -135,6 +139,15 @@ class ModelBuilder extends BuilderSupport {
 				model.add(modelFactory.createStandaloneElementTag(name, attributes, AttributeValueQuotes.DOUBLE, false, false))
 			}
 			else {
+				logger.warn("""
+					Instructed to write a closing tag {0} for an HTML void element.  This
+					might cause processing errors further down the track.  To avoid this,
+					either self close the opening element, remove the closing tag, or
+					process this template using the XML processing mode.  See
+					https://html.spec.whatwg.org/multipage/syntax.html#void-elements
+					for more information on HTML void elements.
+				""".stripIndent().trim(), name)
+
 				model.add(modelFactory.createStandaloneElementTag(name, attributes, AttributeValueQuotes.DOUBLE, false, false))
 				model.add(modelFactory.createCloseElementTag(name));
 			}
