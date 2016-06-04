@@ -55,6 +55,11 @@ class HtmlHeadDecorator extends XmlElementDecorator {
 
 		// Try to ensure there is a head as a result of decoration, applying the
 		// source head, or just using what is in the target
+
+		// TODO: Change the decorate method signature to return a result instead of
+		//       modifying the target so that, if the target is null, a value can
+		//       still be returned
+
 		if (!targetHeadModel) {
 			if (sourceHeadModel) {
 				targetHeadModel.replaceModel(sourceHeadModel)
