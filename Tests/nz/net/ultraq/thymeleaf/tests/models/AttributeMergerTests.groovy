@@ -71,7 +71,7 @@ class AttributeMergerTests {
 		}
 
 		new AttributeMerger(modelFactory).merge(target, source)
-		assertEquals(expected, target)
+		assertTrue(expected == target)
 	}
 
 	/**
@@ -91,6 +91,6 @@ class AttributeMergerTests {
 		}
 
 		new AttributeMerger(modelFactory).merge(target, source)
-		assertEquals(expected, target)
+		assertTrue(expected == target)
 	}
 }
