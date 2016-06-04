@@ -21,6 +21,8 @@ import nz.net.ultraq.thymeleaf.fragments.FragmentFinder
 import nz.net.ultraq.thymeleaf.fragments.FragmentMap
 import nz.net.ultraq.thymeleaf.models.TemplateModelFinder
 
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.engine.AttributeName
 import org.thymeleaf.model.IModel
@@ -39,6 +41,8 @@ import org.thymeleaf.templatemode.TemplateMode
  */
 @Deprecated
 class IncludeProcessor extends AbstractAttributeModelProcessor {
+
+	private static final Logger logger = LoggerFactory.getLogger(IncludeProcessor)
 
 	static final String PROCESSOR_NAME = 'include'
 	static final int PROCESSOR_PRECEDENCE = 0
@@ -66,6 +70,12 @@ class IncludeProcessor extends AbstractAttributeModelProcessor {
 	@Override
 	protected void doProcess(ITemplateContext context, IModel model, AttributeName attributeName,
 		String attributeValue, IElementModelStructureHandler structureHandler) {
+
+		logger.warn('''
+			The layout:include/data-layout-include processor is deprecated and will be
+			removed in the next major version of the layout dialect.  Use the
+			layout:insert/data-layout-insert processor instead.
+		'''.stripIndent().trim())
 
 		// Locate the page and fragment for inclusion
 		def fragmentExpression = new ExpressionProcessor(context).parse(attributeValue)
