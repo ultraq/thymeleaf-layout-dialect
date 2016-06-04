@@ -22,6 +22,7 @@ import nz.net.ultraq.thymeleaf.decorators.TitlePatternProcessor
 import nz.net.ultraq.thymeleaf.decorators.strategies.AppendingStrategy
 import nz.net.ultraq.thymeleaf.fragments.FragmentProcessor
 import nz.net.ultraq.thymeleaf.includes.IncludeProcessor
+import nz.net.ultraq.thymeleaf.includes.InsertProcessor
 import nz.net.ultraq.thymeleaf.includes.ReplaceProcessor
 import nz.net.ultraq.thymeleaf.models.ModelExtensions
 
@@ -76,6 +77,7 @@ class LayoutDialect extends AbstractProcessorDialect {
 			new StandardXmlNsTagProcessor(TemplateMode.HTML, dialectPrefix),
 			new DecoratorProcessor(TemplateMode.HTML, dialectPrefix, sortingStrategy),
 			new IncludeProcessor(TemplateMode.HTML, dialectPrefix),
+			new InsertProcessor(TemplateMode.HTML, dialectPrefix),
 			new ReplaceProcessor(TemplateMode.HTML, dialectPrefix),
 			new FragmentProcessor(TemplateMode.HTML, dialectPrefix),
 			new TitlePatternProcessor(TemplateMode.HTML, dialectPrefix),
@@ -84,6 +86,7 @@ class LayoutDialect extends AbstractProcessorDialect {
 			new StandardXmlNsTagProcessor(TemplateMode.XML, dialectPrefix),
 			new DecoratorProcessor(TemplateMode.XML, dialectPrefix, sortingStrategy),
 			new IncludeProcessor(TemplateMode.XML, dialectPrefix),
+			new InsertProcessor(TemplateMode.XML, dialectPrefix),
 			new ReplaceProcessor(TemplateMode.XML, dialectPrefix),
 			new FragmentProcessor(TemplateMode.XML, dialectPrefix)
 		]

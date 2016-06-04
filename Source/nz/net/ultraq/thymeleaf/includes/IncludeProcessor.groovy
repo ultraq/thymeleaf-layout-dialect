@@ -67,9 +67,9 @@ class IncludeProcessor extends AbstractAttributeModelProcessor {
 	protected void doProcess(ITemplateContext context, IModel model, AttributeName attributeName,
 		String attributeValue, IElementModelStructureHandler structureHandler) {
 
-		// Locate the page and fragment to include
+		// Locate the page and fragment for inclusion
 		def fragmentExpression = new ExpressionProcessor(context).parse(attributeValue)
-		def fragmentToInclude = new TemplateModelFinder(context, templateMode).findFragment(
+		def fragmentForInclusion = new TemplateModelFinder(context, templateMode).findFragment(
 			fragmentExpression.templateName.toString(), fragmentExpression.fragmentSelector.toString(),
 			dialectPrefix)
 
@@ -79,11 +79,11 @@ class IncludeProcessor extends AbstractAttributeModelProcessor {
 
 		// Keep track of what template is being processed?  Thymeleaf does this for
 		// its include processor, so I'm just doing the same here.
-		structureHandler.templateData = fragmentToInclude.templateData
+		structureHandler.templateData = fragmentForInclusion.templateData
 
-		// Replace the children of this element with those of the include page fragment
+		// Replace the children of this element with the children of the included page fragment
 		model.clearChildren()
-		fragmentToInclude.cloneModel().childEventIterator().each { fragmentChildEvent ->
+		fragmentForInclusion.cloneModel().childEventIterator().each { fragmentChildEvent ->
 			model.insert(model.size() - 1, fragmentChildEvent)
 		}
 	}

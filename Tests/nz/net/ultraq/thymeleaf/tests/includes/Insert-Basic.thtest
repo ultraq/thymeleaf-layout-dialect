@@ -1,0 +1,42 @@
+
+# Basic test for the layout:insert processor.
+
+%TEMPLATE_MODE HTML
+
+
+%INPUT
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<body>
+	<div layout:insert="~{Page :: text}">
+		<p layout:fragment="more-text">Source text.</p>
+	</div>
+</body>
+</html>
+
+
+%INPUT[Page]
+<!DOCTYPE html>
+<html>
+<body>
+	<div layout:fragment="text">
+		<p>Included text.</p>
+		<p layout:fragment="more-text">Replaced text</p>
+	</div>
+</body>
+</html>
+
+
+%OUTPUT
+<!DOCTYPE html>
+<html>
+<body>
+	<div>
+		<div>
+			<p>Included text.</p>
+			<p>Source text.</p>
+		</div>
+	</div>
+</body>
+</html>

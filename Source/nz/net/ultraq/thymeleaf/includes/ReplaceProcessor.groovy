@@ -65,9 +65,9 @@ class ReplaceProcessor extends AbstractAttributeModelProcessor {
 	protected void doProcess(ITemplateContext context, IModel model, AttributeName attributeName,
 		String attributeValue, IElementModelStructureHandler structureHandler) {
 
-		// Locate the page and fragment to include
+		// Locate the page and fragment to use for replacement
 		def fragmentExpression = new ExpressionProcessor(context).parse(attributeValue)
-		def fragmentToInclude = new TemplateModelFinder(context, templateMode).findFragment(
+		def fragmentForReplacement = new TemplateModelFinder(context, templateMode).findFragment(
 			fragmentExpression.templateName.toString(), fragmentExpression.fragmentSelector.toString(),
 			dialectPrefix)
 
@@ -77,10 +77,9 @@ class ReplaceProcessor extends AbstractAttributeModelProcessor {
 
 		// Keep track of what template is being processed?  Thymeleaf does this for
 		// its include processor, so I'm just doing the same here.
-		structureHandler.templateData = fragmentToInclude.templateData
+		structureHandler.templateData = fragmentForReplacement.templateData
 
-		// Replace the children of this element with those of the include page fragment
-		model.clear()
-		model.addModel(fragmentToInclude.cloneModel())
+		// Replace this element with the located fragment
+		model.replaceModel(fragmentForReplacement.cloneModel())
 	}
 }
