@@ -19,11 +19,11 @@ package nz.net.ultraq.thymeleaf.tests.models
 import nz.net.ultraq.thymeleaf.LayoutDialect
 import nz.net.ultraq.thymeleaf.models.ModelBuilder
 
-import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.engine.TemplateData
+import org.thymeleaf.engine.TemplateManager
 import org.thymeleaf.templatemode.TemplateMode
 import static org.junit.Assert.*
 
@@ -35,8 +35,8 @@ import static org.junit.Assert.*
  */
 class ModelBuilderTests {
 
-	private static TemplateEngine templateEngine
-	private ModelBuilder modelBuilder
+	private static ModelBuilder modelBuilder
+	private static TemplateManager templateManager
 
 	/**
 	 * Set up, create a template engine.
@@ -44,20 +44,14 @@ class ModelBuilderTests {
 	@BeforeClass
 	static void setupThymeleafEngine() {
 
-		templateEngine = new TemplateEngine(
+		def templateEngine = new TemplateEngine(
 			additionalDialects: [
 				new LayoutDialect()
 			]
 		)
-	}
-
-	/**
-	 * Set up, create a model builder.
-	 */
-	@Before
-	void setupModelBuilder() {
-
-		modelBuilder = new ModelBuilder(templateEngine.configuration.getModelFactory(TemplateMode.HTML))
+		templateManager = templateEngine.configuration.templateManager
+		modelBuilder = new ModelBuilder(templateEngine.configuration.getModelFactory(TemplateMode.HTML),
+			templateEngine.configuration.elementDefinitions, TemplateMode.HTML)
 	}
 
 	/**
@@ -67,7 +61,6 @@ class ModelBuilderTests {
 	@Test
 	void compareModel() {
 
-		def templateManager = templateEngine.configuration.templateManager
 		def modelFromTemplate = templateManager.parseString(
 			new TemplateData('test', null, null, TemplateMode.HTML, null),
 			'''
@@ -75,6 +68,7 @@ class ModelBuilderTests {
 				<head>
 					<title>Model comparison</title>
 					<meta charset="utf-8">
+					<meta name="description" value="bad void tag"></meta>
 				</head>
 				<body>
 					<main>
@@ -96,6 +90,7 @@ class ModelBuilderTests {
 				head {
 					title('Model comparison')
 					meta(charset: 'utf-8', void: true)
+					meta(name: 'description', value: 'bad void tag')
 				}
 				body {
 					main {

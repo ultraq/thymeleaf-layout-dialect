@@ -16,9 +16,12 @@
 
 package nz.net.ultraq.thymeleaf.models
 
+import org.thymeleaf.engine.ElementDefinitions
+import org.thymeleaf.engine.HTMLElementType
 import org.thymeleaf.model.AttributeValueQuotes
 import org.thymeleaf.model.IModel
 import org.thymeleaf.model.IModelFactory
+import org.thymeleaf.templatemode.TemplateMode
 
 /**
  * Create Thymeleaf 3.0 models using a simplified syntax.
@@ -27,16 +30,22 @@ import org.thymeleaf.model.IModelFactory
  */
 class ModelBuilder extends BuilderSupport {
 
+	private final ElementDefinitions elementDefinitions
 	private final IModelFactory modelFactory
+	private final TemplateMode templateMode
 
 	/**
 	 * Constructor, create a new model builder using the given model factory.
 	 * 
 	 * @param modelFactory
+	 * @param elementDefinitions
+	 * @param templateMode
 	 */
-	ModelBuilder(IModelFactory modelFactory) {
+	ModelBuilder(IModelFactory modelFactory, ElementDefinitions elementDefinitions, TemplateMode templateMode) {
 
 		this.modelFactory = modelFactory
+		this.elementDefinitions = elementDefinitions
+		this.templateMode = templateMode
 	}
 
 	/**
@@ -113,15 +122,22 @@ class ModelBuilder extends BuilderSupport {
 	protected IModel createNode(Object name, Map attributes, Object value) {
 
 		def model = modelFactory.createModel()
+		def elementDefinition = elementDefinitions."for${templateMode}Name"(name)
 
 		// Standalone element
-		if (attributes && attributes['standalone']) {
-			attributes.remove('standalone')
-			model.add(modelFactory.createStandaloneElementTag(name, attributes, AttributeValueQuotes.DOUBLE, false, true))
-		}
-		else if (attributes && attributes['void']) {
-			attributes.remove('void')
-			model.add(modelFactory.createStandaloneElementTag(name, attributes, AttributeValueQuotes.DOUBLE, false, false))
+		if (elementDefinition.type == HTMLElementType.VOID) {
+			if (attributes && attributes['standalone']) {
+				attributes.remove('standalone')
+				model.add(modelFactory.createStandaloneElementTag(name, attributes, AttributeValueQuotes.DOUBLE, false, true))
+			}
+			else if (attributes && attributes['void']) {
+				attributes.remove('void')
+				model.add(modelFactory.createStandaloneElementTag(name, attributes, AttributeValueQuotes.DOUBLE, false, false))
+			}
+			else {
+				model.add(modelFactory.createStandaloneElementTag(name, attributes, AttributeValueQuotes.DOUBLE, false, false))
+				model.add(modelFactory.createCloseElementTag(name));
+			}
 		}
 
 		// Open/close element and potential text content

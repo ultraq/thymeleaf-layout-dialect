@@ -19,7 +19,6 @@ package nz.net.ultraq.thymeleaf.tests.models
 import nz.net.ultraq.thymeleaf.LayoutDialect
 import nz.net.ultraq.thymeleaf.models.ModelBuilder
 
-import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
 import org.thymeleaf.TemplateEngine
@@ -33,8 +32,7 @@ import static org.junit.Assert.*
  */
 class ModelExtensionsTests {
 
-	private static TemplateEngine templateEngine
-	private ModelBuilder modelBuilder
+	private static ModelBuilder modelBuilder
 
 	/**
 	 * Set up, create a template engine.
@@ -42,24 +40,18 @@ class ModelExtensionsTests {
 	@BeforeClass
 	static void setupThymeleafEngine() {
 
-		templateEngine = new TemplateEngine(
+		def templateEngine = new TemplateEngine(
 			additionalDialects: [
 				new LayoutDialect()
 			]
 		)
+		modelBuilder = new ModelBuilder(templateEngine.configuration.getModelFactory(TemplateMode.HTML),
+			templateEngine.configuration.elementDefinitions, TemplateMode.HTML)
 	}
 
 	/**
-	 * Set up, create a model builder.
-	 */
-	@Before
-	void setupModelBuilder() {
-
-		modelBuilder = new ModelBuilder(templateEngine.configuration.getModelFactory(TemplateMode.HTML))
-	}
-
-	/**
-	 * Test the child model iterator.
+	 * Test the child model iterator to retrieve only the immediate children of a
+	 * model as their own models.
 	 */
 	@Test
 	void childModelIterator() {
@@ -86,52 +78,94 @@ class ModelExtensionsTests {
 
 		def nextModel = childModelIterator.next()
 		assertTrue(nextModel.equalsIgnoreWhitespace(pModel1))
+		assertEquals(1, nextModel.startIndex)
+		assertEquals(4, nextModel.endIndex)
 
 		nextModel = childModelIterator.next()
-		assertTrue(hrModel.equalsIgnoreWhitespace(nextModel))
+		assertTrue(nextModel.equalsIgnoreWhitespace(hrModel))
+		assertEquals(4, nextModel.startIndex)
+		assertEquals(5, nextModel.endIndex)
 
 		nextModel = childModelIterator.next()
-		assertTrue(pModel2.equalsIgnoreWhitespace(nextModel))
+		assertTrue(nextModel.equalsIgnoreWhitespace(pModel2))
+		assertEquals(5, nextModel.startIndex)
+		assertEquals(8, nextModel.endIndex)
 
 		assertFalse(childModelIterator.hasNext())
 	}
 
 	/**
-	 * Test the retrieval of models for various element types.
+	 * Test the retrieval of models containing standard HTML/XML elements.
 	 */
 	@Test
 	void getModel() {
 
-		def headerModel = modelBuilder.build {
-			header {
-				h1('Test title')
-			}
-		}
-		def hrModel = modelBuilder.build {
-			hr(standalone: true)
-		}
-		def divModel = modelBuilder.build {
-			div(class: 'content') {
-				p('Test paragraph')
-				add(hrModel)
-				p('Another test paragraph')
-			}
-		}
-
 		def model = modelBuilder.build {
 			section {
-				add(headerModel)
-				add(divModel)
+				header {
+					h1('Test title')
+				}
+				div(class: 'content') {
+					p('Test paragraph')
+					p('Another test paragraph')
+				}
 			}
 		}
 
-		def headerModelExtract = model.getModel(1)
-		assertTrue(headerModel.equalsIgnoreWhitespace(headerModelExtract))
+		def modelExtract = model.getModel(0)
+		assertTrue(model == modelExtract)
+	}
 
-		def divModelExtract = model.getModel(6)
-		assertTrue(divModel.equalsIgnoreWhitespace(divModelExtract))
+	/**
+	 * Tests the retrieval of models containing void elements that are
+	 * self-closed, usually to be XML compliant a la XHTML.
+	 */
+	@Test
+	void getModelStandalone() {
 
-		def hrModelExtract = model.getModel(10)
-		assertTrue(hrModel.equalsIgnoreWhitespace(hrModelExtract))
+		def model = modelBuilder.build {
+			div {
+				hr(standalone: true)
+			}
+		}
+
+		def modelExtract = model.getModel(0)
+		assertTrue(model == modelExtract)
+	}
+
+	/**
+	 * Tests the retrieval of void elements that are neither self-closed or have
+	 * a matching closing tag, as per the HTML spec.
+	 */
+	@Test
+	void getModelVoid() {
+
+		def model = modelBuilder.build {
+			head {
+				meta(charset: 'utf-8', void: true)
+			}
+		}
+
+		def modelExtract = model.getModel(0)
+		assertTrue(model == modelExtract)
+	}
+
+	/**
+	 * Tests the retrieval of void elements that have a closing tag, which, isn't
+	 * correct HTML as per the spec, but as devs transition from XML-based
+	 * Thymeleaf 2 to HTML-based Thymeleaf 3, we may see a lot of as seen here:
+	 * https://github.com/ultraq/thymeleaf-layout-dialect/issues/110
+	 */
+	@Test
+	void getModelVoidClosed() {
+
+		def model = modelBuilder.build {
+			head {
+				meta(charset: 'utf-8')
+			}
+		}
+
+		def modelExtract = model.getModel(0)
+		assertTrue(model == modelExtract)
 	}
 }

@@ -34,7 +34,7 @@ import static org.junit.Assert.*
  */
 class FragmentFinderTests {
 
-	private static IModelFactory modelFactory
+	private static ModelBuilder modelBuilder
 
 	/**
 	 * Set up, create a template engine.
@@ -47,7 +47,8 @@ class FragmentFinderTests {
 				new LayoutDialect()
 			]
 		)
-		modelFactory = templateEngine.configuration.getModelFactory(TemplateMode.HTML)
+		modelBuilder = new ModelBuilder(templateEngine.configuration.getModelFactory(TemplateMode.HTML),
+			templateEngine.configuration.elementDefinitions, TemplateMode.HTML)
 	}
 
 	/**
@@ -57,7 +58,6 @@ class FragmentFinderTests {
 	@Test
 	void findFragments() {
 
-		def modelBuilder = new ModelBuilder(modelFactory)
 		def source = modelBuilder.build {
 			main {
 				header('layout:fragment': 'header-fragment')

@@ -431,7 +431,7 @@ class ModelExtensions {
 			 */
 			equals << { Object other ->
 				return other instanceof IOpenElementTag &&
-						delegate.elementCompleteName == other.elementCompleteName &&
+						delegate.elementDefinition == other.elementDefinition &&
 						delegate.attributeMap == other.attributeMap;
 			}
 		}
@@ -447,7 +447,7 @@ class ModelExtensions {
 			 */
 			equals << { Object other ->
 				return other instanceof ICloseElementTag &&
-						delegate.elementCompleteName == other.elementCompleteName
+						delegate.elementDefinition == other.elementDefinition
 			}
 		}
 
@@ -462,7 +462,7 @@ class ModelExtensions {
 			 */
 			equals << { Object other ->
 				return other instanceof IStandaloneElementTag &&
-					delegate.elementCompleteName == other.elementCompleteName &&
+					delegate.elementDefinition == other.elementDefinition &&
 					delegate.attributeMap == other.attributeMap;
 			}
 		}
