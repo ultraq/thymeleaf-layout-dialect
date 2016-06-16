@@ -16,7 +16,6 @@
 
 package nz.net.ultraq.thymeleaf.fragments
 
-import nz.net.ultraq.thymeleaf.expressions.ExpressionProcessor
 import nz.net.ultraq.thymeleaf.models.ElementMerger
 
 import org.slf4j.Logger
@@ -78,8 +77,7 @@ class FragmentProcessor extends AbstractAttributeModelProcessor {
 		}
 
 		// Locate the fragment that corresponds to this decorator/include fragment
-		def fragmentName = new ExpressionProcessor(context).processAsString(attributeValue)
-		def fragment = FragmentMap.get(context)[(fragmentName)]
+		def fragment = FragmentMap.get(context)[(attributeValue)]
 
 		// Replace this model with the fragment
 		if (fragment) {

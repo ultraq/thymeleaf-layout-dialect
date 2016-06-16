@@ -1,0 +1,40 @@
+
+# Fragment parameter test for the layout:replace processor.
+
+%TEMPLATE_MODE HTML
+
+
+%INPUT
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<body>
+	<div layout:replace="~{Page :: text(greeting='Hello!')}">
+		<p layout:fragment="more-text">Source text.</p>
+	</div>
+</body>
+</html>
+
+
+%INPUT[Page]
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+	<main layout:fragment="text (greeting)">
+		<p th:text="${greeting}">Greeting goes here</p>
+		<p layout:fragment="more-text">Replaced text</p>
+	</main>
+</body>
+</html>
+
+
+%OUTPUT
+<!DOCTYPE html>
+<html>
+<body>
+	<main>
+		<p>Hello!</p>
+		<p>Source text.</p>
+	</main>
+</body>
+</html>

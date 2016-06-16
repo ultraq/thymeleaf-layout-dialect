@@ -52,8 +52,11 @@ class GradualLayoutTestExecutor extends JUnitTestExecutor {
 			'nz/net/ultraq/thymeleaf/tests/decorators/strategies/AppendingStrategy.thtest',
 			'nz/net/ultraq/thymeleaf/tests/decorators/xml/Document-XmlDecoration.thtest',
 			'nz/net/ultraq/thymeleaf/tests/includes/Include-Basic.thtest',
+			'nz/net/ultraq/thymeleaf/tests/includes/Include-FragmentParameters.thtest',
 			'nz/net/ultraq/thymeleaf/tests/includes/Insert-Basic.thtest',
-			'nz/net/ultraq/thymeleaf/tests/includes/Replace-Basic.thtest'
+			'nz/net/ultraq/thymeleaf/tests/includes/Insert-FragmentParameters.thtest',
+			'nz/net/ultraq/thymeleaf/tests/includes/Replace-Basic.thtest',
+			'nz/net/ultraq/thymeleaf/tests/includes/Replace-FragmentParameters.thtest'
 		]
 	}
 }

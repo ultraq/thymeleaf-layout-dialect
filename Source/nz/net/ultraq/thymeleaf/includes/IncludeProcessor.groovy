@@ -96,5 +96,8 @@ class IncludeProcessor extends AbstractAttributeModelProcessor {
 		fragmentForInclusion.cloneModel().childEventIterator().each { fragmentChildEvent ->
 			model.insert(model.size() - 1, fragmentChildEvent)
 		}
+		fragmentExpression.parameters.each { parameter ->
+			structureHandler.setLocalVariable(parameter.left.execute(context), parameter.right.execute(context))
+		}
 	}
 }

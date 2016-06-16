@@ -82,5 +82,8 @@ class InsertProcessor extends AbstractAttributeModelProcessor {
 		// Replace the children of this element with those of the to-be-inserted page fragment
 		model.clearChildren()
 		model.insertModel(1, fragmentToInsert.cloneModel())
+		fragmentExpression.parameters.each { parameter ->
+			structureHandler.setLocalVariable(parameter.left.execute(context), parameter.right.execute(context))
+		}
 	}
 }

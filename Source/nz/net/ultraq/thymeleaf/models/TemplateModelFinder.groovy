@@ -67,7 +67,7 @@ class TemplateModelFinder {
 	 */
 	TemplateModel findFragment(String templateName, String fragmentName, String dialectPrefix) {
 
-		return find(templateName, "//[${dialectPrefix}:fragment='${fragmentName}' or data-${dialectPrefix}-fragment='${fragmentName}']")
+		return find(templateName, "//[${dialectPrefix}:fragment^='${fragmentName}' or data-${dialectPrefix}-fragment^='${fragmentName}']")
 	}
 
 	/**

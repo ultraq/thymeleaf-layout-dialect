@@ -1,6 +1,5 @@
 
-# Test that th:with attributes and fragment elements get copied over to the
-# included page.
+# Fragment parameter test for the layout:include processor.
 
 %TEMPLATE_MODE HTML
 
@@ -10,32 +9,20 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <body>
-	<div layout:include="~{Modal :: modal(modalId='message', modalHeader='Message')}" th:remove="tag">
-		<p layout:fragment="modal-content">Message goes here!</p>
+	<div layout:include="~{Page :: text(greeting='Hello!')}">
+		<p layout:fragment="more-text">Source text.</p>
 	</div>
 </body>
 </html>
 
 
-%INPUT[Modal]
+%INPUT[Page]
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-<body layout:fragment="modal(modalId, modalHeader)">
-	<div th:id="${modalId} + '-container'" class="modal-container" style="display:none;">
-		<section th:id="${modalId}" class="modal">
-			<header>
-				<h1 th:text="${modalHeader}">My Modal</h1>
-				<div th:id="'close-' + ${modalId}" class="modal-close">
-					<a href="#close">Close</a>
-				</div>
-			</header>
-			<div th:id="${modalId} + '-content'" class="modal-content">
-				<div layout:fragment="modal-content">
-					<p>My modal content</p>
-				</div>
-			</div>
-		</section>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+	<div layout:fragment="text(greeting)">
+		<p th:text="${greeting}">Greeting goes here</p>
+		<p layout:fragment="more-text">Replaced text</p>
 	</div>
 </body>
 </html>
@@ -45,18 +32,9 @@
 <!DOCTYPE html>
 <html>
 <body>
-	<div id="message-container" class="modal-container" style="display:none;">
-		<section id="message" class="modal">
-			<header>
-				<h1>Message</h1>
-				<div id="close-message" class="modal-close">
-					<a href="#close">Close</a>
-				</div>
-			</header>
-			<div id="message-content" class="modal-content">
-				<p>Message goes here!</p>
-			</div>
-		</section>
+	<div>
+		<p>Hello!</p>
+		<p>Source text.</p>
 	</div>
 </body>
 </html>
