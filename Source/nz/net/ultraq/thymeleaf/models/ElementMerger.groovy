@@ -44,21 +44,14 @@ class ElementMerger implements ModelMerger {
 	 * 
 	 * @param targetModel
 	 * @param sourceModel
+	 * @return Model that is the result of the merge.
 	 */
 	@Override
-	void merge(IModel targetModel, IModel sourceModel) {
+	IModel merge(IModel targetModel, IModel sourceModel) {
 
-		// Because we're basically replacing targetModel with sourceModel, we'll
-		// lose the attributes in the target.  So, create a copy of those attributes
-		// for that merge after.
-		def targetInitialRootElement = modelFactory.createModel(targetModel.get(0))
-
-		// TODO: Shouldn't all this be done with the structureHandler?  I should
-		//       make another code branch that does that, and then I can compare.
-
-		// Replace the target model with the source model
-		targetModel.replaceModel(sourceModel)
-
-		new AttributeMerger(modelFactory).merge(targetModel, targetInitialRootElement)
+		// The result we want is basically the source model, but with the target
+		// models root element attributes
+		def targetInitialRootElement = modelFactory.createModel(targetModel.first())
+		return new AttributeMerger(modelFactory).merge(sourceModel, targetInitialRootElement)
 	}
 }

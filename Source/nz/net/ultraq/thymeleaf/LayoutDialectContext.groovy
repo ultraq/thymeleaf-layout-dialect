@@ -45,9 +45,10 @@ class LayoutDialectContext extends HashMap<String,Object> {
 		// aren't any collisions, but this name isn't exactly rare, so it *just*
 		// might happen.
 		if (dialectContext && !(dialectContext instanceof LayoutDialectContext)) {
-			throw new Error('''Name collision on the Thymeleaf processing
-				context.  An object with the key "layout" exists, but is needed
-				by the Layout Dialect to work'''.stripMargin())
+			throw new Error('''
+				Name collision on the Thymeleaf processing context.  An object with the
+				key "layout" exists, but is needed by the Layout Dialect to work
+			'''.stripIndent().trim())
 		}
 
 		if (!dialectContext) {

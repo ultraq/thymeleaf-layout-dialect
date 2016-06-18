@@ -80,7 +80,7 @@ class ReplaceProcessor extends AbstractAttributeModelProcessor {
 		structureHandler.templateData = fragmentForReplacement.templateData
 
 		// Replace this element with the located fragment
-		model.replaceModel(fragmentForReplacement.cloneModel())
+		model.replaceModel(0, fragmentForReplacement.cloneModel())
 		fragmentExpression.parameters.each { parameter ->
 			structureHandler.setLocalVariable(parameter.left.execute(context), parameter.right.execute(context))
 		}

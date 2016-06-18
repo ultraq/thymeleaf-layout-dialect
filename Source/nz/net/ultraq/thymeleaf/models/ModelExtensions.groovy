@@ -385,13 +385,14 @@ class ModelExtensions {
 			}
 
 			/**
-			 * Replaces the enture model with a new one.
+			 * Replaces the model at the specified index with the given model.
 			 * 
+			 * @param pos
 			 * @param model
 			 */
-			replaceModel << { IModel model ->
-				delegate.reset()
-				delegate.addModel(model)
+			replaceModel << { int pos, IModel model ->
+				delegate.removeModel(pos)
+				delegate.insertModel(pos, model)
 			}
 		}
 

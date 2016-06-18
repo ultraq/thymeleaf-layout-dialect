@@ -26,10 +26,12 @@ import org.thymeleaf.model.IModel
 interface Decorator {
 
 	/**
-	 * Decorate the target model with the contents of the source model.
+	 * Decorate the target model with the contents of the source model, returning
+	 * a new model that is the result of that decoration.
 	 * 
 	 * @param targetModel The target model to be decorated.
 	 * @param sourceModel The source model to use for decorating.
+	 * @return A new model that is the result of the decoration process.
 	 */
-	void decorate(IModel targetModel, IModel sourceModel)
+	IModel decorate(IModel targetModel, IModel sourceModel)
 }

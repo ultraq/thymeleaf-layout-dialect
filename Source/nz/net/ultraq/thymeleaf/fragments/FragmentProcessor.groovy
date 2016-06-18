@@ -81,7 +81,7 @@ class FragmentProcessor extends AbstractAttributeModelProcessor {
 
 		// Replace this model with the fragment
 		if (fragment) {
-			new ElementMerger(context.modelFactory).merge(model, fragment)
+			model.replaceModel(0, new ElementMerger(context.modelFactory).merge(model, fragment))
 		}
 	}
 }

@@ -20,7 +20,6 @@ import nz.net.ultraq.thymeleaf.decorators.Decorator
 import nz.net.ultraq.thymeleaf.decorators.SortingStrategy
 import nz.net.ultraq.thymeleaf.models.AttributeMerger
 
-import org.thymeleaf.model.ICloseElementTag
 import org.thymeleaf.model.IModel
 import org.thymeleaf.model.IModelFactory
 import org.thymeleaf.model.IOpenElementTag
@@ -54,49 +53,36 @@ class HtmlDocumentDecorator implements Decorator {
 	 * 
 	 * @param targetDocumentModel
 	 * @param sourceDocumentModel
+	 * @return Result of the decoration.
 	 */
 	@Override
-	void decorate(IModel targetDocumentModel, IModel sourceDocumentModel) {
+	IModel decorate(IModel targetDocumentModel, IModel sourceDocumentModel) {
 
+		// Head decoration
 		def headModelFinder = { event ->
 			return event instanceof IOpenElementTag && event.elementCompleteName == 'head'
 		}
-
 		def targetHeadModel = targetDocumentModel.findModel(headModelFinder)
-		new HtmlHeadDecorator(modelFactory, sortingStrategy).decorate(
+		def resultHeadModel = new HtmlHeadDecorator(modelFactory, sortingStrategy).decorate(
 			targetHeadModel,
 			sourceDocumentModel.findModel(headModelFinder)
 		)
-
-		// Replace the head element and events with the decorated one
-		// TODO: This feels pretty hacky and should be done as part of the head
-		//       decorator using a structure handler or something
-		def headIndex = -1
-		for (def i = 0; i < targetDocumentModel.size(); i++) {
-			def event = targetDocumentModel.get(i)
-			if (event instanceof IOpenElementTag && event.elementCompleteName == 'head') {
-				headIndex = i
-				break
-			}
-		}
-		if (headIndex > 0) {
-			while (true) {
-				def lastEvent = targetDocumentModel.get(headIndex)
-				targetDocumentModel.remove(headIndex)
-				if (lastEvent instanceof ICloseElementTag && lastEvent.elementCompleteName == 'head') {
-					break;
-				}
-			}
-			targetDocumentModel.insertModel(headIndex, targetHeadModel)
+		if (resultHeadModel) {
+			targetDocumentModel.replaceModel(targetHeadModel.index, resultHeadModel)
 		}
 
+		// Body decoration
 		def bodyModelFinder = { event ->
 			return event instanceof IOpenElementTag && event.elementCompleteName == 'body'
 		}
-		new HtmlBodyDecorator(modelFactory).decorate(
-			targetDocumentModel.findModel(bodyModelFinder),
+		def targetBodyModel = targetDocumentModel.findModel(bodyModelFinder)
+		def resultBodyModel = new HtmlBodyDecorator(modelFactory).decorate(
+			targetBodyModel,
 			sourceDocumentModel.findModel(bodyModelFinder)
 		)
+		if (resultBodyModel) {
+			targetDocumentModel.replaceModel(targetBodyModel.index, resultBodyModel)
+		}
 
 		// TODO
 		// Set the doctype from the decorator if missing from the content page
@@ -113,7 +99,6 @@ class HtmlDocumentDecorator implements Decorator {
 		}
 
 		// Bring the decorator into the content page (which is the one being processed)
-		new AttributeMerger(modelFactory).merge(targetDocumentRootModel, sourceDocumentModel)
-		targetDocumentModel.replace(targetDocumentRootModel.index, targetDocumentRootModel.get(0))
+		return new AttributeMerger(modelFactory).merge(targetDocumentRootModel, sourceDocumentModel)
 	}
 }

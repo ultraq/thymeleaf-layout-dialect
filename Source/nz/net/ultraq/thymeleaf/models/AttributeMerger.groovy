@@ -52,16 +52,21 @@ class AttributeMerger implements ModelMerger {
 	 * 
 	 * @param sourceModel
 	 * @param targetModel
+	 * @return New element with the merged attributes.
 	 */
 	@Override
-	void merge(IModel targetModel, IModel sourceModel) {
+	IModel merge(IModel targetModel, IModel sourceModel) {
 
+		// If one of the parameters is missing return a copy of the other, or
+		// nothing if both parameters are missing.
 		if (!targetModel || !sourceModel) {
-			return
+			return targetModel ? targetModel.cloneModel() : sourceModel ? sourceModel.cloneModel() : null
 		}
 
+		def mergedModel = targetModel.cloneModel()
+
 		// Merge attributes from the source model's root event to the target model's root event
-		sourceModel.get(0).allAttributes
+		sourceModel.first().allAttributes
 
 			// Don't include layout:fragment processors
 			.findAll { sourceAttribute ->
@@ -69,13 +74,13 @@ class AttributeMerger implements ModelMerger {
 			}
 
 			.each { sourceAttribute ->
-				def targetEvent = targetModel.get(0)
+				def mergedEvent = mergedModel.first()
 				def mergedAttributeValue
 
 				// Merge th:with attributes
 				if (sourceAttribute.equalsName(StandardDialect.PREFIX, StandardWithTagProcessor.ATTR_NAME)) {
 					mergedAttributeValue = new VariableDeclarationMerger().merge(sourceAttribute.value,
-						targetEvent.getAttributeValue(StandardDialect.PREFIX, StandardWithTagProcessor.ATTR_NAME))
+						mergedEvent.getAttributeValue(StandardDialect.PREFIX, StandardWithTagProcessor.ATTR_NAME))
 				}
 
 				// Copy every other attribute straight
@@ -83,9 +88,12 @@ class AttributeMerger implements ModelMerger {
 					mergedAttributeValue = sourceAttribute.value
 				}
 
-				targetModel.replace(0, modelFactory.replaceAttribute(targetEvent,
+				// TODO: Create model extensions for manipulating first/last elements?
+				mergedModel.replace(0, modelFactory.replaceAttribute(mergedEvent,
 					sourceAttribute.attributeName, sourceAttribute.completeName,
 					mergedAttributeValue))
 			}
+
+		return mergedModel
 	}
 }

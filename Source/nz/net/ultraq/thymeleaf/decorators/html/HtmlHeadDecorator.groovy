@@ -16,8 +16,9 @@
 
 package nz.net.ultraq.thymeleaf.decorators.html
 
+import nz.net.ultraq.thymeleaf.decorators.Decorator
 import nz.net.ultraq.thymeleaf.decorators.SortingStrategy
-import nz.net.ultraq.thymeleaf.decorators.xml.XmlElementDecorator
+import nz.net.ultraq.thymeleaf.models.AttributeMerger
 
 import org.thymeleaf.model.IModel
 import org.thymeleaf.model.IModelFactory
@@ -28,19 +29,20 @@ import org.thymeleaf.model.IOpenElementTag
  * 
  * @author Emanuel Rabina
  */
-class HtmlHeadDecorator extends XmlElementDecorator {
+class HtmlHeadDecorator implements Decorator {
 
+	private final IModelFactory modelFactory
 	private final SortingStrategy sortingStrategy
 
 	/**
 	 * Constructor, sets up the element decorator context.
-	 *
+	 * 
 	 * @param modelFactory
 	 * @param sortingStrategy
 	 */
 	HtmlHeadDecorator(IModelFactory modelFactory, SortingStrategy sortingStrategy) {
 
-		super(modelFactory)
+		this.modelFactory    = modelFactory
 		this.sortingStrategy = sortingStrategy
 	}
 
@@ -49,38 +51,27 @@ class HtmlHeadDecorator extends XmlElementDecorator {
 	 * 
 	 * @param targetHeadModel
 	 * @param sourceHeadModel
+	 * @return Result of the decoration.
 	 */
 	@Override
-	void decorate(IModel targetHeadModel, IModel sourceHeadModel) {
+	IModel decorate(IModel targetHeadModel, IModel sourceHeadModel) {
 
-		// Try to ensure there is a head as a result of decoration, applying the
-		// source head, or just using what is in the target
-
-		// TODO: Change the decorate method signature to return a result instead of
-		//       modifying the target so that, if the target is null, a value can
-		//       still be returned
-
-		if (!targetHeadModel) {
-			if (sourceHeadModel) {
-				targetHeadModel.replaceModel(sourceHeadModel)
-			}
-			return
+		// If one of the parameters is missing return a copy of the other, or
+		// nothing if both parameters are missing.
+		if (!targetHeadModel || !sourceHeadModel) {
+			return targetHeadModel ? targetHeadModel.cloneModel() : sourceHeadModel ? sourceHeadModel.cloneModel() : null
 		}
 
 		// Replace the target title with the source one if present
 		def titleEventIndexFinder = { event ->
 			return event instanceof IOpenElementTag && event.elementCompleteName == 'title'
 		}
-
 		def sourceTitle = sourceHeadModel.findModel(titleEventIndexFinder)
 		if (sourceTitle) {
-			sourceHeadModel.removeModelWithWhitespace(sourceTitle.index)
-
 			def targetTitle = targetHeadModel.findModel(titleEventIndexFinder)
 			if (targetTitle) {
 				targetHeadModel.removeModelWithWhitespace(targetTitle.index)
 			}
-
 			targetHeadModel.insertModelWithWhitespace(1, sourceTitle)
 		}
 
@@ -122,14 +113,19 @@ class HtmlHeadDecorator extends XmlElementDecorator {
 		// the current merging strategy, placing the resulting title at the
 		// beginning of it
 		if (sourceHeadModel) {
-			sourceHeadModel.childModelIterator().each { sourceHeadSubModel ->
-				def position = sortingStrategy.findPositionForModel(targetHeadModel, sourceHeadSubModel)
-				if (position != -1) {
-					targetHeadModel.insertModelWithWhitespace(position, sourceHeadSubModel)
+			sourceHeadModel.childModelIterator()
+				.findAll { childModel ->
+					def childModelRootEvent = childModel.first()
+					return !(childModelRootEvent instanceof IOpenElementTag && childModelRootEvent.elementCompleteName == 'title')
 				}
-			}
+				.each { childModel ->
+					def position = sortingStrategy.findPositionForModel(targetHeadModel, childModel)
+					if (position != -1) {
+						targetHeadModel.insertModelWithWhitespace(position, childModel)
+					}
+				}
 		}
 
-		super.decorate(targetHeadModel, sourceHeadModel)
+		return new AttributeMerger(modelFactory).merge(targetHeadModel, sourceHeadModel)
 	}
 }

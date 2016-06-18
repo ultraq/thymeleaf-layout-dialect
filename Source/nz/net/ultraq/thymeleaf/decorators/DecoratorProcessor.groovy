@@ -105,24 +105,24 @@ class DecoratorProcessor extends AbstractAttributeModelProcessor {
 				only HTML and XML template modes are currently supported
 				""".stripMargin())
 		}
-		decorator.decorate(decoratorTemplate, model)
+		def resultTemplate = decorator.decorate(decoratorTemplate, model)
 
 		// TODO: The modified decorator template includes anything outside the root
 		//       element, which we don't want for the next step.  Strip those events
 		//       out for now, but for future I should find a better way to merge
 		//       documents.
-		while (!(decoratorTemplate.first() instanceof IOpenElementTag)) {
-			decoratorTemplate.removeFirst()
+		while (!(resultTemplate.first() instanceof IOpenElementTag)) {
+			resultTemplate.removeFirst()
 		}
-		while (!(decoratorTemplate.last() instanceof ICloseElementTag)) {
-			decoratorTemplate.removeLast()
+		while (!(resultTemplate.last() instanceof ICloseElementTag)) {
+			resultTemplate.removeLast()
 		}
 
 		// TODO: Should probably return a new object so this doesn't look so
 		//       confusing, ie: why am I changing the source model when it's the
 		//       decorator model we are targeting???  See the point about
 		//       immutability in https://github.com/ultraq/thymeleaf-layout-dialect/issues/102
-		model.replaceModel(decoratorTemplate)
+		model.replaceModel(0, resultTemplate)
 
 		// Save layout fragments for use later by layout:fragment processors
 		FragmentMap.setForNode(context, structureHandler, pageFragments)
