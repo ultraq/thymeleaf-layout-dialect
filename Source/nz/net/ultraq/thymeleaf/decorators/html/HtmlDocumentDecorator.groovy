@@ -20,9 +20,9 @@ import nz.net.ultraq.thymeleaf.decorators.Decorator
 import nz.net.ultraq.thymeleaf.decorators.SortingStrategy
 import nz.net.ultraq.thymeleaf.models.AttributeMerger
 
+import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.model.ICloseElementTag
 import org.thymeleaf.model.IModel
-import org.thymeleaf.model.IModelFactory
 import org.thymeleaf.model.IOpenElementTag
 
 /**
@@ -34,18 +34,18 @@ import org.thymeleaf.model.IOpenElementTag
  */
 class HtmlDocumentDecorator implements Decorator {
 
-	private final IModelFactory modelFactory
+	private final ITemplateContext context
 	private final SortingStrategy sortingStrategy
 
 	/**
 	 * Constructor, apply the given sorting strategy to the decorator.
 	 * 
-	 * @param modelFactory
+	 * @param context
 	 * @param sortingStrategy
 	 */
-	HtmlDocumentDecorator(IModelFactory modelFactory, SortingStrategy sortingStrategy) {
+	HtmlDocumentDecorator(ITemplateContext context, SortingStrategy sortingStrategy) {
 
-		this.modelFactory    = modelFactory
+		this.context         = context
 		this.sortingStrategy = sortingStrategy
 	}
 
@@ -64,7 +64,7 @@ class HtmlDocumentDecorator implements Decorator {
 			return event instanceof IOpenElementTag && event.elementCompleteName == 'head'
 		}
 		def targetHeadModel = targetDocumentModel.findModel(headModelFinder)
-		def resultHeadModel = new HtmlHeadDecorator(modelFactory, sortingStrategy).decorate(
+		def resultHeadModel = new HtmlHeadDecorator(context, sortingStrategy).decorate(
 			targetHeadModel,
 			sourceDocumentModel.findModel(headModelFinder)
 		)
@@ -85,7 +85,7 @@ class HtmlDocumentDecorator implements Decorator {
 			return event instanceof IOpenElementTag && event.elementCompleteName == 'body'
 		}
 		def targetBodyModel = targetDocumentModel.findModel(bodyModelFinder)
-		def resultBodyModel = new HtmlBodyDecorator(modelFactory).decorate(
+		def resultBodyModel = new HtmlBodyDecorator(context.modelFactory).decorate(
 			targetBodyModel,
 			sourceDocumentModel.findModel(bodyModelFinder)
 		)
@@ -115,6 +115,6 @@ class HtmlDocumentDecorator implements Decorator {
 		}
 
 		// Bring the decorator into the content page (which is the one being processed)
-		return new AttributeMerger(modelFactory).merge(targetDocumentRootModel, sourceDocumentModel)
+		return new AttributeMerger(context.modelFactory).merge(targetDocumentRootModel, sourceDocumentModel)
 	}
 }

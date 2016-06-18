@@ -16,6 +16,8 @@
 
 package nz.net.ultraq.thymeleaf.decorators
 
+import nz.net.ultraq.thymeleaf.expressions.ExpressionProcessor
+
 import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.engine.AttributeName
 import org.thymeleaf.model.IProcessableElementTag
@@ -45,6 +47,9 @@ class TitlePatternProcessor extends AbstractAttributeTagProcessor {
 
 	static final String RESULTING_TITLE = 'resultingTitle'
 
+	static final String CONTENT_TITLE_ATTRIBUTE   = 'data-layout-content-title'
+	static final String DECORATOR_TITLE_ATTRIBUTE = 'data-layout-decorator-title'
+
 	/**
 	 * Constructor, sets this processor to work on the 'title-pattern' attribute.
 	 * 
@@ -57,37 +62,38 @@ class TitlePatternProcessor extends AbstractAttributeTagProcessor {
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Process the {@code layout:title-pattern} directive, replaces the title text
+	 * with the titles from the content and decorator pages.
+	 * 
+	 * @param context
+	 * @param tag
+	 * @param attributeName
+	 * @param attributeValue
+	 * @param structureHandler
 	 */
 	@Override
 	protected void doProcess(ITemplateContext context, IProcessableElementTag tag,
 		AttributeName attributeName, String attributeValue, IElementTagStructureHandler structureHandler) {
 
 		// Ensure this attribute is only on the <title> element
-/*		if (element.normalizedName != 'title') {
+		if (tag.elementCompleteName != 'title') {
 			throw new IllegalArgumentException("${attributeName} processor should only appear in a <title> element")
 		}
 
-		// Retrieve title values from the expanded <title> sections within this
-		// processing container (if any)
-		def titlePattern   = element.getAttributeValue(attributeName)
-		def titleContainer = element.parent
-		def titleElements  = titleContainer?.elementChildren ?: []
-		element.removeAttribute(attributeName)
+		def titlePattern = attributeValue
+		def expressionProcessor = new ExpressionProcessor(context)
 
-		def findTitleType = { titleType ->
-			return { childElement ->
-				childElement.getNodeProperty(TITLE_TYPE) == titleType
+		def titleProcessor = { dataAttributeName ->
+			def titleExpression = tag.getAttributeValue(dataAttributeName)
+			if (titleExpression) {
+				structureHandler.removeAttribute(dataAttributeName)
+				return expressionProcessor.processAsString(titleExpression)
 			}
+			return null
 		}
-		def decoratorTitleElement = titleElements.find(findTitleType(TITLE_TYPE_DECORATOR))
-		def decoratorTitle        = decoratorTitleElement?.firstChild?.content
-		def contentTitleElement   = titleElements.find(findTitleType(TITLE_TYPE_CONTENT))
-		def contentTitle          = contentTitleElement?.firstChild?.content
 
-		def attributeMerger = new AttributeMerger()
-		attributeMerger.merge(element, decoratorTitleElement)
-		attributeMerger.merge(element, contentTitleElement)
+		def contentTitle = titleProcessor(CONTENT_TITLE_ATTRIBUTE)
+		def decoratorTitle = titleProcessor(DECORATOR_TITLE_ATTRIBUTE)
 
 		def title = titlePattern && decoratorTitle && contentTitle ?
 			titlePattern
@@ -95,16 +101,6 @@ class TitlePatternProcessor extends AbstractAttributeTagProcessor {
 				.replace(PARAM_TITLE_CONTENT, contentTitle) :
 			contentTitle ?: decoratorTitle ?: ''
 
-		// If there's a title, bring it up
-		if (title) {
-			element.addChild(new Text(title))
-			titleContainer.parent.insertAfter(titleContainer, element.cloneNode(null, false))
-			LayoutDialectContext.forContext(arguments.context) << [(RESULTING_TITLE): title]
-		}
-
-		// Remove the processing section
-		titleContainer.parent.removeChild(titleContainer)
-
-		return ProcessorResult.OK
-*/	}
+		structureHandler.setBody(title, false)
+	}
 }

@@ -18,6 +18,7 @@ package nz.net.ultraq.thymeleaf.models
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.engine.ElementDefinitions
 import org.thymeleaf.engine.HTMLElementType
 import org.thymeleaf.model.AttributeValueQuotes
@@ -39,7 +40,17 @@ class ModelBuilder extends BuilderSupport {
 	private final TemplateMode templateMode
 
 	/**
-	 * Constructor, create a new model builder using the given model factory.
+	 * Constructor, create a new model builder.
+	 * 
+	 * @param context
+	 */
+	ModelBuilder(ITemplateContext context) {
+
+		this(context.modelFactory, context.configuration.elementDefinitions, context.templateMode)
+	}
+
+	/**
+	 * Constructor, create a new model builder.
 	 * 
 	 * @param modelFactory
 	 * @param elementDefinitions
@@ -47,9 +58,9 @@ class ModelBuilder extends BuilderSupport {
 	 */
 	ModelBuilder(IModelFactory modelFactory, ElementDefinitions elementDefinitions, TemplateMode templateMode) {
 
-		this.modelFactory = modelFactory
+		this.modelFactory       = modelFactory
 		this.elementDefinitions = elementDefinitions
-		this.templateMode = templateMode
+		this.templateMode       = templateMode
 	}
 
 	/**
@@ -125,18 +136,28 @@ class ModelBuilder extends BuilderSupport {
 	@Override
 	protected IModel createNode(Object name, Map attributes, Object value) {
 
+		// Normalize values for Java implementations as the model factory doesn't
+		// know what to do with Groovy versions of things
+		def elementName = name.toString()
+		def elementText = value?.toString()
+		if (attributes) {
+			attributes.entrySet().each { entry ->
+				attributes[(entry.key)] = attributes[(entry.key)].toString()
+			}
+		}
+
 		def model = modelFactory.createModel()
-		def elementDefinition = elementDefinitions."for${templateMode}Name"(name)
+		def elementDefinition = elementDefinitions."for${templateMode}Name"(elementName)
 
 		// Standalone element
 		if (elementDefinition.type == HTMLElementType.VOID) {
 			if (attributes && attributes['standalone']) {
 				attributes.remove('standalone')
-				model.add(modelFactory.createStandaloneElementTag(name, attributes, AttributeValueQuotes.DOUBLE, false, true))
+				model.add(modelFactory.createStandaloneElementTag(elementName, attributes, AttributeValueQuotes.DOUBLE, false, true))
 			}
 			else if (attributes && attributes['void']) {
 				attributes.remove('void')
-				model.add(modelFactory.createStandaloneElementTag(name, attributes, AttributeValueQuotes.DOUBLE, false, false))
+				model.add(modelFactory.createStandaloneElementTag(elementName, attributes, AttributeValueQuotes.DOUBLE, false, false))
 			}
 			else {
 				logger.warn("""
@@ -148,18 +169,18 @@ class ModelBuilder extends BuilderSupport {
 					for more information on HTML void elements.
 				""".stripIndent().trim(), name)
 
-				model.add(modelFactory.createStandaloneElementTag(name, attributes, AttributeValueQuotes.DOUBLE, false, false))
-				model.add(modelFactory.createCloseElementTag(name));
+				model.add(modelFactory.createStandaloneElementTag(elementName, attributes, AttributeValueQuotes.DOUBLE, false, false))
+				model.add(modelFactory.createCloseElementTag(elementName));
 			}
 		}
 
 		// Open/close element and potential text content
 		else {
-			model.add(modelFactory.createOpenElementTag(name, attributes, AttributeValueQuotes.DOUBLE, false));
-			if (value) {
-				model.add(modelFactory.createText(value))
+			model.add(modelFactory.createOpenElementTag(elementName, attributes, AttributeValueQuotes.DOUBLE, false));
+			if (elementText) {
+				model.add(modelFactory.createText(elementText))
 			}
-			model.add(modelFactory.createCloseElementTag(name));
+			model.add(modelFactory.createCloseElementTag(elementName));
 		}
 
 		return model
