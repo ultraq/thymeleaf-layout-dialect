@@ -23,7 +23,6 @@ import nz.net.ultraq.thymeleaf.models.ModelBuilder
 import org.junit.BeforeClass
 import org.junit.Test
 import org.thymeleaf.TemplateEngine
-import org.thymeleaf.model.IModelFactory
 import org.thymeleaf.templatemode.TemplateMode
 import static org.junit.Assert.*
 
