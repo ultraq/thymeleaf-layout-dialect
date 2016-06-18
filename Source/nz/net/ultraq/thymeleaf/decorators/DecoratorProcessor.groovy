@@ -94,10 +94,9 @@ class DecoratorProcessor extends AbstractAttributeModelProcessor {
 		def pageFragments = new FragmentFinder(dialectPrefix).findFragments(model)
 
 		// Choose the decorator to use based on template mode, then apply it
-		def modelFactory = context.modelFactory
 		def decorator =
 			templateMode == TemplateMode.HTML ? new HtmlDocumentDecorator(context, sortingStrategy) :
-			templateMode == TemplateMode.XML  ? new XmlDocumentDecorator(modelFactory) :
+			templateMode == TemplateMode.XML  ? new XmlDocumentDecorator(context) :
 			null
 		if (!decorator) {
 			throw new IllegalArgumentException("""

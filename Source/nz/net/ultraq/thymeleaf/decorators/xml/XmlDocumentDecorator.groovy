@@ -19,8 +19,8 @@ package nz.net.ultraq.thymeleaf.decorators.xml
 import nz.net.ultraq.thymeleaf.decorators.Decorator
 import nz.net.ultraq.thymeleaf.models.AttributeMerger
 
+import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.model.IModel
-import org.thymeleaf.model.IModelFactory
 import org.thymeleaf.model.IOpenElementTag
 
 /**
@@ -30,16 +30,16 @@ import org.thymeleaf.model.IOpenElementTag
  */
 class XmlDocumentDecorator implements Decorator {
 
-	protected final IModelFactory modelFactory
+	protected final ITemplateContext context
 
 	/**
 	 * Constructor, set up the document decorator context.
 	 * 
-	 * @param modelFactory
+	 * @param context
 	 */
-	XmlDocumentDecorator(IModelFactory modelFactory) {
+	XmlDocumentDecorator(ITemplateContext context) {
 
-		this.modelFactory = modelFactory
+		this.context = context
 	}
 
 	/**
@@ -81,6 +81,6 @@ class XmlDocumentDecorator implements Decorator {
 		}
 
 		// Decorate the target document with the source one
-		return new AttributeMerger(modelFactory).merge(targetDocumentRootModel, sourceDocumentModel)
+		return new AttributeMerger(context.modelFactory).merge(targetDocumentRootModel, sourceDocumentModel)
 	}
 }
