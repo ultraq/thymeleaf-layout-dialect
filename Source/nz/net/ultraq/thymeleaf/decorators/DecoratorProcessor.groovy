@@ -82,6 +82,13 @@ class DecoratorProcessor extends AbstractAttributeModelProcessor {
 			throw new IllegalArgumentException('layout:decorator attribute must appear in the root element of your template')
 		}
 
+		// Remove the layout:decorator attribute for cases when the root element is
+		// both a decorator processor and a potential fragment
+		def rootElement = model.first()
+		if (rootElement.hasAttribute(dialectPrefix, PROCESSOR_NAME)) {
+			model.replace(0, context.modelFactory.removeAttribute(rootElement, dialectPrefix, PROCESSOR_NAME))
+		}
+
 		// Locate the template to 'redirect' processing to by completely replacing
 		// the current document with it
 		def decoratorTemplateName = new ExpressionProcessor(context).processAsString(attributeValue)
