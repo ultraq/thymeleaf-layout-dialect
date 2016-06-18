@@ -47,7 +47,8 @@ class GradualLayoutTestExecutorGrouping extends JUnitTestExecutor {
 	static List<String> listGroupingLayoutDialectTests() {
 
 		return [
-			'nz/net/ultraq/thymeleaf/tests/decorators/strategies/GroupingStrategy.thtest'
+			'nz/net/ultraq/thymeleaf/tests/decorators/strategies/GroupingStrategy.thtest',
+			'nz/net/ultraq/thymeleaf/tests/decorators/strategies/GroupingStrategy-Sparse.thtest'
 		]
 	}
 }
