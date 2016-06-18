@@ -20,7 +20,6 @@ import nz.net.ultraq.thymeleaf.LayoutDialect
 import nz.net.ultraq.thymeleaf.decorators.strategies.AppendingStrategy
 import nz.net.ultraq.thymeleaf.testing.JUnitTestExecutor
 
-import org.junit.Ignore
 import org.junit.runners.Parameterized.Parameters
 import org.reflections.Reflections
 import org.reflections.scanners.ResourcesScanner
@@ -34,7 +33,6 @@ import org.thymeleaf.standard.StandardDialect
  * 
  * @author Emanuel Rabina
  */
-@Ignore
 class LayoutDialectTestExecutor extends JUnitTestExecutor {
 
 	final List<? extends IDialect> testDialects = [
@@ -52,7 +50,27 @@ class LayoutDialectTestExecutor extends JUnitTestExecutor {
 	@Parameters(name = '{0}')
 	static List<String> listStandardLayoutDialectTests() {
 
-		return new Reflections('', new ResourcesScanner())
+		def tests = new Reflections('', new ResourcesScanner())
 			.getResources(~/(?!GroupingStrategy|Examples).*\.thtest/) as List
+		def exclusions = [
+		  'nz/net/ultraq/thymeleaf/tests/decorators/Decorator-DeepHierarchy.thtest',
+			'nz/net/ultraq/thymeleaf/tests/decorators/html/Document-DocType-NoDocTypeContent.thtest',
+			'nz/net/ultraq/thymeleaf/tests/decorators/TitlePattern-AllowOtherProcessors.thtest',
+			'nz/net/ultraq/thymeleaf/tests/decorators/TitlePattern-DynamicContent.thtest',
+			'nz/net/ultraq/thymeleaf/tests/decorators/TitlePattern-EmptyTitleInContent.thtest',
+			'nz/net/ultraq/thymeleaf/tests/decorators/TitlePattern-EmptyTitleInDecorator.thtest',
+			'nz/net/ultraq/thymeleaf/tests/decorators/TitlePattern-NoHeadInContent.thtest',
+			'nz/net/ultraq/thymeleaf/tests/decorators/TitlePattern-NoHeadInDecorator.thtest',
+			'nz/net/ultraq/thymeleaf/tests/decorators/TitlePattern-NoTitleInContent.thtest',
+			'nz/net/ultraq/thymeleaf/tests/decorators/TitlePattern-NoTitleInDecorator.thtest',
+			'nz/net/ultraq/thymeleaf/tests/decorators/TitlePattern-ResultAccessible.thtest',
+			'nz/net/ultraq/thymeleaf/tests/decorators/xml/Document-ExternalComments.thtest',
+			'nz/net/ultraq/thymeleaf/tests/includes/Include-FragmentIteration.thtest',
+			'nz/net/ultraq/thymeleaf/tests/includes/Include-NestedFragment.thtest',
+			'nz/net/ultraq/thymeleaf/tests/includes/Include-NestedFragmentInFragment.thtest',
+			'nz/net/ultraq/thymeleaf/tests/includes/Replace-ElementInclusion.thtest',
+			'nz/net/ultraq/thymeleaf/tests/includes/Replace-NestedFragmentInFragment.thtest'
+		]
+		return tests - exclusions
 	}
 }

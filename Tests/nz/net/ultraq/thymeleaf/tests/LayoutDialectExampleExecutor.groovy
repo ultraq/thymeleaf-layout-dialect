@@ -19,7 +19,6 @@ package nz.net.ultraq.thymeleaf.tests
 import nz.net.ultraq.thymeleaf.LayoutDialect
 import nz.net.ultraq.thymeleaf.testing.JUnitTestExecutor
 
-import org.junit.Ignore
 import org.junit.runners.Parameterized.Parameters
 import org.reflections.Reflections
 import org.reflections.scanners.ResourcesScanner
@@ -31,7 +30,6 @@ import org.thymeleaf.standard.StandardDialect
  * 
  * @author Emanuel Rabina
  */
-@Ignore
 class LayoutDialectExampleExecutor extends JUnitTestExecutor {
 
 	final List<? extends IDialect> testDialects = [
@@ -47,7 +45,12 @@ class LayoutDialectExampleExecutor extends JUnitTestExecutor {
 	@Parameters(name = '{0}')
 	static List<String> listStandardLayoutDialectTests() {
 
-		return new Reflections('', new ResourcesScanner())
+		def tests = new Reflections('', new ResourcesScanner())
 			.getResources(~/Examples.*\.thtest/) as List
+		def exclusions = [
+		  'nz/net/ultraq/thymeleaf/tests/Examples-DecoratorsAndFragments2.thtest',
+			'nz/net/ultraq/thymeleaf/tests/Examples-IncludesAndFragments.thtest'
+		]
+		return tests - exclusions
 	}
 }
