@@ -49,6 +49,12 @@ class ElementMerger implements ModelMerger {
 	@Override
 	IModel merge(IModel targetModel, IModel sourceModel) {
 
+		// If one of the parameters is missing return a copy of the other, or
+		// nothing if both parameters are missing.
+		if (!targetModel || !sourceModel) {
+			return targetModel ? targetModel.cloneModel() : sourceModel ? sourceModel.cloneModel() : null
+		}
+
 		// The result we want is basically the source model, but with the target
 		// models root element attributes
 		def targetInitialRootElement = modelFactory.createModel(targetModel.first())
