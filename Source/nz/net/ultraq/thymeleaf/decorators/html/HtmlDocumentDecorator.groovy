@@ -20,6 +20,7 @@ import nz.net.ultraq.thymeleaf.decorators.Decorator
 import nz.net.ultraq.thymeleaf.decorators.SortingStrategy
 import nz.net.ultraq.thymeleaf.models.AttributeMerger
 
+import org.thymeleaf.model.ICloseElementTag
 import org.thymeleaf.model.IModel
 import org.thymeleaf.model.IModelFactory
 import org.thymeleaf.model.IOpenElementTag
@@ -68,7 +69,15 @@ class HtmlDocumentDecorator implements Decorator {
 			sourceDocumentModel.findModel(headModelFinder)
 		)
 		if (resultHeadModel) {
-			targetDocumentModel.replaceModel(targetHeadModel.index, resultHeadModel)
+			if (targetHeadModel) {
+				targetDocumentModel.replaceModel(targetHeadModel.index, resultHeadModel)
+			}
+			else {
+				targetDocumentModel.insertModelWithWhitespace(targetDocumentModel.find { event ->
+					return (event instanceof IOpenElementTag && event.elementCompleteName == 'body') ||
+					       (event instanceof ICloseElementTag && event.elementCompleteName == 'html')
+				}.index - 1, resultHeadModel)
+			}
 		}
 
 		// Body decoration
@@ -81,7 +90,14 @@ class HtmlDocumentDecorator implements Decorator {
 			sourceDocumentModel.findModel(bodyModelFinder)
 		)
 		if (resultBodyModel) {
-			targetDocumentModel.replaceModel(targetBodyModel.index, resultBodyModel)
+			if (targetBodyModel) {
+				targetDocumentModel.replaceModel(targetBodyModel.index, resultBodyModel)
+			}
+			else {
+				targetDocumentModel.insertModelWithWhitespace(targetDocumentModel.find { event ->
+					return event instanceof ICloseElementTag && event.elementCompleteName == 'html'
+				}.index - 1, resultBodyModel)
+			}
 		}
 
 		// TODO

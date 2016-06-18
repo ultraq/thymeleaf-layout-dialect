@@ -10,7 +10,6 @@
 	layout:decorator="Layout">
 <head>
 	<title>Content page</title>
-	<script src="content-script.js"></script>
 </head>
 </html>
 
@@ -20,7 +19,6 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
 	<title>Layout page</title>
-	<script src="common-script.js"></script>
 </head>
 </html>
 
@@ -30,7 +28,5 @@
 <html>
 <head>
 	<title>Content page</title>
-	<script src="common-script.js"></script>
-	<script src="content-script.js"></script>
 </head>
 </html>

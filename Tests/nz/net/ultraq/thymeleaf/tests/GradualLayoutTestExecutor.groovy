@@ -47,6 +47,14 @@ class GradualLayoutTestExecutor extends JUnitTestExecutor {
 
 		return [
 			'nz/net/ultraq/thymeleaf/tests/decorators/Decorator-BodyOnlyLayout-BodyOnlyContent.thtest',
+			'nz/net/ultraq/thymeleaf/tests/decorators/Decorator-BodyOnlyLayout-FullContent.thtest',
+			'nz/net/ultraq/thymeleaf/tests/decorators/Decorator-BodyOnlyLayout-HeadOnlyContent.thtest',
+			'nz/net/ultraq/thymeleaf/tests/decorators/Decorator-FullLayout-BodyOnlyContent.thtest',
+			'nz/net/ultraq/thymeleaf/tests/decorators/Decorator-FullLayout-FullContent.thtest',
+			'nz/net/ultraq/thymeleaf/tests/decorators/Decorator-FullLayout-HeadOnlyContent.thtest',
+			'nz/net/ultraq/thymeleaf/tests/decorators/Decorator-HeadOnlyLayout-BodyOnlyContent.thtest',
+			'nz/net/ultraq/thymeleaf/tests/decorators/Decorator-HeadOnlyLayout-FullContent.thtest',
+			'nz/net/ultraq/thymeleaf/tests/decorators/Decorator-HeadOnlyLayout-HeadOnlyContent.thtest',
 			'nz/net/ultraq/thymeleaf/tests/decorators/html/Head-ConditionalComments.thtest',
 			'nz/net/ultraq/thymeleaf/tests/decorators/html/Head-TitleReplacement.thtest',
 			'nz/net/ultraq/thymeleaf/tests/decorators/strategies/AppendingStrategy.thtest',

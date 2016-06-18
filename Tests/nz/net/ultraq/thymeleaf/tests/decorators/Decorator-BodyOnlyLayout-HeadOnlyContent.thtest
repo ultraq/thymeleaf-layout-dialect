@@ -10,7 +10,6 @@
 	layout:decorator="Layout">
 <head>
 	<title>Content page</title>
-	<script src="content-script.js"></script>
 </head>
 </html>
 
@@ -19,16 +18,9 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <body>
-	<header>
-		<h1>My website</h1>
-	</header>
-	<section layout:fragment="content">
+	<div layout:fragment="content">
 		<p>Page content goes here</p>
-	</section>
-	<footer>
-		<p>My footer</p>
-		<p layout:fragment="custom-footer">Custom footer here</p>
-	</footer>
+	</div>
 </body>
 </html>
 
@@ -38,18 +30,10 @@
 <html>
 <head>
 	<title>Content page</title>
-	<script src="content-script.js"></script>
 </head>
 <body>
-	<header>
-		<h1>My website</h1>
-	</header>
-	<section>
+	<div>
 		<p>Page content goes here</p>
-	</section>
-	<footer>
-		<p>My footer</p>
-		<p>Custom footer here</p>
-	</footer>
+	</div>
 </body>
 </html>

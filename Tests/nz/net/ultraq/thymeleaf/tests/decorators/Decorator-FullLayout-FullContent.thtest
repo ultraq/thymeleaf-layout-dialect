@@ -11,15 +11,11 @@
 	layout:decorator="Layout">
 <head>
 	<title>Content page</title>
-	<script src="content-script.js"></script>
 </head>
 <body>
-	<section layout:fragment="content">
+	<div layout:fragment="content">
 		<p>This is a paragraph from the content page</p>
-	</section>
-	<footer>
-		<p layout:fragment="custom-footer">This is some footer content from the content page</p>
-	</footer>
+	</div>
 </body>
 </html>
 
@@ -29,19 +25,11 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
 	<title>Layout page</title>
-	<script src="common-script.js"></script>
 </head>
 <body>
-	<header>
-		<h1>My website</h1>
-	</header>
-	<section layout:fragment="content">
+	<div layout:fragment="content">
 		<p>Page content goes here</p>
-	</section>
-	<footer>
-		<p>My footer</p>
-		<p layout:fragment="custom-footer">Custom footer here</p>
-	</footer>
+	</div>
 </body>
 </html>
 
@@ -51,19 +39,10 @@
 <html>
 <head>
 	<title>Content page</title>
-	<script src="common-script.js"></script>
-	<script src="content-script.js"></script>
 </head>
 <body>
-	<header>
-		<h1>My website</h1>
-	</header>
-	<section>
+	<div>
 		<p>This is a paragraph from the content page</p>
-	</section>
-	<footer>
-		<p>My footer</p>
-		<p>This is some footer content from the content page</p>
-	</footer>  
+	</div>
 </body>
 </html>
