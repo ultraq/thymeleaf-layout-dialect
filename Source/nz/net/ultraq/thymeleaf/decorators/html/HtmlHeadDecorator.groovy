@@ -37,10 +37,6 @@ import org.thymeleaf.standard.processor.StandardTextTagProcessor
  */
 class HtmlHeadDecorator implements Decorator {
 
-	private static final Closure TITLE_EVENT_INDEX_FINDER = { event ->
-		return event instanceof IOpenElementTag && event.elementCompleteName == 'title'
-	}
-
 	private final ITemplateContext context
 	private final SortingStrategy sortingStrategy
 
@@ -72,15 +68,21 @@ class HtmlHeadDecorator implements Decorator {
 			return targetHeadModel ? targetHeadModel.cloneModel() : sourceHeadModel ? sourceHeadModel.cloneModel() : null
 		}
 
+		// TODO: A lot of this code is just to deal with titles.  I think it should
+		//       go into its own file.
+
 		// Get the source and target title elements
-		def sourceTitle = sourceHeadModel.findModel(TITLE_EVENT_INDEX_FINDER)
-		if (sourceTitle) {
-			sourceHeadModel.removeModelWithWhitespace(sourceTitle.index)
+		def titleRetriever = { headModel ->
+			def title = headModel.findModel { event ->
+				return event instanceof IOpenElementTag && event.elementCompleteName == 'title'
+			}
+			if (title) {
+				headModel.removeModelWithWhitespace(title.index)
+			}
+			return title
 		}
-		def targetTitle = targetHeadModel.findModel(TITLE_EVENT_INDEX_FINDER)
-		if (targetTitle) {
-			targetHeadModel.removeModelWithWhitespace(targetTitle.index)
-		}
+		def sourceTitle = titleRetriever(sourceHeadModel)
+		def targetTitle = titleRetriever(targetHeadModel)
 
 		def titlePatternProcessorRetriever = { titleModel ->
 			return titleModel?.first()?.getAttribute(LayoutDialect.DIALECT_PREFIX, TitlePatternProcessor.PROCESSOR_NAME)
@@ -112,51 +114,6 @@ class HtmlHeadDecorator implements Decorator {
 
 		targetHeadModel.insertModelWithWhitespace(1, resultTitle)
 
-//		def titleContainer = modelBuilder.build {
-//			'title-container'(
-//				titlePatternProcessor ? [(titlePatternProcessor.attributeCompleteName): titlePatternProcessor.value] : [:]) {
-//				if (sourceTitle) {
-//					add(sourceTitle)
-//				}
-//				if (targetTitle) {
-//					add(targetTitle)
-//				}
-//			}
-//		}
-
-/*
-		// Copy the content and decorator <title>s
-		// TODO: Surely the code below can be simplified?  The 2 conditional
-		//       blocks are doing almost the same thing.
-		def titleContainer = new Element('title-container')
-		def titlePattern = null
-		def titleExtraction = { headElement, titleType ->
-			def existingContainer = headElement?.findElement('title-container')
-			if (existingContainer) {
-				def titleElement = existingContainer.children.last()
-				titlePattern = titleElement.getAttributeValue(DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME) ?: titlePattern
-				titleElement.setNodeProperty(TITLE_TYPE, titleType)
-				headElement.removeChildWithWhitespace(existingContainer)
-				titleContainer.addChild(existingContainer)
-			}
-			else {
-				def titleElement = headElement?.findElement('title')
-				if (titleElement) {
-					titlePattern = titleElement.getAttributeValue(DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME) ?: titlePattern
-					titleElement.setNodeProperty(TITLE_TYPE, titleType)
-					titleElement.removeAttribute(DIALECT_PREFIX_LAYOUT, PROCESSOR_NAME)
-					headElement.removeChildWithWhitespace(titleElement)
-					titleContainer.addChild(titleElement)
-				}
-			}
-		}
-		titleExtraction(decoratorHead, TITLE_TYPE_DECORATOR)
-		titleExtraction(contentHead, TITLE_TYPE_CONTENT)
-
-		def resultTitle = new Element('title')
-		resultTitle.setAttribute("${DIALECT_PREFIX_LAYOUT}:${PROCESSOR_NAME}", titlePattern)
-		titleContainer.addChild(resultTitle)
-*/
 		// Merge the source <head> elements with the target <head> elements using
 		// the current merging strategy, placing the resulting title at the
 		// beginning of it
