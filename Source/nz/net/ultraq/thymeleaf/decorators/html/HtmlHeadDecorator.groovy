@@ -77,7 +77,7 @@ class HtmlHeadDecorator implements Decorator {
 				return event instanceof IOpenElementTag && event.elementCompleteName == 'title'
 			}
 			if (title) {
-				headModel.removeModelWithWhitespace(title.index)
+				headModel.removeModelWithWhitespace(title.startIndex)
 			}
 			return title
 		}

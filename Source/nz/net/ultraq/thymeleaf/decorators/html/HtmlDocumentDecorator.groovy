@@ -16,9 +16,8 @@
 
 package nz.net.ultraq.thymeleaf.decorators.html
 
-import nz.net.ultraq.thymeleaf.decorators.Decorator
 import nz.net.ultraq.thymeleaf.decorators.SortingStrategy
-import nz.net.ultraq.thymeleaf.models.AttributeMerger
+import nz.net.ultraq.thymeleaf.decorators.xml.XmlDocumentDecorator
 
 import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.model.ICloseElementTag
@@ -32,9 +31,8 @@ import org.thymeleaf.model.IOpenElementTag
  * 
  * @author Emanuel Rabina
  */
-class HtmlDocumentDecorator implements Decorator {
+class HtmlDocumentDecorator extends XmlDocumentDecorator {
 
-	private final ITemplateContext context
 	private final SortingStrategy sortingStrategy
 
 	/**
@@ -45,7 +43,7 @@ class HtmlDocumentDecorator implements Decorator {
 	 */
 	HtmlDocumentDecorator(ITemplateContext context, SortingStrategy sortingStrategy) {
 
-		this.context         = context
+		super(context)
 		this.sortingStrategy = sortingStrategy
 	}
 
@@ -70,7 +68,7 @@ class HtmlDocumentDecorator implements Decorator {
 		)
 		if (resultHeadModel) {
 			if (targetHeadModel) {
-				targetDocumentModel.replaceModel(targetHeadModel.index, resultHeadModel)
+				targetDocumentModel.replaceModel(targetHeadModel.startIndex, resultHeadModel)
 			}
 			else {
 				targetDocumentModel.insertModelWithWhitespace(targetDocumentModel.find { event ->
@@ -91,7 +89,7 @@ class HtmlDocumentDecorator implements Decorator {
 		)
 		if (resultBodyModel) {
 			if (targetBodyModel) {
-				targetDocumentModel.replaceModel(targetBodyModel.index, resultBodyModel)
+				targetDocumentModel.replaceModel(targetBodyModel.startIndex, resultBodyModel)
 			}
 			else {
 				targetDocumentModel.insertModelWithWhitespace(targetDocumentModel.find { event ->
@@ -108,13 +106,6 @@ class HtmlDocumentDecorator implements Decorator {
 //			contentDocument.docType = decoratorDocument.docType
 //		}
 
-
-		// Find the root element of the target document to merge
-		def targetDocumentRootModel = targetDocumentModel.findModel { targetDocumentEvent ->
-			return targetDocumentEvent instanceof IOpenElementTag
-		}
-
-		// Bring the decorator into the content page (which is the one being processed)
-		return new AttributeMerger(context.modelFactory).merge(targetDocumentRootModel, sourceDocumentModel)
+		return super.decorate(targetDocumentModel, sourceDocumentModel)
 	}
 }

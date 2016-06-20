@@ -21,6 +21,7 @@ import org.thymeleaf.engine.TemplateModel
 import org.thymeleaf.model.IAttribute
 import org.thymeleaf.model.ICloseElementTag
 import org.thymeleaf.model.IModel
+import org.thymeleaf.model.IModelFactory
 import org.thymeleaf.model.IOpenElementTag
 import org.thymeleaf.model.IStandaloneElementTag
 import org.thymeleaf.model.ITemplateEvent
@@ -202,9 +203,9 @@ class ModelExtensions {
 			 * Returns the first instance of a model that meets the given closure
 			 * criteria.
 			 * 
-			 * Models returned via this method are also aware of their position in the
-			 * event queue of the parent model, accessible via their {@code index}
-			 * property.
+			 * Models returned via this method are also aware of their start/end
+			 * positions in the event queue of the parent model, accessible via their
+			 * {@code startIndex}/{@code endIndex} properties.
 			 * 
 			 * @param closure
 			 * @return A model over the event that matches the closure criteria, or
@@ -214,7 +215,8 @@ class ModelExtensions {
 				def event = delegate.find(closure)
 				if (event) {
 					def model = delegate.getModel(event.index)
-					model.metaClass.index = event.index
+					model.metaClass.startIndex = event.index
+					model.metaClass.endIndex = event.index + model.size()
 					return model
 				}
 				return null
@@ -265,11 +267,13 @@ class ModelExtensions {
 			getModel << { int pos ->
 				def modelSize = calculateModelSize(delegate, pos)
 				def subModel = delegate.cloneModel()
-				while (pos + modelSize < subModel.size()) {
-					subModel.removeLast()
-				}
-				while (modelSize < subModel.size()) {
+				def removeBefore = delegate instanceof TemplateModel ? pos - 1 : pos
+				def removeAfter = subModel.size() - (removeBefore + modelSize)
+				while (removeBefore-- > 0) {
 					subModel.removeFirst()
+				}
+				while (removeAfter-- > 0) {
+					subModel.removeLast()
 				}
 				return subModel
 			}
@@ -298,15 +302,28 @@ class ModelExtensions {
 			 * 
 			 * @param pos
 			 * @param event
+			 * @param modelFactory
 			 */
-			insertWithWhitespace << { int pos, ITemplateEvent event ->
+			insertWithWhitespace << { int pos, ITemplateEvent event, IModelFactory modelFactory ->
+
+				// TODO: Because I can't check the parent for whitespace hints, I should
+				//       make this smarter and find whitespace within the model to copy.
 				def whitespace = delegate.getModel(pos)  // Assumes that whitespace exists at the insertion point
 				if (whitespace.whitespace) {
 					delegate.insert(pos, event)
 					delegate.insertModel(pos, whitespace)
 				}
 				else {
-					delegate.insert(event)
+					def newLine = modelFactory.createText('\n')
+					if (pos == 0) {
+						delegate.insert(pos, newLine)
+						delegate.insert(pos, event)
+					}
+					else if (pos == delegate.size()) {
+						delegate.insert(pos, newLine)
+						delegate.insert(pos, event)
+						delegate.insert(pos, newLine)
+					}
 				}
 			}
 

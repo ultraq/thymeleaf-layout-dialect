@@ -25,7 +25,6 @@ import nz.net.ultraq.thymeleaf.models.TemplateModelFinder
 
 import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.engine.AttributeName
-import org.thymeleaf.model.ICloseElementTag
 import org.thymeleaf.model.IModel
 import org.thymeleaf.model.IOpenElementTag
 import org.thymeleaf.processor.element.AbstractAttributeModelProcessor
@@ -86,8 +85,19 @@ class DecoratorProcessor extends AbstractAttributeModelProcessor {
 		// both a decorator processor and a potential fragment
 		def rootElement = model.first()
 		if (rootElement.hasAttribute(dialectPrefix, PROCESSOR_NAME)) {
-			model.replace(0, context.modelFactory.removeAttribute(rootElement, dialectPrefix, PROCESSOR_NAME))
+			rootElement = context.modelFactory.removeAttribute(rootElement, dialectPrefix, PROCESSOR_NAME)
 		}
+
+		// Load the entirety of this template
+		// TODO: Can probably find a way of preventing this double-loading for #102
+		def contentTemplateName = context.templateData.template
+		def contentTemplate = new TemplateModelFinder(context, templateMode)
+			.findTemplate(contentTemplateName)
+			.cloneModel()
+		def origRootElement = contentTemplate.find { event ->
+			return event instanceof IOpenElementTag
+		}
+		contentTemplate.replace(origRootElement.index, rootElement)
 
 		// Locate the template to 'redirect' processing to by completely replacing
 		// the current document with it
@@ -109,20 +119,9 @@ class DecoratorProcessor extends AbstractAttributeModelProcessor {
 			throw new IllegalArgumentException("""
 				Layout dialect cannot be applied to the ${templateMode} template mode,
 				only HTML and XML template modes are currently supported
-				""".stripMargin())
+			""".stripIndent().trim())
 		}
-		def resultTemplate = decorator.decorate(decoratorTemplate, model)
-
-		// TODO: The modified decorator template includes anything outside the root
-		//       element, which we don't want for the next step.  Strip those events
-		//       out for now, but for future I should find a better way to merge
-		//       documents.
-		while (!(resultTemplate.first() instanceof IOpenElementTag)) {
-			resultTemplate.removeFirst()
-		}
-		while (!(resultTemplate.last() instanceof ICloseElementTag)) {
-			resultTemplate.removeLast()
-		}
+		def resultTemplate = decorator.decorate(decoratorTemplate, contentTemplate)
 
 		// TODO: Should probably return a new object so this doesn't look so
 		//       confusing, ie: why am I changing the source model when it's the

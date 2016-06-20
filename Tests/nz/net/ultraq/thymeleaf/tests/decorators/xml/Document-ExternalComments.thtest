@@ -1,43 +1,31 @@
 
-# Test whether comments found outside the HTML element are included in the final
+# Test whether comments found outside the root element are included in the final
 # output.
 
-%TEMPLATE_MODE HTML
+%TEMPLATE_MODE XML
 %EXACT_MATCH
 
 
 %INPUT
-<!DOCTYPE html>
-<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorator="Layout">
-<head>
-</head>
-<body>
-</body>
-</html>
+<?xml version="1.0" encoding="utf-8"?>
+<root xmlns="http://www.example.org/"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="Decorator">
+</root>
 
 
-%INPUT[Layout]
-<!DOCTYPE html>
-<!-- Comment before the HTML element -->
-<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-<head>
-	<title>Layout page</title>
-</head>
-<body>
-</body>
-</html>
-<!-- Comment after the HTML element -->
+%INPUT[Decorator]
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Comment before the root element -->
+<root xmlns="http://www.example.org/"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+</root>
+<!-- Comment after the root element -->
 
 
 %OUTPUT
-<!DOCTYPE html>
-<!-- Comment before the HTML element -->
-<html>
-<head>
-	<title>Layout page</title>
-</head>
-<body>
-</body>
-</html>
-<!-- Comment after the HTML element -->
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Comment before the root element -->
+<root xmlns="http://www.example.org/">
+</root>
+<!-- Comment after the root element -->

@@ -1,0 +1,29 @@
+
+# Test whether comments found outside the HTML element are included in the final
+# output.
+
+%TEMPLATE_MODE HTML
+%EXACT_MATCH
+
+
+%INPUT
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="Layout">
+</html>
+
+
+%INPUT[Layout]
+<!DOCTYPE html>
+<!-- Comment before the HTML element -->
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+</html>
+<!-- Comment after the HTML element -->
+
+
+%OUTPUT
+<!DOCTYPE html>
+<!-- Comment before the HTML element -->
+<html>
+</html>
+<!-- Comment after the HTML element -->

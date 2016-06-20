@@ -20,6 +20,8 @@ import nz.net.ultraq.thymeleaf.decorators.Decorator
 import nz.net.ultraq.thymeleaf.models.AttributeMerger
 
 import org.thymeleaf.context.ITemplateContext
+import org.thymeleaf.model.ICloseElementTag
+import org.thymeleaf.model.IComment
 import org.thymeleaf.model.IModel
 import org.thymeleaf.model.IOpenElementTag
 
@@ -52,35 +54,40 @@ class XmlDocumentDecorator implements Decorator {
 	@Override
 	IModel decorate(IModel targetDocumentModel, IModel sourceDocumentModel) {
 
-		// TODO
-		// Copy text outside of the root element, keeping whitespace copied to a minimum
-//		def beforeHtml = true
-//		def allowNext = false
-//		def lastNode = contentXml
-//		decoratorDocument.children.each { externalNode ->
-//			if (externalNode == decoratorXml) {
-//				beforeHtml = false
-//				allowNext = true
-//				return
-//			}
-//			if (externalNode instanceof Comment || allowNext) {
-//				if (beforeHtml) {
-//					contentDocument.insertBefore(contentXml, externalNode)
-//				}
-//				else {
-//					contentDocument.insertAfter(lastNode, externalNode)
-//					lastNode = externalNode
-//				}
-//				allowNext = externalNode instanceof Comment
-//			}
-//		}
+		def modelFactory = context.modelFactory
 
-		// Find the root element of the target document to work with
-		def targetDocumentRootModel = targetDocumentModel.findModel { targetDocumentEvent ->
-			return targetDocumentEvent instanceof IOpenElementTag
+		// Find the root element of each document to work with
+		def rootModelFinder = { documentModel ->
+			return documentModel.findModel { documentEvent ->
+				return documentEvent instanceof IOpenElementTag
+			}
 		}
+		def targetDocumentRootModel = rootModelFinder(targetDocumentModel)
+		def sourceDocumentRootModel = rootModelFinder(sourceDocumentModel)
 
 		// Decorate the target document with the source one
-		return new AttributeMerger(context.modelFactory).merge(targetDocumentRootModel, sourceDocumentModel)
+		def resultDocumentModel = new AttributeMerger(modelFactory).merge(targetDocumentRootModel, sourceDocumentRootModel)
+
+		// Copy comments outside of the root element, keeping whitespace copied to a minimum
+		for (def i = 0; i < targetDocumentModel.size(); i++) {
+			def event = targetDocumentModel.get(i)
+			if (event instanceof IComment) {
+				resultDocumentModel.insertWithWhitespace(0, event, modelFactory)
+			}
+			else if (event instanceof IOpenElementTag) {
+				break
+			}
+		}
+		for (def i = targetDocumentModel.size() - 1; i >= 0; i--) {
+			def event = targetDocumentModel.get(i)
+			if (event instanceof IComment) {
+				resultDocumentModel.insertWithWhitespace(resultDocumentModel.size(), event, modelFactory)
+			}
+			else if (event instanceof ICloseElementTag) {
+				break
+			}
+		}
+
+		return resultDocumentModel
 	}
 }
