@@ -81,6 +81,8 @@ class DecoratorProcessor extends AbstractAttributeModelProcessor {
 			throw new IllegalArgumentException('layout:decorator attribute must appear in the root element of your template')
 		}
 
+		def templateModelFinder = new TemplateModelFinder(context)
+
 		// Remove the layout:decorator attribute for cases when the root element is
 		// both a decorator processor and a potential fragment
 		def rootElement = model.first()
@@ -91,9 +93,7 @@ class DecoratorProcessor extends AbstractAttributeModelProcessor {
 		// Load the entirety of this template
 		// TODO: Can probably find a way of preventing this double-loading for #102
 		def contentTemplateName = context.templateData.template
-		def contentTemplate = new TemplateModelFinder(context, templateMode)
-			.findTemplate(contentTemplateName)
-			.cloneModel()
+		def contentTemplate = templateModelFinder.findTemplate(contentTemplateName).cloneModel()
 		def origRootElement = contentTemplate.find { event ->
 			return event instanceof IOpenElementTag
 		}
@@ -102,9 +102,7 @@ class DecoratorProcessor extends AbstractAttributeModelProcessor {
 		// Locate the template to 'redirect' processing to by completely replacing
 		// the current document with it
 		def decoratorTemplateName = new ExpressionProcessor(context).processAsString(attributeValue)
-		def decoratorTemplate = new TemplateModelFinder(context, templateMode)
-			.findTemplate(decoratorTemplateName)
-			.cloneModel()
+		def decoratorTemplate = templateModelFinder.findTemplate(decoratorTemplateName).cloneModel()
 
 		// Gather all fragment parts from this page to apply to the new document
 		// after decoration has taken place

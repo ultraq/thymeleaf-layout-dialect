@@ -67,7 +67,7 @@ class InsertProcessor extends AbstractAttributeModelProcessor {
 
 		// Locate the page and fragment to insert
 		def fragmentExpression = new ExpressionProcessor(context).parse(attributeValue)
-		def fragmentToInsert = new TemplateModelFinder(context, templateMode).findFragment(
+		def fragmentToInsert = new TemplateModelFinder(context).findFragment(
 			fragmentExpression.templateName.toString(), fragmentExpression.fragmentSelector.toString(),
 			dialectPrefix)
 

@@ -18,7 +18,6 @@ package nz.net.ultraq.thymeleaf.models
 
 import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.engine.TemplateModel
-import org.thymeleaf.templatemode.TemplateMode
 
 /**
  * A simpler API for retrieving (immutable template) models using Thymeleaf's
@@ -28,19 +27,16 @@ import org.thymeleaf.templatemode.TemplateMode
  */
 class TemplateModelFinder {
 
-	final ITemplateContext context
-	final TemplateMode templateMode
+	private final ITemplateContext context
 
 	/**
 	 * Constructor, set the template context we're working in.
 	 * 
 	 * @param context
-	 * @param templateMode
 	 */
-	TemplateModelFinder(ITemplateContext context, TemplateMode templateMode) {
+	TemplateModelFinder(ITemplateContext context) {
 
-		this.context      = context
-		this.templateMode = templateMode
+		this.context = context
 	}
 
 	/**
@@ -55,7 +51,7 @@ class TemplateModelFinder {
 	TemplateModel find(String templateName, String selector = null) {
 
 		return context.configuration.templateManager.parseStandalone(context,
-			templateName, selector ? [selector] as Set : null, templateMode, true, true)
+			templateName, selector ? [selector] as Set : null, context.templateMode, true, true)
 	}
 
 	/**

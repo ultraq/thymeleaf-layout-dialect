@@ -79,7 +79,7 @@ class IncludeProcessor extends AbstractAttributeModelProcessor {
 
 		// Locate the page and fragment for inclusion
 		def fragmentExpression = new ExpressionProcessor(context).parse(attributeValue)
-		def fragmentForInclusion = new TemplateModelFinder(context, templateMode).findFragment(
+		def fragmentForInclusion = new TemplateModelFinder(context).findFragment(
 			fragmentExpression.templateName.toString(), fragmentExpression.fragmentSelector.toString(),
 			dialectPrefix)
 
