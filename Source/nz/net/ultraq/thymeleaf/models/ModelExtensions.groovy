@@ -60,7 +60,7 @@ class ModelExtensions {
 			 *         iterator for all other model types.
 			 */
 			childEventIterator << {
-				return delegate.element ? new ChildEventIterator(delegate) : new NullIterator()
+				return delegate.element ? new ChildEventIterator(delegate) : null
 			}
 
 			/**
@@ -71,7 +71,7 @@ class ModelExtensions {
 			 * @return New model iterator.
 			 */
 			childModelIterator << {
-				return delegate.element ? new ChildModelIterator(delegate) : new NullIterator()
+				return delegate.element ? new ChildModelIterator(delegate) : null
 			}
 
 			/**
