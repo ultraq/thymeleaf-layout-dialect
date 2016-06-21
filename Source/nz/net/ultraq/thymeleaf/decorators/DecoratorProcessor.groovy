@@ -101,8 +101,8 @@ class DecoratorProcessor extends AbstractAttributeModelProcessor {
 
 		// Locate the template to 'redirect' processing to by completely replacing
 		// the current document with it
-		def decoratorTemplateName = new ExpressionProcessor(context).processAsString(attributeValue)
-		def decoratorTemplate = templateModelFinder.findTemplate(decoratorTemplateName).cloneModel()
+		def decoratorTemplateExpression = new ExpressionProcessor(context).parseFragmentExpression(attributeValue)
+		def decoratorTemplate = templateModelFinder.findTemplate(decoratorTemplateExpression).cloneModel()
 
 		// Gather all fragment parts from this page to apply to the new document
 		// after decoration has taken place
@@ -120,11 +120,6 @@ class DecoratorProcessor extends AbstractAttributeModelProcessor {
 			""".stripIndent().trim())
 		}
 		def resultTemplate = decorator.decorate(decoratorTemplate, contentTemplate)
-
-		// TODO: Should probably return a new object so this doesn't look so
-		//       confusing, ie: why am I changing the source model when it's the
-		//       decorator model we are targeting???  See the point about
-		//       immutability in https://github.com/ultraq/thymeleaf-layout-dialect/issues/102
 		model.replaceModel(0, resultTemplate)
 
 		// Save layout fragments for use later by layout:fragment processors

@@ -66,7 +66,7 @@ class ReplaceProcessor extends AbstractAttributeModelProcessor {
 		String attributeValue, IElementModelStructureHandler structureHandler) {
 
 		// Locate the page and fragment to use for replacement
-		def fragmentExpression = new ExpressionProcessor(context).parse(attributeValue)
+		def fragmentExpression = new ExpressionProcessor(context).parseFragmentExpression(attributeValue)
 		def fragmentForReplacement = new TemplateModelFinder(context).findFragment(fragmentExpression, dialectPrefix)
 
 		// Gather all fragment parts within the include element, scoping them to this element
