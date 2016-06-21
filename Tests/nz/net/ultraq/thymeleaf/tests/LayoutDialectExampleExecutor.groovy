@@ -48,8 +48,7 @@ class LayoutDialectExampleExecutor extends JUnitTestExecutor {
 		def tests = new Reflections('', new ResourcesScanner())
 			.getResources(~/Examples.*\.thtest/) as List
 		def exclusions = [
-		  'nz/net/ultraq/thymeleaf/tests/Examples-DecoratorsAndFragments2.thtest',
-			'nz/net/ultraq/thymeleaf/tests/Examples-IncludesAndFragments.thtest'
+		  'nz/net/ultraq/thymeleaf/tests/Examples-DecoratorsAndFragments2.thtest'
 		]
 		return tests - exclusions
 	}

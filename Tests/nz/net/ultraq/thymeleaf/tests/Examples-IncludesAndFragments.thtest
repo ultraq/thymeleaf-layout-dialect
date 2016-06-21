@@ -10,7 +10,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <body>
-	<div layout:include="Modal2 :: modal(modalId='message', modalHeader='Message')" th:remove="tag">
+	<div layout:include="~{Modal2 :: modal(modalId='message', modalHeader='Message')}" th:remove="tag">
 		<p layout:fragment="modal-content">Message goes here!</p>
 	</div>
 </body>
