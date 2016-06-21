@@ -18,9 +18,10 @@ package nz.net.ultraq.thymeleaf.models
 
 import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.engine.TemplateModel
+import org.thymeleaf.standard.expression.FragmentExpression
 
 /**
- * A simpler API for retrieving (immutable template) models using Thymeleaf's
+ * A simple API for retrieving (immutable template) models using Thymeleaf's
  * template manager.
  * 
  * @author Emanuel Rabina
@@ -46,9 +47,9 @@ class TemplateModelFinder {
 	 * @param selector     A Thymeleaf DOM selector, which in turn is an
 	 *                     AttoParser DOM selector.  See the Appendix in the Using
 	 *                     Thymeleaf docs for the DOM selector syntax.
-	 * @return Model for the selected template and element.
+	 * @return Model for the selected template and selector.
 	 */
-	TemplateModel find(String templateName, String selector = null) {
+	private TemplateModel find(String templateName, String selector = null) {
 
 		return context.configuration.templateManager.parseStandalone(context,
 			templateName, selector ? [selector] as Set : null, context.templateMode, true, true)
@@ -57,6 +58,23 @@ class TemplateModelFinder {
 	/**
 	 * Return the model specified by the given fragment name expression.
 	 * 
+	 * @param fragmentExpression
+	 * @param dialectPrefix
+	 * @return Fragment matching the fragment specification.
+	 */
+	TemplateModel findFragment(FragmentExpression fragmentExpression, String dialectPrefix) {
+
+		// TODO: Simplify this method signature by deriving the layout dialect
+		//       prefix from the context.
+
+		return findFragment(fragmentExpression.templateName.toString(),
+			fragmentExpression.fragmentSelector.toString(), dialectPrefix)
+	}
+
+	/**
+	 * Return the model specified by the given fragment name expression.
+	 * 
+	 * @param templateName
 	 * @param fragmentName
 	 * @param dialectPrefix
 	 * @return Fragment matching the fragment specification.
@@ -64,6 +82,17 @@ class TemplateModelFinder {
 	TemplateModel findFragment(String templateName, String fragmentName, String dialectPrefix) {
 
 		return find(templateName, "//[${dialectPrefix}:fragment^='${fragmentName}' or data-${dialectPrefix}-fragment^='${fragmentName}']")
+	}
+
+	/**
+	 * Return a model for an entire template.
+	 * 
+	 * @param fragmentExpression
+	 * @return Template model matching the fragment specification.
+	 */
+	TemplateModel findTemplate(FragmentExpression fragmentExpression) {
+
+		return find(fragmentExpression.templateName.toString())
 	}
 
 	/**
