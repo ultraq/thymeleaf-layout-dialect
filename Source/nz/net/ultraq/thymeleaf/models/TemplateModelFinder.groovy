@@ -67,8 +67,8 @@ class TemplateModelFinder {
 		// TODO: Simplify this method signature by deriving the layout dialect
 		//       prefix from the context.
 
-		return findFragment(fragmentExpression.templateName.toString(),
-			fragmentExpression.fragmentSelector.toString(), dialectPrefix)
+		return findFragment(fragmentExpression.templateName.execute(context).toString(),
+			fragmentExpression.fragmentSelector.execute(context).toString(), dialectPrefix)
 	}
 
 	/**
@@ -92,7 +92,7 @@ class TemplateModelFinder {
 	 */
 	TemplateModel findTemplate(FragmentExpression fragmentExpression) {
 
-		return find(fragmentExpression.templateName.toString())
+		return find(fragmentExpression.templateName.execute(context).toString())
 	}
 
 	/**
