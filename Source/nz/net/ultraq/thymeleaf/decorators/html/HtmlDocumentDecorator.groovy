@@ -98,14 +98,6 @@ class HtmlDocumentDecorator extends XmlDocumentDecorator {
 			}
 		}
 
-		// TODO
-		// Set the doctype from the decorator if missing from the content page
-//		def decoratorDocument = decoratorModel.parent
-//		def contentDocument   = contentModel.parent
-//		if (!contentDocument.docType && decoratorDocument.docType) {
-//			contentDocument.docType = decoratorDocument.docType
-//		}
-
 		return super.decorate(targetDocumentModel, sourceDocumentModel)
 	}
 }

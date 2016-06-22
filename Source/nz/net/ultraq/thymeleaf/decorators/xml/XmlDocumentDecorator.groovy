@@ -22,6 +22,7 @@ import nz.net.ultraq.thymeleaf.models.AttributeMerger
 import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.model.ICloseElementTag
 import org.thymeleaf.model.IComment
+import org.thymeleaf.model.IDocType
 import org.thymeleaf.model.IModel
 import org.thymeleaf.model.IOpenElementTag
 
@@ -68,10 +69,28 @@ class XmlDocumentDecorator implements Decorator {
 		// Decorate the target document with the source one
 		def resultDocumentModel = new AttributeMerger(modelFactory).merge(targetDocumentRootModel, sourceDocumentRootModel)
 
-		// Copy comments outside of the root element, keeping whitespace copied to a minimum
+		// Copy certain items outside of the root element
 		for (def i = 0; i < targetDocumentModel.size(); i++) {
 			def event = targetDocumentModel.get(i)
-			if (event instanceof IComment) {
+
+			// Only copy doctypes if the source document doesn't already have one
+			if (event instanceof IDocType) {
+				def sourceContainsDocType = false
+				for (def j = 0; j < sourceDocumentModel.size(); j++) {
+					def sourceEvent = sourceDocumentModel.get(j)
+					if (sourceEvent instanceof IDocType) {
+						sourceContainsDocType = true
+						break
+					}
+					if (sourceEvent instanceof IOpenElementTag) {
+						break
+					}
+				}
+				if (!sourceContainsDocType) {
+					resultDocumentModel.insertWithWhitespace(0, event, modelFactory)
+				}
+			}
+			else if (event instanceof IComment) {
 				resultDocumentModel.insertWithWhitespace(0, event, modelFactory)
 			}
 			else if (event instanceof IOpenElementTag) {

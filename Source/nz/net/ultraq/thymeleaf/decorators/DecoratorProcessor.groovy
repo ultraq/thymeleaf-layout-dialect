@@ -88,6 +88,7 @@ class DecoratorProcessor extends AbstractAttributeModelProcessor {
 		def rootElement = model.first()
 		if (rootElement.hasAttribute(dialectPrefix, PROCESSOR_NAME)) {
 			rootElement = context.modelFactory.removeAttribute(rootElement, dialectPrefix, PROCESSOR_NAME)
+			model.replace(0, rootElement)
 		}
 
 		// Load the entirety of this template
