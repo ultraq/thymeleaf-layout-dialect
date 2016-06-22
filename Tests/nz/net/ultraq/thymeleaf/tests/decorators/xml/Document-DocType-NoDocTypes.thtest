@@ -1,0 +1,21 @@
+
+# Test the merging of the DOCTYPE, so that the result always tries to have one.
+
+%TEMPLATE_MODE XML
+
+
+%INPUT
+<root xmlns="http://www.example.org/"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="Decorator">
+</root>
+
+
+%INPUT[Decorator]
+<root xmlns="http://www.example.org/">
+</root>
+
+
+%OUTPUT
+<root xmlns="http://www.example.org/">
+</root>

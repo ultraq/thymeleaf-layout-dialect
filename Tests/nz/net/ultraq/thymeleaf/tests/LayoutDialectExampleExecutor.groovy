@@ -45,11 +45,7 @@ class LayoutDialectExampleExecutor extends JUnitTestExecutor {
 	@Parameters(name = '{0}')
 	static List<String> listStandardLayoutDialectTests() {
 
-		def tests = new Reflections('', new ResourcesScanner())
+		return new Reflections('', new ResourcesScanner())
 			.getResources(~/Examples.*\.thtest/) as List
-		def exclusions = [
-		  'nz/net/ultraq/thymeleaf/tests/Examples-DecoratorsAndFragments2.thtest'
-		]
-		return tests - exclusions
 	}
 }
