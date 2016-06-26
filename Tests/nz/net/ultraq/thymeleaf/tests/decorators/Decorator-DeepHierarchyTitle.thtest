@@ -10,7 +10,7 @@ pageTitle = "Page title"
 %INPUT
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorator="Parent">
+	layout:decorate="Parent">
 <head>
 	<title th:text="${pageTitle}">Replaceable title</title>
 </head>
@@ -20,7 +20,7 @@ pageTitle = "Page title"
 %INPUT[Parent]
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorator="Grandparent">
+	layout:decorate="Grandparent">
 <head>
 	<title layout:title-pattern="$CONTENT_TITLE">Layout parent</title>
 </head>

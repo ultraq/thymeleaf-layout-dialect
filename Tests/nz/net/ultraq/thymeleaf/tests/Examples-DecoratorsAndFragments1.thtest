@@ -1,6 +1,6 @@
 
 # Test based on the first example in the readme for introducing the
-# layout:decorator and layout:fragment processors
+# layout:decorate and layout:fragment processors
 
 %TEMPLATE_MODE HTML
 
@@ -8,7 +8,7 @@
 %INPUT
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorator="Layout">
+	layout:decorate="Layout">
 	<head>
 		<title>Content page 1</title>
 		<script src="content-script.js"></script>

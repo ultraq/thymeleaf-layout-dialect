@@ -12,7 +12,7 @@ contentTitle = "My blog"
 %INPUT
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorator="Layout">
+	layout:decorate="Layout">
 <head>
 	<title th:text="${contentTitle}">Content title</title>
 </head>

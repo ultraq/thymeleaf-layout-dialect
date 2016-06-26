@@ -1,12 +1,12 @@
 
 # Test based on the first example in the readme for introducing the
-# layout:decorator and layout:fragment processors
+# layout:decorate and layout:fragment processors
 
 %TEMPLATE_MODE HTML
 
 
 %INPUT
-<p layout:decorator="Layout" layout:fragment="custom-footer">
+<p layout:decorate="Layout" layout:fragment="custom-footer">
 	This is some footer text from content page 2.
 </p>
 

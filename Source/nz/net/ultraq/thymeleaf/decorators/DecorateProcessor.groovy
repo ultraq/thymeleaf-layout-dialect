@@ -74,7 +74,7 @@ class DecorateProcessor extends AbstractAttributeModelProcessor {
 
 		// Ensure the decorate attribute is in the root element of the document
 		if (context.elementStack.size() != 1) {
-			throw new IllegalArgumentException("${attributeName} must appear in the root element of your template")
+			throw new IllegalArgumentException('layout:decorate/data-layout-decorate must appear in the root element of your template')
 		}
 
 		def templateModelFinder = new TemplateModelFinder(context)

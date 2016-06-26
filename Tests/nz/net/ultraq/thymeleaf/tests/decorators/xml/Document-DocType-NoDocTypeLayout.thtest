@@ -8,7 +8,7 @@
 <!DOCTYPE root>
 <root xmlns="http://www.example.org/"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorator="Decorator">
+	layout:decorate="Decorator">
 </root>
 
 
