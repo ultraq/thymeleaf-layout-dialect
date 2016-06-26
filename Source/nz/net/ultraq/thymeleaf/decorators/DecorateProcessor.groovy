@@ -53,8 +53,22 @@ class DecorateProcessor extends AbstractAttributeModelProcessor {
 	 */
 	DecorateProcessor(TemplateMode templateMode, String dialectPrefix, SortingStrategy sortingStrategy) {
 
-		super(templateMode, dialectPrefix, null, false, PROCESSOR_NAME, true, PROCESSOR_PRECEDENCE, true)
+		this(templateMode, dialectPrefix, sortingStrategy, PROCESSOR_NAME)
+	}
 
+	/**
+	 * Constructor, configurable processor name so that I could support the
+	 * deprecated {@code layout:decorator} alias.
+	 * 
+	 * @param templateMode
+	 * @param dialectPrefix
+	 * @param sortingStrategy
+	 * @param attributeName
+	 */
+	protected DecorateProcessor(TemplateMode templateMode, String dialectPrefix, SortingStrategy sortingStrategy,
+		String attributeName) {
+
+		super(templateMode, dialectPrefix, null, false, attributeName, true, PROCESSOR_PRECEDENCE, true)
 		this.sortingStrategy = sortingStrategy
 	}
 

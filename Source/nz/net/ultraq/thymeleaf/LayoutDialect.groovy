@@ -17,6 +17,7 @@
 package nz.net.ultraq.thymeleaf
 
 import nz.net.ultraq.thymeleaf.decorators.DecorateProcessor
+import nz.net.ultraq.thymeleaf.decorators.DecoratorProcessor
 import nz.net.ultraq.thymeleaf.decorators.SortingStrategy
 import nz.net.ultraq.thymeleaf.decorators.TitlePatternProcessor
 import nz.net.ultraq.thymeleaf.decorators.strategies.AppendingStrategy
@@ -76,6 +77,7 @@ class LayoutDialect extends AbstractProcessorDialect {
 			// Processors available in the HTML template mode
 			new StandardXmlNsTagProcessor(TemplateMode.HTML, dialectPrefix),
 			new DecorateProcessor(TemplateMode.HTML, dialectPrefix, sortingStrategy),
+			new DecoratorProcessor(TemplateMode.HTML, dialectPrefix, sortingStrategy),
 			new IncludeProcessor(TemplateMode.HTML, dialectPrefix),
 			new InsertProcessor(TemplateMode.HTML, dialectPrefix),
 			new ReplaceProcessor(TemplateMode.HTML, dialectPrefix),
@@ -85,6 +87,7 @@ class LayoutDialect extends AbstractProcessorDialect {
 			// Processors available in the XML template mode
 			new StandardXmlNsTagProcessor(TemplateMode.XML, dialectPrefix),
 			new DecorateProcessor(TemplateMode.XML, dialectPrefix, sortingStrategy),
+			new DecoratorProcessor(TemplateMode.XML, dialectPrefix, sortingStrategy),
 			new IncludeProcessor(TemplateMode.XML, dialectPrefix),
 			new InsertProcessor(TemplateMode.XML, dialectPrefix),
 			new ReplaceProcessor(TemplateMode.XML, dialectPrefix),
