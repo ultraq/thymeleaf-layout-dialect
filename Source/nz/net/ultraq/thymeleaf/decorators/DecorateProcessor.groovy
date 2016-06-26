@@ -32,30 +32,26 @@ import org.thymeleaf.processor.element.IElementModelStructureHandler
 import org.thymeleaf.templatemode.TemplateMode
 
 /**
- * Specifies the name of the decorator template to apply to a content template.
- * <p>
- * The mechanism for resolving decorator templates is the same as that used by
- * Thymeleaf to resolve pages in the {@code th:fragment} and {@code th:include}
- * processors.
+ * Specifies the name of the template to decorate using the content template.
  * 
  * @author Emanuel Rabina
  */
-class DecoratorProcessor extends AbstractAttributeModelProcessor {
+class DecorateProcessor extends AbstractAttributeModelProcessor {
 
-	static final String PROCESSOR_NAME = 'decorator'
+	static final String PROCESSOR_NAME = 'decorate'
 	static final int PROCESSOR_PRECEDENCE = 0
 
 	private final SortingStrategy sortingStrategy
 
 	/**
-	 * Constructor, configure this processor to work on the 'decorator'
-	 * attribute and to use the given sorting strategy.
+	 * Constructor, configure this processor to work on the 'decorate' attribute
+	 * and to use the given sorting strategy.
 	 * 
 	 * @param templateMode
 	 * @param dialectPrefix
 	 * @param sortingStrategy
 	 */
-	DecoratorProcessor(TemplateMode templateMode, String dialectPrefix, SortingStrategy sortingStrategy) {
+	DecorateProcessor(TemplateMode templateMode, String dialectPrefix, SortingStrategy sortingStrategy) {
 
 		super(templateMode, dialectPrefix, null, false, PROCESSOR_NAME, true, PROCESSOR_PRECEDENCE, true)
 
@@ -63,8 +59,8 @@ class DecoratorProcessor extends AbstractAttributeModelProcessor {
 	}
 
 	/**
-	 * Locates the decorator page specified by the layout attribute and applies
-	 * it to the current page being processed.
+	 * Locates the template to decorate and, once decorated, inserts it into the
+	 * processing chain.
 	 * 
 	 * @param context
 	 * @param model
@@ -76,15 +72,15 @@ class DecoratorProcessor extends AbstractAttributeModelProcessor {
 	protected void doProcess(ITemplateContext context, IModel model, AttributeName attributeName,
 		String attributeValue, IElementModelStructureHandler structureHandler) {
 
-		// Ensure the decorator attribute is in the root element of the document
+		// Ensure the decorate attribute is in the root element of the document
 		if (context.elementStack.size() != 1) {
-			throw new IllegalArgumentException('layout:decorator attribute must appear in the root element of your template')
+			throw new IllegalArgumentException("${attributeName} must appear in the root element of your template")
 		}
 
 		def templateModelFinder = new TemplateModelFinder(context)
 
-		// Remove the layout:decorator attribute for cases when the root element is
-		// both a decorator processor and a potential fragment
+		// Remove the layout:decorate attribute for cases when the root element is
+		// also a potential fragment
 		def rootElement = model.first()
 		if (rootElement.hasAttribute(dialectPrefix, PROCESSOR_NAME)) {
 			rootElement = context.modelFactory.removeAttribute(rootElement, dialectPrefix, PROCESSOR_NAME)
@@ -100,10 +96,9 @@ class DecoratorProcessor extends AbstractAttributeModelProcessor {
 		}
 		contentTemplate.replace(origRootElement.index, rootElement)
 
-		// Locate the template to 'redirect' processing to by completely replacing
-		// the current document with it
-		def decoratorTemplateExpression = new ExpressionProcessor(context).parseFragmentExpression(attributeValue)
-		def decoratorTemplate = templateModelFinder.findTemplate(decoratorTemplateExpression).cloneModel()
+		// Locate the template to decorate
+		def decorateTemplateExpression = new ExpressionProcessor(context).parseFragmentExpression(attributeValue)
+		def decorateTemplate = templateModelFinder.findTemplate(decorateTemplateExpression).cloneModel()
 
 		// Gather all fragment parts from this page to apply to the new document
 		// after decoration has taken place
@@ -120,7 +115,7 @@ class DecoratorProcessor extends AbstractAttributeModelProcessor {
 				only HTML and XML template modes are currently supported
 			""".stripIndent().trim())
 		}
-		def resultTemplate = decorator.decorate(decoratorTemplate, contentTemplate)
+		def resultTemplate = decorator.decorate(decorateTemplate, contentTemplate)
 		model.replaceModel(0, resultTemplate)
 
 		// Save layout fragments for use later by layout:fragment processors

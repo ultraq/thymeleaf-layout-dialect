@@ -28,12 +28,13 @@
 		<restrictions tags="-title"/>
 	</attribute-processor>
 
-	<attribute-processor name="decorator"     class="nz.net.ultraq.thymeleaf.decorators.DecoratorProcessor"/>
+	<attribute-processor name="decorate"      class="nz.net.ultraq.thymeleaf.decorators.DecorateProcessor"/>
 	<attribute-processor name="title-pattern" class="nz.net.ultraq.thymeleaf.decorators.TitlePatternProcessor">
 		<restrictions tags="title"/>
 	</attribute-processor>
 
 	<attribute-processor name="include" class="nz.net.ultraq.thymeleaf.includes.IncludeProcessor"/>
+	<attribute-processor name="insert" class="nz.net.ultraq.thymeleaf.includes.InsertProcessor"/>
 	<attribute-processor name="replace" class="nz.net.ultraq.thymeleaf.includes.ReplaceProcessor"/>
 
 </dialect>
