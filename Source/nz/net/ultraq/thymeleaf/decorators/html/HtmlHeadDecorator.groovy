@@ -29,6 +29,7 @@ import org.thymeleaf.model.IModel
 import org.thymeleaf.model.IOpenElementTag
 import org.thymeleaf.standard.StandardDialect
 import org.thymeleaf.standard.processor.StandardTextTagProcessor
+import org.unbescape.html.HtmlEscape
 
 /**
  * A decorator specific to processing an HTML {@code <head>} element.
@@ -95,7 +96,7 @@ class HtmlHeadDecorator implements Decorator {
 		if (titlePatternProcessor) {
 			def titleValueRetriever = { titleModel ->
 				return titleModel.first().getAttributeValue(StandardDialect.PREFIX, StandardTextTagProcessor.ATTR_NAME) ?:
-					titleModel.size() > 2 ? "'${titleModel.get(1).text}'" : null
+					titleModel.size() > 2 ? "'${HtmlEscape.escapeHtml5Xml(titleModel.get(1).text)}'" : null
 			}
 			def contentTitle = titleValueRetriever(sourceTitle)
 			def decoratorTitle = titleValueRetriever(targetTitle)

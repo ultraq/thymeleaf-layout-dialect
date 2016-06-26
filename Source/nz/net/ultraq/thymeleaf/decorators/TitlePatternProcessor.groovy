@@ -24,6 +24,7 @@ import org.thymeleaf.model.IProcessableElementTag
 import org.thymeleaf.processor.element.AbstractAttributeTagProcessor
 import org.thymeleaf.processor.element.IElementTagStructureHandler
 import org.thymeleaf.templatemode.TemplateMode
+import org.unbescape.html.HtmlEscape
 
 /**
  * Allows for greater control of the resulting {@code <title>} element by
@@ -87,7 +88,7 @@ class TitlePatternProcessor extends AbstractAttributeTagProcessor {
 			def titleExpression = tag.getAttributeValue(dataAttributeName)
 			if (titleExpression) {
 				structureHandler.removeAttribute(dataAttributeName)
-				return expressionProcessor.processAsString(titleExpression)
+				return HtmlEscape.unescapeHtml(expressionProcessor.processAsString(titleExpression))
 			}
 			return null
 		}
