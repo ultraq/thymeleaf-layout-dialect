@@ -124,10 +124,9 @@ class DecorateProcessor extends AbstractAttributeModelProcessor {
 			templateMode == TemplateMode.XML  ? new XmlDocumentDecorator(context) :
 			null
 		if (!decorator) {
-			throw new IllegalArgumentException("""
-				Layout dialect cannot be applied to the ${templateMode} template mode,
-				only HTML and XML template modes are currently supported
-			""".stripIndent().trim())
+			throw new IllegalArgumentException(
+				"Layout dialect cannot be applied to the ${templateMode} template mode, only HTML and XML template modes are currently supported"
+			)
 		}
 		def resultTemplate = decorator.decorate(decorateTemplate, contentTemplate)
 		model.replaceModel(0, resultTemplate)

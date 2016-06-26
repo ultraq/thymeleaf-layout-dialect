@@ -160,14 +160,13 @@ class ModelBuilder extends BuilderSupport {
 				model.add(modelFactory.createStandaloneElementTag(elementName, attributes, AttributeValueQuotes.DOUBLE, false, false))
 			}
 			else {
-				logger.warn("""
-					Instructed to write a closing tag {} for an HTML void element.  This
-					might cause processing errors further down the track.  To avoid this,
-					either self close the opening element, remove the closing tag, or
-					process this template using the XML processing mode.  See
-					https://html.spec.whatwg.org/multipage/syntax.html#void-elements
-					for more information on HTML void elements.
-				""".stripIndent().trim(), name)
+				logger.warn(
+					'Instructed to write a closing tag {} for an HTML void element.  ' +
+					'This might cause processing errors further down the track.  ' +
+					'To avoid this, either self close the opening element, remove the closing tag, or process this template using the XML processing mode.  ' +
+					'See https://html.spec.whatwg.org/multipage/syntax.html#void-elements for more information on HTML void elements.',
+					name
+				)
 
 				model.add(modelFactory.createStandaloneElementTag(elementName, attributes, AttributeValueQuotes.DOUBLE, false, false))
 				model.add(modelFactory.createCloseElementTag(elementName));
