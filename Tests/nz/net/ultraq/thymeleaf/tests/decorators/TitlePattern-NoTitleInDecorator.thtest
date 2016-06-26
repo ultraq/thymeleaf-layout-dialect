@@ -9,7 +9,7 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="Layout">
 <head>
-	<title layout:title-pattern="$DECORATOR_TITLE - $CONTENT_TITLE">Content title</title>
+	<title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">Content title</title>
 </head>
 <body>
 	<section layout:fragment="content">

@@ -22,7 +22,7 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-	<title layout:title-pattern="$DECORATOR_TITLE - $CONTENT_TITLE">Layout title</title>
+	<title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">Layout title</title>
 </head>
 <body>
 	<section layout:fragment="content">

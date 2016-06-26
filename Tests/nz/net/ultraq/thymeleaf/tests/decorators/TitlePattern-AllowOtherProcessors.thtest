@@ -17,7 +17,7 @@
 %INPUT[Layout]
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-	<title layout:title-pattern="$CONTENT_TITLE - $DECORATOR_TITLE">My website</title>
+	<title layout:title-pattern="$CONTENT_TITLE - $LAYOUT_TITLE">My website</title>
 </head>
 </html>
 
