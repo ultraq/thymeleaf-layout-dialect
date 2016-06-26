@@ -85,8 +85,8 @@ class HtmlTitleDecorator implements Decorator {
 			resultTitle = new ModelBuilder(context).build {
 				title([
 					(titlePatternProcessor.attributeCompleteName): titlePatternProcessor.value,
-					'data-layout-content-title': contentTitle,
-					'data-layout-decorator-title': decoratorTitle
+					(TitlePatternProcessor.CONTENT_TITLE_ATTRIBUTE): contentTitle,
+					(TitlePatternProcessor.LAYOUT_TITLE_ATTRIBUTE): decoratorTitle
 				])
 			}
 		}

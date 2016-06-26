@@ -18,6 +18,8 @@ package nz.net.ultraq.thymeleaf.decorators
 
 import nz.net.ultraq.thymeleaf.expressions.ExpressionProcessor
 
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.engine.AttributeName
 import org.thymeleaf.model.IProcessableElementTag
@@ -29,27 +31,32 @@ import org.unbescape.html.HtmlEscape
 /**
  * Allows for greater control of the resulting {@code <title>} element by
  * specifying a pattern with some special tokens.  This can be used to extend
- * the decorator's title with the content's one, instead of simply overriding
+ * the layout's title with the content's one, instead of simply overriding
  * it.
  * 
  * @author Emanuel Rabina
  */
 class TitlePatternProcessor extends AbstractAttributeTagProcessor {
 
+	private static final Logger logger = LoggerFactory.getLogger(TitlePatternProcessor)
+
+	@Deprecated
 	private static final String PARAM_TITLE_DECORATOR = '$DECORATOR_TITLE'
 	private static final String PARAM_TITLE_CONTENT   = '$CONTENT_TITLE'
+	private static final String PARAM_TITLE_LAYOUT    = '$LAYOUT_TITLE'
 
 	static final String PROCESSOR_NAME = 'title-pattern'
 	static final int PROCESSOR_PRECEDENCE = 1
 
 	static final String TITLE_TYPE           = 'LayoutDialect::TitlePattern::Type'
 	static final String TITLE_TYPE_DECORATOR = 'decorator-title'
+	static final String TITLE_TYPE_LAYOUT    = 'layout-title'
 	static final String TITLE_TYPE_CONTENT   = 'content-title'
 
 	static final String RESULTING_TITLE = 'resultingTitle'
 
-	static final String CONTENT_TITLE_ATTRIBUTE   = 'data-layout-content-title'
-	static final String DECORATOR_TITLE_ATTRIBUTE = 'data-layout-decorator-title'
+	static final String CONTENT_TITLE_ATTRIBUTE = 'data-layout-content-title'
+	static final String LAYOUT_TITLE_ATTRIBUTE  = 'data-layout-layout-title'
 
 	/**
 	 * Constructor, sets this processor to work on the 'title-pattern' attribute.
@@ -64,7 +71,7 @@ class TitlePatternProcessor extends AbstractAttributeTagProcessor {
 
 	/**
 	 * Process the {@code layout:title-pattern} directive, replaces the title text
-	 * with the titles from the content and decorator pages.
+	 * with the titles from the content and layout pages.
 	 * 
 	 * @param context
 	 * @param tag
@@ -94,13 +101,22 @@ class TitlePatternProcessor extends AbstractAttributeTagProcessor {
 		}
 
 		def contentTitle = titleProcessor(CONTENT_TITLE_ATTRIBUTE)
-		def decoratorTitle = titleProcessor(DECORATOR_TITLE_ATTRIBUTE)
+		def layoutTitle = titleProcessor(LAYOUT_TITLE_ATTRIBUTE)
 
-		def title = titlePattern && decoratorTitle && contentTitle ?
+		if (titlePattern && titlePattern.contains(PARAM_TITLE_DECORATOR)) {
+			logger.warn(
+				'The $DECORATOR_TITLE token is deprecated and will be removed in a future version of the layout dialect.  ' +
+				'Please use the $LAYOUT_TITLE token instead to future-proof your code.  ' +
+				'See https://github.com/ultraq/thymeleaf-layout-dialect/issues/95 for more information.'
+			)
+		}
+
+		def title = titlePattern && layoutTitle && contentTitle ?
 			titlePattern
-				.replace(PARAM_TITLE_DECORATOR, decoratorTitle)
+				.replace(PARAM_TITLE_LAYOUT, layoutTitle)
+				.replace(PARAM_TITLE_DECORATOR, layoutTitle)
 				.replace(PARAM_TITLE_CONTENT, contentTitle) :
-			contentTitle ?: decoratorTitle ?: ''
+			contentTitle ?: layoutTitle ?: ''
 
 		structureHandler.setBody(title, false)
 	}
