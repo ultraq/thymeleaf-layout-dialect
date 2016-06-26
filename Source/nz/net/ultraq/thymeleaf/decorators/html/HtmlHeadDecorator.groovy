@@ -16,20 +16,13 @@
 
 package nz.net.ultraq.thymeleaf.decorators.html
 
-import nz.net.ultraq.thymeleaf.LayoutDialect
 import nz.net.ultraq.thymeleaf.decorators.Decorator
 import nz.net.ultraq.thymeleaf.decorators.SortingStrategy
-import nz.net.ultraq.thymeleaf.decorators.TitlePatternProcessor
 import nz.net.ultraq.thymeleaf.models.AttributeMerger
-import nz.net.ultraq.thymeleaf.models.ElementMerger
-import nz.net.ultraq.thymeleaf.models.ModelBuilder
 
 import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.model.IModel
 import org.thymeleaf.model.IOpenElementTag
-import org.thymeleaf.standard.StandardDialect
-import org.thymeleaf.standard.processor.StandardTextTagProcessor
-import org.unbescape.html.HtmlEscape
 
 /**
  * A decorator specific to processing an HTML {@code <head>} element.
@@ -42,7 +35,7 @@ class HtmlHeadDecorator implements Decorator {
 	private final SortingStrategy sortingStrategy
 
 	/**
-	 * Constructor, sets up the element decorator context.
+	 * Constructor, sets up the decorator context.
 	 * 
 	 * @param context
 	 * @param sortingStrategy
@@ -69,10 +62,7 @@ class HtmlHeadDecorator implements Decorator {
 			return targetHeadModel ? targetHeadModel.cloneModel() : sourceHeadModel ? sourceHeadModel.cloneModel() : null
 		}
 
-		// TODO: A lot of this code is just to deal with titles.  I think it should
-		//       go into its own file.
-
-		// Get the source and target title elements
+		// Get the source and target title elements to pass to the title decorator
 		def titleRetriever = { headModel ->
 			def title = headModel.findModel { event ->
 				return event instanceof IOpenElementTag && event.elementCompleteName == 'title'
@@ -82,37 +72,9 @@ class HtmlHeadDecorator implements Decorator {
 			}
 			return title
 		}
-		def sourceTitle = titleRetriever(sourceHeadModel)
-		def targetTitle = titleRetriever(targetHeadModel)
-
-		def titlePatternProcessorRetriever = { titleModel ->
-			return titleModel?.first()?.getAttribute(LayoutDialect.DIALECT_PREFIX, TitlePatternProcessor.PROCESSOR_NAME)
-		}
-		def titlePatternProcessor =
-			titlePatternProcessorRetriever(sourceTitle) ?:
-			titlePatternProcessorRetriever(targetTitle) ?:
-			null
-		def resultTitle
-		if (titlePatternProcessor) {
-			def titleValueRetriever = { titleModel ->
-				return titleModel.first().getAttributeValue(StandardDialect.PREFIX, StandardTextTagProcessor.ATTR_NAME) ?:
-					titleModel.size() > 2 ? "'${HtmlEscape.escapeHtml5Xml(titleModel.get(1).text)}'" : null
-			}
-			def contentTitle = titleValueRetriever(sourceTitle)
-			def decoratorTitle = titleValueRetriever(targetTitle)
-
-			resultTitle = new ModelBuilder(context).build {
-				title([
-					(titlePatternProcessor.attributeCompleteName): titlePatternProcessor.value,
-					'data-layout-content-title': contentTitle,
-					'data-layout-decorator-title': decoratorTitle
-				])
-			}
-		}
-		else {
-			resultTitle = new ElementMerger(context.modelFactory).merge(targetTitle, sourceTitle)
-		}
-
+		def resultTitle = new HtmlTitleDecorator(context).decorate(
+			titleRetriever(targetHeadModel),
+			titleRetriever(sourceHeadModel))
 		targetHeadModel.insertModelWithWhitespace(1, resultTitle)
 
 		// Merge the source <head> elements with the target <head> elements using
