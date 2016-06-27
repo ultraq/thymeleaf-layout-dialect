@@ -19,7 +19,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Appending test</title>
 	<link rel="stylesheet" src="common-styles.css"/>
 	<script src="common-script.js"></script>
 </head>
@@ -30,7 +29,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Appending test</title>
 	<link rel="stylesheet" src="common-styles.css"/>
 	<script src="common-script.js"></script>
 	<link rel="stylesheet" src="content-styles.css"/>

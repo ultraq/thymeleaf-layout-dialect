@@ -22,7 +22,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Grouping test</title>
 	<meta charset="UTF-8"/>
 	<base href="http://www.thymeleaf.org/test/"/>
 	<link rel="icon" href="images/icon.png"/>
@@ -40,7 +39,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Grouping test</title>
 	<meta charset="UTF-8"/>
 	<base href="http://www.thymeleaf.org/test/"/>
 	<link rel="icon" href="images/icon.png"/>
