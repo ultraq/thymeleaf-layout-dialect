@@ -67,8 +67,11 @@ class TemplateModelFinder {
 		// TODO: Simplify this method signature by deriving the layout dialect
 		//       prefix from the context.
 
-		return findFragment(fragmentExpression.templateName.execute(context).toString(),
-			fragmentExpression.fragmentSelector.execute(context).toString(), dialectPrefix)
+		def templateName = fragmentExpression.templateName.execute(context).toString()
+		if (templateName == 'this') {
+			templateName = context.templateData.template
+		}
+		return findFragment(templateName, fragmentExpression.fragmentSelector.execute(context).toString(), dialectPrefix)
 	}
 
 	/**
