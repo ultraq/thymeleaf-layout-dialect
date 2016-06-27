@@ -1,5 +1,6 @@
 
-# Fragment parameter test for the layout:insert processor.
+# An older method of doing fragment parameters from Thymeleaf 2.0, but still a
+# valid way of passing information between templates.
 
 %TEMPLATE_MODE HTML
 
@@ -9,7 +10,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <body>
-	<div layout:insert="~{Page :: text(greeting='Hello!')}">
+	<div layout:insert="~{Page :: text}" th:with="greeting='Hello!'">
 		<p layout:fragment="more-text">Source text.</p>
 	</div>
 </body>
@@ -20,7 +21,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
-	<div layout:fragment="text(greeting)">
+	<div layout:fragment="text">
 		<p th:text="${greeting}">Greeting goes here</p>
 		<p layout:fragment="more-text">Replaced text</p>
 	</div>

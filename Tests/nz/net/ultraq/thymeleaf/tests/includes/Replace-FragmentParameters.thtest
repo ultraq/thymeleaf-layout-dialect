@@ -20,7 +20,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
-	<main layout:fragment="text (greeting)">
+	<main layout:fragment="text(greeting)">
 		<p th:text="${greeting}">Greeting goes here</p>
 		<p layout:fragment="more-text">Replaced text</p>
 	</main>
