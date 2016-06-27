@@ -63,10 +63,7 @@ class LayoutDialectTestExecutor extends JUnitTestExecutor {
 			'nz/net/ultraq/thymeleaf/tests/decorators/TitlePattern-NoTitleInContent.thtest',
 			'nz/net/ultraq/thymeleaf/tests/decorators/TitlePattern-NoTitleInDecorator.thtest',
 			'nz/net/ultraq/thymeleaf/tests/decorators/TitlePattern-ResultAccessible.thtest',
-			'nz/net/ultraq/thymeleaf/tests/includes/Include-FragmentIteration.thtest',
-			'nz/net/ultraq/thymeleaf/tests/includes/Include-NestedFragment.thtest',
 			'nz/net/ultraq/thymeleaf/tests/includes/Include-NestedFragmentInFragment.thtest',
-			'nz/net/ultraq/thymeleaf/tests/includes/Replace-ElementInclusion.thtest',
 			'nz/net/ultraq/thymeleaf/tests/includes/Replace-NestedFragmentInFragment.thtest'
 		]
 		return tests - exclusions
