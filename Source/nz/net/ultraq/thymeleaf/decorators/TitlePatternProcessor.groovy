@@ -105,7 +105,7 @@ class TitlePatternProcessor extends AbstractAttributeTagProcessor {
 
 		if (titlePattern && titlePattern.contains(PARAM_TITLE_DECORATOR)) {
 			logger.warn(
-				'The $DECORATOR_TITLE token is deprecated and will be removed in a future version of the layout dialect.  ' +
+				'The $DECORATOR_TITLE token is deprecated and will be removed in the next major version of the layout dialect.  ' +
 				'Please use the $LAYOUT_TITLE token instead to future-proof your code.  ' +
 				'See https://github.com/ultraq/thymeleaf-layout-dialect/issues/95 for more information.'
 			)
