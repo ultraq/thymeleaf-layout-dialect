@@ -84,7 +84,21 @@ class TemplateModelFinder {
 	 */
 	TemplateModel findFragment(String templateName, String fragmentName, String dialectPrefix) {
 
-		return find(templateName, "//[${dialectPrefix}:fragment^='${fragmentName}' or data-${dialectPrefix}-fragment^='${fragmentName}']")
+		return find(templateName,
+
+			// Attoparser fragment selector, picks a fragment with layout:fragment="name"
+			// or starts with layout:fragment="name( or layout:fragment="name (  plus
+			// their data attribute equivalents. See the attoparser API docs for details:
+			// http://www.attoparser.org/apidocs/attoparser/2.0.0.RELEASE/org/attoparser/select/package-summary.html
+			"//[" +
+				"${dialectPrefix}:fragment='${fragmentName}' or " +
+				"${dialectPrefix}:fragment^='${fragmentName}(' or " +
+				"${dialectPrefix}:fragment^='${fragmentName} (' or " +
+				"data-${dialectPrefix}-fragment='${fragmentName}' or " +
+				"data-${dialectPrefix}-fragment^='${fragmentName}(' or " +
+				"data-${dialectPrefix}-fragment^='${fragmentName} ('" +
+			"]"
+		)
 	}
 
 	/**
