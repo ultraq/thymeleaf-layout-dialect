@@ -149,7 +149,7 @@ class ModelBuilder extends BuilderSupport {
 		def model = modelFactory.createModel()
 		def elementDefinition = elementDefinitions."for${templateMode}Name"(elementName)
 
-		// Standalone element
+		// HTML void element
 		if (elementDefinition.type == HTMLElementType.VOID) {
 			if (attributes && attributes['standalone']) {
 				attributes.remove('standalone')
@@ -171,6 +171,12 @@ class ModelBuilder extends BuilderSupport {
 				model.add(modelFactory.createStandaloneElementTag(elementName, attributes, AttributeValueQuotes.DOUBLE, false, false))
 				model.add(modelFactory.createCloseElementTag(elementName));
 			}
+		}
+
+		// Other standalone element
+		else if (attributes && attributes['standalone']) {
+			attributes.remove('standalone')
+			model.add(modelFactory.createStandaloneElementTag(elementName, attributes, AttributeValueQuotes.DOUBLE, false, true))
 		}
 
 		// Open/close element and potential text content

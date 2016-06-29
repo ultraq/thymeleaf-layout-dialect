@@ -16,8 +16,11 @@
 
 package nz.net.ultraq.thymeleaf.models
 
+import org.thymeleaf.model.AttributeValueQuotes
 import org.thymeleaf.model.IModel
 import org.thymeleaf.model.IModelFactory
+import org.thymeleaf.model.IOpenElementTag
+import org.thymeleaf.model.IStandaloneElementTag
 
 /**
  * Merges an element and all its children into an existing element.
@@ -55,9 +58,21 @@ class ElementMerger implements ModelMerger {
 			return targetModel ? targetModel.cloneModel() : sourceModel ? sourceModel.cloneModel() : null
 		}
 
-		// The result we want is basically the source model, but with the target
-		// models root element attributes
-		def targetInitialRootElement = modelFactory.createModel(targetModel.first())
-		return new AttributeMerger(modelFactory).merge(sourceModel, targetInitialRootElement)
+		// The result we want is the source model, but merged into the target root element attributes
+		def sourceRootEvent = sourceModel.first()
+		def sourceRootElement = modelFactory.createModel(sourceRootEvent)
+		def targetRootEvent = targetModel.first()
+		def targetRootElement = modelFactory.createModel(
+			sourceRootEvent instanceof IOpenElementTag ?
+				modelFactory.createOpenElementTag(sourceRootEvent.elementCompleteName,
+					targetRootEvent.attributeMap, AttributeValueQuotes.DOUBLE, false) :
+			sourceRootEvent instanceof IStandaloneElementTag ?
+				modelFactory.createStandaloneElementTag(sourceRootEvent.elementCompleteName,
+					targetRootEvent.attributeMap, AttributeValueQuotes.DOUBLE, false) :
+			null)
+		def mergedRootElement = new AttributeMerger(modelFactory).merge(targetRootElement, sourceRootElement)
+		def mergedModel = sourceModel.cloneModel()
+		mergedModel.replace(0, mergedRootElement.first())
+		return mergedModel
 	}
 }
