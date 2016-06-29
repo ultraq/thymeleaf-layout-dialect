@@ -20,6 +20,7 @@ import nz.net.ultraq.thymeleaf.LayoutDialect
 import nz.net.ultraq.thymeleaf.models.AttributeMerger
 import nz.net.ultraq.thymeleaf.models.ModelBuilder
 
+import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
 import org.thymeleaf.TemplateEngine
@@ -38,6 +39,8 @@ class AttributeMergerTests {
 	private static ModelBuilder modelBuilder
 	private static IModelFactory modelFactory
 
+	private AttributeMerger attributeMerger
+
 	/**
 	 * Set up, create a template engine.
 	 */
@@ -51,6 +54,15 @@ class AttributeMergerTests {
 		)
 		modelFactory = templateEngine.configuration.getModelFactory(TemplateMode.HTML)
 		modelBuilder = new ModelBuilder(modelFactory, templateEngine.configuration.elementDefinitions, TemplateMode.HTML)
+	}
+
+	/**
+	 * Set up, create a new attribute merger.
+	 */
+	@Before
+	void setupAttributeMerger() {
+
+		attributeMerger = new AttributeMerger(modelFactory)
 	}
 
 	/**
@@ -70,7 +82,7 @@ class AttributeMergerTests {
 			div(class: 'container', id: 'test-element')
 		}
 
-		def result = new AttributeMerger(modelFactory).merge(target, source)
+		def result = attributeMerger.merge(target, source)
 		assertTrue(expected == result)
 	}
 
@@ -90,7 +102,7 @@ class AttributeMergerTests {
 			div(class: 'roflcopter')
 		}
 
-		def result = new AttributeMerger(modelFactory).merge(target, source)
+		def result = attributeMerger.merge(target, source)
 		assertTrue(expected == result)
 	}
 }
