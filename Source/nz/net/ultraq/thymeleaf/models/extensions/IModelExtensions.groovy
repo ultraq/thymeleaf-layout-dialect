@@ -72,13 +72,6 @@ class IModelExtensions {
 			}
 
 			/**
-			 * Clears all the events from the model.
-			 */
-			clear << {
-				delegate.reset()
-			}
-
-			/**
 			 * If the model represents an element open to close tags, then this method
 			 * removes all of the inner events.  Otherwise, it does nothing.
 			 */
@@ -91,8 +84,7 @@ class IModelExtensions {
 			}
 
 			/**
-			 * Iterate through each event in the model.  This is similar to what the
-			 * {@code accept} method does.
+			 * Iterate through each event in the model.
 			 * 
 			 * @param closure
 			 */
@@ -111,7 +103,7 @@ class IModelExtensions {
 			 */
 			equals << { Object other ->
 				if (other instanceof IModel && delegate.size() == other.size()) {
-					return everyWithIndex { event, index ->
+					return delegate.everyWithIndex { event, index ->
 						return event == other.get(index)
 					}
 				}
@@ -215,30 +207,6 @@ class IModelExtensions {
 					model.metaClass.startIndex = event.index
 					model.metaClass.endIndex = event.index + model.size()
 					return model
-				}
-				return null
-			}
-
-			/**
-			 * Returns the first event in the model that meets the criteria of the
-			 * given closure.
-			 * 
-			 * Models returned via this method are also aware of their position in the
-			 * event queue of the parent model, accessible via their {@code index}
-			 * property.
-			 * 
-			 * @param closure
-			 * @return The first event to match the closure criteria, or {@code null}
-			 *         if nothing matched.
-			 */
-			findWithIndex << { Closure closure ->
-				for (def i = 0; i < delegate.size(); i++) {
-					def event = delegate.get(i)
-					def result = closure(event, i)
-					if (result) {
-						event.metaClass.index = i
-						return event;
-					}
 				}
 				return null
 			}
