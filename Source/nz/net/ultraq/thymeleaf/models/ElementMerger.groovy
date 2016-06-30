@@ -68,7 +68,7 @@ class ElementMerger implements ModelMerger {
 					targetRootEvent.attributeMap, AttributeValueQuotes.DOUBLE, false) :
 			sourceRootEvent instanceof IStandaloneElementTag ?
 				modelFactory.createStandaloneElementTag(sourceRootEvent.elementCompleteName,
-					targetRootEvent.attributeMap, AttributeValueQuotes.DOUBLE, false, true) :
+					targetRootEvent.attributeMap, AttributeValueQuotes.DOUBLE, false, sourceRootEvent.minimized) :
 			null)
 		def mergedRootElement = new AttributeMerger(modelFactory).merge(targetRootElement, sourceRootElement)
 		def mergedModel = sourceModel.cloneModel()
