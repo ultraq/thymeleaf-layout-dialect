@@ -14,30 +14,27 @@
  * limitations under the License.
  */
 
-package nz.net.ultraq.thymeleaf.models
+package nz.net.ultraq.thymeleaf.models.extensions
 
 import org.thymeleaf.engine.HTMLElementType
 import org.thymeleaf.engine.TemplateModel
-import org.thymeleaf.model.IAttribute
 import org.thymeleaf.model.ICloseElementTag
 import org.thymeleaf.model.IModel
 import org.thymeleaf.model.IModelFactory
 import org.thymeleaf.model.IOpenElementTag
-import org.thymeleaf.model.IStandaloneElementTag
 import org.thymeleaf.model.ITemplateEvent
-import org.thymeleaf.model.IText
 import org.thymeleaf.templatemode.TemplateMode
 
 /**
- * Additional methods applied to the Thymeleaf model classes via Groovy
+ * Additional methods applied to the Thymeleaf {@link IModel} class via Groovy
  * meta-programming.
  * 
  * @author Emanuel Rabina
  */
-class ModelExtensions {
+class IModelExtensions {
 
 	/**
-	 * Applies several new methods to the Thymeleaf model classes.
+	 * Applies several new methods to the {@code IModel} class.
 	 */
 	static void apply() {
 
@@ -410,130 +407,6 @@ class ModelExtensions {
 			replaceModel << { int pos, IModel model ->
 				delegate.removeModel(pos)
 				delegate.insertModel(pos, model)
-			}
-		}
-
-		TemplateModel.metaClass {
-
-			/**
-			 * Shortcut to the template name found on the template data object.  Only
-			 * works if the template was resolved via a name, rather than a string
-			 * (eg: anonymous template), in which case this can return the entire
-			 * template!
-			 * 
-			 * @return Template name.
-			 */
-			getTemplate << {
-				return delegate.templateData.template
-			}
-		}
-
-		ITemplateEvent.metaClass {
-
-			/**
-			 * Returns whether or not this event represents collapsible whitespace.
-			 * 
-			 * @return {@code true} if this is a collapsible text node.
-			 */
-			isWhitespace << {
-				return delegate instanceof IText && delegate.whitespace
-			}
-		}
-
-		IOpenElementTag.metaClass {
-
-			/**
-			 * Compares this open tag with another.
-			 * 
-			 * @param other
-			 * @return {@code true} if this tag has the same name and attributes as
-			 *         the other element.
-			 */
-			equals << { Object other ->
-				return other instanceof IOpenElementTag &&
-						delegate.elementDefinition == other.elementDefinition &&
-						delegate.attributeMap == other.attributeMap;
-			}
-		}
-
-		ICloseElementTag.metaClass {
-
-			/**
-			 * Compares this close tag with another.
-			 * 
-			 * @param other
-			 * @return {@code true} if this tag has the same name as the other
-			 *         element.
-			 */
-			equals << { Object other ->
-				return other instanceof ICloseElementTag &&
-						delegate.elementDefinition == other.elementDefinition
-			}
-		}
-
-		IStandaloneElementTag.metaClass {
-
-			/**
-			 * Compares this standalone tag with another.
-			 * 
-			 * @param other
-			 * @return {@code true} if this tag has the same name and attributes as
-			 *         the other element.
-			 */
-			equals << { Object other ->
-				return other instanceof IStandaloneElementTag &&
-					delegate.elementDefinition == other.elementDefinition &&
-					delegate.attributeMap == other.attributeMap;
-			}
-		}
-
-		IAttribute.metaClass {
-
-			/**
-			 * Returns whether or not an attribute is an attribute processor of
-			 * the given name, checks both prefix:processor and
-			 * data-prefix-processor variants.
-			 * 
-			 * @param prefix
-			 * @param name
-			 * @return {@code true} if this attribute is an attribute processor of the
-			 *         matching name.
-			 */
-			equalsName << { String prefix, String name ->
-				def attributeName = delegate.completeName
-				return attributeName == "${prefix}:${name}" ?:
-				       attributeName == "data-${prefix}-${name}"
-			}
-
-			/**
-			 * Shortcut to the attribute name class on the attribute definition.
-			 * 
-			 * @return Attribute name object.
-			 */
-			getAttributeName << {
-				return delegate.definition.attributeName
-			}
-		}
-
-		IText.metaClass {
-
-			/**
-			 * Compares this text with another.
-			 * 
-			 * @param other
-			 * @return {@code true} if the text content matches.
-			 */
-			equals << { Object other ->
-				return other instanceof IText && delegate.text == other.text
-			}
-
-			/**
-			 * Returns whether or not this text event is collapsible whitespace.
-			 * 
-			 * @return {@code true} if, when trimmed, the text content is empty.
-			 */
-			isWhitespace << {
-				return delegate.text.trim().empty
 			}
 		}
 	}

@@ -25,7 +25,14 @@ import nz.net.ultraq.thymeleaf.fragments.FragmentProcessor
 import nz.net.ultraq.thymeleaf.includes.IncludeProcessor
 import nz.net.ultraq.thymeleaf.includes.InsertProcessor
 import nz.net.ultraq.thymeleaf.includes.ReplaceProcessor
-import nz.net.ultraq.thymeleaf.models.ModelExtensions
+import nz.net.ultraq.thymeleaf.models.extensions.IAttributeExtensions
+import nz.net.ultraq.thymeleaf.models.extensions.ICloseElementTagExtensions
+import nz.net.ultraq.thymeleaf.models.extensions.IModelExtensions
+import nz.net.ultraq.thymeleaf.models.extensions.IOpenElementTagExtensions
+import nz.net.ultraq.thymeleaf.models.extensions.IStandaloneElementTagExtensions
+import nz.net.ultraq.thymeleaf.models.extensions.ITemplateEventExtensions
+import nz.net.ultraq.thymeleaf.models.extensions.ITextExtensions
+import nz.net.ultraq.thymeleaf.models.extensions.TemplateModelExtensions
 
 import org.thymeleaf.dialect.AbstractProcessorDialect
 import org.thymeleaf.processor.IProcessor
@@ -47,7 +54,16 @@ class LayoutDialect extends AbstractProcessorDialect {
 	 * Apply model extensions.
 	 */
 	static {
-		ModelExtensions.apply()
+		[
+			IAttributeExtensions,
+			ICloseElementTagExtensions,
+			IModelExtensions,
+			IOpenElementTagExtensions,
+			IStandaloneElementTagExtensions,
+			ITemplateEventExtensions,
+			ITextExtensions,
+			TemplateModelExtensions
+		]*.apply()
 	}
 
 	private final SortingStrategy sortingStrategy

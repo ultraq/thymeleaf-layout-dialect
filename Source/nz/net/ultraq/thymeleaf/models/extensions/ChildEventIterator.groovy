@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package nz.net.ultraq.thymeleaf.models
+package nz.net.ultraq.thymeleaf.models.extensions
 
 import org.thymeleaf.model.IModel
 import org.thymeleaf.model.ITemplateEvent
