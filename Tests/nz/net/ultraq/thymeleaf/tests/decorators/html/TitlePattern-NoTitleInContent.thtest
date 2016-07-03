@@ -1,5 +1,5 @@
 
-# Test the behaviour when there's no content head.
+# Test the behaviour when there's no content title.
 
 %TEMPLATE_MODE HTML
 
@@ -8,11 +8,8 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="Layout">
-<body>
-	<section layout:fragment="content">
-		<p>This is a paragraph from the content page</p>
-	</section>
-</body>
+<head>
+</head>
 </html>
 
 
@@ -22,11 +19,6 @@
 <head>
 	<title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">Layout title</title>
 </head>
-<body>
-	<section layout:fragment="content">
-		<p>Page content goes here</p>
-	</section>
-</body>
 </html>
 
 
@@ -36,9 +28,4 @@
 <head>
 	<title>Layout title</title>
 </head>
-<body>
-	<section>
-		<p>This is a paragraph from the content page</p>
-	</section>
-</body>
 </html>

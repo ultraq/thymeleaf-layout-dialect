@@ -1,5 +1,5 @@
 
-# Test the behaviour when there's no decorator head.
+# Test the behaviour when there's an empty <title> in the decorator page.
 
 %TEMPLATE_MODE HTML
 
@@ -11,22 +11,15 @@
 <head>
 	<title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">Content title</title>
 </head>
-<body>
-	<section layout:fragment="content">
-		<p>This is a paragraph from the content page</p>
-	</section>
-</body>
 </html>
 
 
 %INPUT[Layout]
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-<body>
-	<section layout:fragment="content">
-		<p>Page content goes here</p>
-	</section>
-</body>
+<head>
+	<title></title>
+</head>
 </html>
 
 
@@ -36,9 +29,4 @@
 <head>
 	<title>Content title</title>
 </head>
-<body>
-	<section>
-		<p>This is a paragraph from the content page</p>
-	</section>
-</body>
 </html>
