@@ -56,39 +56,40 @@ class HtmlHeadDecorator implements Decorator {
 	@Override
 	IModel decorate(IModel targetHeadModel, IModel sourceHeadModel) {
 
-		// If one of the parameters is missing return a copy of the other, or
-		// nothing if both parameters are missing.
-		if (!targetHeadModel || !sourceHeadModel) {
-			return targetHeadModel ? targetHeadModel.cloneModel() : sourceHeadModel ? sourceHeadModel.cloneModel() : null
+		// If none of the parameters are present, return nothing
+		if (!targetHeadModel && !sourceHeadModel) {
+			return null
+		}
+
+		def isTitle = { event -> event instanceof IOpenElementTag && event.elementCompleteName == 'title' }
+
+		// New head model based off the target being decorated
+		def resultHeadModel = new AttributeMerger(context.modelFactory).merge(targetHeadModel, sourceHeadModel)
+		def titleInResult = resultHeadModel.find(isTitle)
+		if (titleInResult) {
+			resultHeadModel.removeModelWithWhitespace(titleInResult.index)
 		}
 
 		// Get the source and target title elements to pass to the title decorator
-		def titleRetriever = { headModel ->
-			def title = headModel.findModel { event ->
-				return event instanceof IOpenElementTag && event.elementCompleteName == 'title'
-			}
-			if (title) {
-				headModel.removeModelWithWhitespace(title.startIndex)
-			}
-			return title
-		}
+		def titleRetriever = { headModel -> headModel?.findModel(isTitle) }
 		def resultTitle = new HtmlTitleDecorator(context).decorate(
 			titleRetriever(targetHeadModel),
 			titleRetriever(sourceHeadModel))
-		targetHeadModel.insertModelWithWhitespace(1, resultTitle)
+		resultHeadModel.insertModelWithWhitespace(1, resultTitle)
 
-		// Merge the source <head> elements with the target <head> elements using
-		// the current merging strategy, placing the resulting title at the
-		// beginning of it
+		// Merge the rest of the source <head> elements with the target <head>
+		// elements using the current merging strategy
 		if (sourceHeadModel) {
-			sourceHeadModel.childModelIterator().each { childModel ->
-				def position = sortingStrategy.findPositionForModel(targetHeadModel, childModel)
-				if (position != -1) {
-					targetHeadModel.insertModelWithWhitespace(position, childModel)
+			sourceHeadModel.childModelIterator()
+				.findAll { model -> !isTitle(model.first()) }
+				.each { model ->
+					def position = sortingStrategy.findPositionForModel(resultHeadModel, model)
+					if (position != -1) {
+						resultHeadModel.insertModelWithWhitespace(position, model)
+					}
 				}
-			}
 		}
 
-		return new AttributeMerger(context.modelFactory).merge(targetHeadModel, sourceHeadModel)
+		return resultHeadModel
 	}
 }

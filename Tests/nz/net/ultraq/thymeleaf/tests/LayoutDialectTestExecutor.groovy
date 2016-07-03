@@ -53,16 +53,10 @@ class LayoutDialectTestExecutor extends JUnitTestExecutor {
 		def tests = new Reflections('', new ResourcesScanner())
 			.getResources(~/(?!GroupingStrategy|Examples).*\.thtest/) as List
 		def exclusions = [
-		  'nz/net/ultraq/thymeleaf/tests/decorators/Decorator-DeepHierarchy.thtest',
-			'nz/net/ultraq/thymeleaf/tests/decorators/TitlePattern-AllowOtherProcessors.thtest',
-			'nz/net/ultraq/thymeleaf/tests/decorators/TitlePattern-DynamicContent.thtest',
-			'nz/net/ultraq/thymeleaf/tests/decorators/TitlePattern-EmptyTitleInContent.thtest',
-			'nz/net/ultraq/thymeleaf/tests/decorators/TitlePattern-EmptyTitleInDecorator.thtest',
-			'nz/net/ultraq/thymeleaf/tests/decorators/TitlePattern-NoHeadInContent.thtest',
-			'nz/net/ultraq/thymeleaf/tests/decorators/TitlePattern-NoHeadInDecorator.thtest',
-			'nz/net/ultraq/thymeleaf/tests/decorators/TitlePattern-NoTitleInContent.thtest',
-			'nz/net/ultraq/thymeleaf/tests/decorators/TitlePattern-NoTitleInDecorator.thtest',
-			'nz/net/ultraq/thymeleaf/tests/decorators/TitlePattern-ResultAccessible.thtest'
+		  'nz/net/ultraq/thymeleaf/tests/decorators/Decorate-DeepHierarchy.thtest',
+			'nz/net/ultraq/thymeleaf/tests/decorators/html/TitlePattern-AllowOtherProcessors.thtest',
+			'nz/net/ultraq/thymeleaf/tests/decorators/html/TitlePattern-DynamicContent.thtest',
+			'nz/net/ultraq/thymeleaf/tests/decorators/html/TitlePattern-ResultAccessible.thtest'
 		]
 		return tests - exclusions
 	}
