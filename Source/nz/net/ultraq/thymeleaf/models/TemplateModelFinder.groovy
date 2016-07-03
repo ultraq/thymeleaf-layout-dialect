@@ -67,7 +67,7 @@ class TemplateModelFinder {
 		// TODO: Simplify this method signature by deriving the layout dialect
 		//       prefix from the context.
 
-		def templateName = fragmentExpression.templateName.execute(context).toString()
+		def templateName = fragmentExpression.templateName?.execute(context)?.toString() ?: 'this'
 		if (templateName == 'this') {
 			templateName = context.templateData.template
 		}
