@@ -16,6 +16,7 @@
 
 package nz.net.ultraq.thymeleaf
 
+import nz.net.ultraq.thymeleaf.context.extensions.IContextExtensions
 import nz.net.ultraq.thymeleaf.decorators.DecorateProcessor
 import nz.net.ultraq.thymeleaf.decorators.DecoratorProcessor
 import nz.net.ultraq.thymeleaf.decorators.SortingStrategy
@@ -51,10 +52,14 @@ class LayoutDialect extends AbstractProcessorDialect {
 	static final int DIALECT_PRECEDENCE = 10
 
 	/**
-	 * Apply model extensions.
+	 * Apply object extensions.
 	 */
 	static {
 		[
+			// Context extensions
+			IContextExtensions,
+
+			// Model extensions
 			IAttributeExtensions,
 			ICloseElementTagExtensions,
 			IModelExtensions,
@@ -63,6 +68,7 @@ class LayoutDialect extends AbstractProcessorDialect {
 			ITemplateEventExtensions,
 			ITextExtensions,
 			TemplateModelExtensions
+
 		]*.apply()
 	}
 
@@ -80,7 +86,10 @@ class LayoutDialect extends AbstractProcessorDialect {
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Returns the layout dialect's processors.
+	 * 
+	 * @param dialectPrefix
+	 * @return All of the processors for HTML and XML template modes.
 	 */
 	@Override
 	Set<IProcessor> getProcessors(String dialectPrefix) {

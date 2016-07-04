@@ -39,7 +39,7 @@ class FragmentMap extends HashMap<String,IModel> {
 	 */
 	static FragmentMap get(IContext context) {
 
-		return context.getVariable(FRAGMENT_COLLECTION_KEY) ?: [:]
+		return context[FRAGMENT_COLLECTION_KEY] ?: [:]
 	}
 
 	/**

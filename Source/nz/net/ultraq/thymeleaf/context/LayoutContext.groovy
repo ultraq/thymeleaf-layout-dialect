@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package nz.net.ultraq.thymeleaf
+package nz.net.ultraq.thymeleaf.context
 
 import org.thymeleaf.context.IContext
 
@@ -24,7 +24,7 @@ import org.thymeleaf.context.IContext
  * 
  * @author Emanuel Rabina
  */
-class LayoutDialectContext extends HashMap<String,Object> {
+class LayoutContext extends HashMap<String,Object> {
 
 	private static final String CONTEXT_KEY = 'layout'
 
@@ -36,24 +36,23 @@ class LayoutDialectContext extends HashMap<String,Object> {
 	 * @param context
 	 * @return A new or existing layout dialect context for the context.
 	 */
-	static LayoutDialectContext forContext(IContext context) {
+	static LayoutContext forContext(IContext context) {
 
-		def variables = context.variables
-		def dialectContext = variables[(CONTEXT_KEY)]
+		def dialectContext = context[CONTEXT_KEY]
 
-		// Error if something has already taken this value.  Hopefully there
-		// aren't any collisions, but this name isn't exactly rare, so it *just*
-		// might happen.
-		if (dialectContext && !(dialectContext instanceof LayoutDialectContext)) {
-			throw new Error(
+		// Error if something has already taken this value.  Hopefully there aren't
+		// any collisions, but this name isn't exactly rare, so it *just* might
+		// happen.
+		if (dialectContext && !(dialectContext instanceof LayoutContext)) {
+			throw new Exception(
 				'Name collision on the Thymeleaf processing context.  ' +
 				'An object with the key "layout" already exists, but is needs to be free for the Layout Dialect to work.'
 			)
 		}
 
-		if (!dialectContext) {
-			dialectContext = new LayoutDialectContext()
-			variables << [(CONTEXT_KEY): dialectContext]
+		if (dialectContext == null) {
+			dialectContext = new LayoutContext()
+			context[CONTEXT_KEY] = dialectContext
 		}
 
 		return dialectContext
