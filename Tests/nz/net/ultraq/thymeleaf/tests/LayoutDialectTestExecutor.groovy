@@ -55,7 +55,6 @@ class LayoutDialectTestExecutor extends JUnitTestExecutor {
 		def exclusions = [
 			'nz/net/ultraq/thymeleaf/tests/decorators/Decorate-DeepHierarchy.thtest',
 			'nz/net/ultraq/thymeleaf/tests/decorators/html/TitlePattern-AllowOtherProcessors.thtest',
-			'nz/net/ultraq/thymeleaf/tests/decorators/html/TitlePattern-ResultAccessible.thtest',
 
 			// Disabled, see test file for details
 			'nz/net/ultraq/thymeleaf/tests/decorators/html/TitlePattern-DynamicContent.thtest'
