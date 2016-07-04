@@ -1,0 +1,19 @@
+{
+	"gitbook": "2.4.3",
+	"structure": {
+		"summary": "Docs/TableOfContents.md"
+	},
+	"plugins": [
+		"edit-link",
+		"github",
+		"prism", "-highlight"
+	],
+	"pluginsConfig": {
+		"edit-link": {
+			"base": "https://github.com/ultraq/thymeleaf-layout-dialect/tree/master"
+		},
+		"github": {
+			"url": "https://github.com/ultraq/thymeleaf-layout-dialect"
+		}
+	}
+}

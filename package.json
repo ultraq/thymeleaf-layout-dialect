@@ -1,0 +1,14 @@
+{
+	"name": "thymeleaf-layout-dialect",
+	"version": "2.0.0-SNAPSHOT",
+	"description": "A dialect for Thymeleaf that allows you to use layout/decorator templates to style your content",
+	"author": "Emanuel Rabina <emanuelrabina@gmail.com> (http://www.ultraq.net.nz/)",
+	"scripts": {
+		"docs:init": "gitbook install",
+		"docs:watch": "npm run docs:init && gitbook serve"
+	},
+	"devDependencies": {
+		"gitbook-cli": "~2.3.0"
+	},
+	"private": true
+}
