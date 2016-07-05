@@ -1,8 +1,6 @@
 {
-	"gitbook": "2.4.3",
-	"structure": {
-		"summary": "Docs/TableOfContents.md"
-	},
+	"root": "Docs",
+	"title": "Thymeleaf Layout Dialect",
 	"plugins": [
 		"edit-link",
 		"github",
