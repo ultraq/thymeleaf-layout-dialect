@@ -195,9 +195,7 @@ Layout.html
 <head>
   <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">My website</title>
 </head>
-
 ...
-
 </html>
 ```
 
@@ -215,9 +213,7 @@ Content.html
 <head>
   <title>My blog</title>
 </head>
-
 ...
-
 </html>
 ```
 
@@ -229,9 +225,7 @@ The resulting page would be:
 <head>
   <title>My website - My blog</title>
 </head>
-
 ...
-
 </html>
 ```
 
@@ -340,15 +334,11 @@ Content.html
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-
   ...
-
   <div layout:insert="Modal2 :: modal(modalId='message', modalHeader='Message')" th:remove="tag">
     <p layout:fragment="modal-content">Message goes here!</p>
   </div>
-
   ...
-
 </html>
 ```
 
@@ -360,9 +350,7 @@ the custom paragraph above.  Here's the result:
 ```html
 <!DOCTYPE html>
 <html>
-
   ...
-
   <div id="message-container" class="modal-container" style="display:none;">
     <section id="message" class="modal">
       <header>
@@ -376,9 +364,7 @@ the custom paragraph above.  Here's the result:
       </div>
     </section>
   </div>
-
   ...
-
 </html>
 ```
 
