@@ -4,11 +4,15 @@
 	"description": "A dialect for Thymeleaf that allows you to use layout/decorator templates to style your content",
 	"author": "Emanuel Rabina <emanuelrabina@gmail.com> (http://www.ultraq.net.nz/)",
 	"scripts": {
+		"docs:clean": "rimraf _book",
 		"docs:init": "gitbook install",
-		"docs:watch": "npm run docs:init && gitbook serve"
+		"docs:build": "npm run docs:init && gitbook build && gradle clean groovydoc && cp -r build/docs/groovydoc/ _book/groovydoc/",
+		"docs:watch": "npm run docs:init && gitbook serve",
+		"docs:publish": "npm run docs:clean && npm run docs:build && cd _book && git init && git checkout -b gh-pages && touch .nojekyll && git add . && git commit -am 'Update docs' && git push git@github.com:ultraq/thymeleaf-layout-dialect gh-pages --force"
 	},
 	"devDependencies": {
-		"gitbook-cli": "~2.3.0"
+		"gitbook-cli": "~2.3.0",
+		"rimraf": "~2.5.3"
 	},
 	"private": true
 }
