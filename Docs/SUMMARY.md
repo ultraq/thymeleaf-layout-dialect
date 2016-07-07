@@ -10,12 +10,13 @@ Table of Contents
     - [fragment](Processors.md#fragment)
     - [title-pattern](Processors.md#title-pattern)
  - [Examples](Examples.md)
-    - [Layouts](Examples.md#layouts-and-fragments)
+    - [Layouts](Examples.md#layouts)
     - [Configuring your title](Examples.md#configuring-your-title)
-    - [Reusable components](Examples.md#inserts-and-fragments)
+    - [Reusable templates](Examples.md#reusable-templates)
  - [Configuration](Configuration.md)
+    - [`head` element merging](Configuration.md#head-element-merging)
 
 ---
 
  - [Migrating to 2.0](MigrationGuide.md)
- - [GroovyDoc API](https://ultraq.github.io/thymeleaf-layout-dialect/groovydoc/)
+ - [GroovyDoc/API](https://ultraq.github.io/thymeleaf-layout-dialect/groovydoc/)

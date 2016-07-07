@@ -7,7 +7,7 @@ Thymeleaf Layout Dialect
 [![Maven Central](https://img.shields.io/maven-central/v/nz.net.ultraq.thymeleaf/thymeleaf-layout-dialect.svg?maxAge=3600)](http://search.maven.org/#search|ga|1|g%3A%22nz.net.ultraq.thymeleaf%22%20AND%20a%3A%22thymeleaf-layout-dialect%22)
 [![License](https://img.shields.io/github/license/ultraq/thymeleaf-layout-dialect.svg?maxAge=2592000)](https://github.com/ultraq/thymeleaf-layout-dialect/blob/master/LICENSE.txt)
 
-A dialect for Thymeleaf that lets you build layouts and component templates in
+A dialect for Thymeleaf that lets you build layouts and reusable templates in
 order to improve code reuse.
 
 If you've ever used SiteMesh for your JSPs, or Facelets with JSFs, then the

@@ -1,31 +1,100 @@
 
 Configuration
--------------
+=============
 
-### `<head>` element merging
 
-By default, when decorating the `<head>` sections of the content and decorator
-templates, the result is that the content elements will come after the decorator
-ones.  Some use cases need a smarter merging of elements, such as grouping like
+`<head>` element merging
+------------------------
+
+When decorating the `<head>` sections of the content and layout templates, the
+default behaviour is to place all content elements after the layout ones, eg:
+
+```html
+Content.html
+
+<head>
+  <title>Hello!</title>
+  <link rel="stylesheet" href="content-stylesheet.css"/>
+  <script src="content-script.js"></script>
+</head>
+```
+
+```html
+Layout.html
+
+<head>
+  <title>Goodbye!</title>
+  <link rel="stylesheet" href="layout-stylesheet.css"/>
+  <script src="layout-script.js"></script>
+</head>
+```
+
+Result:
+
+```html
+<head>
+  <title>Hello!</title>
+  <link rel="stylesheet" href="layout-stylesheet.css"/>
+  <script src="layout-script.js"></script>
+  <link rel="stylesheet" href="content-stylesheet.css"/>
+  <script src="content-script.js"></script>
+</head>
+```
+
+However, sometimes we need a smarter merging of elements, such as grouping like
 elements together (having scripts with scripts and stylesheets with stylesheets).
-The Layout dialect supports both of these use cases, with the ability for
-developers to define their own sorting.
+
+```html
+Content.html
+
+<head>
+  <title>Hello!</title>
+  <link rel="stylesheet" href="content-stylesheet.css"/>
+  <script src="content-script.js"></script>
+</head>
+```
+
+```html
+Layout.html
+
+<head>
+  <title>Goodbye!</title>
+  <link rel="stylesheet" href="layout-stylesheet.css"/>
+  <script src="layout-script.js"></script>
+</head>
+```
+
+Result:
+
+```html
+<head>
+  <title>Hello!</title>
+  <link rel="stylesheet" href="layout-stylesheet.css"/>
+  <link rel="stylesheet" href="content-stylesheet.css"/>
+  <script src="layout-script.js"></script>
+  <script src="content-script.js"></script>
+</head>
+```
+
+The Layout dialect can be configured to support either use case, with the
+ability for developers to define their own sorting.
 
 This sorting is exposed by the `nz.net.ultraq.thymeleaf.decorators.SortingStrategy`
 interface and the layout dialect provides 2 implementations to choose from:
 
- - `AppendingStrategy`, the default, appends content `<head>` elements after
-   decorator ones
- - `GroupingStrategy`, groups like elements together
+ - `nz.net.ultraq.thymeleaf.decorators.strategies.AppendingStrategy`, the
+   default, appends content `<head>` elements after layout ones
+ - `nz.net.ultraq.thymeleaf.decorators.strategies.GroupingStrategy`, groups like
+   elements together
 
 To change to the grouping strategy, configure the Layout dialect like so:
 
 ```java
-TemplateEngine templateEngine = new TemplateEngine();
+TemplateEngine templateEngine = new TemplateEngine();  // Or SpringTemplateEngine for Spring
 templateEngine.addDialect(new LayoutDialect(new GroupingStrategy()));
 ```
 
-Spring XML:
+XML config for Spring:
 
 ```xml
 <bean id="groupingStrategy" class="nz.net.ultraq.thymeleaf.decorators.strategies.GroupingStrategy"/>

@@ -9,7 +9,7 @@ Minimum of Java 7 and Thymeleaf 3.0 required.
 
 Copy the JAR from [one of the release bundles](https://github.com/ultraq/thymeleaf-layout-dialect/releases),
 placing it in the classpath of your application, or build the project from the
-source code here on GitHub.
+source code on GitHub.
 
 
 ### For Maven and Maven-compatible dependency managers
@@ -28,11 +28,11 @@ Once downloaded/installed as part of your project, add the Layout dialect to
 your existing Thymeleaf template engine, eg:
 
 ```java
-TemplateEngine templateEngine = new TemplateEngine();
+TemplateEngine templateEngine = new TemplateEngine();  // Or SpringTemplateEngine for Spring config
 templateEngine.addDialect(new LayoutDialect());
 ```
 
-Or, for those using Spring configuration files:
+Or, for those using XML config in Spring:
 
 ```xml
 <bean id="templateEngine" class="org.thymeleaf.spring4.SpringTemplateEngine">
