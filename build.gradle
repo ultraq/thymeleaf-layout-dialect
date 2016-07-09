@@ -46,7 +46,7 @@ project.contributors = [
 
 dependencies {
 	compile(
-		'nz.net.ultraq.thymeleaf:thymeleaf-expression-processor:1.1.0-SNAPSHOT',
+		'nz.net.ultraq.thymeleaf:thymeleaf-expression-processor:1.1.0',
 		'org.codehaus.groovy:groovy:2.4.6',
 		'org.thymeleaf:thymeleaf:3.0.0.RELEASE'
 	)
