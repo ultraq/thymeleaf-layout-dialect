@@ -20,7 +20,6 @@ import nz.net.ultraq.thymeleaf.fragments.FragmentParameterNamesExtractor
 
 import org.junit.Before
 import org.junit.Test
-import static org.junit.Assert.*
 
 /**
  * Tests for the fragment parameter names extractor.
@@ -46,18 +45,19 @@ class FragmentParameterNamesExtractorTests {
 
 		def fragmentDefinition = 'simple-definition'
 		def parameterNames = fragmentParameterNamesExtractor.extract(fragmentDefinition)
-		assertEquals([], parameterNames)
+		assert parameterNames == []
 	}
 
 	/**
 	 * Test that a fragment definition with parameters has all names extracted.
 	 */
 	@Test
+	@SuppressWarnings('GStringExpressionWithinString')
 	void hasParameters() {
 
 		def fragmentDefinition = 'complex-definition(param1=${expression},param2=\'something\')'
 		def parameterNames = fragmentParameterNamesExtractor.extract(fragmentDefinition)
-		assertEquals(['param1', 'param2'], parameterNames)
+		assert parameterNames == ['param1', 'param2']
 	}
 
 	/**
@@ -68,17 +68,18 @@ class FragmentParameterNamesExtractorTests {
 
 		def fragmentDefinition = 'no-assignment(param)'
 		def parameterNames = fragmentParameterNamesExtractor.extract(fragmentDefinition)
-		assertEquals(['param'], parameterNames)
+		assert parameterNames == ['param']
 	}
 
 	/**
 	 * Test some whitespace cases.
 	 */
 	@Test
+	@SuppressWarnings('GStringExpressionWithinString')
 	void hasParametersWhitespace() {
 
 		def fragmentDefinition = 'complex-definition ( param1 = ${expression}, param2 )'
 		def parameterNames = fragmentParameterNamesExtractor.extract(fragmentDefinition)
-		assertEquals(['param1', 'param2'], parameterNames)
+		assert parameterNames == ['param1', 'param2']
 	}
 }

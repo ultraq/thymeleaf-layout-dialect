@@ -23,7 +23,6 @@ import org.junit.BeforeClass
 import org.junit.Test
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.templatemode.TemplateMode
-import static org.junit.Assert.*
 
 /**
  * Tests for some of the more complicated additions to the model class.
@@ -68,7 +67,7 @@ class IModelExtensionsTests {
 		}
 
 		def modelExtract = model.getModel(0)
-		assertTrue(model == modelExtract)
+		assert modelExtract == model
 	}
 
 	/**
@@ -76,6 +75,7 @@ class IModelExtensionsTests {
 	 * self-closed, usually to be XML compliant a la XHTML.
 	 */
 	@Test
+	@SuppressWarnings('ExplicitCallToDivMethod')
 	void getModelStandalone() {
 
 		def model = modelBuilder.build {
@@ -85,7 +85,7 @@ class IModelExtensionsTests {
 		}
 
 		def modelExtract = model.getModel(0)
-		assertTrue(model == modelExtract)
+		assert modelExtract == model
 	}
 
 	/**
@@ -102,7 +102,7 @@ class IModelExtensionsTests {
 		}
 
 		def modelExtract = model.getModel(0)
-		assertTrue(model == modelExtract)
+		assert modelExtract == model
 	}
 
 	/**
@@ -121,6 +121,6 @@ class IModelExtensionsTests {
 		}
 
 		def modelExtract = model.getModel(0)
-		assertTrue(model == modelExtract)
+		assert modelExtract == model
 	}
 }

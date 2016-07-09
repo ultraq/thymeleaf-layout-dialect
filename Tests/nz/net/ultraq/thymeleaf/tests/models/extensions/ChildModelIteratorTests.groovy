@@ -24,7 +24,6 @@ import org.junit.BeforeClass
 import org.junit.Test
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.templatemode.TemplateMode
-import static org.junit.Assert.*
 
 /**
  * Tests for the {@link ChildModelIterator} class.
@@ -78,20 +77,20 @@ class ChildModelIteratorTests {
 		def childModelIterator = model.childModelIterator()
 
 		def nextModel = childModelIterator.next()
-		assertTrue(nextModel.equalsIgnoreWhitespace(pModel1))
-		assertEquals(1, nextModel.startIndex)
-		assertEquals(4, nextModel.endIndex)
+		assert nextModel.equalsIgnoreWhitespace(pModel1)
+		assert nextModel.startIndex == 1
+		assert nextModel.endIndex == 4
 
 		nextModel = childModelIterator.next()
-		assertTrue(nextModel.equalsIgnoreWhitespace(hrModel))
-		assertEquals(4, nextModel.startIndex)
-		assertEquals(5, nextModel.endIndex)
+		assert nextModel.equalsIgnoreWhitespace(hrModel)
+		assert nextModel.startIndex == 4
+		assert nextModel.endIndex == 5
 
 		nextModel = childModelIterator.next()
-		assertTrue(nextModel.equalsIgnoreWhitespace(pModel2))
-		assertEquals(5, nextModel.startIndex)
-		assertEquals(8, nextModel.endIndex)
+		assert nextModel.equalsIgnoreWhitespace(pModel2)
+		assert nextModel.startIndex == 5
+		assert nextModel.endIndex == 8
 
-		assertFalse(childModelIterator.hasNext())
+		assert childModelIterator.hasNext() == false
 	}
 }

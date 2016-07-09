@@ -26,7 +26,6 @@ import org.junit.Test
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.model.IModelFactory
 import org.thymeleaf.templatemode.TemplateMode
-import static org.junit.Assert.*
 
 /**
  * Tests for the element merger.
@@ -68,6 +67,7 @@ class ElementMergerTests {
 	 * Test that the merger merges the source elements into the target.
 	 */
 	@Test
+	@SuppressWarnings('ExplicitCallToDivMethod')
 	void mergeElements() {
 
 		def source = modelBuilder.build {
@@ -82,7 +82,7 @@ class ElementMergerTests {
 		}
 
 		def result = elementMerger.merge(target, source)
-		assertTrue(source == result)
+		assert result == source
 	}
 
 	/**
@@ -90,6 +90,7 @@ class ElementMergerTests {
 	 * target root element attributes.
 	 */
 	@Test
+	@SuppressWarnings('ExplicitCallToDivMethod')
 	void mergeRootAttributes() {
 
 		def source = modelBuilder.build {
@@ -100,7 +101,7 @@ class ElementMergerTests {
 		}
 
 		def result = elementMerger.merge(target, source)
-		assertTrue(source == result)
+		assert result == source
 	}
 
 	/**
@@ -108,6 +109,7 @@ class ElementMergerTests {
 	 * root element type (a plain old attribute merger would do that).
 	 */
 	@Test
+	@SuppressWarnings('ExplicitCallToDivMethod')
 	void retainSourceShape() {
 
 		def source = modelBuilder.build {
@@ -120,6 +122,6 @@ class ElementMergerTests {
 		}
 
 		def result = elementMerger.merge(target, source)
-		assertTrue(source == result)
+		assert result == source
 	}
 }

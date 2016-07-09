@@ -19,7 +19,6 @@ package nz.net.ultraq.thymeleaf.tests.models
 import nz.net.ultraq.thymeleaf.models.VariableDeclarationMerger
 
 import org.junit.Test
-import static org.junit.Assert.*
 
 /**
  * Tests for the variable declaration merger.
@@ -33,6 +32,7 @@ class VariableDeclarationMergerTests {
 	 * source and target match.
 	 */
 	@Test
+	@SuppressWarnings('GStringExpressionWithinString')
 	void noMerges() {
 
 		def target = 'name1=${value1}'
@@ -41,7 +41,7 @@ class VariableDeclarationMergerTests {
 		def merger = new VariableDeclarationMerger()
 		def result = merger.merge(target, source)
 
-		assertEquals('name1=${value1},name2=${value2}', result)
+		assert result == 'name1=${value1},name2=${value2}'
 	}
 
 	/**
@@ -49,6 +49,7 @@ class VariableDeclarationMergerTests {
 	 * the same name.
 	 */
 	@Test
+	@SuppressWarnings('GStringExpressionWithinString')
 	void basicMerge() {
 
 		def target = 'name=${value1}'
@@ -57,7 +58,7 @@ class VariableDeclarationMergerTests {
 		def merger = new VariableDeclarationMerger()
 		def result = merger.merge(target, source)
 
-		assertEquals('name=${value2}', result)
+		assert result == 'name=${value2}'
 	}
 
 	/**
@@ -65,6 +66,7 @@ class VariableDeclarationMergerTests {
 	 * the source, leaving the rest of the target string alone.
 	 */
 	@Test
+	@SuppressWarnings('GStringExpressionWithinString')
 	void mixedMerge() {
 
 		def target = 'name1=${value1},name2=${value2}'
@@ -73,13 +75,14 @@ class VariableDeclarationMergerTests {
 		def merger = new VariableDeclarationMerger()
 		def result = merger.merge(target, source)
 
-		assertEquals('name1=${newValue},name2=${value2},name3=${value3}', result)
+		assert result == 'name1=${newValue},name2=${value2},name3=${value3}'
 	}
 
 	/**
 	 * Test that the merger just uses the target value when no source is present.
 	 */
 	@Test
+	@SuppressWarnings('GStringExpressionWithinString')
 	void noSource() {
 
 		def target = 'name=${value}'
@@ -88,13 +91,14 @@ class VariableDeclarationMergerTests {
 		def merger = new VariableDeclarationMerger()
 		def result = merger.merge(target, source)
 
-		assertEquals(target, result)
+		assert result == target
 	}
 
 	/**
 	 * Test that the merger just uses the source value when no target is present.
 	 */
 	@Test
+	@SuppressWarnings('GStringExpressionWithinString')
 	void noTarget() {
 
 		def target = null
@@ -103,6 +107,6 @@ class VariableDeclarationMergerTests {
 		def merger = new VariableDeclarationMerger()
 		def result = merger.merge(target, source)
 
-		assertEquals(source, result)
+		assert result == source
 	}
 }

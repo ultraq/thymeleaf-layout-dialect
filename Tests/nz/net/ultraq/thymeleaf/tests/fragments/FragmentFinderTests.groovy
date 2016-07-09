@@ -24,7 +24,6 @@ import org.junit.BeforeClass
 import org.junit.Test
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.templatemode.TemplateMode
-import static org.junit.Assert.*
 
 /**
  * Tests for the {@link FragmentFinder} utility.
@@ -55,6 +54,7 @@ class FragmentFinderTests {
 	 * keys are the names of the found fragments.
 	 */
 	@Test
+	@SuppressWarnings('ExplicitCallToDivMethod')
 	void findFragments() {
 
 		def source = modelBuilder.build {
@@ -70,8 +70,8 @@ class FragmentFinderTests {
 		def fragmentFinder = new FragmentFinder('layout')
 		def fragments = fragmentFinder.findFragments(source)
 
-		assertTrue(fragments.containsKey('header-fragment'))
-		assertTrue(fragments.containsKey('paragraph-fragment'))
-		assertTrue(fragments.containsKey('footer-fragment'))
+		assert fragments.containsKey('header-fragment')
+		assert fragments.containsKey('paragraph-fragment')
+		assert fragments.containsKey('footer-fragment')
 	}
 }

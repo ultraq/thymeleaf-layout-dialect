@@ -25,7 +25,6 @@ import org.thymeleaf.TemplateEngine
 import org.thymeleaf.engine.TemplateData
 import org.thymeleaf.engine.TemplateManager
 import org.thymeleaf.templatemode.TemplateMode
-import static org.junit.Assert.*
 
 /**
  * Tests the model builder against Thymeleaf's normal model-creation mechanisms
@@ -106,6 +105,6 @@ class ModelBuilderTests {
 			}
 		}
 
-		assertTrue(modelFromTemplate.equalsIgnoreWhitespace(modelFromBuilder))
+		assert modelFromBuilder.equalsIgnoreWhitespace(modelFromTemplate)
 	}
 }

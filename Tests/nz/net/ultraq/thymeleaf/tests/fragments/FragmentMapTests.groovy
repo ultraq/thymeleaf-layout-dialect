@@ -23,8 +23,7 @@ import org.junit.Test
 import org.thymeleaf.context.Context
 import org.thymeleaf.context.IContext
 import org.thymeleaf.processor.element.IElementModelStructureHandler
-import static org.junit.Assert.*
-import static org.mockito.Mockito.*
+import static org.mockito.Mockito.mock
 
 /**
  * Tests for the {@link FragmentMap} utility.
@@ -50,10 +49,10 @@ class FragmentMapTests {
 	@Test
 	void newMap() {
 
-		assertTrue(context.variableNames.empty)
+		assert context.variableNames.empty
 
 		def newMap = FragmentMap.get(context)
-		assertNotNull(newMap)
+		assert newMap != null
 	}
 
 	/**
@@ -65,6 +64,6 @@ class FragmentMapTests {
 		def newMap = FragmentMap.get(context)
 		FragmentMap.setForNode(context, mock(IElementModelStructureHandler), [:])
 		def differentMap = FragmentMap.get(context)
-		assertNotSame(newMap, differentMap)
+		assert !newMap.is(differentMap)
 	}
 }

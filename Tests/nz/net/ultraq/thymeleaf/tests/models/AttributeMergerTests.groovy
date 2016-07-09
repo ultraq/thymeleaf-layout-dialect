@@ -26,7 +26,6 @@ import org.junit.Test
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.model.IModelFactory
 import org.thymeleaf.templatemode.TemplateMode
-import static org.junit.Assert.*
 
 /**
  * Tests for the attribute merger, spins up a Thymeleaf template engine so that
@@ -70,6 +69,7 @@ class AttributeMergerTests {
 	 * that don't already exist in the target
 	 */
 	@Test
+	@SuppressWarnings('ExplicitCallToDivMethod')
 	void addAttributes() {
 
 		def source = modelBuilder.build {
@@ -83,13 +83,14 @@ class AttributeMergerTests {
 		}
 
 		def result = attributeMerger.merge(target, source)
-		assertTrue(expected == result)
+		assert result == expected
 	}
 
 	/**
 	 * Test that attributes in the source element override those of the target.
  	 */
 	@Test
+	@SuppressWarnings('ExplicitCallToDivMethod')
 	void mergeAttributes() {
 
 		def source = modelBuilder.build {
@@ -103,6 +104,6 @@ class AttributeMergerTests {
 		}
 
 		def result = attributeMerger.merge(target, source)
-		assertTrue(expected == result)
+		assert result == expected
 	}
 }
