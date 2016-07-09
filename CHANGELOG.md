@@ -2,6 +2,31 @@
 Changelog
 =========
 
+### 2.0.0
+ - Layout dialect rewritten to support Thymeleaf 3
+   ([#68](https://github.com/ultraq/thymeleaf-layout-dialect/issues/68),
+   [Layout Dialect 2.0 milestone](https://github.com/ultraq/thymeleaf-layout-dialect/milestone/6?closed=1))
+ - `layout:decorator` processor renamed to `layout:decorate`, `$DECORATOR_TITLE`
+   renamed to `$LAYOUT_TITLE`
+   ([#95](https://github.com/ultraq/thymeleaf-layout-dialect/issues/95))
+ - Deprecated `layout:include` processor for the new `layout:insert` processor
+   ([#107](https://github.com/ultraq/thymeleaf-layout-dialect/issues/107))
+ - New documentation site created to hold what was turning into a gigantic
+   readme!
+   ([#115](https://github.com/ultraq/thymeleaf-layout-dialect/issues/115))
+
+Upgrading to 2.0?  I've written a migration guide to help make the transition
+easier.  Check it out on the new documentation pages site, here:
+https://ultraq.github.io/thymeleaf-layout-dialect/MigrationGuide.html
+
+As of release there are still some tests that have been disabled and may
+cause regressions for these use cases.  They are listed here:
+https://github.com/ultraq/thymeleaf-layout-dialect/blob/d4f57d08cbf5c70a33cfa45283015811c90a3765/Tests/nz/net/ultraq/thymeleaf/tests/LayoutDialectTestExecutor.groovy#L55-L61
+One is a very specific and rare case, another is an undocumented use of the
+layout dialect, and the commented one I don't feel I should fix as it feels like
+the incorrect use of an element.  For those first 2 cases, I'll work on them in
+upcoming patches so they don't hold up the release.
+
 ### 1.4.0
  - Change the behaviour of merging `th:with` attributes so that child pages can
    override layout values
