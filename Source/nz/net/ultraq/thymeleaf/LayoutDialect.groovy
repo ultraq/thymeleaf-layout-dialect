@@ -41,7 +41,8 @@ import org.thymeleaf.standard.processor.StandardXmlNsTagProcessor
 import org.thymeleaf.templatemode.TemplateMode
 
 /**
- * Dialect for making use of template/layout decorator pages with Thymeleaf.
+ * A dialect for Thymeleaf that lets you build layouts and reusable templates in
+ * order to improve code reuse
  * 
  * @author Emanuel Rabina
  */
@@ -75,7 +76,7 @@ class LayoutDialect extends AbstractProcessorDialect {
 	private final SortingStrategy sortingStrategy
 
 	/**
-	 * Constructor, configure the layout dialect with the given values.
+	 * Constructor, configure the layout dialect with the given sorting strategy.
 	 * 
 	 * @param sortingStrategy
 	 */

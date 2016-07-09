@@ -30,7 +30,8 @@ class FragmentFinder {
 	private final String dialectPrefix
 
 	/**
-	 * Constructor, create a new fragment finder using an existing model finder.
+	 * Constructor, create a new fragment finder to search for fragments using the
+	 * given prefix as the one configured for the layout dialect.
 	 * 
 	 * @param dialectPrefix
 	 */

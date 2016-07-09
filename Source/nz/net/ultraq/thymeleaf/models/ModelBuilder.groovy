@@ -27,7 +27,7 @@ import org.thymeleaf.model.IModelFactory
 import org.thymeleaf.templatemode.TemplateMode
 
 /**
- * Create Thymeleaf 3.0 models using a simplified syntax.
+ * Create Thymeleaf 3 models using the Groovy builder syntax.
  * 
  * @author Emanuel Rabina
  */
@@ -87,10 +87,10 @@ class ModelBuilder extends BuilderSupport {
 	}
 
 	/**
-	 * Create a model for the given HTML element.
+	 * Create a model for the given element.
 	 * 
-	 * @param name HTML element name.
-	 * @return New model with the given name.
+	 * @param name Element name.
+	 * @return New model representing an element with the given name.
 	 */
 	@Override
 	protected Object createNode(Object name) {
@@ -99,11 +99,11 @@ class ModelBuilder extends BuilderSupport {
 	}
 
 	/**
-	 * Create a model for the given HTML element and inner text content.
+	 * Create a model for the given element and inner text content.
 	 * 
-	 * @param name  HTML element name.
+	 * @param name  Element name.
 	 * @param value Text content.
-	 * @return New model with the given name and content.
+	 * @return New model representing an element with the given name and content.
 	 */
 	@Override
 	protected Object createNode(Object name, Object value) {
@@ -112,11 +112,12 @@ class ModelBuilder extends BuilderSupport {
 	}
 
 	/**
-	 * Create a model for the given HTML element and attributes.
+	 * Create a model for the given element and attributes.
 	 * 
-	 * @param name       HTML element name.
+	 * @param name       Element name.
 	 * @param attributes Element attributes.
-	 * @return New model with the given name and attributes.
+	 * @return New model representing an element with the given name and
+	 *         attributes.
 	 */
 	@Override
 	protected Object createNode(Object name, Map attributes) {
@@ -125,13 +126,13 @@ class ModelBuilder extends BuilderSupport {
 	}
 
 	/**
-	 * Create a model for the given HTML element, attributes, and inner text
-	 * content.
+	 * Create a model for the given element, attributes, and inner text content.
 	 * 
-	 * @param name       HTML element name.
+	 * @param name       Element name.
 	 * @param attributes Element attributes.
 	 * @param value      Text content.
-	 * @return New model with the given name, attributes, and content.
+	 * @return New model representing an element with the given name, attributes,
+	 *         and content.
 	 */
 	@Override
 	protected IModel createNode(Object name, Map attributes, Object value) {

@@ -32,7 +32,7 @@ class ElementMerger implements ModelMerger {
 	private final IModelFactory modelFactory
 
 	/**
-	 * Constructor, sets up the attribute merger tools.
+	 * Constructor, sets up the element merger tools.
 	 * 
 	 * @param modelFactory
 	 */

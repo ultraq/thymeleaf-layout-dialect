@@ -22,16 +22,16 @@ import org.thymeleaf.model.ITemplateEvent
 /**
  * An iterator over a model's child events, if that model represents an element
  * with open/close tags at either end.
- * 
+ * <p>
  * Models returned by this iterator are also aware of their position within the
  * event queue of the parent model, accessible via their {@code index} property.
- * 
- * TODO: This class is only used in 1 place where the model iterator would
- *       suffice.  Might be able to delete this class.
  * 
  * @author Emanuel Rabina
  */
 class ChildEventIterator implements Iterator<ITemplateEvent> {
+
+	// TODO: This class is only used in 1 place where the model iterator would
+	//       suffice.  Might be able to delete this class.
 
 	private final IModel parent
 

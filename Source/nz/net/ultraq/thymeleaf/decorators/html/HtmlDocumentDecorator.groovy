@@ -26,8 +26,8 @@ import org.thymeleaf.model.IOpenElementTag
 
 /**
  * A decorator made to work over an HTML document.  Decoration for a document
- * involves 2 sub-decorators: a special one of the {@code <head>} element, and a
- * standard one for the {@code <body>} element.
+ * involves 2 sub-decorators: a special one for the {@code <head>} element, and
+ * a standard one for the {@code <body>} element.
  * 
  * @author Emanuel Rabina
  */
