@@ -1,7 +1,7 @@
 {
 	"name": "thymeleaf-layout-dialect",
-	"version": "2.0.0-SNAPSHOT",
-	"description": "A dialect for Thymeleaf that allows you to use layout/decorator templates to style your content",
+	"version": "2.0.0",
+	"description": "A dialect for Thymeleaf that lets you build layouts and reusable templates in order to improve code reuse",
 	"author": "Emanuel Rabina <emanuelrabina@gmail.com> (http://www.ultraq.net.nz/)",
 	"scripts": {
 		"docs:clean": "rimraf _book",
