@@ -37,6 +37,6 @@ class AppendingStrategy implements SortingStrategy {
 	 */
 	int findPositionForModel(IModel headModel, IModel childModel) {
 
-		return !childModel.whitespace ? headModel.size() - 2 : -1
+		return childModel.whitespace ? -1 : headModel.size() - 2
 	}
 }

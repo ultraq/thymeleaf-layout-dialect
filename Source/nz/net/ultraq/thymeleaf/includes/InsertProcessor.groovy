@@ -73,7 +73,7 @@ class InsertProcessor extends AbstractAttributeModelProcessor {
 
 		// Gather all fragment parts within this element, scoping them to this element
 		def includeFragments = new FragmentFinder(dialectPrefix).findFragments(model)
-		FragmentMap.setForNode(context, structureHandler, includeFragments);
+		FragmentMap.setForNode(context, structureHandler, includeFragments)
 
 		// Keep track of what template is being processed?  Thymeleaf does this for
 		// its include processor, so I'm just doing the same here.
@@ -87,7 +87,8 @@ class InsertProcessor extends AbstractAttributeModelProcessor {
 		// When fragment parameters aren't named, derive the name from the fragment definition
 		// TODO: Common code across all the inclusion processors
 		if (fragmentExpression.hasSyntheticParameters()) {
-			def fragmentDefinition = fragmentToInsertUse.first().getAttributeValue(dialectPrefix, FragmentProcessor.PROCESSOR_NAME)
+			def fragmentDefinition = fragmentToInsertUse.first()
+				.getAttributeValue(dialectPrefix, FragmentProcessor.PROCESSOR_NAME)
 			def parameterNames = new FragmentParameterNamesExtractor().extract(fragmentDefinition)
 			fragmentExpression.parameters.eachWithIndex { parameter, index ->
 				structureHandler.setLocalVariable(parameterNames[index], parameter.right.execute(context))

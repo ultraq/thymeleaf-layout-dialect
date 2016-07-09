@@ -69,24 +69,26 @@ class XmlDocumentDecorator implements Decorator {
 		// Decorate the target document with the source one
 		def resultDocumentModel = new AttributeMerger(modelFactory).merge(targetDocumentRootModel, sourceDocumentRootModel)
 
+		def documentContainsDocType = { IModel document ->
+			for (def i = 0; i < document.size(); i++) {
+				def event = document.get(i)
+				if (event instanceof IDocType) {
+					return true
+				}
+				if (event instanceof IOpenElementTag) {
+					break
+				}
+			}
+			return false
+		}
+
 		// Copy certain items outside of the root element
 		for (def i = 0; i < targetDocumentModel.size(); i++) {
 			def event = targetDocumentModel.get(i)
 
 			// Only copy doctypes if the source document doesn't already have one
 			if (event instanceof IDocType) {
-				def sourceContainsDocType = false
-				for (def j = 0; j < sourceDocumentModel.size(); j++) {
-					def sourceEvent = sourceDocumentModel.get(j)
-					if (sourceEvent instanceof IDocType) {
-						sourceContainsDocType = true
-						break
-					}
-					if (sourceEvent instanceof IOpenElementTag) {
-						break
-					}
-				}
-				if (!sourceContainsDocType) {
+				if (!documentContainsDocType(sourceDocumentModel)) {
 					resultDocumentModel.insertWithWhitespace(0, event, modelFactory)
 				}
 			}

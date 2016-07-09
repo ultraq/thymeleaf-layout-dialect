@@ -152,7 +152,10 @@ ruleset {
 	ClassJavadoc
 	ClosureStatementOnOpeningLineOfMultipleLineClosure
 	FileEndsWithoutNewline
-	LineLength
+	LineLength {
+		doNotApplyToFileNames = 'ModelBuilder.groovy'
+		ignoreLineRegex = /\s*(throw.*|".*"|'.*')(\s\+)?/
+	}
 	MissingBlankLineAfterImports
 	MissingBlankLineAfterPackage
 	SpaceAfterCatch
@@ -350,7 +353,6 @@ ruleset {
 	UnnecessarySelfAssignment
 	UnnecessarySemicolon
 	UnnecessaryStringInstantiation
-	UnnecessarySubstring
 	UnnecessaryTernaryExpression
 	UnnecessaryToString
 	UnnecessaryTransientModifier

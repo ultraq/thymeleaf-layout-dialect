@@ -68,7 +68,7 @@ class ModelBuilder extends BuilderSupport {
 	 * 
 	 * @param model
 	 */
-	public void add(IModel model) {
+	void add(IModel model) {
 
 		current.insertModel(current.size() - 1, model)
 	}
@@ -170,7 +170,7 @@ class ModelBuilder extends BuilderSupport {
 				)
 
 				model.add(modelFactory.createStandaloneElementTag(elementName, attributes, AttributeValueQuotes.DOUBLE, false, false))
-				model.add(modelFactory.createCloseElementTag(elementName));
+				model.add(modelFactory.createCloseElementTag(elementName))
 			}
 		}
 
@@ -182,11 +182,11 @@ class ModelBuilder extends BuilderSupport {
 
 		// Open/close element and potential text content
 		else {
-			model.add(modelFactory.createOpenElementTag(elementName, attributes, AttributeValueQuotes.DOUBLE, false));
+			model.add(modelFactory.createOpenElementTag(elementName, attributes, AttributeValueQuotes.DOUBLE, false))
 			if (elementText) {
 				model.add(modelFactory.createText(elementText))
 			}
-			model.add(modelFactory.createCloseElementTag(elementName));
+			model.add(modelFactory.createCloseElementTag(elementName))
 		}
 
 		return model

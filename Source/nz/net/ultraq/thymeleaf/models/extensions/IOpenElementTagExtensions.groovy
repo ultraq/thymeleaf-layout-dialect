@@ -42,7 +42,7 @@ class IOpenElementTagExtensions {
 			equals << { Object other ->
 				return other instanceof IOpenElementTag &&
 					delegate.elementDefinition == other.elementDefinition &&
-					delegate.attributeMap == other.attributeMap;
+					delegate.attributeMap == other.attributeMap
 			}
 		}
 	}

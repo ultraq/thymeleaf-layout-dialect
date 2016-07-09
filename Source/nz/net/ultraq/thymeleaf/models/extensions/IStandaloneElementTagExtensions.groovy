@@ -42,7 +42,7 @@ class IStandaloneElementTagExtensions {
 			equals << { Object other ->
 				return other instanceof IStandaloneElementTag &&
 					delegate.elementDefinition == other.elementDefinition &&
-					delegate.attributeMap == other.attributeMap;
+					delegate.attributeMap == other.attributeMap
 			}
 		}
 	}

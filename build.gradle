@@ -29,7 +29,7 @@ project.sourceCompatibility = '1.7'
 
 project.group    = 'nz.net.ultraq.thymeleaf'
 project.artifact = 'thymeleaf-layout-dialect'
-project.version  = '2.0.0'
+project.version  = '2.0.1-SNAPSHOT'
 project.year     = '2012'
 project.contributors = [
 	[
@@ -64,7 +64,7 @@ dependencies {
 
 codenarc {
 	configFile = file('.codenarc.groovy')
-	maxPriority2Violations = 50
+	maxPriority2Violations = 2
 	maxPriority3Violations = 100
 	toolVersion = '0.25.2'
 }

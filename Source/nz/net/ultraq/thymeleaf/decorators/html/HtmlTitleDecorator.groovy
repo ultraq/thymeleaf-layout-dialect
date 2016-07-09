@@ -36,7 +36,7 @@ import org.unbescape.html.HtmlEscape
  */
 class HtmlTitleDecorator implements Decorator {
 
-	private ITemplateContext context
+	private final ITemplateContext context
 
 	/**
 	 * Constructor, sets up the decorator context.
@@ -59,6 +59,7 @@ class HtmlTitleDecorator implements Decorator {
 	 *   {@code <title>}s.
 	 */
 	@Override
+	@SuppressWarnings('SpaceAroundOperator')
 	IModel decorate(IModel targetTitleModel, IModel sourceTitleModel) {
 
 		// Get the title pattern to use

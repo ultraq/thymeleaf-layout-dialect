@@ -42,7 +42,7 @@ class LayoutContext extends HashMap<String,Object> {
 		// any collisions, but this name isn't exactly rare, so it *just* might
 		// happen.
 		if (dialectContext && !(dialectContext instanceof LayoutContext)) {
-			throw new Exception(
+			throw new IllegalStateException(
 				'Name collision on the Thymeleaf processing context.  ' +
 				'An object with the key "layout" already exists, but is needs to be free for the Layout Dialect to work.'
 			)

@@ -82,6 +82,7 @@ class TemplateModelFinder {
 	 * @param dialectPrefix
 	 * @return Fragment matching the fragment specification.
 	 */
+	@SuppressWarnings('UnnecessaryGString')
 	TemplateModel findFragment(String templateName, String fragmentName, String dialectPrefix) {
 
 		return find(templateName,

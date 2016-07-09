@@ -35,6 +35,7 @@ class IModelExtensions {
 	/**
 	 * Applies several new methods to the {@code IModel} class.
 	 */
+	@SuppressWarnings(['MethodSize', 'UnnecessaryCallForLastElement'])
 	static void apply() {
 
 		IModel.metaClass {
@@ -140,11 +141,7 @@ class IModelExtensions {
 					otherEventIndex++
 				}
 
-				if (thisEventIndex != delegate.size() || otherEventIndex != other.size()) {
-					return false
-				}
-
-				return true
+				return thisEventIndex == delegate.size() && otherEventIndex == other.size()
 			}
 
 			/**
@@ -181,7 +178,7 @@ class IModelExtensions {
 					def result = closure(event)
 					if (result) {
 						event.metaClass.index = i
-						return event;
+						return event
 					}
 				}
 				return null
@@ -388,6 +385,7 @@ class IModelExtensions {
 	 * @return Size of an element from the given position, or 1 if the event
 	 *         at the position isn't an opening element.
 	 */
+	@SuppressWarnings('EmptyIfStatement')
 	private static int calculateModelSize(IModel model, int index) {
 
 		def eventIndex = index
@@ -407,7 +405,7 @@ class IModelExtensions {
 						// https://html.spec.whatwg.org/multipage/syntax.html#void-elements
 					}
 					else if (level == 0) {
-						break;
+						break
 					}
 					else {
 						level--
