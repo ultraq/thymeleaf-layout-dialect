@@ -37,6 +37,6 @@ with the community in this project here.
 
 My website still runs on Thymeleaf and the layout dialect, and uses every
 feature mentioned in these docs.  In eating my own dogfood, I hope that the
-layout dialect can find some use for your own projects, from personal websites
-like my own, to full-on enterprise production web apps.  Anywhere Thymeleaf is
-suitable, I hope the layout dialect can be suitable too :)
+layout dialect is robust enough for your own projects, from personal websites
+like my own, to larger high-traffic web apps.  Anywhere Thymeleaf is suitable, I
+hope the layout dialect can be suitable too :)
