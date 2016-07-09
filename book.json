@@ -1,6 +1,10 @@
 {
 	"root": "Docs",
 	"title": "Thymeleaf Layout Dialect",
+	"structure": {
+		"readme": "Introduction.md",
+		"summary": "TableOfContents.md"
+	},
 	"plugins": [
 		"edit-link",
 		"github",

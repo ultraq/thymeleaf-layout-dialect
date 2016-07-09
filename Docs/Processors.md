@@ -14,8 +14,22 @@ this processor takes a [fragment expression](https://github.com/thymeleaf/thymel
 that specifies the layout template to decorate with the current, content
 template.
 
-Check out the [Layouts](Examples.md#Layouts) example for how to decorate a
+Check out the [Layouts](Examples.md#layouts) example for how to decorate a
 layout template with your content templates.
+
+
+title-pattern
+-------------
+
+ - XML attribute: `layout:title-pattern`
+ - Data attribute: `data-layout-title-pattern`
+
+Allows for greater control of the resulting `<title>` element by specifying a
+pattern with some special tokens.  This can be used to extend the layout's title
+with the content's one, instead of simply overriding it.
+
+Check out the [Configuring your Title](Examples.md#configuring-your-title)
+example for how to control the final title of your page.
 
 
 insert
@@ -51,17 +65,3 @@ fragment
 
 The glue that holds everything together; it marks sections in your layout or
 reusable templates that can be replaced by sections which share the same name.
-
-
-title-pattern
--------------
-
- - XML attribute: `layout:title-pattern`
- - Data attribute: `data-layout-title-pattern`
-
-Allows for greater control of the resulting `<title>` element by specifying a
-pattern with some special tokens.  This can be used to extend the layout's title
-with the content's one, instead of simply overriding it.
-
-Check out the [Configuring your Title](Examples.md#configuring-your-title)
-example for how to control the final title of your page.

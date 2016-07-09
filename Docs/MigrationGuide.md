@@ -24,7 +24,7 @@ template in this case) is the decorator.
 
 This change is simply a rename of the `layout:decorator`/`data-layout-decorator`
 processor to `layout:decorate`/`data-layout-decorate` so that the template being
-specified is the one being decorated, not the decorator, and an overhaul of the
+specified is the one being decorated, not the decorator, plus an overhaul of the
 documentation to fix this inconsistency.
 
 
@@ -44,7 +44,7 @@ https://github.com/ultraq/thymeleaf-layout-dialect/issues/107
 Thymeleaf 3 deprecated the `th:include`/`data-th-include` processor and
 introduced the `th:insert`/`data-th-insert` processor as its replacement.
 Because the layout dialect patterned the naming of its template inclusion
-processors after Thymeleaf, it did the same, deprecating `layout:include`/`data-layout-include`
+processors after Thymeleaf, it did the same - deprecating `layout:include`/`data-layout-include`
 and introducing `layout:insert`/`data-layout-insert`.
 
 
@@ -56,7 +56,7 @@ https://github.com/thymeleaf/thymeleaf/issues/451
 In 1.x of the layout dialect, it used the same template/fragment specifiers as
 Thymeleaf 2, which was basically string paths with a special `::` separator.  In
 Thymeleaf 3, these specifiers have been formalized into "fragment expressions",
-and have a new syntax which is basically the old syntax but surrounded by `~{...}`.
+and have a new syntax which surrounds the old one with `~{...}`.
 
 The layout dialect now favours the use of these fragment expressions for all
 processors that pick a template or fragment.

@@ -14,29 +14,22 @@ If you've ever used SiteMesh for your JSPs, or Facelets with JSFs, then the
 concepts of this library will be very familiar to you.
 
 
+Docs
+----
+
+For installation instructions, examples, and configuration options, check out
+the docs pages over on https://ultraq.github.io/thymeleaf-layout-dialect/
+
+Upgrading an existing project to Thymeleaf 3 and layout dialect 2?  Then give
+the [migration guide](https://ultraq.github.io/thymeleaf-layout-dialect/MigrationGuide.html)
+a read.
+
+
 TL;DR
 -----
 
-Your template:
-
-```html
-<html layout:decorate="~{layout.html}">
-<head>
-  <title>Content page</title>
-  <script src="content-script.js"></script>
-</head>
-<body>
-  <section layout:fragment="content">
-    <p>This is a paragraph from the content page</p>
-  </section>
-  <footer>
-    <p layout:fragment="custom-footer">This is some footer content from the content page</p>
-  </footer>
-</body>
-</html>
-```
-
-Plus a layout:
+Create a common layout to be used for several pages, defining extension points
+in the body with the `layout:fragment`/`data-layout-fragment` processors:
 
 ```html
 <!DOCTYPE html>
@@ -60,7 +53,30 @@ Plus a layout:
 </html>
 ```
 
-Results in:
+Create a content page that will use the layout, defining any HTML to use for the
+extension points in the layout, and specified by a `layout:decorate`/`data-layout-decorate`
+processor at the root element of your page:
+
+```html
+<html layout:decorate="~{layout.html}">
+<head>
+  <title>Content page</title>
+  <script src="content-script.js"></script>
+</head>
+<body>
+  <section layout:fragment="content">
+    <p>This is a paragraph from the content page</p>
+  </section>
+  <footer>
+    <p layout:fragment="custom-footer">This is some footer content from the content page</p>
+  </footer>
+</body>
+</html>
+```
+
+Get Thymeleaf to process your content page.  The result will be the layout
+template decorated by your content page, meaning that the content page will fill
+out the layout's extension points, replace titles, and merge `<head>` items:
 
 ```html
 <!DOCTYPE html>
@@ -85,9 +101,5 @@ Results in:
 </html>
 ```
 
-Intrigued?  Check out the documentation pages to learn more:
-https://ultraq.github.io/thymeleaf-layout-dialect
-
-Already know all this and just looking to upgrade to using Thymeleaf 3?  Then
-check out the migration guide for a look at what's changed:
-https://ultraq.github.io/thymeleaf-layout-dialect/MigrationGuide.md
+Intrigued?  Check out the documentation links near the top of this readme to
+learn more.
