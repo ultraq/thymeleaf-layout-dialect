@@ -22,7 +22,7 @@ import org.thymeleaf.model.IModel
 
 /**
  * The standard {@code <head>} merging strategy, which simply appends the
- * content to the decorator.
+ * content elements to the layout ones.
  * 
  * @author Emanuel Rabina
  */

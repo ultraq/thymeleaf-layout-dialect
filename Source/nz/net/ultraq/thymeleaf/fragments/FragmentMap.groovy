@@ -21,8 +21,8 @@ import org.thymeleaf.model.IModel
 import org.thymeleaf.processor.element.IElementModelStructureHandler
 
 /**
- * Holds the layout fragments encountered across layout/decorator and content
- * templates for use later.
+ * Holds the layout fragments encountered across layout and content templates
+ * for later use.
  * 
  * @author Emanuel Rabina
  */
@@ -31,7 +31,7 @@ class FragmentMap extends HashMap<String,IModel> {
 	private static final String FRAGMENT_COLLECTION_KEY = 'LayoutDialect::FragmentCollection'
 
 	/**
-	 * Retrieves either the fragment map for the current context, or a new
+	 * Retrieves either the fragment map for the current context, or returns a new
 	 * fragment map.
 	 * 
 	 * @param context
@@ -39,7 +39,7 @@ class FragmentMap extends HashMap<String,IModel> {
 	 */
 	static FragmentMap get(IContext context) {
 
-		return context[FRAGMENT_COLLECTION_KEY] ?: [:]
+		return context[FRAGMENT_COLLECTION_KEY] ?: new FragmentMap()
 	}
 
 	/**

@@ -30,7 +30,7 @@ import org.unbescape.html.HtmlEscape
 
 /**
  * Decorator for the {@code <title>} part of the template to handle the special
- * processing required for {@code layout:title-pattern} processor.
+ * processing required for the {@code layout:title-pattern} processor.
  * 
  * @author Emanuel Rabina
  */

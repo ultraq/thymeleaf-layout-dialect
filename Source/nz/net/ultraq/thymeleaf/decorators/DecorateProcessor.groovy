@@ -32,7 +32,7 @@ import org.thymeleaf.processor.element.IElementModelStructureHandler
 import org.thymeleaf.templatemode.TemplateMode
 
 /**
- * Specifies the name of the template to decorate using the content template.
+ * Specifies the name of the template to decorate using the current template.
  * 
  * @author Emanuel Rabina
  */
@@ -57,7 +57,7 @@ class DecorateProcessor extends AbstractAttributeModelProcessor {
 	}
 
 	/**
-	 * Constructor, configurable processor name so that I could support the
+	 * Constructor, configurable processor name for the purposes of the
 	 * deprecated {@code layout:decorator} alias.
 	 * 
 	 * @param templateMode

@@ -1,14 +1,15 @@
 
-# Build directories
+# Generated
 /.gradle
+/_book
 /build
 /Classes
+/node_modules
+npm-debug.log
 
-# Eclipse files/directories
+# IDEs
+/.idea
 /.settings
 .classpath
 .project
-
-# IntelliJ IDEA files/directories
-/.idea
 *.iml

@@ -19,7 +19,9 @@ package nz.net.ultraq.thymeleaf.decorators
 import org.thymeleaf.model.IModel
 
 /**
- * The contract for all decorators.
+ * A decorator performs decoration of a target model, using a source model for
+ * all the decorations to apply.  What exactly "decoration" means can vary per
+ * implementation.
  * 
  * @author Emanuel Rabina
  */

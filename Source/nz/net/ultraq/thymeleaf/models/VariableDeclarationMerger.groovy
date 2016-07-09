@@ -18,27 +18,12 @@ package nz.net.ultraq.thymeleaf.models
 
 /**
  * Merges variable declarations in a {@code th:with} attribute processor, taking
- * the declarations in the source and overriding same-named declarations in the
- * target.
+ * the declarations in the target and combining them with the declarations in
+ * the source, overriding any same-named declarations in the target.
  * 
  * @author Emanuel Rabina
  */
 class VariableDeclarationMerger {
-
-	/**
-	 * Create variable declaration objects out of the declaration string.
-	 * 
-	 * @param declarationString
-	 * @return A list of variable declaration objects that make up the declaration
-	 *         string.
-	 */
-	private static ArrayList<VariableDeclaration> deriveDeclarations(String declarationString) {
-
-		def attributeTokens = declarationString.split(',')
-		return attributeTokens.collect { attributeToken ->
-			return new VariableDeclaration(attributeToken)
-		}
-	}
 
 	/**
 	 * Merge {@code th:with} attributes so that names from the source value
@@ -53,6 +38,11 @@ class VariableDeclarationMerger {
 			return target
 		}
 
+		def deriveDeclarations = { String declarationString ->
+			return declarationString.split(',').collect { attributeToken ->
+				return new VariableDeclaration(attributeToken)
+			}
+		}
 		def targetDeclarations = deriveDeclarations(target)
 		def sourceDeclarations = deriveDeclarations(source)
 

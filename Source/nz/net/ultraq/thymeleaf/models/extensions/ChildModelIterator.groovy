@@ -21,7 +21,7 @@ import org.thymeleaf.model.IModel
 /**
  * This class provides a way for working with a model's immediate children, by
  * converting events into sub-models of their own.
- * 
+ * <p>
  * Models returned by this iterator are also aware of their start/end positions
  * within the event queue of the parent model, accessible via their
  * {@code startIndex}/{@code endIndex} properties.

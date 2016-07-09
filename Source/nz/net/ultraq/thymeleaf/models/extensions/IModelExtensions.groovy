@@ -26,8 +26,7 @@ import org.thymeleaf.model.ITemplateEvent
 import org.thymeleaf.templatemode.TemplateMode
 
 /**
- * Additional methods applied to the Thymeleaf {@link IModel} class via Groovy
- * meta-programming.
+ * Meta-programming extensions to the {@link IModel} class.
  * 
  * @author Emanuel Rabina
  */
