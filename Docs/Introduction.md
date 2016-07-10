@@ -17,10 +17,9 @@ concepts of this library will be very familiar to you.
 Motivation
 ----------
 
-After coming off a project that used JSFs (my least favourite view technology)
-and having a long hard look at my project website written in JSPs, I thought it
-was high time for a site redesign and to try out a new view technology that
-didn't make me want me to ╯°□°）╯︵ ┻━┻
+After coming off a project that used JSFs and having a long hard look at my
+personal website written in JSPs, I thought it was high time for a site redesign
+that used a view technology that didn't make me want me to ╯°□°）╯︵ ┻━┻
 
 I came across an article on this new thing called [Thymeleaf](http://www.thymeleaf.org/)
 and how it's a fully-fledged JSP replacement.  I gave it a look, and in seconds
