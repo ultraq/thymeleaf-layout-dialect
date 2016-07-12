@@ -1,0 +1,32 @@
+
+# Tests the replacement of a complete template, rather than a part of a template,
+# as per the bug report in https://github.com/ultraq/thymeleaf-layout-dialect/issues/120
+
+%TEMPLATE_MODE HTML
+
+
+%INPUT
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<body>
+	<div layout:replace="~{Template}">
+	</div>
+</body>
+</html>
+
+
+%INPUT[Template]
+<main>
+	<p>Included text.</p>
+</main>
+
+
+%OUTPUT
+<!DOCTYPE html>
+<html>
+<body>
+	<main>
+		<p>Included text.</p>
+	</main>
+</body>
+</html>
