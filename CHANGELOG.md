@@ -2,6 +2,11 @@
 Changelog
 =========
 
+### 2.0.1
+ - Fix `NullPointerException` when using any of the `include`/`insert`/`replace`
+   processors with a full template fragment expression
+   ([#120](https://github.com/ultraq/thymeleaf-layout-dialect/issues/120))
+
 ### 2.0.0
  - Layout dialect rewritten to support Thymeleaf 3
    ([#68](https://github.com/ultraq/thymeleaf-layout-dialect/issues/68),
