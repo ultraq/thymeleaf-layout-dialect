@@ -62,7 +62,7 @@ class TemplateModelFinder {
 	 * @param dialectPrefix
 	 * @return Fragment matching the fragment specification.
 	 */
-	TemplateModel findFragment(FragmentExpression fragmentExpression, String dialectPrefix) {
+	TemplateModel findFragment(FragmentExpression fragmentExpression, String dialectPrefix = null) {
 
 		// TODO: Simplify this method signature by deriving the layout dialect
 		//       prefix from the context.
@@ -71,7 +71,7 @@ class TemplateModelFinder {
 		if (templateName == 'this') {
 			templateName = context.templateData.template
 		}
-		return findFragment(templateName, fragmentExpression.fragmentSelector.execute(context).toString(), dialectPrefix)
+		return findFragment(templateName, fragmentExpression.fragmentSelector?.execute(context)?.toString(), dialectPrefix)
 	}
 
 	/**
@@ -83,22 +83,22 @@ class TemplateModelFinder {
 	 * @return Fragment matching the fragment specification.
 	 */
 	@SuppressWarnings('UnnecessaryGString')
-	TemplateModel findFragment(String templateName, String fragmentName, String dialectPrefix) {
+	TemplateModel findFragment(String templateName, String fragmentName = null, String dialectPrefix = null) {
 
 		return find(templateName,
 
 			// Attoparser fragment selector, picks a fragment with layout:fragment="name"
-			// or starts with layout:fragment="name( or layout:fragment="name (  plus
+			// or starts with layout:fragment="name( or layout:fragment="name ( plus
 			// their data attribute equivalents. See the attoparser API docs for details:
 			// http://www.attoparser.org/apidocs/attoparser/2.0.0.RELEASE/org/attoparser/select/package-summary.html
-			"//[" +
+			fragmentName && dialectPrefix ? "//[" +
 				"${dialectPrefix}:fragment='${fragmentName}' or " +
 				"${dialectPrefix}:fragment^='${fragmentName}(' or " +
 				"${dialectPrefix}:fragment^='${fragmentName} (' or " +
 				"data-${dialectPrefix}-fragment='${fragmentName}' or " +
 				"data-${dialectPrefix}-fragment^='${fragmentName}(' or " +
 				"data-${dialectPrefix}-fragment^='${fragmentName} ('" +
-			"]"
+			"]" : null
 		)
 	}
 
