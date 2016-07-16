@@ -71,10 +71,10 @@ class HtmlDocumentDecorator extends XmlDocumentDecorator {
 				targetDocumentModel.replaceModel(targetHeadModel.startIndex, resultHeadModel)
 			}
 			else {
-				targetDocumentModel.insertModelWithWhitespace(targetDocumentModel.find { event ->
+				targetDocumentModel.insertModelWithWhitespace(targetDocumentModel.findIndexOf { event ->
 					return (event instanceof IOpenElementTag && event.elementCompleteName == 'body') ||
 					       (event instanceof ICloseElementTag && event.elementCompleteName == 'html')
-				}.index - 1, resultHeadModel)
+				} - 1, resultHeadModel)
 			}
 		}
 
@@ -92,9 +92,9 @@ class HtmlDocumentDecorator extends XmlDocumentDecorator {
 				targetDocumentModel.replaceModel(targetBodyModel.startIndex, resultBodyModel)
 			}
 			else {
-				targetDocumentModel.insertModelWithWhitespace(targetDocumentModel.find { event ->
+				targetDocumentModel.insertModelWithWhitespace(targetDocumentModel.findIndexOf { event ->
 					return event instanceof ICloseElementTag && event.elementCompleteName == 'html'
-				}.index - 1, resultBodyModel)
+				} - 1, resultBodyModel)
 			}
 		}
 
