@@ -104,10 +104,7 @@ class DecorateProcessor extends AbstractAttributeModelProcessor {
 		// TODO: Can probably find a way of preventing this double-loading for #102
 		def contentTemplateName = context.templateData.template
 		def contentTemplate = templateModelFinder.findTemplate(contentTemplateName).cloneModel()
-		def origRootElement = contentTemplate.find { event ->
-			return event instanceof IOpenElementTag
-		}
-		contentTemplate.replace(origRootElement.index, rootElement)
+		contentTemplate.replace(contentTemplate.findIndexOf { event -> event instanceof IOpenElementTag }, rootElement)
 
 		// Locate the template to decorate
 		def decorateTemplateExpression = new ExpressionProcessor(context).parseFragmentExpression(attributeValue)
