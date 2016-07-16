@@ -119,7 +119,6 @@ ruleset {
 	// rulesets/dry.xml
 	DuplicateListLiteral
 	DuplicateMapLiteral
-	DuplicateNumberLiteral
 
 	// rulesets/exceptions.xml
 	CatchArrayIndexOutOfBoundsException
