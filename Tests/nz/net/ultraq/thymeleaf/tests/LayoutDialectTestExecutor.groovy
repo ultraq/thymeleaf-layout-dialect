@@ -53,7 +53,6 @@ class LayoutDialectTestExecutor extends JUnitTestExecutor {
 		def tests = new Reflections('', new ResourcesScanner())
 			.getResources(~/(?!GroupingStrategy|Examples).*\.thtest/) as List
 		def exclusions = [
-			'nz/net/ultraq/thymeleaf/tests/decorators/Decorate-DeepHierarchy.thtest',
 			'nz/net/ultraq/thymeleaf/tests/decorators/html/TitlePattern-AllowOtherProcessors.thtest',
 
 			// Disabled, see test file for details

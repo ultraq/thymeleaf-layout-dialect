@@ -68,7 +68,7 @@ class DecorateProcessor extends AbstractAttributeModelProcessor {
 	protected DecorateProcessor(TemplateMode templateMode, String dialectPrefix, SortingStrategy sortingStrategy,
 		String attributeName) {
 
-		super(templateMode, dialectPrefix, null, false, attributeName, true, PROCESSOR_PRECEDENCE, true)
+		super(templateMode, dialectPrefix, null, false, attributeName, true, PROCESSOR_PRECEDENCE, false)
 		this.sortingStrategy = sortingStrategy
 	}
 
@@ -86,15 +86,14 @@ class DecorateProcessor extends AbstractAttributeModelProcessor {
 	protected void doProcess(ITemplateContext context, IModel model, AttributeName attributeName,
 		String attributeValue, IElementModelStructureHandler structureHandler) {
 
-		// Ensure the decorate attribute is in the root element of the document
-		if (context.elementStack.size() != 1) {
+		// Ensure that every element to this point contained a decorate processor
+		if (!context.elementStack.every { element -> element.getAttribute(dialectPrefix, PROCESSOR_NAME) }) {
 			throw new IllegalArgumentException('layout:decorate/data-layout-decorate must appear in the root element of your template')
 		}
 
 		def templateModelFinder = new TemplateModelFinder(context)
 
-		// Remove the layout:decorate attribute for cases when the root element is
-		// also a potential fragment
+		// Remove the decorate processor from the root element
 		def rootElement = model.first()
 		if (rootElement.hasAttribute(dialectPrefix, PROCESSOR_NAME)) {
 			rootElement = context.modelFactory.removeAttribute(rootElement, dialectPrefix, PROCESSOR_NAME)
