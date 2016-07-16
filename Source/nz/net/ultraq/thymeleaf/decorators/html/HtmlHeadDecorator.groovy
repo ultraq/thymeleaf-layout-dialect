@@ -65,9 +65,9 @@ class HtmlHeadDecorator implements Decorator {
 
 		// New head model based off the target being decorated
 		def resultHeadModel = new AttributeMerger(context.modelFactory).merge(targetHeadModel, sourceHeadModel)
-		def titleInResult = resultHeadModel.find(isTitle)
-		if (titleInResult) {
-			resultHeadModel.removeModelWithWhitespace(titleInResult.index)
+		def titleIndex = resultHeadModel.findIndexOf(isTitle)
+		if (titleIndex != -1) {
+			resultHeadModel.removeModelWithWhitespace(titleIndex)
 		}
 
 		// Get the source and target title elements to pass to the title decorator
