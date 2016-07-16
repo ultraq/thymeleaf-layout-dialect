@@ -185,6 +185,25 @@ class IModelExtensions {
 			}
 
 			/**
+			 * Returns the index of the first event in the model that meets the
+			 * criteria of the given closure.
+			 * 
+			 * @param closure
+			 * @return The index of the first event to match the closure criteria, or
+			 *         {@code -1} if nothing matched.
+			 */
+			findIndexOf << { Closure closure ->
+				for (def i = 0; i < delegate.size(); i++) {
+					def event = delegate.get(i)
+					def result = closure(event)
+					if (result) {
+						return i
+					}
+				}
+				return -1
+			}
+
+			/**
 			 * Returns the first instance of a model that meets the given closure
 			 * criteria.
 			 * 
@@ -197,11 +216,11 @@ class IModelExtensions {
 			 *         {@code null} if nothing matched.
 			 */
 			findModel << { Closure closure ->
-				def event = delegate.find(closure)
-				if (event) {
-					def model = delegate.getModel(event.index)
-					model.metaClass.startIndex = event.index
-					model.metaClass.endIndex = event.index + model.size()
+				def eventIndex = delegate.findIndexOf(closure)
+				if (eventIndex != -1) {
+					def model = delegate.getModel(eventIndex)
+					model.metaClass.startIndex = eventIndex
+					model.metaClass.endIndex = eventIndex + model.size()
 					return model
 				}
 				return null
@@ -355,7 +374,7 @@ class IModelExtensions {
 			 * @param pos
 			 */
 			removeModelWithWhitespace << { int pos ->
-				removeModel(pos)
+				delegate.removeModel(pos)
 				def priorEvent = delegate.get(pos - 1)
 				if (priorEvent.whitespace) {
 					delegate.remove(pos - 1)
