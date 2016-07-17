@@ -96,10 +96,6 @@ class LayoutDialect extends AbstractProcessorDialect {
 	@Override
 	Set<IProcessor> getProcessors(String dialectPrefix) {
 
-		// TODO: Many of the underlying classes don't respect the runtime-configured
-		//       dialect prefix, so I'll need to do something about that later.
-		//       https://github.com/ultraq/thymeleaf-layout-dialect/issues/103
-
 		return [
 			// Processors available in the HTML template mode
 			new StandardXmlNsTagProcessor(TemplateMode.HTML, dialectPrefix),

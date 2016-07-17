@@ -52,8 +52,6 @@ class FragmentFinder {
 
 		def fragments = [:]
 
-		// TODO: Don't go into layout:include/replace/insert elements
-
 		def eventIndex = 0
 		while (eventIndex < model.size()) {
 			def event = model.get(eventIndex)

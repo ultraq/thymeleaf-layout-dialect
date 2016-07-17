@@ -88,7 +88,6 @@ class AttributeMerger implements ModelMerger {
 					mergedAttributeValue = sourceAttribute.value
 				}
 
-				// TODO: Create model extensions for manipulating first/last elements?
 				mergedModel.replace(0, modelFactory.replaceAttribute(mergedEvent,
 					sourceAttribute.attributeName, sourceAttribute.completeName,
 					mergedAttributeValue))

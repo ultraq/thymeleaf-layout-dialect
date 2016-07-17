@@ -202,9 +202,7 @@ class ModelBuilder extends BuilderSupport {
 	@Override
 	protected void nodeCompleted(Object parent, Object child) {
 
-		if (parent != null) {
-
-			// TODO: Insert w/ whitespace?
+		if (parent) {
 			parent.insertModel(parent.size() - 1, child)
 		}
 	}
