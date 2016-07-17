@@ -87,7 +87,7 @@ class DecorateProcessor extends AbstractAttributeModelProcessor {
 		String attributeValue, IElementModelStructureHandler structureHandler) {
 
 		// Ensure that every element to this point contained a decorate processor
-		if (!context.elementStack.every { element -> element.getAttribute(dialectPrefix, PROCESSOR_NAME) }) {
+		if (!context.elementStack.every { element -> element.getAttribute(attributeName) }) {
 			throw new IllegalArgumentException('layout:decorate/data-layout-decorate must appear in the root element of your template')
 		}
 
@@ -95,8 +95,8 @@ class DecorateProcessor extends AbstractAttributeModelProcessor {
 
 		// Remove the decorate processor from the root element
 		def rootElement = model.first()
-		if (rootElement.hasAttribute(dialectPrefix, PROCESSOR_NAME)) {
-			rootElement = context.modelFactory.removeAttribute(rootElement, dialectPrefix, PROCESSOR_NAME)
+		if (rootElement.hasAttribute(attributeName)) {
+			rootElement = context.modelFactory.removeAttribute(rootElement, attributeName)
 			model.replace(0, rootElement)
 		}
 
