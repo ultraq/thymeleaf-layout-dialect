@@ -8,7 +8,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root xmlns="http://www.example.org/"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{Decorator}">
+	layout:decorate="~{Layout}">
 	<item layout:fragment="item">
 		<name>Tomatoes</name>
 		<price>3.99</price>
@@ -16,7 +16,7 @@
 </root>
 
 
-%INPUT[Decorator]
+%INPUT[Layout]
 <?xml version="1.0" encoding="utf-8"?>
 <root xmlns="http://www.example.org/"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">

@@ -10,11 +10,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root xmlns="http://www.example.org/"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{Decorator}">
+	layout:decorate="~{Layout}">
 </root>
 
 
-%INPUT[Decorator]
+%INPUT[Layout]
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Comment before the root element -->
 <root xmlns="http://www.example.org/"

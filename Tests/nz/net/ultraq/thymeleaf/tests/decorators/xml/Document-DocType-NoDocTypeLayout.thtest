@@ -8,11 +8,11 @@
 <!DOCTYPE root>
 <root xmlns="http://www.example.org/"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{Decorator}">
+	layout:decorate="~{Layout}">
 </root>
 
 
-%INPUT[Decorator]
+%INPUT[Layout]
 <root xmlns="http://www.example.org/">
 </root>
 
