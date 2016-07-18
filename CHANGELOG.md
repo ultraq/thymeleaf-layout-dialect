@@ -8,6 +8,9 @@ Changelog
    ([#120](https://github.com/ultraq/thymeleaf-layout-dialect/issues/120))
  - Restored support for multi-level layouts
    ([#121](https://github.com/ultraq/thymeleaf-layout-dialect/issues/121))
+ - Reduced logging of backwards compatibility warnings to log just the first
+   time the compatibility was encountered
+   ([#124](https://github.com/ultraq/thymeleaf-layout-dialect/issues/124))
 
 ### 2.0.0
  - Layout dialect rewritten to support Thymeleaf 3
