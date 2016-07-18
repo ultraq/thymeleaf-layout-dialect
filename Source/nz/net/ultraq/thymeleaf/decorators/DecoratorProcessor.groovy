@@ -63,6 +63,7 @@ class DecoratorProcessor extends DecorateProcessor {
 	 * @param structureHandler
 	 */
 	@Override
+	@SuppressWarnings('AssignmentToStaticFieldFromInstanceMethod')
 	protected void doProcess(ITemplateContext context, IModel model, AttributeName attributeName,
 		String attributeValue, IElementModelStructureHandler structureHandler) {
 

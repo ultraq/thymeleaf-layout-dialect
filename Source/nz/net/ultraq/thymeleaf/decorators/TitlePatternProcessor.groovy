@@ -78,6 +78,7 @@ class TitlePatternProcessor extends AbstractAttributeTagProcessor {
 	 * @param structureHandler
 	 */
 	@Override
+	@SuppressWarnings('AssignmentToStaticFieldFromInstanceMethod')
 	protected void doProcess(ITemplateContext context, IProcessableElementTag tag,
 		AttributeName attributeName, String attributeValue, IElementTagStructureHandler structureHandler) {
 

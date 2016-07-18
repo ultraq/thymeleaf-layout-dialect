@@ -35,7 +35,8 @@ class ModelBuilder extends BuilderSupport {
 
 	private static final Logger logger = LoggerFactory.getLogger(ModelBuilder)
 
-	private static HashSet<String> encounteredVoidTags = []
+	@SuppressWarnings('FieldName')
+	private static final HashSet<String> encounteredVoidTags = []
 
 	private final ElementDefinitions elementDefinitions
 	private final IModelFactory modelFactory
@@ -137,6 +138,7 @@ class ModelBuilder extends BuilderSupport {
 	 *         and content.
 	 */
 	@Override
+	@SuppressWarnings('AssignmentToStaticFieldFromInstanceMethod')
 	protected IModel createNode(Object name, Map attributes, Object value) {
 
 		// Normalize values for Java implementations as the model factory doesn't

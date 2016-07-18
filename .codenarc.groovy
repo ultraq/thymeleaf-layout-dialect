@@ -105,7 +105,6 @@ ruleset {
 	ConstantsOnlyInterface
 	EmptyMethodInAbstractClass
 	FinalClassWithProtectedMember
-	ImplementationAsType
 	LocaleSetDefault
 	NestedForLoop
 	PrivateFieldCouldBeFinal
