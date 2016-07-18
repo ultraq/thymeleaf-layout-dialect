@@ -46,6 +46,8 @@ class TitlePatternProcessor extends AbstractAttributeTagProcessor {
 	private static final String PARAM_TITLE_CONTENT   = '$CONTENT_TITLE'
 	private static final String PARAM_TITLE_LAYOUT    = '$LAYOUT_TITLE'
 
+	private static boolean warned = false
+
 	static final String PROCESSOR_NAME = 'title-pattern'
 	static final int PROCESSOR_PRECEDENCE = 1
 
@@ -100,11 +102,14 @@ class TitlePatternProcessor extends AbstractAttributeTagProcessor {
 		def layoutTitle = titleProcessor(LAYOUT_TITLE_ATTRIBUTE)
 
 		if (titlePattern && titlePattern.contains(PARAM_TITLE_DECORATOR)) {
-			logger.warn(
-				'The $DECORATOR_TITLE token is deprecated and will be removed in the next major version of the layout dialect.  ' +
-				'Please use the $LAYOUT_TITLE token instead to future-proof your code.  ' +
-				'See https://github.com/ultraq/thymeleaf-layout-dialect/issues/95 for more information.'
-			)
+			if (!warned) {
+				logger.warn(
+					'The $DECORATOR_TITLE token is deprecated and will be removed in the next major version of the layout dialect.  ' +
+					'Please use the $LAYOUT_TITLE token instead to future-proof your code.  ' +
+					'See https://github.com/ultraq/thymeleaf-layout-dialect/issues/95 for more information.'
+				)
+				warned = true
+			}
 		}
 
 		def title = titlePattern && layoutTitle && contentTitle ?

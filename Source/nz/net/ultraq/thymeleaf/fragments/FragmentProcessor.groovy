@@ -37,6 +37,8 @@ class FragmentProcessor extends AbstractAttributeModelProcessor {
 
 	private static final Logger logger = LoggerFactory.getLogger(FragmentProcessor)
 
+	private static boolean warned = false
+
 	static final String PROCESSOR_NAME = 'fragment'
 	static final int PROCESSOR_PRECEDENCE = 1
 
@@ -67,10 +69,13 @@ class FragmentProcessor extends AbstractAttributeModelProcessor {
 		// Emit a warning if found in the <head> section
 		if (templateMode == TemplateMode.HTML) {
 			if (context.elementStack.any { element -> element.elementCompleteName == 'head' }) {
-				logger.warn(
-					'You don\'t need to put the layout:fragment/data-layout-fragment attribute into the <head> section - ' +
-					'the decoration process will automatically copy the <head> section of your content templates into your layout page.'
-				)
+				if (!warned) {
+					logger.warn(
+						'You don\'t need to put the layout:fragment/data-layout-fragment attribute into the <head> section - ' +
+						'the decoration process will automatically copy the <head> section of your content templates into your layout page.'
+					)
+				}
+				warned = true
 			}
 		}
 
