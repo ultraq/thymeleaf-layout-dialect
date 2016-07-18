@@ -35,6 +35,8 @@ class ModelBuilder extends BuilderSupport {
 
 	private static final Logger logger = LoggerFactory.getLogger(ModelBuilder)
 
+	private static HashSet<String> encounteredVoidTags = []
+
 	private final ElementDefinitions elementDefinitions
 	private final IModelFactory modelFactory
 	private final TemplateMode templateMode
@@ -161,13 +163,16 @@ class ModelBuilder extends BuilderSupport {
 				model.add(modelFactory.createStandaloneElementTag(elementName, attributes, AttributeValueQuotes.DOUBLE, false, false))
 			}
 			else {
-				logger.warn(
-					'Instructed to write a closing tag {} for an HTML void element.  ' +
-					'This might cause processing errors further down the track.  ' +
-					'To avoid this, either self close the opening element, remove the closing tag, or process this template using the XML processing mode.  ' +
-					'See https://html.spec.whatwg.org/multipage/syntax.html#void-elements for more information on HTML void elements.',
-					name
-				)
+				if (!encounteredVoidTags.contains(elementName)) {
+					logger.warn(
+						'Instructed to write a closing tag {} for an HTML void element.  ' +
+						'This might cause processing errors further down the track.  ' +
+						'To avoid this, either self close the opening element, remove the closing tag, or process this template using the XML processing mode.  ' +
+						'See https://html.spec.whatwg.org/multipage/syntax.html#void-elements for more information on HTML void elements.',
+						elementName
+					)
+					encounteredVoidTags << elementName
+				}
 
 				model.add(modelFactory.createStandaloneElementTag(elementName, attributes, AttributeValueQuotes.DOUBLE, false, false))
 				model.add(modelFactory.createCloseElementTag(elementName))
