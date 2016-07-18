@@ -7,7 +7,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-	<body layout:decorate="Layout">
+	<body layout:decorate="~{Layout}">
 	</body>
 </html>
 

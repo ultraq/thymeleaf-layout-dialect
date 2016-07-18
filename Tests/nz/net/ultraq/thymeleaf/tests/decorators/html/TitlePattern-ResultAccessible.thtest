@@ -7,7 +7,7 @@
 %INPUT
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="Layout">
+	layout:decorate="~{Layout}">
 <head>
 	<title>My page</title>
 </head>

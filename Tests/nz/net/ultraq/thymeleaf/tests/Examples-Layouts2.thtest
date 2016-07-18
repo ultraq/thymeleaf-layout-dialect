@@ -6,7 +6,7 @@
 
 
 %INPUT
-<p layout:decorate="Layout" layout:fragment="custom-footer">
+<p layout:decorate="~{Layout}" layout:fragment="custom-footer">
 	This is some footer text from content page 2.
 </p>
 

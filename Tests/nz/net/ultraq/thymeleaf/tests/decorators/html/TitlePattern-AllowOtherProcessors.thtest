@@ -7,7 +7,7 @@
 
 %INPUT
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
- layout:decorate="Layout">
+ layout:decorate="~{Layout}">
 <head>
 	<title th:include="Titles :: title1">Extracted title goes here</title>
 </head>

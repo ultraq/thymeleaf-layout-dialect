@@ -14,12 +14,12 @@ var texts = {"TEST 0", "TEST 1", "TEST 2", "TEST 3"}
 <body>
 	<div th:each="text, itr: ${texts}">
 		<div th:if="${itr.index != 1}" th:remove="tag">
-			<div layout:include="fragment :: text" th:remove="tag">
+			<div layout:include="~{fragment :: text}" th:remove="tag">
 				<!-- DEFAULT -->
 			</div>
 		</div>
 		<div th:if="${itr.index == 1}" th:remove="tag">
-			<div layout:include="fragment :: text" th:remove="tag">
+			<div layout:include="~{fragment :: text}" th:remove="tag">
 				<div layout:fragment="field">
 					<input type="text" th:value="${text}" />
 				</div>

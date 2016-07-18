@@ -13,7 +13,7 @@
 
 	<th:block th:remove="all">
 		<div id="fragment-outer" layout:fragment="outer">
-			<div id="replace-inner" layout:replace="this :: inner">
+			<div id="replace-inner" layout:replace="~{this :: inner}">
 				<div id="inner-content" layout:fragment="inner-content">
 					<div id="ref-outer" layout:fragment="outer-content">This should not be visible</div>
 				</div>
@@ -25,7 +25,7 @@
 		</div>
 	</th:block>
 
-	<div id="replace-outer" layout:replace="this :: outer">
+	<div id="replace-outer" layout:replace="~{this :: outer}">
 		<div id="outer-content" layout:fragment="outer-content">Outer content</div>
 	</div>
 

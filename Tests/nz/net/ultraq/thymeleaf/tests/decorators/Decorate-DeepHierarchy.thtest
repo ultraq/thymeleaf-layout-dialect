@@ -7,7 +7,7 @@
 %INPUT
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="Parent">
+	layout:decorate="~{Parent}">
 <head>
 	<title>Page title</title>
 	<script src="child-script.js"></script>
@@ -23,7 +23,7 @@
 %INPUT[Parent]
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="Grandparent">
+	layout:decorate="~{Grandparent}">
 <body>
 	<section layout:fragment="section">
 		<header>

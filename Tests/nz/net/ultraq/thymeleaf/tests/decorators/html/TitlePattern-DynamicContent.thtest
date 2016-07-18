@@ -17,7 +17,7 @@ someVar = "dynamic!"
 
 
 %INPUT
-<html data-layout-decorator="Layout">
+<html data-layout-decorator="~{Layout}">
 <head>
 	<title data-layout-fragment="widget-title"
 		data-th-text="|Do something ${someVar}|">Download link</title>
