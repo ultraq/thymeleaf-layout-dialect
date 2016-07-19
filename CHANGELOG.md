@@ -2,6 +2,8 @@
 Changelog
 =========
 
+As of 1.3.0, this project follows [Semantic Versioning](http://semver.org/).
+
 ### 2.0.1
  - Fix `NullPointerException` when using any of the `include`/`insert`/`replace`
    processors with a full template fragment expression
