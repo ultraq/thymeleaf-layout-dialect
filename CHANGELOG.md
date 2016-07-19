@@ -11,6 +11,9 @@ Changelog
  - Reduced logging of backwards compatibility warnings to log just the first
    time the compatibility was encountered
    ([#124](https://github.com/ultraq/thymeleaf-layout-dialect/issues/124))
+ - Improved memory usage by not being so wasteful of objects in a few parts of
+   the codebase, which in turn fixed a potential memory leak
+   ([#122](https://github.com/ultraq/thymeleaf-layout-dialect/issues/122))
 
 ### 2.0.0
  - Layout dialect rewritten to support Thymeleaf 3
