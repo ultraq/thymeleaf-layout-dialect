@@ -68,14 +68,15 @@ class FragmentProcessor extends AbstractAttributeModelProcessor {
 		String attributeValue, IElementModelStructureHandler structureHandler) {
 
 		// Emit a warning if found in the <head> section
-		if (templateMode == TemplateMode.HTML && context.elementStack.any { element -> element.elementCompleteName == 'head' }) {
+		if (templateMode == TemplateMode.HTML &&
+		    context.elementStack.any { element -> element.elementCompleteName == 'head' }) {
 			if (!warned) {
 				logger.warn(
 					'You don\'t need to put the layout:fragment/data-layout-fragment attribute into the <head> section - ' +
 					'the decoration process will automatically copy the <head> section of your content templates into your layout page.'
 				)
+				warned = true
 			}
-			warned = true
 		}
 
 		// Locate the fragment that corresponds to this decorator/include fragment
