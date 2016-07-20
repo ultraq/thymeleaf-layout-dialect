@@ -24,10 +24,6 @@
 	namespace-uri="http://www.ultraq.net.nz/thymeleaf/layout"
 	class="nz.net.ultraq.thymeleaf.LayoutDialect">
 
-	<attribute-processor name="fragment" class="nz.net.ultraq.thymeleaf.fragments.FragmentProcessor">
-		<restrictions tags="-title"/>
-	</attribute-processor>
-
 	<attribute-processor name="decorate"      class="nz.net.ultraq.thymeleaf.decorators.DecorateProcessor"/>
 	<attribute-processor name="decorator"     class="nz.net.ultraq.thymeleaf.decorators.DecoratorProcessor"/>
 	<attribute-processor name="title-pattern" class="nz.net.ultraq.thymeleaf.decorators.TitlePatternProcessor">
@@ -35,7 +31,11 @@
 	</attribute-processor>
 
 	<attribute-processor name="include" class="nz.net.ultraq.thymeleaf.includes.IncludeProcessor"/>
-	<attribute-processor name="insert" class="nz.net.ultraq.thymeleaf.includes.InsertProcessor"/>
+	<attribute-processor name="insert"  class="nz.net.ultraq.thymeleaf.includes.InsertProcessor"/>
 	<attribute-processor name="replace" class="nz.net.ultraq.thymeleaf.includes.ReplaceProcessor"/>
+
+	<attribute-processor name="fragment" class="nz.net.ultraq.thymeleaf.fragments.FragmentProcessor">
+		<restrictions tags="-title"/>
+	</attribute-processor>
 
 </dialect>
