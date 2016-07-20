@@ -109,9 +109,8 @@ class IncludeProcessor extends AbstractAttributeModelProcessor {
 		while (fragmentForInclusionUse.last().whitespace) {
 			fragmentForInclusionUse.removeLast()
 		}
-
-		fragmentForInclusionUse.childEventIterator().each { fragmentChildEvent ->
-			model.insert(model.size() - 1, fragmentChildEvent)
+		fragmentForInclusionUse.childModelIterator().each { fragmentChildModel ->
+			model.insertModel(model.size() - 1, fragmentChildModel)
 		}
 
 		// When fragment parameters aren't named, derive the name from the fragment definition

@@ -51,17 +51,6 @@ class IModelExtensions {
 
 			/**
 			 * If this model represents an element, then this method returns an
-			 * iterator over those child events.
-			 * 
-			 * @return An iterator over this model's child events, or an empty
-			 *         iterator for all other model types.
-			 */
-			childEventIterator << {
-				return delegate.element ? new ChildEventIterator(delegate) : null
-			}
-
-			/**
-			 * If this model represents an element, then this method returns an
 			 * iterator over any potential child items as models of their own.
 			 * 
 			 * @param modelFactory
