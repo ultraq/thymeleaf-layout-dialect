@@ -16,6 +16,8 @@ As of 1.3.0, this project follows [Semantic Versioning](http://semver.org/).
  - Improved memory usage by not being so wasteful of objects in a few parts of
    the codebase, which in turn fixed a potential memory leak
    ([#122](https://github.com/ultraq/thymeleaf-layout-dialect/issues/122))
+ - Fixed a backwards compatibility problem when using `layout:decorator`
+   ([#125](https://github.com/ultraq/thymeleaf-layout-dialect/issues/125))
 
 ### 2.0.0
  - Layout dialect rewritten to support Thymeleaf 3
