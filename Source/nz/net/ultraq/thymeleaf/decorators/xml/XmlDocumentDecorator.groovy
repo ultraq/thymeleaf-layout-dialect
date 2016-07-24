@@ -67,7 +67,7 @@ class XmlDocumentDecorator implements Decorator {
 		def sourceDocumentRootModel = rootModelFinder(sourceDocumentModel)
 
 		// Decorate the target document with the source one
-		def resultDocumentModel = new AttributeMerger(modelFactory).merge(targetDocumentRootModel, sourceDocumentRootModel)
+		def resultDocumentModel = new AttributeMerger(context).merge(targetDocumentRootModel, sourceDocumentRootModel)
 
 		def documentContainsDocType = { IModel document ->
 			for (def i = 0; i < document.size(); i++) {

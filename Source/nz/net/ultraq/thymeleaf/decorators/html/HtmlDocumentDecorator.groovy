@@ -83,7 +83,7 @@ class HtmlDocumentDecorator extends XmlDocumentDecorator {
 			return event instanceof IOpenElementTag && event.elementCompleteName == 'body'
 		}
 		def targetBodyModel = targetDocumentModel.findModel(bodyModelFinder)
-		def resultBodyModel = new HtmlBodyDecorator(context.modelFactory).decorate(
+		def resultBodyModel = new HtmlBodyDecorator(context).decorate(
 			targetBodyModel,
 			sourceDocumentModel.findModel(bodyModelFinder)
 		)

@@ -16,9 +16,9 @@
 
 package nz.net.ultraq.thymeleaf.models
 
+import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.model.AttributeValueQuotes
 import org.thymeleaf.model.IModel
-import org.thymeleaf.model.IModelFactory
 import org.thymeleaf.model.IOpenElementTag
 import org.thymeleaf.model.IStandaloneElementTag
 
@@ -29,16 +29,16 @@ import org.thymeleaf.model.IStandaloneElementTag
  */
 class ElementMerger implements ModelMerger {
 
-	private final IModelFactory modelFactory
+	private final ITemplateContext context
 
 	/**
-	 * Constructor, sets up the element merger tools.
+	 * Constructor, sets up the element merger context.
 	 * 
-	 * @param modelFactory
+	 * @param context
 	 */
-	ElementMerger(IModelFactory modelFactory) {
+	ElementMerger(ITemplateContext context) {
 
-		this.modelFactory = modelFactory
+		this.context = context
 	}
 
 	/**
@@ -55,8 +55,10 @@ class ElementMerger implements ModelMerger {
 		// If one of the parameters is missing return a copy of the other, or
 		// nothing if both parameters are missing.
 		if (!targetModel || !sourceModel) {
-			return targetModel ? targetModel.cloneModel() : sourceModel ? sourceModel.cloneModel() : null
+			return targetModel?.cloneModel() ?: sourceModel?.cloneModel()
 		}
+
+		def modelFactory = context.modelFactory
 
 		// The result we want is the source model, but merged into the target root element attributes
 		def sourceRootEvent = sourceModel.first()
@@ -70,7 +72,7 @@ class ElementMerger implements ModelMerger {
 				modelFactory.createStandaloneElementTag(sourceRootEvent.elementCompleteName,
 					targetRootEvent.attributeMap, AttributeValueQuotes.DOUBLE, false, sourceRootEvent.minimized) :
 			null)
-		def mergedRootElement = new AttributeMerger(modelFactory).merge(targetRootElement, sourceRootElement)
+		def mergedRootElement = new AttributeMerger(context).merge(targetRootElement, sourceRootElement)
 		def mergedModel = sourceModel.cloneModel()
 		mergedModel.replace(0, mergedRootElement.first())
 		return mergedModel

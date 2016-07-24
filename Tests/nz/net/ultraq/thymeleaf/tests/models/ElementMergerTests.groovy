@@ -24,7 +24,7 @@ import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
 import org.thymeleaf.TemplateEngine
-import org.thymeleaf.model.IModelFactory
+import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.templatemode.TemplateMode
 
 /**
@@ -34,8 +34,8 @@ import org.thymeleaf.templatemode.TemplateMode
  */
 class ElementMergerTests {
 
+	private static ITemplateContext mockContext
 	private static ModelBuilder modelBuilder
-	private static IModelFactory modelFactory
 
 	private ElementMerger elementMerger
 
@@ -50,8 +50,17 @@ class ElementMergerTests {
 				new LayoutDialect()
 			]
 		)
-		modelFactory = templateEngine.configuration.getModelFactory(TemplateMode.HTML)
+		def modelFactory = templateEngine.configuration.getModelFactory(TemplateMode.HTML)
+
 		modelBuilder = new ModelBuilder(modelFactory, templateEngine.configuration.elementDefinitions, TemplateMode.HTML)
+		mockContext = [
+			getConfiguration: { ->
+				return templateEngine.configuration
+			},
+			getModelFactory: { ->
+				return modelFactory
+			}
+		] as ITemplateContext
 	}
 
 	/**
@@ -60,7 +69,7 @@ class ElementMergerTests {
 	@Before
 	void setupElementMerger() {
 
-		elementMerger = new ElementMerger(modelFactory)
+		elementMerger = new ElementMerger(mockContext)
 	}
 
 	/**

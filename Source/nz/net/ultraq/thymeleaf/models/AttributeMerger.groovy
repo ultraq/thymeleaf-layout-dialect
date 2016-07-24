@@ -19,8 +19,8 @@ package nz.net.ultraq.thymeleaf.models
 import nz.net.ultraq.thymeleaf.LayoutDialect
 import nz.net.ultraq.thymeleaf.fragments.FragmentProcessor
 
+import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.model.IModel
-import org.thymeleaf.model.IModelFactory
 import org.thymeleaf.standard.StandardDialect
 import org.thymeleaf.standard.processor.StandardWithTagProcessor
 
@@ -31,16 +31,16 @@ import org.thymeleaf.standard.processor.StandardWithTagProcessor
  */
 class AttributeMerger implements ModelMerger {
 
-	private final IModelFactory modelFactory
+	private final ITemplateContext context
 
 	/**
-	 * Constructor, sets up the attribute merger tools.
+	 * Constructor, sets up the attribute merger context.
 	 * 
-	 * @param modelFactory
+	 * @param context
 	 */
-	AttributeMerger(IModelFactory modelFactory) {
+	AttributeMerger(ITemplateContext context) {
 
-		this.modelFactory = modelFactory
+		this.context = context
 	}
 
 	/**
@@ -60,17 +60,19 @@ class AttributeMerger implements ModelMerger {
 		// If one of the parameters is missing return a copy of the other, or
 		// nothing if both parameters are missing.
 		if (!targetModel || !sourceModel) {
-			return targetModel ? targetModel.cloneModel() : sourceModel ? sourceModel.cloneModel() : null
+			return targetModel?.cloneModel() ?: sourceModel?.cloneModel()
 		}
 
 		def mergedModel = targetModel.cloneModel()
+		def layoutDialectPrefix = context.getPrefixForDialect(LayoutDialect)
+		def standardDialectPrefix = context.getPrefixForDialect(StandardDialect)
 
 		// Merge attributes from the source model's root event to the target model's root event
 		sourceModel.first().allAttributes
 
 			// Don't include layout:fragment processors
 			.findAll { sourceAttribute ->
-				return !sourceAttribute.equalsName(LayoutDialect.DIALECT_PREFIX, FragmentProcessor.PROCESSOR_NAME)
+				return !sourceAttribute.equalsName(layoutDialectPrefix, FragmentProcessor.PROCESSOR_NAME)
 			}
 
 			.each { sourceAttribute ->
@@ -78,9 +80,9 @@ class AttributeMerger implements ModelMerger {
 				def mergedAttributeValue
 
 				// Merge th:with attributes
-				if (sourceAttribute.equalsName(StandardDialect.PREFIX, StandardWithTagProcessor.ATTR_NAME)) {
+				if (sourceAttribute.equalsName(standardDialectPrefix, StandardWithTagProcessor.ATTR_NAME)) {
 					mergedAttributeValue = new VariableDeclarationMerger().merge(sourceAttribute.value,
-						mergedEvent.getAttributeValue(StandardDialect.PREFIX, StandardWithTagProcessor.ATTR_NAME))
+						mergedEvent.getAttributeValue(standardDialectPrefix, StandardWithTagProcessor.ATTR_NAME))
 				}
 
 				// Copy every other attribute straight
@@ -88,7 +90,7 @@ class AttributeMerger implements ModelMerger {
 					mergedAttributeValue = sourceAttribute.value
 				}
 
-				mergedModel.replace(0, modelFactory.replaceAttribute(mergedEvent,
+				mergedModel.replace(0, context.modelFactory.replaceAttribute(mergedEvent,
 					sourceAttribute.attributeName, sourceAttribute.completeName,
 					mergedAttributeValue))
 			}

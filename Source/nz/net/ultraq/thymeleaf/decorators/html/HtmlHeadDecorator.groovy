@@ -64,7 +64,7 @@ class HtmlHeadDecorator implements Decorator {
 		def isTitle = { event -> event instanceof IOpenElementTag && event.elementCompleteName == 'title' }
 
 		// New head model based off the target being decorated
-		def resultHeadModel = new AttributeMerger(context.modelFactory).merge(targetHeadModel, sourceHeadModel)
+		def resultHeadModel = new AttributeMerger(context).merge(targetHeadModel, sourceHeadModel)
 		def titleIndex = resultHeadModel.findIndexOf(isTitle)
 		if (titleIndex != -1) {
 			resultHeadModel.removeModelWithWhitespace(titleIndex)

@@ -62,9 +62,12 @@ class HtmlTitleDecorator implements Decorator {
 	@SuppressWarnings('SpaceAroundOperator')
 	IModel decorate(IModel targetTitleModel, IModel sourceTitleModel) {
 
+		def layoutDialectPrefix = context.getPrefixForDialect(LayoutDialect)
+		def standardDialectPrefix = context.getPrefixForDialect(StandardDialect)
+
 		// Get the title pattern to use
 		def titlePatternProcessorRetriever = { titleModel ->
-			return titleModel?.first()?.getAttribute(LayoutDialect.DIALECT_PREFIX, TitlePatternProcessor.PROCESSOR_NAME)
+			return titleModel?.first()?.getAttribute(layoutDialectPrefix, TitlePatternProcessor.PROCESSOR_NAME)
 		}
 		def titlePatternProcessor =
 			titlePatternProcessorRetriever(sourceTitleModel) ?:
@@ -77,7 +80,7 @@ class HtmlTitleDecorator implements Decorator {
 		// title result parts that we want to use on the pattern.
 		if (titlePatternProcessor) {
 			def titleValueRetriever = { titleModel ->
-				return titleModel?.first()?.getAttributeValue(StandardDialect.PREFIX, StandardTextTagProcessor.ATTR_NAME) ?:
+				return titleModel?.first()?.getAttributeValue(standardDialectPrefix, StandardTextTagProcessor.ATTR_NAME) ?:
 					titleModel?.size() > 2 ? "'${HtmlEscape.escapeHtml5Xml(titleModel.get(1).text)}'" : null
 			}
 			def titleValuesMap = [:]
@@ -95,7 +98,7 @@ class HtmlTitleDecorator implements Decorator {
 			}
 		}
 		else {
-			resultTitle = new ElementMerger(context.modelFactory).merge(targetTitleModel, sourceTitleModel)
+			resultTitle = new ElementMerger(context).merge(targetTitleModel, sourceTitleModel)
 		}
 
 		return resultTitle

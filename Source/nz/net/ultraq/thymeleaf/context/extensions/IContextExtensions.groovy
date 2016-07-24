@@ -17,6 +17,10 @@
 package nz.net.ultraq.thymeleaf.context.extensions
 
 import org.thymeleaf.context.IContext
+import org.thymeleaf.context.IExpressionContext
+import org.thymeleaf.dialect.IProcessorDialect
+
+import groovy.transform.Memoized
 
 /**
  * Meta-programming extensions to the {@link IContext} class.
@@ -45,6 +49,21 @@ class IContextExtensions {
 			}
 
 			/**
+			 * Returns the configured prefix for the given dialect.  If the dialect
+			 * prefix has not been configured, then the dialect prefix is returned.
+			 * 
+			 * @param dialect
+			 * @return The configured prefix for the dialect, or {@code null} if the
+			 *         dialect being queried hasn't been configured.
+			 */
+			getPrefixForDialect << { Class<IProcessorDialect> dialect ->
+
+				// TODO: Using a separate method as I can't memoize this closure because
+				//       of https://issues.apache.org/jira/browse/GROOVY-6584
+				return getPrefixForDialect(delegate, dialect)
+			}
+
+			/**
 			 * Enables use of the {@code context[key] = value} syntax over the context
 			 * object, is a synonym for the {@code setVariable} method.
 			 * 
@@ -55,5 +74,18 @@ class IContextExtensions {
 				delegate.setVariable(name, value)
 			}
 		}
+	}
+
+	@Memoized
+	private static String getPrefixForDialect(IExpressionContext context, Class<IProcessorDialect> dialect) {
+
+		def dialectConfiguration = context.configuration.dialectConfigurations.find { dialectConfig ->
+			return dialect.isInstance(dialectConfig.dialect)
+		}
+		return dialectConfiguration ?
+			dialectConfiguration.prefixSpecified ?
+				dialectConfiguration.prefix :
+				dialectConfiguration.dialect.prefix :
+			null
 	}
 }

@@ -19,8 +19,8 @@ package nz.net.ultraq.thymeleaf.decorators.html
 import nz.net.ultraq.thymeleaf.decorators.Decorator
 import nz.net.ultraq.thymeleaf.models.AttributeMerger
 
+import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.model.IModel
-import org.thymeleaf.model.IModelFactory
 
 /**
  * A decorator specific to processing an HTML {@code <body>} element.
@@ -29,16 +29,16 @@ import org.thymeleaf.model.IModelFactory
  */
 class HtmlBodyDecorator implements Decorator {
 
-	private final IModelFactory modelFactory
+	private final ITemplateContext context
 
 	/**
 	 * Constructor, sets up the element decorator context.
 	 * 
-	 * @param modelFactory
+	 * @param context
 	 */
-	HtmlBodyDecorator(IModelFactory modelFactory) {
+	HtmlBodyDecorator(ITemplateContext context) {
 
-		this.modelFactory = modelFactory
+		this.context = context
 	}
 
 	/**
@@ -54,8 +54,8 @@ class HtmlBodyDecorator implements Decorator {
 		// If one of the parameters is missing return a copy of the other, or
 		// nothing if both parameters are missing.
 		if (!targetBodyModel || !sourceBodyModel) {
-			return targetBodyModel ? targetBodyModel.cloneModel() : sourceBodyModel ? sourceBodyModel.cloneModel() : null
+			return targetBodyModel?.cloneModel() ?: sourceBodyModel?.cloneModel()
 		}
-		return new AttributeMerger(modelFactory).merge(targetBodyModel, sourceBodyModel)
+		return new AttributeMerger(context).merge(targetBodyModel, sourceBodyModel)
 	}
 }
