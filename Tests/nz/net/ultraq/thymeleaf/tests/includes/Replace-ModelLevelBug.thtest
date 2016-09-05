@@ -1,0 +1,37 @@
+
+# A test file for a reported model level bug with Thymeleaf 3
+# See: https://github.com/ultraq/thymeleaf-layout-dialect/issues/129
+
+%TEMPLATE_MODE HTML
+
+%INPUT
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<body layout:replace="default :: layout-body">
+	<div layout:fragment="layout-header">New</div>
+</body>
+</html>
+
+
+%INPUT[default]
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<body layout:fragment="layout-body">
+	<div layout:fragment="layout-header">
+		<p>
+			<div>test</div>
+		</p>
+	</div>
+</body>
+</html>
+
+
+%OUTPUT
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<body>
+	<div>New</div>
+</body>
+</html>
