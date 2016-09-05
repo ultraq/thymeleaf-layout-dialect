@@ -4,6 +4,12 @@ Changelog
 
 As of 1.3.0, this project follows [Semantic Versioning](http://semver.org/).
 
+### 2.0.2
+ - Convert `FragmentProcessor` from a model processor to a tag processor to get
+   around model level problems when inserting fragments that may alter the model
+   level
+   ([#129](https://github.com/ultraq/thymeleaf-layout-dialect/issues/129))
+
 ### 2.0.1
  - Fix `NullPointerException` when using any of the `include`/`insert`/`replace`
    processors with a full template fragment expression
