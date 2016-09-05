@@ -380,6 +380,19 @@ class IModelExtensions {
 				delegate.removeModel(pos)
 				delegate.insertModel(pos, model)
 			}
+
+			/**
+			 * Removes whitespace events from the head and tail of the model's
+			 * underlying event queue.
+			 */
+			trim << {
+				while (delegate.first().whitespace) {
+					delegate.removeFirst()
+				}
+				while (delegate.last().whitespace) {
+					delegate.removeLast()
+				}
+			}
 		}
 	}
 
