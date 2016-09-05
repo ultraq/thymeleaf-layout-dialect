@@ -48,7 +48,7 @@ class AttributeMergerTests {
 
 		def templateEngine = new TemplateEngine(
 			additionalDialects: [
-			  new LayoutDialect()
+				new LayoutDialect()
 			]
 		)
 		def modelFactory = templateEngine.configuration.getModelFactory(TemplateMode.HTML)
@@ -58,9 +58,9 @@ class AttributeMergerTests {
 			getConfiguration: { ->
 				return templateEngine.configuration
 			},
-		  getModelFactory: { ->
-			  return modelFactory
-		  }
+			getModelFactory: { ->
+				return modelFactory
+			}
 		] as ITemplateContext
 	}
 
@@ -97,7 +97,7 @@ class AttributeMergerTests {
 
 	/**
 	 * Test that attributes in the source element override those of the target.
- 	 */
+	 */
 	@Test
 	@SuppressWarnings('ExplicitCallToDivMethod')
 	void mergeAttributes() {
