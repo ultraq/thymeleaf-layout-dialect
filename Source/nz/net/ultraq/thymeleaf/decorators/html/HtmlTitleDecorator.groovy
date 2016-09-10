@@ -79,19 +79,18 @@ class HtmlTitleDecorator implements Decorator {
 		// Set the title pattern to use on a new model, as well as the important
 		// title result parts that we want to use on the pattern.
 		if (titlePatternProcessor) {
-			def titleValueRetriever = { titleModel ->
-				return titleModel?.first()?.getAttributeValue(standardDialectPrefix, StandardTextTagProcessor.ATTR_NAME) ?:
-					titleModel?.size() > 2 ? "'${HtmlEscape.escapeHtml5Xml(titleModel.get(1).text)}'" : null
-			}
 			def titleValuesMap = [:]
-			def contentTitle = titleValueRetriever(sourceTitleModel)
-			if (contentTitle) {
-				titleValuesMap << [(TitlePatternProcessor.CONTENT_TITLE_ATTRIBUTE): contentTitle]
+			def titleValueExtractor = {titleModel, titleAttribute ->
+				def titleTag = titleModel?.first()
+				def titleValue = titleTag?.getAttributeValue(titleAttribute) ?:
+				                 titleTag?.getAttributeValue(standardDialectPrefix, StandardTextTagProcessor.ATTR_NAME) ?:
+				                 titleModel?.size() > 2 ? "'${HtmlEscape.escapeHtml5Xml(titleModel.get(1).text)}'" : null
+				if (titleValue) {
+					titleValuesMap << [(titleAttribute): titleValue]
+				}
 			}
-			def layoutTitle = titleValueRetriever(targetTitleModel)
-			if (layoutTitle) {
-				titleValuesMap << [(TitlePatternProcessor.LAYOUT_TITLE_ATTRIBUTE): layoutTitle]
-			}
+			titleValueExtractor(sourceTitleModel, TitlePatternProcessor.CONTENT_TITLE_ATTRIBUTE)
+			titleValueExtractor(targetTitleModel, TitlePatternProcessor.LAYOUT_TITLE_ATTRIBUTE)
 
 			resultTitle = new ModelBuilder(context).build {
 				title([(titlePatternProcessor.attributeCompleteName): titlePatternProcessor.value] << titleValuesMap)
