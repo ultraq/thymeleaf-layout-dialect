@@ -11,6 +11,8 @@ As of 1.3.0, this project follows [Semantic Versioning](http://semver.org/).
    ([#129](https://github.com/ultraq/thymeleaf-layout-dialect/issues/129))
  - Fix the merging of the `<head>` section in multi-level layouts
    ([#130](https://github.com/ultraq/thymeleaf-layout-dialect/issues/130))
+ - Respect the runtime-configured prefix
+   ([#103](https://github.com/ultraq/thymeleaf-layout-dialect/issues/103))
 
 ### 2.0.1
  - Fix `NullPointerException` when using any of the `include`/`insert`/`replace`
