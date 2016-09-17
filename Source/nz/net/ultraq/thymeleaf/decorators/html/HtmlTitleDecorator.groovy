@@ -80,7 +80,7 @@ class HtmlTitleDecorator implements Decorator {
 		// title result parts that we want to use on the pattern.
 		if (titlePatternProcessor) {
 			def titleValuesMap = [:]
-			def titleValueExtractor = {titleModel, titleAttribute ->
+			def titleValueExtractor = { titleModel, titleAttribute ->
 				def titleTag = titleModel?.first()
 				def titleValue = titleTag?.getAttributeValue(titleAttribute) ?:
 				                 titleTag?.getAttributeValue(standardDialectPrefix, StandardTextTagProcessor.ATTR_NAME) ?:
