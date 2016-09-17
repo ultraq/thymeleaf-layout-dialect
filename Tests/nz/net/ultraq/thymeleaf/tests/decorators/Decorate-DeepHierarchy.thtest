@@ -24,6 +24,9 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{Grandparent}">
+<head>
+	<script src="parent-script.js"></script>
+</head>
 <body>
 	<section layout:fragment="section">
 		<header>
@@ -60,6 +63,7 @@
 <head>
 	<title>Page title</title>
 	<script src="grandparent-script.js"></script>
+	<script src="parent-script.js"></script>
 	<script src="child-script.js"></script>
 </head>
 <body>

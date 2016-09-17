@@ -16,15 +16,16 @@
 
 package nz.net.ultraq.thymeleaf.fragments
 
+import nz.net.ultraq.thymeleaf.LayoutDialect
 import nz.net.ultraq.thymeleaf.models.ElementMerger
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.engine.AttributeName
-import org.thymeleaf.model.IModel
-import org.thymeleaf.processor.element.AbstractAttributeModelProcessor
-import org.thymeleaf.processor.element.IElementModelStructureHandler
+import org.thymeleaf.model.IProcessableElementTag
+import org.thymeleaf.processor.element.AbstractAttributeTagProcessor
+import org.thymeleaf.processor.element.IElementTagStructureHandler
 import org.thymeleaf.templatemode.TemplateMode
 
 /**
@@ -33,7 +34,7 @@ import org.thymeleaf.templatemode.TemplateMode
  * 
  * @author Emanuel Rabina
  */
-class FragmentProcessor extends AbstractAttributeModelProcessor {
+class FragmentProcessor extends AbstractAttributeTagProcessor {
 
 	private static final Logger logger = LoggerFactory.getLogger(FragmentProcessor)
 
@@ -64,8 +65,8 @@ class FragmentProcessor extends AbstractAttributeModelProcessor {
 	 */
 	@Override
 	@SuppressWarnings('AssignmentToStaticFieldFromInstanceMethod')
-	protected void doProcess(ITemplateContext context, IModel model, AttributeName attributeName,
-		String attributeValue, IElementModelStructureHandler structureHandler) {
+	protected void doProcess(ITemplateContext context, IProcessableElementTag tag,
+		AttributeName attributeName, String attributeValue, IElementTagStructureHandler structureHandler) {
 
 		// Emit a warning if found in the <head> section
 		if (templateMode == TemplateMode.HTML &&
@@ -82,9 +83,17 @@ class FragmentProcessor extends AbstractAttributeModelProcessor {
 		// Locate the fragment that corresponds to this decorator/include fragment
 		def fragment = FragmentMap.get(context)[(attributeValue)]
 
-		// Replace this model with the fragment
+		// Replace the tag body with the fragment
 		if (fragment) {
-			model.replaceModel(0, new ElementMerger(context).merge(model, fragment))
+			def modelFactory = context.modelFactory
+			def replacementModel = new ElementMerger(context).merge(modelFactory.createModel(tag), fragment)
+
+			// Remove the layout:fragment attribute - Thymeleaf won't do it for us
+			// when using StructureHandler.replaceWith(...)
+			replacementModel.replace(0, modelFactory.removeAttribute(replacementModel.first(),
+				context.getPrefixForDialect(LayoutDialect), PROCESSOR_NAME))
+
+			structureHandler.replaceWith(replacementModel, true)
 		}
 	}
 }
