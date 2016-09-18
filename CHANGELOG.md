@@ -4,6 +4,10 @@ Changelog
 
 As of 1.3.0, this project follows [Semantic Versioning](http://semver.org/).
 
+### 2.0.3
+ - Kill the rise in memory usage found by
+   ([#134](https://github.com/ultraq/thymeleaf-layout-dialect/issues/134))
+
 ### 2.0.2
  - Convert `FragmentProcessor` from a model processor to a tag processor to get
    around model level problems when inserting fragments that may alter the model

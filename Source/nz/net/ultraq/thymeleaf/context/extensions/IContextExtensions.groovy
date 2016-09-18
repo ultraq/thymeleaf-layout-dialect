@@ -17,10 +17,7 @@
 package nz.net.ultraq.thymeleaf.context.extensions
 
 import org.thymeleaf.context.IContext
-import org.thymeleaf.context.IExpressionContext
 import org.thymeleaf.dialect.IProcessorDialect
-
-import groovy.transform.Memoized
 
 /**
  * Meta-programming extensions to the {@link IContext} class.
@@ -35,6 +32,8 @@ class IContextExtensions {
 	static void apply() {
 
 		IContext.metaClass {
+
+			dialectPrefixCache = [:]
 
 			/**
 			 * Enables use of the {@code value = context[key]} syntax over the context
@@ -58,9 +57,22 @@ class IContextExtensions {
 			 */
 			getPrefixForDialect << { Class<IProcessorDialect> dialect ->
 
-				// TODO: Using a separate method as I can't memoize this closure because
-				//       of https://issues.apache.org/jira/browse/GROOVY-6584
-				return getPrefixForDialect(delegate, dialect)
+				// TODO: Would have loved to use @Memoized on this closure, but
+				//       I can't because of https://issues.apache.org/jira/browse/GROOVY-6584
+
+				def cachedDialectPrefix = delegate.dialectPrefixCache[dialect]
+				if (cachedDialectPrefix) {
+					return cachedDialectPrefix
+				}
+
+				def dialectConfiguration = delegate.configuration.dialectConfigurations.find { dialectConfig ->
+					return dialect.isInstance(dialectConfig.dialect)
+				}
+				def dialectPrefix = dialectConfiguration ?
+					dialectConfiguration.prefixSpecified ? dialectConfiguration.prefix : dialectConfiguration.dialect.prefix :
+					null
+				delegate.dialectPrefixCache[dialect] = dialectPrefix
+				return dialectPrefix
 			}
 
 			/**
@@ -74,18 +86,5 @@ class IContextExtensions {
 				delegate.setVariable(name, value)
 			}
 		}
-	}
-
-	@Memoized
-	private static String getPrefixForDialect(IExpressionContext context, Class<IProcessorDialect> dialect) {
-
-		def dialectConfiguration = context.configuration.dialectConfigurations.find { dialectConfig ->
-			return dialect.isInstance(dialectConfig.dialect)
-		}
-		return dialectConfiguration ?
-			dialectConfiguration.prefixSpecified ?
-				dialectConfiguration.prefix :
-				dialectConfiguration.dialect.prefix :
-			null
 	}
 }
