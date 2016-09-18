@@ -25,6 +25,7 @@ import org.junit.BeforeClass
 import org.junit.Test
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.context.ITemplateContext
+import org.thymeleaf.dialect.IProcessorDialect
 import org.thymeleaf.templatemode.TemplateMode
 
 /**
@@ -62,6 +63,11 @@ class AttributeMergerTests {
 				return modelFactory
 			}
 		] as ITemplateContext
+		mockContext.metaClass {
+			getPrefixForDialect = { Class<IProcessorDialect> dialectClass ->
+				return 'mock-prefix'
+			}
+		}
 	}
 
 	/**

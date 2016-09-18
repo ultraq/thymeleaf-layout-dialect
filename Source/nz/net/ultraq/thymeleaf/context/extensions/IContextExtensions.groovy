@@ -26,14 +26,14 @@ import org.thymeleaf.dialect.IProcessorDialect
  */
 class IContextExtensions {
 
+	private static final String DIALECT_PREFIX_CACHE = 'DialectPrefixCache'
+
 	/**
 	 * Apply extensions to the {@code IContext} class.
 	 */
 	static void apply() {
 
 		IContext.metaClass {
-
-			dialectPrefixCache = [:]
 
 			/**
 			 * Enables use of the {@code value = context[key]} syntax over the context
@@ -51,27 +51,31 @@ class IContextExtensions {
 			 * Returns the configured prefix for the given dialect.  If the dialect
 			 * prefix has not been configured, then the dialect prefix is returned.
 			 * 
-			 * @param dialect
+			 * @param dialectClass
 			 * @return The configured prefix for the dialect, or {@code null} if the
 			 *         dialect being queried hasn't been configured.
 			 */
-			getPrefixForDialect << { Class<IProcessorDialect> dialect ->
+			getPrefixForDialect << { Class<IProcessorDialect> dialectClass ->
 
-				// TODO: Would have loved to use @Memoized on this closure, but
-				//       I can't because of https://issues.apache.org/jira/browse/GROOVY-6584
+				// TODO: Would have loved to use @Memoized on this closure, but can't
+				//       because of https://issues.apache.org/jira/browse/GROOVY-6584
 
-				def cachedDialectPrefix = delegate.dialectPrefixCache[dialect]
-				if (cachedDialectPrefix) {
-					return cachedDialectPrefix
+				def dialectPrefixCache = delegate[DIALECT_PREFIX_CACHE]
+				if (!dialectPrefixCache) {
+					dialectPrefixCache = [:]
+					delegate[DIALECT_PREFIX_CACHE] = dialectPrefixCache
 				}
 
-				def dialectConfiguration = delegate.configuration.dialectConfigurations.find { dialectConfig ->
-					return dialect.isInstance(dialectConfig.dialect)
+				def dialectPrefix = dialectPrefixCache[dialectClass]
+				if (!dialectPrefix) {
+					def dialectConfiguration = delegate.configuration.dialectConfigurations.find { dialectConfig ->
+						return dialectClass.isInstance(dialectConfig.dialect)
+					}
+					dialectPrefix = dialectConfiguration ?
+						dialectConfiguration.prefixSpecified ? dialectConfiguration.prefix : dialectConfiguration.dialect.prefix :
+						null
+					dialectPrefixCache[dialectClass] = dialectPrefix
 				}
-				def dialectPrefix = dialectConfiguration ?
-					dialectConfiguration.prefixSpecified ? dialectConfiguration.prefix : dialectConfiguration.dialect.prefix :
-					null
-				delegate.dialectPrefixCache[dialect] = dialectPrefix
 				return dialectPrefix
 			}
 
