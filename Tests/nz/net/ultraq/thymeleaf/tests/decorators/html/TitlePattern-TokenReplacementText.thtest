@@ -5,8 +5,8 @@
 %TEMPLATE_MODE HTML
 
 %CONTEXT
-layoutTitle  = "My website"
-contentTitle = "My blog"
+layoutTitle  = "> My website"
+contentTitle = "> My blog"
 
 
 %INPUT
@@ -23,7 +23,7 @@ contentTitle = "My blog"
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-	<title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE" th:text="${layoutTitle}">Layout title</title>
+	<title layout:title-pattern="$LAYOUT_TITLE $CONTENT_TITLE" th:text="${layoutTitle}">Layout title</title>
 </head>
 </html>
 
@@ -31,6 +31,6 @@ contentTitle = "My blog"
 <!DOCTYPE html>
 <html>
 <head>
-	<title>My website - My blog</title>
+	<title>&gt; My website &gt; My blog</title>
 </head>
 </html>
