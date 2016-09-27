@@ -21,11 +21,16 @@ import nz.net.ultraq.thymeleaf.decorators.Decorator
 import nz.net.ultraq.thymeleaf.decorators.TitlePatternProcessor
 import nz.net.ultraq.thymeleaf.models.ElementMerger
 import nz.net.ultraq.thymeleaf.models.ModelBuilder
+import static nz.net.ultraq.thymeleaf.decorators.TitlePatternProcessor.CONTENT_TITLE_ATTRIBUTE
+import static nz.net.ultraq.thymeleaf.decorators.TitlePatternProcessor.CONTENT_TITLE_ATTRIBUTE_UNESCAPED
+import static nz.net.ultraq.thymeleaf.decorators.TitlePatternProcessor.LAYOUT_TITLE_ATTRIBUTE
+import static nz.net.ultraq.thymeleaf.decorators.TitlePatternProcessor.LAYOUT_TITLE_ATTRIBUTE_UNESCAPED
 
 import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.model.IModel
 import org.thymeleaf.standard.StandardDialect
 import org.thymeleaf.standard.processor.StandardTextTagProcessor
+import org.thymeleaf.standard.processor.StandardUtextTagProcessor
 import org.unbescape.html.HtmlEscape
 
 /**
@@ -79,18 +84,35 @@ class HtmlTitleDecorator implements Decorator {
 		// Set the title pattern to use on a new model, as well as the important
 		// title result parts that we want to use on the pattern.
 		if (titlePatternProcessor) {
+
+			// TODO: This title values map is being used as a way to communicate
+			//       between this class and the title pattern processor, and being
+			//       exposed on the Thymeleaf model as a result.  I should find a
+			//       better way of passing these values around, maybe via the layout
+			//       context.
 			def titleValuesMap = [:]
-			def titleValueExtractor = { titleModel, titleAttribute ->
+
+			def titleValueExtractor = { titleModel, titleAttribute, titleAttributeUnescaped ->
 				def titleTag = titleModel?.first()
-				def titleValue = titleTag?.getAttributeValue(titleAttribute) ?:
-				                 titleTag?.getAttributeValue(standardDialectPrefix, StandardTextTagProcessor.ATTR_NAME) ?:
-				                 titleModel?.size() > 2 ? "'${HtmlEscape.escapeHtml5Xml(titleModel.get(1).text)}'" : null
-				if (titleValue) {
-					titleValuesMap << [(titleAttribute): titleValue]
+				if (titleTag) {
+					if (titleTag.hasAttribute(titleAttribute)) {
+						titleValuesMap << [(titleAttribute): titleTag.getAttributeValue(titleAttribute)]
+					}
+					else if (titleTag.hasAttribute(standardDialectPrefix, StandardTextTagProcessor.ATTR_NAME)) {
+						titleValuesMap << [(titleAttribute):
+							titleTag.getAttributeValue(standardDialectPrefix, StandardTextTagProcessor.ATTR_NAME)]
+					}
+					else if (titleTag.hasAttribute(standardDialectPrefix, StandardUtextTagProcessor.ATTR_NAME)) {
+						titleValuesMap << [(titleAttributeUnescaped):
+							titleTag.getAttributeValue(standardDialectPrefix, StandardUtextTagProcessor.ATTR_NAME)]
+					}
+					else if (titleModel?.size() > 2) {
+						titleValuesMap << [(titleAttribute): "'${HtmlEscape.escapeHtml5Xml(titleModel.get(1).text)}'"]
+					}
 				}
 			}
-			titleValueExtractor(sourceTitleModel, TitlePatternProcessor.CONTENT_TITLE_ATTRIBUTE)
-			titleValueExtractor(targetTitleModel, TitlePatternProcessor.LAYOUT_TITLE_ATTRIBUTE)
+			titleValueExtractor(sourceTitleModel, CONTENT_TITLE_ATTRIBUTE, CONTENT_TITLE_ATTRIBUTE_UNESCAPED)
+			titleValueExtractor(targetTitleModel, LAYOUT_TITLE_ATTRIBUTE, LAYOUT_TITLE_ATTRIBUTE_UNESCAPED)
 
 			resultTitle = new ModelBuilder(context).build {
 				title([(titlePatternProcessor.attributeCompleteName): titlePatternProcessor.value] << titleValuesMap)
