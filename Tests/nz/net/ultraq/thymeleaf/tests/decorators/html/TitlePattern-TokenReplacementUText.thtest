@@ -1,0 +1,36 @@
+
+# Test that the title pattern tokens are replaced correctly when using th:utext
+# to set the decorator/content titles.
+
+%TEMPLATE_MODE HTML
+
+%CONTEXT
+layoutTitle  = "My website"
+contentTitle = "My blog"
+
+
+%INPUT
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{Layout}">
+<head>
+	<title th:utext="${contentTitle}">Content title</title>
+</head>
+</html>
+
+
+%INPUT[Layout]
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+	<title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE" th:utext="${layoutTitle}">Layout title</title>
+</head>
+</html>
+
+%OUTPUT
+<!DOCTYPE html>
+<html>
+<head>
+	<title>My website - My blog</title>
+</head>
+</html>
