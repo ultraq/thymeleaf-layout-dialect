@@ -4,6 +4,11 @@ Changelog
 
 As of 1.3.0, this project follows [Semantic Versioning](http://semver.org/).
 
+### 2.0.4
+ - Have the `layout:title-pattern` processor work when using `th:utext`/`data-th-utext`
+   on the `<title>` tag as well
+   ([#136](https://github.com/ultraq/thymeleaf-layout-dialect/issues/136))
+
 ### 2.0.3
  - Kill the rise in memory usage found by
    ([#134](https://github.com/ultraq/thymeleaf-layout-dialect/issues/134))
