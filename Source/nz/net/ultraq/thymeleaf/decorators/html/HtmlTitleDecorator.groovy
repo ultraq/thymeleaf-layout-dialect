@@ -107,7 +107,7 @@ class HtmlTitleDecorator implements Decorator {
 							titleTag.getAttributeValue(standardDialectPrefix, StandardUtextTagProcessor.ATTR_NAME)]
 					}
 					else if (titleModel?.size() > 2) {
-						titleValuesMap << [(titleAttribute): "'${HtmlEscape.escapeHtml5Xml(titleModel.get(1).text)}'"]
+						titleValuesMap << [(titleAttributeUnescaped): "'${HtmlEscape.escapeHtml5Xml(titleModel.get(1).text)}'"]
 					}
 				}
 			}
