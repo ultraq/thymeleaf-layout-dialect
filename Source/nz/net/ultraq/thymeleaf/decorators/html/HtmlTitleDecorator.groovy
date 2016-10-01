@@ -92,27 +92,23 @@ class HtmlTitleDecorator implements Decorator {
 			//       context.
 			def titleValuesMap = [:]
 
-			def titleValueExtractor = { titleModel, titleAttribute, titleAttributeUnescaped ->
+			def extractTitle = { titleModel, titleAttributeEscaped, titleAttributeUnescaped ->
 				def titleTag = titleModel?.first()
-				if (titleTag) {
-					if (titleTag.hasAttribute(titleAttribute)) {
-						titleValuesMap << [(titleAttribute): titleTag.getAttributeValue(titleAttribute)]
-					}
-					else if (titleTag.hasAttribute(standardDialectPrefix, StandardTextTagProcessor.ATTR_NAME)) {
-						titleValuesMap << [(titleAttribute):
-							titleTag.getAttributeValue(standardDialectPrefix, StandardTextTagProcessor.ATTR_NAME)]
-					}
-					else if (titleTag.hasAttribute(standardDialectPrefix, StandardUtextTagProcessor.ATTR_NAME)) {
-						titleValuesMap << [(titleAttributeUnescaped):
-							titleTag.getAttributeValue(standardDialectPrefix, StandardUtextTagProcessor.ATTR_NAME)]
-					}
-					else if (titleModel?.size() > 2) {
-						titleValuesMap << [(titleAttributeUnescaped): "'${HtmlEscape.escapeHtml5Xml(titleModel.get(1).text)}'"]
+				def titleValue = titleTag?.getAttributeValue(titleAttributeEscaped) ?:
+				                 titleTag?.getAttributeValue(standardDialectPrefix, StandardTextTagProcessor.ATTR_NAME)
+				if (titleValue) {
+					titleValuesMap << [(titleAttributeEscaped): titleValue]
+				}
+				else {
+					titleValue = titleTag?.getAttributeValue(standardDialectPrefix, StandardUtextTagProcessor.ATTR_NAME) ?:
+					             titleModel?.size() > 2 ? "'${HtmlEscape.escapeHtml5Xml(titleModel.get(1).text)}'" : null
+					if (titleValue) {
+						titleValuesMap << [(titleAttributeUnescaped): titleValue]
 					}
 				}
 			}
-			titleValueExtractor(sourceTitleModel, CONTENT_TITLE_ATTRIBUTE, CONTENT_TITLE_ATTRIBUTE_UNESCAPED)
-			titleValueExtractor(targetTitleModel, LAYOUT_TITLE_ATTRIBUTE, LAYOUT_TITLE_ATTRIBUTE_UNESCAPED)
+			extractTitle(sourceTitleModel, CONTENT_TITLE_ATTRIBUTE, CONTENT_TITLE_ATTRIBUTE_UNESCAPED)
+			extractTitle(targetTitleModel, LAYOUT_TITLE_ATTRIBUTE, LAYOUT_TITLE_ATTRIBUTE_UNESCAPED)
 
 			resultTitle = new ModelBuilder(context).build {
 				title([(titlePatternProcessor.attributeCompleteName): titlePatternProcessor.value] << titleValuesMap)
