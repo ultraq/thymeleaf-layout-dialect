@@ -16,6 +16,8 @@
 
 package nz.net.ultraq.thymeleaf.models
 
+import nz.net.ultraq.thymeleaf.LayoutDialect
+
 import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.engine.TemplateModel
 import org.thymeleaf.standard.expression.FragmentExpression
@@ -59,14 +61,11 @@ class TemplateModelFinder {
 	 * Return the model specified by the given fragment expression.
 	 * 
 	 * @param fragmentExpression
-	 * @param dialectPrefix
 	 * @return Fragment matching the fragment specification.
 	 */
-	TemplateModel findFragment(FragmentExpression fragmentExpression, String dialectPrefix = null) {
+	TemplateModel findFragment(FragmentExpression fragmentExpression) {
 
-		// TODO: Simplify this method signature by deriving the layout dialect
-		//       prefix from the context.
-
+		def dialectPrefix = context.getPrefixForDialect(LayoutDialect)
 		def templateName = fragmentExpression.templateName?.execute(context)?.toString() ?: 'this'
 		if (templateName == 'this') {
 			templateName = context.templateData.template
