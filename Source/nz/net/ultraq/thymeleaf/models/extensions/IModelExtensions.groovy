@@ -153,10 +153,6 @@ class IModelExtensions {
 			 * Returns the first event in the model that meets the criteria of the
 			 * given closure.
 			 * 
-			 * Models returned via this method are also aware of their position in the
-			 * event queue of the parent model, accessible via their {@code index}
-			 * property.
-			 * 
 			 * @param closure
 			 * @return The first event to match the closure criteria, or {@code null}
 			 *         if nothing matched.
@@ -196,10 +192,6 @@ class IModelExtensions {
 			 * Returns the first instance of a model that meets the given closure
 			 * criteria.
 			 * 
-			 * Models returned via this method are also aware of their start/end
-			 * positions in the event queue of the parent model, accessible via their
-			 * {@code startIndex}/{@code endIndex} properties.
-			 * 
 			 * @param closure
 			 * @return A model over the event that matches the closure criteria, or
 			 *         {@code null} if nothing matched.
@@ -207,10 +199,7 @@ class IModelExtensions {
 			findModel << { Closure closure ->
 				def eventIndex = delegate.findIndexOf(closure)
 				if (eventIndex != -1) {
-					def model = delegate.getModel(eventIndex)
-					model.metaClass.startIndex = eventIndex
-					model.metaClass.endIndex = eventIndex + model.size()
-					return model
+					return delegate.getModel(eventIndex)
 				}
 				return null
 			}
@@ -245,6 +234,24 @@ class IModelExtensions {
 					subModel.removeLast()
 				}
 				return subModel
+			}
+
+			/**
+			 * Returns the index of the given model within this model.
+			 * 
+			 * This is not an equality check, but an object reference check, so if a
+			 * submodel is ever located from a parent (eg: any of the {@code find}
+			 * methods, you can use this method to find the location of that submodel
+			 * within the event queue.
+			 * 
+			 * @param model
+			 * @return Index of an extracted submodel within this model.
+			 */
+			indexOf << { IModel model ->
+				def modelEvent = model.first()
+				return delegate.findIndexOf { event ->
+					return event.is(modelEvent)
+				}
 			}
 
 			/**

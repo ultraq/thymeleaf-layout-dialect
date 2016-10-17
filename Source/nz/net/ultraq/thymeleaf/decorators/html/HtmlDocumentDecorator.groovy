@@ -68,7 +68,7 @@ class HtmlDocumentDecorator extends XmlDocumentDecorator {
 		)
 		if (resultHeadModel) {
 			if (targetHeadModel) {
-				targetDocumentModel.replaceModel(targetHeadModel.startIndex, resultHeadModel)
+				targetDocumentModel.replaceModel(targetDocumentModel.indexOf(targetHeadModel), resultHeadModel)
 			}
 			else {
 				targetDocumentModel.insertModelWithWhitespace(targetDocumentModel.findIndexOf { event ->
@@ -89,7 +89,7 @@ class HtmlDocumentDecorator extends XmlDocumentDecorator {
 		)
 		if (resultBodyModel) {
 			if (targetBodyModel) {
-				targetDocumentModel.replaceModel(targetBodyModel.startIndex, resultBodyModel)
+				targetDocumentModel.replaceModel(targetDocumentModel.indexOf(targetBodyModel), resultBodyModel)
 			}
 			else {
 				targetDocumentModel.insertModelWithWhitespace(targetDocumentModel.findIndexOf { event ->
