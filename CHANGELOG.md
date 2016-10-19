@@ -4,6 +4,11 @@ Changelog
 
 As of 1.3.0, this project follows [Semantic Versioning](http://semver.org/).
 
+### 2.0.5
+ - Upgrade thymeleaf-expression-processor to 1.1.2, which includes a fix for
+   multiline fragment expressions
+   ([#140](https://github.com/ultraq/thymeleaf-layout-dialect/issues/140))
+
 ### 2.0.4
  - Have the `layout:title-pattern` processor work when using `th:utext`/`data-th-utext`
    on the `<title>` tag as well
