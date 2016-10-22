@@ -16,36 +16,33 @@
 
 package nz.net.ultraq.thymeleaf.models
 
-import java.util.regex.Pattern
+import org.thymeleaf.standard.expression.Assignation
 
 /**
  * Representation of a scoped variable declaration made through {@code th:with}
- * attributes.
+ * attributes.  This is really a wrapper around Thymeleaf's {@link Assignation}
+ * class, but simplified to just the left and right hand components in string
+ * form.
  * 
  * @author Emanuel Rabina
  */
 class VariableDeclaration {
 
-	static final Pattern DECLARATION_PATTERN = ~/(.*?)=(.*)/
-
 	final String name
 	final String value
 
 	/**
-	 * Constructor, create an instance from the declaration string.
+	 * Constructor, create an instance from a Thymeleaf assignation.
 	 * 
-	 * @param declaration
+	 * @param assignation
 	 */
-	VariableDeclaration(String declaration) {
+	VariableDeclaration(Assignation assignation) {
 
-		def matcher = DECLARATION_PATTERN.matcher(declaration)
-		if (matcher.matches()) {
-			name  = matcher.group(1)
-			value = matcher.group(2)
-		}
-		else {
-			throw new IllegalArgumentException("Unable to derive attribte declaration from string ${declaration}")
-		}
+		def declaration = assignation.stringRepresentation
+		def equalsIndex = declaration.indexOf('=')
+
+		name = declaration.substring(0, equalsIndex)
+		value = declaration.substring(equalsIndex + 1)
 	}
 
 	/**

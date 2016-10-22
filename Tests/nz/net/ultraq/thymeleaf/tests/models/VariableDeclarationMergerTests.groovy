@@ -16,9 +16,14 @@
 
 package nz.net.ultraq.thymeleaf.tests.models
 
+import nz.net.ultraq.thymeleaf.LayoutDialect
 import nz.net.ultraq.thymeleaf.models.VariableDeclarationMerger
 
+import org.junit.BeforeClass
 import org.junit.Test
+import org.thymeleaf.TemplateEngine
+import org.thymeleaf.context.ExpressionContext
+import org.thymeleaf.context.IExpressionContext
 
 /**
  * Tests for the variable declaration merger.
@@ -26,6 +31,22 @@ import org.junit.Test
  * @author Emanuel Rabina
  */
 class VariableDeclarationMergerTests {
+
+	private static IExpressionContext context
+
+	/**
+	 * Set up, create an expression context.
+	 */
+	@BeforeClass
+	static void setupContext() {
+
+		def templateEngine = new TemplateEngine(
+			additionalDialects: [
+				new LayoutDialect()
+			]
+		)
+		context = new ExpressionContext(templateEngine.configuration)
+	}
 
 	/**
 	 * Test that the merger just concatenates values when none of the names in the
@@ -38,7 +59,7 @@ class VariableDeclarationMergerTests {
 		def target = 'name1=${value1}'
 		def source = 'name2=${value2}'
 
-		def merger = new VariableDeclarationMerger()
+		def merger = new VariableDeclarationMerger(context)
 		def result = merger.merge(target, source)
 
 		assert result == 'name1=${value1},name2=${value2}'
@@ -55,7 +76,7 @@ class VariableDeclarationMergerTests {
 		def target = 'name=${value1}'
 		def source = 'name=${value2}'
 
-		def merger = new VariableDeclarationMerger()
+		def merger = new VariableDeclarationMerger(context)
 		def result = merger.merge(target, source)
 
 		assert result == 'name=${value2}'
@@ -72,7 +93,7 @@ class VariableDeclarationMergerTests {
 		def target = 'name1=${value1},name2=${value2}'
 		def source = 'name1=${newValue},name3=${value3}'
 
-		def merger = new VariableDeclarationMerger()
+		def merger = new VariableDeclarationMerger(context)
 		def result = merger.merge(target, source)
 
 		assert result == 'name1=${newValue},name2=${value2},name3=${value3}'
@@ -88,7 +109,7 @@ class VariableDeclarationMergerTests {
 		def target = 'name=${value}'
 		def source = null
 
-		def merger = new VariableDeclarationMerger()
+		def merger = new VariableDeclarationMerger(context)
 		def result = merger.merge(target, source)
 
 		assert result == target
@@ -104,7 +125,7 @@ class VariableDeclarationMergerTests {
 		def target = null
 		def source = 'name=${value}'
 
-		def merger = new VariableDeclarationMerger()
+		def merger = new VariableDeclarationMerger(context)
 		def result = merger.merge(target, source)
 
 		assert result == source
