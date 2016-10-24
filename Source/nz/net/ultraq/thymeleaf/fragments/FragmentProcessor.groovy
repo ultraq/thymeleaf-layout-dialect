@@ -16,7 +16,6 @@
 
 package nz.net.ultraq.thymeleaf.fragments
 
-import nz.net.ultraq.thymeleaf.LayoutDialect
 import nz.net.ultraq.thymeleaf.models.ElementMerger
 
 import org.slf4j.Logger
@@ -91,7 +90,7 @@ class FragmentProcessor extends AbstractAttributeTagProcessor {
 			// Remove the layout:fragment attribute - Thymeleaf won't do it for us
 			// when using StructureHandler.replaceWith(...)
 			replacementModel.replace(0, modelFactory.removeAttribute(replacementModel.first(),
-				context.getPrefixForDialect(LayoutDialect), PROCESSOR_NAME))
+				dialectPrefix, PROCESSOR_NAME))
 
 			structureHandler.replaceWith(replacementModel, true)
 		}
