@@ -16,6 +16,8 @@
 
 package nz.net.ultraq.thymeleaf.models
 
+import org.thymeleaf.context.IExpressionContext
+
 /**
  * Merges variable declarations in a {@code th:with} attribute processor, taking
  * the declarations in the target and combining them with the declarations in
@@ -24,6 +26,18 @@ package nz.net.ultraq.thymeleaf.models
  * @author Emanuel Rabina
  */
 class VariableDeclarationMerger {
+
+	private final IExpressionContext context
+
+	/**
+	 * Constructor, sets the processing context for the merger.
+	 * 
+	 * @oaram context
+	 */
+	VariableDeclarationMerger(IExpressionContext context) {
+
+		this.context = context
+	}
 
 	/**
 	 * Merge {@code th:with} attributes so that names from the source value
@@ -38,13 +52,9 @@ class VariableDeclarationMerger {
 			return target
 		}
 
-		def deriveDeclarations = { String declarationString ->
-			return declarationString.split(',').collect { attributeToken ->
-				return new VariableDeclaration(attributeToken)
-			}
-		}
-		def targetDeclarations = deriveDeclarations(target)
-		def sourceDeclarations = deriveDeclarations(source)
+		def declarationParser = new VariableDeclarationParser(context)
+		def targetDeclarations = declarationParser.parse(target)
+		def sourceDeclarations = declarationParser.parse(source)
 
 		def newDeclarations = []
 		targetDeclarations.each { targetDeclaration ->

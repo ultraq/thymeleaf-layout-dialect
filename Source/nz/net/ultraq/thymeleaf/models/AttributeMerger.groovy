@@ -81,7 +81,7 @@ class AttributeMerger implements ModelMerger {
 
 				// Merge th:with attributes
 				if (sourceAttribute.equalsName(standardDialectPrefix, StandardWithTagProcessor.ATTR_NAME)) {
-					mergedAttributeValue = new VariableDeclarationMerger().merge(sourceAttribute.value,
+					mergedAttributeValue = new VariableDeclarationMerger(context).merge(sourceAttribute.value,
 						mergedEvent.getAttributeValue(standardDialectPrefix, StandardWithTagProcessor.ATTR_NAME))
 				}
 

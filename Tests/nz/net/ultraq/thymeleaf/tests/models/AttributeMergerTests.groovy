@@ -26,6 +26,7 @@ import org.junit.Test
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.dialect.IProcessorDialect
+import org.thymeleaf.standard.StandardDialect
 import org.thymeleaf.templatemode.TemplateMode
 
 /**
@@ -65,7 +66,9 @@ class AttributeMergerTests {
 		] as ITemplateContext
 		mockContext.metaClass {
 			getPrefixForDialect = { Class<IProcessorDialect> dialectClass ->
-				return 'mock-prefix'
+				return dialectClass == StandardDialect ? 'th' :
+				       dialectClass == LayoutDialect ? 'layout' :
+				       'mock-prefix'
 			}
 		}
 	}
@@ -116,6 +119,27 @@ class AttributeMergerTests {
 		}
 		def expected = modelBuilder.build {
 			div(class: 'roflcopter')
+		}
+
+		def result = attributeMerger.merge(target, source)
+		assert result == expected
+	}
+
+	/**
+	 * Test attribute merging when {@code th:with} attributes are involved.
+	 */
+	@Test
+	@SuppressWarnings('ExplicitCallToDivMethod')
+	void mergeAttributesWith() {
+
+		def source = modelBuilder.build {
+			div('th:with': 'value1=\'Hello!\'')
+		}
+		def target = modelBuilder.build {
+			div('th:with': 'value2=\'World!\'')
+		}
+		def expected = modelBuilder.build {
+			div('th:with': 'value1=\'Hello!\',value2=\'World!\'')
 		}
 
 		def result = attributeMerger.merge(target, source)
