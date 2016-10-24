@@ -79,6 +79,32 @@ class ElementMergerTests {
 	}
 
 	/**
+	 * Test that the element merger doesn't modify the source parameters.
+	 */
+	@Test
+	@SuppressWarnings('ExplicitCallToDivMethod')
+	void immutability() {
+
+		def source = modelBuilder.build {
+			div(id: 'source-element')
+		}
+		def target = modelBuilder.build {
+			div(id: 'target-element')
+		}
+
+		def sourceOrig = source.cloneModel()
+		def targetOrig = target.cloneModel()
+
+		elementMerger.merge(target, source)
+
+		def sourceAfter = source.cloneModel()
+		def targetAfter = target.cloneModel()
+
+		assert sourceOrig == sourceAfter
+		assert targetOrig == targetAfter
+	}
+
+	/**
 	 * Test that the merger merges the source elements into the target.
 	 */
 	@Test
