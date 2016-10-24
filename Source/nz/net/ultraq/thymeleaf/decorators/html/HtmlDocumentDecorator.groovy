@@ -57,21 +57,23 @@ class HtmlDocumentDecorator extends XmlDocumentDecorator {
 	@Override
 	IModel decorate(IModel targetDocumentModel, IModel sourceDocumentModel) {
 
+		def resultDocumentModel = targetDocumentModel.cloneModel()
+
 		// Head decoration
 		def headModelFinder = { event ->
 			return event instanceof IOpenElementTag && event.elementCompleteName == 'head'
 		}
-		def targetHeadModel = targetDocumentModel.findModel(headModelFinder)
+		def targetHeadModel = resultDocumentModel.findModel(headModelFinder)
 		def resultHeadModel = new HtmlHeadDecorator(context, sortingStrategy).decorate(
 			targetHeadModel,
 			sourceDocumentModel.findModel(headModelFinder)
 		)
 		if (resultHeadModel) {
 			if (targetHeadModel) {
-				targetDocumentModel.replaceModel(targetDocumentModel.indexOf(targetHeadModel), resultHeadModel)
+				resultDocumentModel.replaceModel(resultDocumentModel.indexOf(targetHeadModel), resultHeadModel)
 			}
 			else {
-				targetDocumentModel.insertModelWithWhitespace(targetDocumentModel.findIndexOf { event ->
+				resultDocumentModel.insertModelWithWhitespace(resultDocumentModel.findIndexOf { event ->
 					return (event instanceof IOpenElementTag && event.elementCompleteName == 'body') ||
 					       (event instanceof ICloseElementTag && event.elementCompleteName == 'html')
 				} - 1, resultHeadModel)
@@ -82,22 +84,22 @@ class HtmlDocumentDecorator extends XmlDocumentDecorator {
 		def bodyModelFinder = { event ->
 			return event instanceof IOpenElementTag && event.elementCompleteName == 'body'
 		}
-		def targetBodyModel = targetDocumentModel.findModel(bodyModelFinder)
+		def targetBodyModel = resultDocumentModel.findModel(bodyModelFinder)
 		def resultBodyModel = new HtmlBodyDecorator(context).decorate(
 			targetBodyModel,
 			sourceDocumentModel.findModel(bodyModelFinder)
 		)
 		if (resultBodyModel) {
 			if (targetBodyModel) {
-				targetDocumentModel.replaceModel(targetDocumentModel.indexOf(targetBodyModel), resultBodyModel)
+				resultDocumentModel.replaceModel(resultDocumentModel.indexOf(targetBodyModel), resultBodyModel)
 			}
 			else {
-				targetDocumentModel.insertModelWithWhitespace(targetDocumentModel.findIndexOf { event ->
+				resultDocumentModel.insertModelWithWhitespace(resultDocumentModel.findIndexOf { event ->
 					return event instanceof ICloseElementTag && event.elementCompleteName == 'html'
 				} - 1, resultBodyModel)
 			}
 		}
 
-		return super.decorate(targetDocumentModel, sourceDocumentModel)
+		return super.decorate(resultDocumentModel, sourceDocumentModel)
 	}
 }

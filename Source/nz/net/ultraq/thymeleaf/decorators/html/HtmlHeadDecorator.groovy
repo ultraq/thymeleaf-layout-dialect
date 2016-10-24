@@ -74,7 +74,8 @@ class HtmlHeadDecorator implements Decorator {
 		def titleRetriever = { headModel -> headModel?.findModel(isTitle) }
 		def resultTitle = new HtmlTitleDecorator(context).decorate(
 			titleRetriever(targetHeadModel),
-			titleRetriever(sourceHeadModel))
+			titleRetriever(sourceHeadModel)
+		)
 		resultHeadModel.insertModelWithWhitespace(1, resultTitle)
 
 		// Merge the rest of the source <head> elements with the target <head>
