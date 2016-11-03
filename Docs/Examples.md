@@ -240,7 +240,9 @@ layout, allowing for fine-grained control of the appearance of your title.
 > As of 1.3.0, the resulting title is accessible via `layout.resultingTitle`.
 > `layout` is a special object added by this dialect (just like how Thymeleaf
 > adds `session`, `param`, and `application` objects), to expose some internals.
-> Right now, `resultingTitle` is the only value on this object.
+> 
+> As of 2.1.0, `layout.contentTitle` and `layout.layoutTitle` are also available
+> for use in your templates.
 
 
 Reusable templates

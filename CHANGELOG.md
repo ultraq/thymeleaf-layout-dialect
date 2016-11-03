@@ -4,6 +4,10 @@ Changelog
 
 As of 1.3.0, this project follows [Semantic Versioning](http://semver.org/).
 
+### 2.1.0
+ - Reveal the processed content and layout title values on the `layout` object
+   ([#137](https://github.com/ultraq/thymeleaf-layout-dialect/issues/137))
+
 ### 2.0.5
  - Upgrade thymeleaf-expression-processor to 1.1.2, which includes a fix for
    multiline fragment expressions
