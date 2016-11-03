@@ -51,12 +51,12 @@ class TitlePatternProcessor extends AbstractAttributeTagProcessor {
 	static final String PROCESSOR_NAME = 'title-pattern'
 	static final int PROCESSOR_PRECEDENCE = 1
 
+	static final String CONTEXT_CONTENT_TITLE   = 'contentTitle'
+	static final String CONTEXT_LAYOUT_TITLE    = 'layoutTitle'
 	static final String CONTEXT_RESULTING_TITLE = 'resultingTitle'
 
-	static final String CONTENT_TITLE_ATTRIBUTE           = 'data-layout-content-title'
-	static final String CONTENT_TITLE_ATTRIBUTE_UNESCAPED = 'data-layout-content-title-unescaped'
-	static final String LAYOUT_TITLE_ATTRIBUTE            = 'data-layout-layout-title'
-	static final String LAYOUT_TITLE_ATTRIBUTE_UNESCAPED  = 'data-layout-layout-title-unescaped'
+	static final String CONTENT_TITLE_KEY = 'LayoutDialect::ContentTitle'
+	static final String LAYOUT_TITLE_KEY  = 'LayoutDialect::LayoutTitle'
 
 	/**
 	 * Constructor, sets this processor to work on the 'title-pattern' attribute.
@@ -92,18 +92,17 @@ class TitlePatternProcessor extends AbstractAttributeTagProcessor {
 		def titlePattern = attributeValue
 		def expressionProcessor = new ExpressionProcessor(context)
 
-		def titleProcessor = { dataAttributeName, escape = true ->
-			def titleExpression = tag.getAttributeValue(dataAttributeName)
-			if (titleExpression) {
-				structureHandler.removeAttribute(dataAttributeName)
-				def titleValue = HtmlEscape.unescapeHtml(expressionProcessor.processAsString(titleExpression))
-				return escape ? HtmlEscape.escapeHtml5Xml(titleValue) : titleValue
+		def titleProcessor = { contextKey ->
+			def titleObject = context[contextKey]
+			if (titleObject) {
+				def titleValue = HtmlEscape.unescapeHtml(expressionProcessor.processAsString(titleObject.title))
+				return titleObject.escape ? HtmlEscape.escapeHtml5Xml(titleValue) : titleValue
 			}
 			return null
 		}
 
-		def contentTitle = titleProcessor(CONTENT_TITLE_ATTRIBUTE) ?: titleProcessor(CONTENT_TITLE_ATTRIBUTE_UNESCAPED, false)
-		def layoutTitle  = titleProcessor(LAYOUT_TITLE_ATTRIBUTE)  ?: titleProcessor(LAYOUT_TITLE_ATTRIBUTE_UNESCAPED, false)
+		def contentTitle = titleProcessor(CONTENT_TITLE_KEY)
+		def layoutTitle = titleProcessor(LAYOUT_TITLE_KEY)
 
 		if (titlePattern && titlePattern.contains(PARAM_TITLE_DECORATOR)) {
 			if (!warned) {
@@ -127,6 +126,10 @@ class TitlePatternProcessor extends AbstractAttributeTagProcessor {
 
 		// Save the title to the layout context
 		def layoutContext = LayoutContext.forContext(context)
-		layoutContext << [(CONTEXT_RESULTING_TITLE): title]
+		layoutContext << [
+			(CONTEXT_CONTENT_TITLE):   contentTitle,
+			(CONTEXT_LAYOUT_TITLE):    layoutTitle,
+			(CONTEXT_RESULTING_TITLE): title
+		]
 	}
 }
