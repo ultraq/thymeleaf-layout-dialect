@@ -426,11 +426,16 @@ class IModelExtensions {
 				if (event instanceof IOpenElementTag) {
 					level++
 				}
-				if (event instanceof ICloseElementTag) {
+				else if (event instanceof ICloseElementTag) {
 					if (event.templateMode == TemplateMode.HTML && event.elementDefinition.type == HTMLElementType.VOID) {
 						// Do nothing.  This is to capture closing tags for HTML void
 						// elements which shouldn't be specified according to the HTML spec.
 						// https://html.spec.whatwg.org/multipage/syntax.html#void-elements
+					}
+					else if (event.synthetic) {
+						// Do nothing.  This is to capture what attoparser calls 'synthetic'
+						// closing tags, which it inserts in the model to balance them out
+						// to normalize some of the tags in HTML.
 					}
 					else if (level == 0) {
 						break
