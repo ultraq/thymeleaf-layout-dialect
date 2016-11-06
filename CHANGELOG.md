@@ -53,6 +53,7 @@ Differences:
    least 3x faster)**
  - Old generation space at 22MB **(memory footprint 1/5th the size)**
  - 21 garbage collections **(40% less GCs)**
+ - 7.1 million object allocations **(74% less objects created)**
  - 1 second spent in GC **(75% less time spent in GC)**
  - Only 1 item taking over 10MB of retained memory (dominator profile looking
    mostly the same however)
