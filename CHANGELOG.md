@@ -5,8 +5,65 @@ Changelog
 As of 1.3.0, this project follows [Semantic Versioning](http://semver.org/).
 
 ### 2.1.0
+ - Be less strict with HTML templates that are auto-balanced by Attoparser
+   (usually a result of not knowing which HTML elements cause auto-closing
+   behaviours), instead only using tags that are in the original templates to
+   influence the "model level".  While this was a great tool for learning more
+   about the HTML spec when it errors, it is more in line with how Thymeleaf
+   behaves
+   ([#138](https://github.com/ultraq/thymeleaf-layout-dialect/issues/138))
  - Reveal the processed content and layout title values on the `layout` object
    ([#137](https://github.com/ultraq/thymeleaf-layout-dialect/issues/137))
+ - **Huge** improvements to the memory profile of the layout dialect
+   ([#102](https://github.com/ultraq/thymeleaf-layout-dialect/issues/102),
+   [#139](https://github.com/ultraq/thymeleaf-layout-dialect/issues/139))
+
+What follows is a summary of the performance imrovements in 2.1.0.  For details
+such as the test methodology and changes made, see the full release notes at:
+https://github.com/ultraq/thymeleaf-layout-dialect/releases/tag/2.1.0
+
+#### Thymeleaf Layout Dialect 2.0.4
+
+![memory usage 2 0 4](https://cloud.githubusercontent.com/assets/1686920/20034461/c17b6eb8-a423-11e6-8fe0-d2a5572f3b8c.png)
+
+Main takeaways:
+ - The JMeter test took about 3 minutes to complete (started around the 30
+   second mark), with requests taking an average of 1.674 seconds each
+ - Old generation space at 99MB
+ - 35 garbage collections
+ - 27 million object allocations
+ - 4 seconds spent in GC
+ - Several items taking over 10MB of retained memory (none of them appearing as
+   dominators however, so are potentially GC'able, but don't seem to have been collected)
+
+   ![screen shot 2016-11-06 at 1 33 32 pm](https://cloud.githubusercontent.com/assets/1686920/20034519/aaf7123a-a425-11e6-9a87-857bd3960dc1.png)
+
+ - Majority of the object allocations taking place in the `IModelExtensions.findModel`
+   closure, which uses a Groovy feature of dynamic metaclass creation
+
+   ![screen shot 2016-11-06 at 1 36 02 pm](https://cloud.githubusercontent.com/assets/1686920/20034527/152d07b8-a426-11e6-9a1c-78143ed44895.png)
+
+#### Thymeleaf Layout Dialect 2.1.0
+
+![memory usage 2 1 0-snapshot](https://cloud.githubusercontent.com/assets/1686920/20034539/9449f510-a426-11e6-86cc-0fa2ab52e8fe.png)
+
+Differences:
+ - The JMeter test took about 1 minute to complete (also started around the 30
+   second mark), with requests taking an average of 452ms to complete **(at
+   least 3x faster)**
+ - Old generation space at 22MB **(memory footprint 1/5th the size)**
+ - 21 garbage collections **(40% less GCs)**
+ - 1 second spent in GC **(75% less time spent in GC)**
+ - Only 1 item taking over 10MB of retained memory (dominator profile looking
+   mostly the same however)
+
+   ![screen shot 2016-11-06 at 1 51 37 pm](https://cloud.githubusercontent.com/assets/1686920/20034609/6496e1c8-a428-11e6-9678-4544303b5d97.png)
+
+ - Majority of the object allocations no longer in a Groovy dynamic meta class
+   method, but in one of Thymeleaf's utility projects, [unbescape](http://www.unbescape.org/)
+
+   ![screen shot 2016-11-06 at 1 54 42 pm](https://cloud.githubusercontent.com/assets/1686920/20034622/cf95185a-a428-11e6-8999-894cabde6cde.png)
+
 
 ### 2.0.5
  - Upgrade thymeleaf-expression-processor to 1.1.2, which includes a fix for
