@@ -4,6 +4,13 @@ Changelog
 
 As of 1.3.0, this project follows [Semantic Versioning](http://semver.org/).
 
+### 2.1.1
+ - Simplify and fix the "model level" counting algorithm after a better
+   understanding of attoparser and how it works
+   ([#142](https://github.com/ultraq/thymeleaf-layout-dialect/issues/142),
+   [#143](https://github.com/ultraq/thymeleaf-layout-dialect/issues/143))
+
+
 ### 2.1.0
  - Be less strict with HTML templates that are auto-balanced by Attoparser
    (usually a result of not knowing which HTML elements cause auto-closing

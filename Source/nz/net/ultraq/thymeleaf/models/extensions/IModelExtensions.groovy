@@ -16,14 +16,12 @@
 
 package nz.net.ultraq.thymeleaf.models.extensions
 
-import org.thymeleaf.engine.HTMLElementType
 import org.thymeleaf.engine.TemplateModel
 import org.thymeleaf.model.ICloseElementTag
 import org.thymeleaf.model.IModel
 import org.thymeleaf.model.IModelFactory
 import org.thymeleaf.model.IOpenElementTag
 import org.thymeleaf.model.ITemplateEvent
-import org.thymeleaf.templatemode.TemplateMode
 
 /**
  * Meta-programming extensions to the {@link IModel} class.
@@ -427,15 +425,9 @@ class IModelExtensions {
 					level++
 				}
 				else if (event instanceof ICloseElementTag) {
-					if (event.templateMode == TemplateMode.HTML && event.elementDefinition.type == HTMLElementType.VOID) {
-						// Do nothing.  This is to capture closing tags for HTML void
-						// elements which shouldn't be specified according to the HTML spec.
-						// https://html.spec.whatwg.org/multipage/syntax.html#void-elements
-					}
-					else if (event.synthetic) {
-						// Do nothing.  This is to capture what attoparser calls 'synthetic'
-						// closing tags, which it inserts in the model to balance them out
-						// to normalize some of the tags in HTML.
+					if (event.unmatched) {
+						// Do nothing.  Unmatched closing tags do not correspond to any
+						// opening element, and so should not affect the model level.
 					}
 					else if (level == 0) {
 						break

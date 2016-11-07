@@ -1,0 +1,55 @@
+
+# Test for all sorts of HTML tag types: void, standalone, minimized... yet still
+# produce the output developers expect.
+
+%TEMPLATE_MODE HTML
+
+
+%INPUT
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="layout">
+<head>
+	<meta charset="UTF-8"></meta> <!-- Void tag with unecessary closing element -->
+</head>
+<body>
+	<div layout:fragment="content">
+		<form>
+			<input> <!-- Standalone element -->
+			<input/> <!-- Minimized standalone element -->
+			<input></input> <!-- Unecessary closing element -->
+		</form>
+		<p>Some text in a tag we don't need to close <!-- Auto-closing element -->
+	</div>
+</body>
+</html>
+
+
+%INPUT[layout]
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<body>
+	<div layout:fragment="content">Content goes here</div>
+</body>
+</html>
+
+
+%OUTPUT
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8"></meta> <!-- Void tag with unecessary closing element -->
+</head>
+<body>
+	<div>
+		<form>
+			<input> <!-- Standalone element -->
+			<input/> <!-- Minimized standalone element -->
+			<input></input> <!-- Unecessary closing element -->
+		</form>
+		<p>Some text in a tag we don't need to close <!-- Auto-closing element -->
+	</div>
+</body>
+</html>
