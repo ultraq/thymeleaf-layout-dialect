@@ -80,7 +80,7 @@ class HtmlHeadDecorator implements Decorator {
 
 		// Merge the rest of the source <head> elements with the target <head>
 		// elements using the current merging strategy
-		if (sourceHeadModel) {
+		if (sourceHeadModel && targetHeadModel) {
 			sourceHeadModel.childModelIterator()
 				.findAll { model -> !isTitle(model.first()) }
 				.each { model ->
