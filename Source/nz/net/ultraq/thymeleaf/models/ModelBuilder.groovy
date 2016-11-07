@@ -175,9 +175,8 @@ class ModelBuilder extends BuilderSupport {
 					)
 					encounteredVoidTags << elementName
 				}
-
 				model.add(modelFactory.createStandaloneElementTag(elementName, attributes, AttributeValueQuotes.DOUBLE, false, false))
-				model.add(modelFactory.createCloseElementTag(elementName))
+				model.add(modelFactory.createCloseElementTag(elementName, false, true))
 			}
 		}
 
