@@ -81,14 +81,17 @@ Differences:
    that variable declarations behave the same way they do in Thymeleaf
    ([#126](https://github.com/ultraq/thymeleaf-layout-dialect/issues/126))
 
+
 ### 2.0.4
  - Have the `layout:title-pattern` processor work when using `th:utext`/`data-th-utext`
    on the `<title>` tag as well
    ([#136](https://github.com/ultraq/thymeleaf-layout-dialect/issues/136))
 
+
 ### 2.0.3
  - Kill the rise in memory usage found by
    ([#134](https://github.com/ultraq/thymeleaf-layout-dialect/issues/134))
+
 
 ### 2.0.2
  - Convert `FragmentProcessor` from a model processor to a tag processor to get
@@ -99,6 +102,7 @@ Differences:
    ([#130](https://github.com/ultraq/thymeleaf-layout-dialect/issues/130))
  - Respect the runtime-configured prefix
    ([#103](https://github.com/ultraq/thymeleaf-layout-dialect/issues/103))
+
 
 ### 2.0.1
  - Fix `NullPointerException` when using any of the `include`/`insert`/`replace`
@@ -114,6 +118,7 @@ Differences:
    ([#122](https://github.com/ultraq/thymeleaf-layout-dialect/issues/122))
  - Fixed a backwards compatibility problem when using `layout:decorator`
    ([#125](https://github.com/ultraq/thymeleaf-layout-dialect/issues/125))
+
 
 ### 2.0.0
  - Layout dialect rewritten to support Thymeleaf 3
@@ -140,6 +145,7 @@ layout dialect, and the commented one I don't feel I should fix as it feels like
 the incorrect use of an element.  For those first 2 cases, I'll work on them in
 upcoming patches so they don't hold up the release.
 
+
 ### 1.4.0
  - Change the behaviour of merging `th:with` attributes so that child pages can
    override layout values
@@ -147,9 +153,11 @@ upcoming patches so they don't hold up the release.
  - Fixed lack of a 'groovydoc' archive being included with the download bundle
    and Maven artifacts
 
+
 ### 1.3.3
  - Don't copy collapsible whitespace between `<head>` elements during decoration
    ([#92](https://github.com/ultraq/thymeleaf-layout-dialect/issues/92))
+
 
 ### 1.3.2
  - Prevent `IllegalArgumentException` when using a template with a condensed
@@ -159,9 +167,11 @@ upcoming patches so they don't hold up the release.
    operation aren't shared with other ones
    ([#87](https://github.com/ultraq/thymeleaf-layout-dialect/issues/87))
 
+
 ### 1.3.1
  - Restore Java 6 support
    ([#85](https://github.com/ultraq/thymeleaf-layout-dialect/issues/85))
+
 
 ### 1.3.0
  - Dialect rewritten in Groovy
@@ -176,26 +186,31 @@ upcoming patches so they don't hold up the release.
    [<head> element merging](https://github.com/ultraq/thymeleaf-layout-dialect#head-element-merging)
    section in the README for more details.
 
+
 ### 1.2.9
  - Have all non-element nodes (text, comments) included in the merging of the
    `<head>` section
    ([#70](https://github.com/ultraq/thymeleaf-layout-dialect/issues/70))
+
 
 ### 1.2.8
  - Contribution from [Oliver Niekrenz](https://github.com/oniekrenz) to fix a
    recursion issue in the way fragments are picked out of templates
    ([#60](https://github.com/ultraq/thymeleaf-layout-dialect/pull/60))
 
+
 ### 1.2.7
  - Fix for `ArrayIndexOutOfBoundsException`s coming out of the grouping feature
    introduced in 1.2.6
    ([#54](https://github.com/ultraq/thymeleaf-layout-dialect/issues/54))
+
 
 ### 1.2.6
  - Reduce the amount of whitespace copied surrounding the `<html>` tag
    ([#50](https://github.com/ultraq/thymeleaf-layout-dialect/issues/50))
  - Start logic to group like elements in the merged `<head>` section together
    ([#52](https://github.com/ultraq/thymeleaf-layout-dialect/issues/52))
+
 
 ### 1.2.5
  - Restore title fallback behaviour when either content or decorator title
@@ -205,11 +220,13 @@ upcoming patches so they don't hold up the release.
    processor
    ([#46](https://github.com/ultraq/thymeleaf-layout-dialect/pull/46))
 
+
 ### 1.2.4
  - Contribution from [Justin Munn](https://github.com/munnja001) to fix bugs in
    the `layout:title-pattern` processor, making it behave more naturally in the
    process
    ([#42](https://github.com/ultraq/thymeleaf-layout-dialect/pull/42))
+
 
 ### 1.2.3
  - Fix for nested layout fragments using the replace/substituteby processors
@@ -217,6 +234,7 @@ upcoming patches so they don't hold up the release.
  - Don't pass arbitrary attributes (ie: anything that isn't an attribute
    processor) up to decorator pages if the content template is a fragment
    ([#39](https://github.com/ultraq/thymeleaf-layout-dialect/issues/39))
+
 
 ### 1.2.2
  - Allow passing variables for all document types, not just full HTML templates
@@ -228,10 +246,12 @@ upcoming patches so they don't hold up the release.
  - Fix the passing of decorator/content title values up deep layout hierarchies
    ([#34](https://github.com/ultraq/thymeleaf-layout-dialect/issues/34))
 
+
 ### 1.2.1
  - Restore `layout:decorator` behaviour when using it for deep page hierarchies
    in Thymeleaf 2.1.2
    ([#30](https://github.com/ultraq/thymeleaf-layout-dialect/issues/30))
+
 
 ### 1.2
  - Works with Thymeleaf 2.1
@@ -240,9 +260,11 @@ upcoming patches so they don't hold up the release.
    attribute
    ([#28](https://github.com/ultraq/thymeleaf-layout-dialect/issues/28))
 
+
 ### 1.1.4
  - Minor bugfixes, small refactoring, and a large cleanup as a result of the
    work done towards being compatible with Thymeleaf 2.1.
+
 
 ### 1.1.3
  - Refactored handling of `<title>` elements for when they're lacking in either
@@ -256,16 +278,19 @@ upcoming patches so they don't hold up the release.
  - Updated the Eclipse plugin help file to point to the updated 1.1.x processor
    locations.
 
+
 ### 1.1.2
  - Relaxed the root element restriction when using the `LEGACYHTML5` template
    mode due to the way the NekoHTML parser works on HTML fragments
    ([#23](https://github.com/ultraq/thymeleaf-layout-dialect/issues/23))
+
 
 ### 1.1.1
  - Restore the help/documentation file so that this dialect will appear in
    content assist in the Thymeleaf Eclipse plugin. (I used a new build process
    for the 1.1 branch, and it missed this resource file!  Apologies for that
    folks.)
+
 
 ### 1.1
  - Change package to `nz.net.ultraq.thymeleaf` (dropped the 'web' part).
@@ -277,9 +302,11 @@ upcoming patches so they don't hold up the release.
    but with the behaviour of Thymeleaf's `th:substituteby`
    ([#21](https://github.com/ultraq/thymeleaf-layout-dialect/issues/21))
 
+
 ### 1.0.6
  - Added a help/documentation file so that this dialect will appear in content
    assist in the Thymeleaf Eclipse plugin.
+
 
 ### 1.0.5
  - Added the ability to specify the final `<title>` through a configurable
@@ -292,6 +319,7 @@ upcoming patches so they don't hold up the release.
    IE conditional comments) are included in the resulting page
    ([#10](https://github.com/ultraq/thymeleaf-layout-dialect/issues/10))
 
+
 ### 1.0.4
  - Fixed enforcing of `layout:decorator` element being in the root element,
    leading to a better error message if this attribute is found elsewhere.
@@ -301,6 +329,7 @@ upcoming patches so they don't hold up the release.
  - Fix a `ClassCastException` for cases when `layout:include` was used to
    include entire pages
    ([#7](https://github.com/ultraq/thymeleaf-layout-dialect/issues/7))
+
 
 ### 1.0.3
  - Added a `layout:include` attribute which works like `th:include` but allows
@@ -314,11 +343,13 @@ upcoming patches so they don't hold up the release.
    ([#4](https://github.com/ultraq/thymeleaf-layout-dialect/issues/4))
  - Updated Thymeleaf dependency to 2.0.11 for a required API change.
 
+
 ### 1.0.2
  - Allow a decorator and content pages to contain just a `<head>` section, or
    just a `<body>` section, or neither section, or some other combination
    between pages
    ([#2](https://github.com/ultraq/thymeleaf-layout-dialect/issues/2))
+
 
 ### 1.0.1
  - Switched from Ant to Gradle as a build tool and to generate Maven-compatible
@@ -327,6 +358,7 @@ upcoming patches so they don't hold up the release.
    Maven Central, co-ordinates added to [installation](#installation)
    instructions
    ([#1](https://github.com/ultraq/thymeleaf-layout-dialect/issues/1))
+
 
 ### 1.0
  - Initial release.
