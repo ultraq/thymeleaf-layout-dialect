@@ -17,14 +17,12 @@
 package nz.net.ultraq.thymeleaf.tests
 
 import nz.net.ultraq.thymeleaf.LayoutDialect
-import nz.net.ultraq.thymeleaf.models.ModelBuilder
 
 import org.junit.BeforeClass
 import org.junit.Test
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.context.Context
 import org.thymeleaf.standard.StandardDialect
-import org.thymeleaf.templatemode.TemplateMode
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver
 
 /**
@@ -35,7 +33,6 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver
  */
 class ConfigurablePrefixTest {
 
-	private static ModelBuilder modelBuilder
 	private static TemplateEngine templateEngine
 
 	/**
@@ -54,9 +51,6 @@ class ConfigurablePrefixTest {
 				suffix: '.html'
 			)
 		)
-
-		def modelFactory = templateEngine.configuration.getModelFactory(TemplateMode.HTML)
-		modelBuilder = new ModelBuilder(modelFactory, templateEngine.configuration.elementDefinitions, TemplateMode.HTML)
 	}
 
 	/**
