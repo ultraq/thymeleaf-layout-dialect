@@ -1,0 +1,58 @@
+
+# Replicate a bug found with deep hierarchies, as per
+# https://github.com/ultraq/thymeleaf-layout-dialect/issues/144
+
+% TEMPLATE_MODE HTML
+
+%INPUT
+<html layout:decorate="~{header}">
+<head>
+	<title>Some Title</title>
+	<script>alert('hello');</script>
+</head>
+<body>
+	<div layout:fragment="content">
+		<p>Some Content</p>
+ </div>
+</body>
+</html>
+
+
+%INPUT[header]
+<html layout:decorate="~{master}">
+<head></head>
+<body>
+	<div layout:fragment="page">
+		<a th:href="@{/home}">Home</a>
+		<div layout:fragment="content"></div>
+ </div>
+</body>
+</html>
+
+
+%INPUT[master]
+<html>
+<head>
+	<title>default title</title>
+</head>
+<body>
+	<div layout:fragment="page"></div>
+</body>
+</html>
+
+
+%OUTPUT
+<html>
+<head>
+	<title>Some title</title>
+	<script>alert('hello);</script>
+</head>
+<body>
+	<div>
+		<a href="/home">Home</a>
+		<div>
+			<p>Some Content</p>
+		</div>
+	</div>
+</body>
+</html>
