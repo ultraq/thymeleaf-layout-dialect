@@ -44,12 +44,12 @@
 %OUTPUT
 <html>
 <head>
-	<title>Some title</title>
-	<script>alert('hello);</script>
+	<title>Some Title</title>
+	<script>alert('hello');</script>
 </head>
 <body>
 	<div>
-		<a href="/home">Home</a>
+		<a href="/testing/home">Home</a>
 		<div>
 			<p>Some Content</p>
 		</div>
