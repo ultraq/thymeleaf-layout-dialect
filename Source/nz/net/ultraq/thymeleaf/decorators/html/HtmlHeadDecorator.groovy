@@ -61,6 +61,7 @@ class HtmlHeadDecorator implements Decorator {
 			return null
 		}
 
+		def modelFactory = context.modelFactory
 		def isTitle = { event -> event instanceof IOpenElementTag && event.elementCompleteName == 'title' }
 
 		// New head model based off the target being decorated
@@ -76,7 +77,7 @@ class HtmlHeadDecorator implements Decorator {
 			titleRetriever(targetHeadModel),
 			titleRetriever(sourceHeadModel)
 		)
-		resultHeadModel.insertModelWithWhitespace(1, resultTitle)
+		resultHeadModel.insertModelWithWhitespace(1, resultTitle, modelFactory)
 
 		// Merge the rest of the source <head> elements with the target <head>
 		// elements using the current merging strategy
@@ -86,7 +87,7 @@ class HtmlHeadDecorator implements Decorator {
 				.each { model ->
 					def position = sortingStrategy.findPositionForModel(resultHeadModel, model)
 					if (position != -1) {
-						resultHeadModel.insertModelWithWhitespace(position, model)
+						resultHeadModel.insertModelWithWhitespace(position, model, modelFactory)
 					}
 				}
 		}

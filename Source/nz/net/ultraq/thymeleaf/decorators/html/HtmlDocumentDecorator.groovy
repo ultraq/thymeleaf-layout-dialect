@@ -57,6 +57,7 @@ class HtmlDocumentDecorator extends XmlDocumentDecorator {
 	@Override
 	IModel decorate(IModel targetDocumentModel, IModel sourceDocumentModel) {
 
+		def modelFactory = context.modelFactory
 		def resultDocumentModel = targetDocumentModel.cloneModel()
 
 		// Head decoration
@@ -76,7 +77,7 @@ class HtmlDocumentDecorator extends XmlDocumentDecorator {
 				resultDocumentModel.insertModelWithWhitespace(resultDocumentModel.findIndexOf { event ->
 					return (event instanceof IOpenElementTag && event.elementCompleteName == 'body') ||
 					       (event instanceof ICloseElementTag && event.elementCompleteName == 'html')
-				} - 1, resultHeadModel)
+				} - 1, resultHeadModel, modelFactory)
 			}
 		}
 
@@ -96,7 +97,7 @@ class HtmlDocumentDecorator extends XmlDocumentDecorator {
 			else {
 				resultDocumentModel.insertModelWithWhitespace(resultDocumentModel.findIndexOf { event ->
 					return event instanceof ICloseElementTag && event.elementCompleteName == 'html'
-				} - 1, resultBodyModel)
+				} - 1, resultBodyModel, modelFactory)
 			}
 		}
 
