@@ -1,0 +1,28 @@
+
+# Replicate a bug found with empty <head> sections, as per
+# https://github.com/ultraq/thymeleaf-layout-dialect/issues/144
+
+% TEMPLATE_MODE HTML
+
+%INPUT
+<html layout:decorate="~{layout}">
+<head>
+	<title>Some Title</title>
+	<script>alert('hello');</script>
+</head>
+</html>
+
+
+%INPUT[layout]
+<html>
+<head></head>
+</html>
+
+
+%OUTPUT
+<html>
+<head>
+	<title>Some Title</title>
+	<script>alert('hello');</script>
+</head>
+</html>
