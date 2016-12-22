@@ -1,0 +1,35 @@
+
+# Test that the title pattern tokens are replaced correctly.
+
+%TEMPLATE_MODE HTML
+
+%CONTEXT
+myBlog = 'My blog'
+myWebsite = 'My website'
+
+
+%INPUT
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{Layout}">
+<head>
+	<title>[[${myBlog}]]</title>
+</head>
+</html>
+
+
+%INPUT[Layout]
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+	<title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">[[${myWebsite}]]</title>
+</head>
+</html>
+
+%OUTPUT
+<!DOCTYPE html>
+<html>
+<head>
+	<title>My website - My blog</title>
+</head>
+</html>
