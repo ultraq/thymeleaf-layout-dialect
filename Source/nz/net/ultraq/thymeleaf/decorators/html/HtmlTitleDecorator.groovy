@@ -25,6 +25,8 @@ import nz.net.ultraq.thymeleaf.models.ModelBuilder
 
 import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.model.IModel
+import org.thymeleaf.model.IOpenElementTag
+import org.thymeleaf.model.IText
 import org.thymeleaf.standard.StandardDialect
 import org.thymeleaf.standard.processor.StandardTextTagProcessor
 import org.thymeleaf.standard.processor.StandardUtextTagProcessor
@@ -82,19 +84,39 @@ class HtmlTitleDecorator implements Decorator {
 		// title result parts that we want to use on the pattern.
 		if (titlePatternProcessor) {
 			def extractTitle = { titleModel, contextKey ->
-				def titleTag = titleModel?.first()
-				def escapeTitle =
-					context[contextKey]?.title ?:
-					titleTag?.getAttributeValue(standardDialectPrefix, StandardTextTagProcessor.ATTR_NAME)
-				if (escapeTitle) {
-					context[(contextKey)] = new Title(escapeTitle, true)
-				}
-				else {
-					def unescapeTitle =
-						titleTag?.getAttributeValue(standardDialectPrefix, StandardUtextTagProcessor.ATTR_NAME) ?:
-						titleModel?.size() > 2 ? "'${HtmlEscape.escapeHtml5Xml(titleModel.get(1).text)}'" : null
-					if (unescapeTitle) {
-						context[(contextKey)] = new Title(unescapeTitle)
+				if (titleModel) {
+					def titleTag = titleModel.first()
+
+					// Escapable title from an existing one, the th:text attribute on the
+					// title tag, or the th:text attribute from a th:block which was
+					// converted from an inline expression
+					def escapeTitle =
+						context[contextKey]?.title ?:
+						titleTag.getAttributeValue(standardDialectPrefix, StandardTextTagProcessor.ATTR_NAME)
+					if (!escapeTitle) {
+						def potentialThBlock = titleModel.size() > 2 ? titleModel.get(1) : null
+						if (potentialThBlock instanceof IOpenElementTag) {
+							escapeTitle = potentialThBlock.getAttributeValue(standardDialectPrefix, StandardTextTagProcessor.ATTR_NAME)
+						}
+					}
+					if (escapeTitle) {
+						context[(contextKey)] = new Title(escapeTitle, true)
+					}
+
+					// Unescaped title from a th:utext attribute on the title tag, or
+					// the text of a title tag
+					else {
+						def unescapeTitle =
+							titleTag.getAttributeValue(standardDialectPrefix, StandardUtextTagProcessor.ATTR_NAME)
+						if (!unescapeTitle) {
+							def potentialTitleText = titleModel.size() > 2 ? titleModel.get(1) : null
+							if (potentialTitleText instanceof IText) {
+								unescapeTitle = "'${HtmlEscape.escapeHtml5Xml(potentialTitleText.text)}'"
+							}
+						}
+						if (unescapeTitle) {
+							context[(contextKey)] = new Title(unescapeTitle)
+						}
 					}
 				}
 			}

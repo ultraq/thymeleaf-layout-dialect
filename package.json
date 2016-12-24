@@ -1,6 +1,6 @@
 {
 	"name": "thymeleaf-layout-dialect",
-	"version": "2.1.2",
+	"version": "2.1.3-SNAPSHOT",
 	"description": "A dialect for Thymeleaf that lets you build layouts and reusable templates in order to improve code reuse",
 	"author": "Emanuel Rabina <emanuelrabina@gmail.com> (http://www.ultraq.net.nz/)",
 	"scripts": {
