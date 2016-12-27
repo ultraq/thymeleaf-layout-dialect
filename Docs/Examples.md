@@ -111,7 +111,7 @@ place of the layout's, all elements from the layout, but replaced by all content
 template fragments where specified).
 
 For more on how you can control the merging of `<head>` elements, see the
-[<head> element merging](Configuration.md#head-element-merging) section.
+[`<head>` element merging](Configuration.md#head-element-merging) section.
 
 > The decoration process redirects processing from your content template to the
 > layout, picking `layout:fragment` parts out of your content template as the
@@ -236,13 +236,6 @@ The pattern in the example above was specified in the layout, so applies to all
 content templates that make use of the layout.  If you specify another title
 pattern in the content template, then it will override the one found in the
 layout, allowing for fine-grained control of the appearance of your title.
-
-> As of 1.3.0, the resulting title is accessible via `layout.resultingTitle`.
-> `layout` is a special object added by this dialect (just like how Thymeleaf
-> adds `session`, `param`, and `application` objects), to expose some internals.
-> 
-> As of 2.1.0, `layout.contentTitle` and `layout.layoutTitle` are also available
-> for use in your templates.
 
 
 Reusable templates
