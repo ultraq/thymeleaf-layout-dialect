@@ -5,9 +5,18 @@ Changelog
 As of 1.3.0, this project follows [Semantic Versioning](http://semver.org/).
 
 
+### 2.2.0
+ - Rework how titles are handled to support inline expressions in Thymeleaf 3
+   ([#145](https://github.com/ultraq/thymeleaf-layout-dialect/issues/145))
+ - Now that the complete title cannot be known during execution of the title
+   pattern processor, remove the exposed "layout context" object which contained
+   the title values.
+   ([#147](https://github.com/ultraq/thymeleaf-layout-dialect/issues/147))
+
+
 ### 2.1.2
  - Fix insertion of elements into a `<head>` section that is empty, ie: `<head></head>`
-   ([#144](https://github.com/ultraq/thymeleaf-layout-dialect/issues/142))
+   ([#144](https://github.com/ultraq/thymeleaf-layout-dialect/issues/144))
 
 
 ### 2.1.1
