@@ -16,7 +16,6 @@
 
 package nz.net.ultraq.thymeleaf
 
-import nz.net.ultraq.thymeleaf.context.ContextCreationProcessor
 import nz.net.ultraq.thymeleaf.context.extensions.IContextExtensions
 import nz.net.ultraq.thymeleaf.decorators.DecorateProcessor
 import nz.net.ultraq.thymeleaf.decorators.DecoratorProcessor
@@ -99,7 +98,6 @@ class LayoutDialect extends AbstractProcessorDialect {
 		return [
 			// Processors available in the HTML template mode
 			new StandardXmlNsTagProcessor(TemplateMode.HTML, dialectPrefix),
-			new ContextCreationProcessor(TemplateMode.HTML),
 			new DecorateProcessor(TemplateMode.HTML, dialectPrefix, sortingStrategy),
 			new DecoratorProcessor(TemplateMode.HTML, dialectPrefix, sortingStrategy),
 			new IncludeProcessor(TemplateMode.HTML, dialectPrefix),
@@ -110,7 +108,6 @@ class LayoutDialect extends AbstractProcessorDialect {
 
 			// Processors available in the XML template mode
 			new StandardXmlNsTagProcessor(TemplateMode.XML, dialectPrefix),
-			new ContextCreationProcessor(TemplateMode.XML),
 			new DecorateProcessor(TemplateMode.XML, dialectPrefix, sortingStrategy),
 			new DecoratorProcessor(TemplateMode.XML, dialectPrefix, sortingStrategy),
 			new IncludeProcessor(TemplateMode.XML, dialectPrefix),

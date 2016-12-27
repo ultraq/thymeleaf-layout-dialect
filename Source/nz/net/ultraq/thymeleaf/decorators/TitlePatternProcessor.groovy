@@ -16,8 +16,6 @@
 
 package nz.net.ultraq.thymeleaf.decorators
 
-import nz.net.ultraq.thymeleaf.context.LayoutContext
-
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.thymeleaf.context.ITemplateContext
@@ -51,10 +49,6 @@ class TitlePatternProcessor extends AbstractAttributeTagProcessor {
 
 	static final String PROCESSOR_NAME = 'title-pattern'
 	static final int PROCESSOR_PRECEDENCE = 1
-
-	static final String CONTEXT_CONTENT_TITLE   = 'contentTitle'
-	static final String CONTEXT_LAYOUT_TITLE    = 'layoutTitle'
-//	static final String CONTEXT_RESULTING_TITLE = 'resultingTitle'
 
 	static final String CONTENT_TITLE_KEY = 'LayoutDialect::ContentTitle'
 	static final String LAYOUT_TITLE_KEY  = 'LayoutDialect::LayoutTitle'
@@ -133,13 +127,5 @@ class TitlePatternProcessor extends AbstractAttributeTagProcessor {
 		}
 
 		structureHandler.setBody(titleModel, true)
-
-		// Save the title to the layout context
-		def layoutContext = LayoutContext.forContext(context)
-		layoutContext << [
-			(CONTEXT_CONTENT_TITLE):   contentTitle,
-			(CONTEXT_LAYOUT_TITLE):    layoutTitle/*,
-			(CONTEXT_RESULTING_TITLE): title*/
-		]
 	}
 }
