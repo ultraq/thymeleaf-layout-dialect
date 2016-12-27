@@ -66,6 +66,7 @@ class HtmlTitleDecorator implements Decorator {
 	@SuppressWarnings('SpaceAroundOperator')
 	IModel decorate(IModel targetTitleModel, IModel sourceTitleModel) {
 
+		def modelBuilder = new ModelBuilder(context)
 		def layoutDialectPrefix = context.getPrefixForDialect(LayoutDialect)
 		def standardDialectPrefix = context.getPrefixForDialect(StandardDialect)
 
@@ -84,39 +85,35 @@ class HtmlTitleDecorator implements Decorator {
 		// title result parts that we want to use on the pattern.
 		if (titlePatternProcessor) {
 			def extractTitle = { titleModel, contextKey ->
+
+				// This title part already exists from a previous run, so do nothing
+				if (context[contextKey]) {
+					return
+				}
+
 				if (titleModel) {
 					def titleTag = titleModel.first()
 
-					// Escapable title from an existing one, the th:text attribute on the
-					// title tag, or the th:text attribute from a th:block which was
-					// converted from an inline expression
-					def escapeTitle =
-						context[contextKey]?.title ?:
-						titleTag.getAttributeValue(standardDialectPrefix, StandardTextTagProcessor.ATTR_NAME)
-					if (!escapeTitle) {
-						def potentialThBlock = titleModel.size() > 2 ? titleModel.get(1) : null
-						if (potentialThBlock instanceof IOpenElementTag) {
-							escapeTitle = potentialThBlock.getAttributeValue(standardDialectPrefix, StandardTextTagProcessor.ATTR_NAME)
+					// Escapable title from a th:text attribute on the title tag
+					if (titleTag.hasAttribute(standardDialectPrefix, StandardTextTagProcessor.ATTR_NAME)) {
+						context[(contextKey)] = modelBuilder.build {
+							'th:block'('th:text': titleTag.getAttributeValue(standardDialectPrefix, StandardTextTagProcessor.ATTR_NAME))
 						}
-					}
-					if (escapeTitle) {
-						context[(contextKey)] = new Title(escapeTitle, true)
 					}
 
 					// Unescaped title from a th:utext attribute on the title tag, or
-					// the text of a title tag
+					// whatever happens to be within the title tag
+					else if (titleTag.hasAttribute(standardDialectPrefix, StandardUtextTagProcessor.ATTR_NAME)) {
+						context[(contextKey)] = modelBuilder.build {
+							'th:block'('th:utext': titleTag.getAttributeValue(standardDialectPrefix, StandardUtextTagProcessor.ATTR_NAME))
+						}
+					}
 					else {
-						def unescapeTitle =
-							titleTag.getAttributeValue(standardDialectPrefix, StandardUtextTagProcessor.ATTR_NAME)
-						if (!unescapeTitle) {
-							def potentialTitleText = titleModel.size() > 2 ? titleModel.get(1) : null
-							if (potentialTitleText instanceof IText) {
-								unescapeTitle = "'${HtmlEscape.escapeHtml5Xml(potentialTitleText.text)}'"
-							}
+						def titleChildrenModel = context.modelFactory.createModel()
+						titleModel.childModelIterator().each { model ->
+							titleChildrenModel.addModel(model)
 						}
-						if (unescapeTitle) {
-							context[(contextKey)] = new Title(unescapeTitle)
-						}
+						context[(contextKey)] = titleChildrenModel
 					}
 				}
 			}

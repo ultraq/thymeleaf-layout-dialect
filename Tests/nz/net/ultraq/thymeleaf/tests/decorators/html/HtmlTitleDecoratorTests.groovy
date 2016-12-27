@@ -61,6 +61,9 @@ class HtmlTitleDecoratorTests {
 			},
 			getModelFactory: { ->
 				return modelFactory
+			},
+			getTemplateMode: { ->
+				return TemplateMode.HTML
 			}
 		] as ITemplateContext
 		mockContext.metaClass {
