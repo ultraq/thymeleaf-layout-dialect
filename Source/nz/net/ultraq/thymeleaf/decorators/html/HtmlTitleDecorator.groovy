@@ -18,19 +18,15 @@ package nz.net.ultraq.thymeleaf.decorators.html
 
 import nz.net.ultraq.thymeleaf.LayoutDialect
 import nz.net.ultraq.thymeleaf.decorators.Decorator
-import nz.net.ultraq.thymeleaf.decorators.Title
 import nz.net.ultraq.thymeleaf.decorators.TitlePatternProcessor
 import nz.net.ultraq.thymeleaf.models.ElementMerger
 import nz.net.ultraq.thymeleaf.models.ModelBuilder
 
 import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.model.IModel
-import org.thymeleaf.model.IOpenElementTag
-import org.thymeleaf.model.IText
 import org.thymeleaf.standard.StandardDialect
 import org.thymeleaf.standard.processor.StandardTextTagProcessor
 import org.thymeleaf.standard.processor.StandardUtextTagProcessor
-import org.unbescape.html.HtmlEscape
 
 /**
  * Decorator for the {@code <title>} part of the template to handle the special

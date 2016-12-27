@@ -17,8 +17,6 @@
 package nz.net.ultraq.thymeleaf.decorators
 
 import nz.net.ultraq.thymeleaf.context.LayoutContext
-import nz.net.ultraq.thymeleaf.expressions.ExpressionProcessor
-import nz.net.ultraq.thymeleaf.models.ModelBuilder
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -28,7 +26,8 @@ import org.thymeleaf.model.IProcessableElementTag
 import org.thymeleaf.processor.element.AbstractAttributeTagProcessor
 import org.thymeleaf.processor.element.IElementTagStructureHandler
 import org.thymeleaf.templatemode.TemplateMode
-import org.unbescape.html.HtmlEscape
+
+import java.util.regex.Pattern
 
 /**
  * Allows for greater control of the resulting {@code <title>} element by
@@ -44,8 +43,9 @@ class TitlePatternProcessor extends AbstractAttributeTagProcessor {
 
 	@Deprecated
 	private static final String TOKEN_DECORATOR_TITLE = '$DECORATOR_TITLE'
-	private static final String TOKEN_CONTENT_TITLE   = '$CONTENT_TITLE'
+//	private static final String TOKEN_CONTENT_TITLE   = '$CONTENT_TITLE'
 	private static final String TOKEN_LAYOUT_TITLE    = '$LAYOUT_TITLE'
+	private static final Pattern TOKEN_PATTERN = ~/(\$(LAYOUT|DECORATOR|CONTENT)_TITLE)/
 
 	private static boolean warned = false
 
@@ -54,7 +54,7 @@ class TitlePatternProcessor extends AbstractAttributeTagProcessor {
 
 	static final String CONTEXT_CONTENT_TITLE   = 'contentTitle'
 	static final String CONTEXT_LAYOUT_TITLE    = 'layoutTitle'
-	static final String CONTEXT_RESULTING_TITLE = 'resultingTitle'
+//	static final String CONTEXT_RESULTING_TITLE = 'resultingTitle'
 
 	static final String CONTENT_TITLE_KEY = 'LayoutDialect::ContentTitle'
 	static final String LAYOUT_TITLE_KEY  = 'LayoutDialect::LayoutTitle'
@@ -91,26 +91,7 @@ class TitlePatternProcessor extends AbstractAttributeTagProcessor {
 		}
 
 		def titlePattern = attributeValue
-		def expressionProcessor = new ExpressionProcessor(context)
 		def modelFactory = context.modelFactory
-		def modelBuilder = new ModelBuilder(context)
-
-		def titleProcessor = { contextKey ->
-			def titleObject = context[contextKey]
-			def titleValue = null
-			if (titleObject) {
-				if (titleObject.titleText) {
-					titleValue = HtmlEscape.unescapeHtml(expressionProcessor.processAsString(titleObject.titleText))
-					if (titleObject.escape) {
-						titleValue = HtmlEscape.escapeHtml5Xml(titleValue)
-					}
-				}
-				else if (titleObject.titleModel) {
-					titleValue = titleObject.titleModel
-				}
-			}
-			return titleValue
-		}
 
 		def contentTitle = context[CONTENT_TITLE_KEY]
 		def layoutTitle = context[LAYOUT_TITLE_KEY]
@@ -129,9 +110,7 @@ class TitlePatternProcessor extends AbstractAttributeTagProcessor {
 		// Break the title pattern up into tokens to map to their respective models
 		def titleModel = modelFactory.createModel()
 		if (layoutTitle && contentTitle) {
-			def tokenPattern = ~/(\$(LAYOUT|DECORATOR|CONTENT)_TITLE)/
-			def matcher = tokenPattern.matcher(titlePattern)
-
+			def matcher = TOKEN_PATTERN.matcher(titlePattern)
 			while (matcher.find()) {
 				def text = titlePattern.substring(matcher.regionStart(), matcher.start())
 				if (text) {
@@ -153,21 +132,6 @@ class TitlePatternProcessor extends AbstractAttributeTagProcessor {
 			titleModel.addModel(layoutTitle)
 		}
 
-		// Build a new model based on the title pattern
-//		def titleModel = modelBuilder.build {
-//			'th:block' {
-//				models.each { model -> add(model) }
-//			}
-//		}
-
-//		def title = titlePattern && layoutTitle && contentTitle ?
-//			titlePattern
-//				.replace(PARAM_TITLE_LAYOUT, layoutTitle)
-//				.replace(PARAM_TITLE_DECORATOR, layoutTitle)
-//				.replace(PARAM_TITLE_CONTENT, contentTitle) :
-//			contentTitle ?: layoutTitle ?: ''
-//
-//		structureHandler.setBody(title, false)
 		structureHandler.setBody(titleModel, true)
 
 		// Save the title to the layout context
