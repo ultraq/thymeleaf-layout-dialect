@@ -205,8 +205,7 @@ class IModelExtensions {
 			/**
 			 * Returns the first event on the model.
 			 * 
-			 * @return The model's first event, or {@code null} if the model has no
-			 *         events.
+			 * @return The model's first event.
 			 */
 			first << {
 				return delegate.get(0)
@@ -333,8 +332,7 @@ class IModelExtensions {
 			/**
 			 * Returns the last event on the model.
 			 * 
-			 * @return The model's lats event, or {@code null} if the model has no
-			 *         events.
+			 * @return The model's last event.
 			 */
 			last << {
 				return delegate.get(delegate.size() - 1)
