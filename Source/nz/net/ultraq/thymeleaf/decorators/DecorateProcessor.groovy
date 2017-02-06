@@ -86,29 +86,31 @@ class DecorateProcessor extends AbstractAttributeModelProcessor {
 	protected void doProcess(ITemplateContext context, IModel model, AttributeName attributeName,
 		String attributeValue, IElementModelStructureHandler structureHandler) {
 
-		// Ensure that every element to this point contained a decorate processor
-		if (!context.elementStack.every { element -> element.getAttribute(attributeName) }) {
+		def templateModelFinder = new TemplateModelFinder(context)
+
+		// Load the entirety of this template so we can access items outside of the root element
+		def contentTemplateName = context.templateData.template
+		def contentTemplate = templateModelFinder.findTemplate(contentTemplateName).cloneModel()
+
+		// Check that the root element is the same as the one currently being processed
+		def contentRootEvent = contentTemplate.find { event -> event instanceof IOpenElementTag }
+		def rootElement = model.first()
+		if (contentRootEvent != rootElement) {
 			throw new IllegalArgumentException('layout:decorate/data-layout-decorate must appear in the root element of your template')
 		}
 
-		def templateModelFinder = new TemplateModelFinder(context)
-
 		// Remove the decorate processor from the root element
-		def rootElement = model.first()
 		if (rootElement.hasAttribute(attributeName)) {
 			rootElement = context.modelFactory.removeAttribute(rootElement, attributeName)
 			model.replace(0, rootElement)
 		}
-
-		// Load the entirety of this template so we can access items outside of the root element
-		// TODO: Can probably find a way of preventing this double-loading for #102
-		def contentTemplateName = context.templateData.template
-		def contentTemplate = templateModelFinder.findTemplate(contentTemplateName).cloneModel()
 		contentTemplate.replaceModel(contentTemplate.findIndexOf { event -> event instanceof IOpenElementTag }, model)
 
 		// Locate the template to decorate
 		def decorateTemplateExpression = new ExpressionProcessor(context).parseFragmentExpression(attributeValue)
-		def decorateTemplate = templateModelFinder.findTemplate(decorateTemplateExpression).cloneModel()
+		def decorateTemplate = templateModelFinder.findTemplate(decorateTemplateExpression)
+		def decorateTemplateData = decorateTemplate.templateData
+		decorateTemplate = decorateTemplate.cloneModel()
 
 		// Gather all fragment parts from this page to apply to the new document
 		// after decoration has taken place
@@ -126,6 +128,7 @@ class DecorateProcessor extends AbstractAttributeModelProcessor {
 		}
 		def resultTemplate = decorator.decorate(decorateTemplate, contentTemplate)
 		model.replaceModel(0, resultTemplate)
+		structureHandler.templateData = decorateTemplateData
 
 		// Save layout fragments for use later by layout:fragment processors
 		FragmentMap.setForNode(context, structureHandler, pageFragments)
