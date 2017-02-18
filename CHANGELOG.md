@@ -12,6 +12,9 @@ As of 1.3.0, this project follows [Semantic Versioning](http://semver.org/).
    pattern processor, remove the exposed "layout context" object which contained
    the title values.
    ([#147](https://github.com/ultraq/thymeleaf-layout-dialect/issues/147))
+ - Implement a more accurate way to check if the decorate processor is in the
+   root element of a template
+   ([#127](https://github.com/ultraq/thymeleaf-layout-dialect/issues/127))
 
 
 ### 2.1.2
