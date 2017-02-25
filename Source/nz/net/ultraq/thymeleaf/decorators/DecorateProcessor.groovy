@@ -95,7 +95,7 @@ class DecorateProcessor extends AbstractAttributeModelProcessor {
 		// Check that the root element is the same as the one currently being processed
 		def contentRootEvent = contentTemplate.find { event -> event instanceof IOpenElementTag }
 		def rootElement = model.first()
-		if (contentRootEvent != rootElement) {
+		if (!contentRootEvent.equalsIgnoreXmlNamespaces(rootElement)) {
 			throw new IllegalArgumentException('layout:decorate/data-layout-decorate must appear in the root element of your template')
 		}
 

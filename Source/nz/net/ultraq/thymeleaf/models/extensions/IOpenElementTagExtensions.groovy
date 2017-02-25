@@ -44,6 +44,25 @@ class IOpenElementTagExtensions {
 					delegate.elementDefinition == other.elementDefinition &&
 					delegate.attributeMap == other.attributeMap
 			}
+
+			/**
+			 * For use in comparing one tag with another by the decorator processor
+			 * when checking if root elements are the same.
+			 * 
+			 * @param other
+			 * @return {@code true} if this element shares the same name and all
+			 *         attributes that aren't XML namespace attributes as the other
+			 *         element.
+			 */
+			equalsIgnoreXmlNamespaces << { Object other ->
+				if (other instanceof IOpenElementTag && delegate.elementDefinition == other.elementDefinition) {
+					def difference = delegate.attributeMap - other.attributeMap
+					return difference.size() == 0 || difference
+						.collect { key, value -> key.startsWith('xmlns:') }
+						.inject { result, item -> result && item }
+				}
+				return false
+			}
 		}
 	}
 }
