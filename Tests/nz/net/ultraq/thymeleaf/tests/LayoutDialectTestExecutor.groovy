@@ -51,7 +51,7 @@ class LayoutDialectTestExecutor extends JUnitTestExecutor {
 	static List<String> listStandardLayoutDialectTests() {
 
 		def tests = new Reflections('', new ResourcesScanner())
-			.getResources(~/(?!GroupingStrategy|Examples).*\.thtest/) as List
+			.getResources(~/(?!Examples|GroupingStrategy|Interaction).*\.thtest/) as List
 		def exclusions = [
 			'nz/net/ultraq/thymeleaf/tests/decorators/html/TitlePattern-AllowOtherProcessors.thtest',
 

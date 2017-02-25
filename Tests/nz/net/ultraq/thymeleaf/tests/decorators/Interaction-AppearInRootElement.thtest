@@ -1,7 +1,7 @@
 
-# A test for letting root elements be replaced but still containing the decorate
-# processor.  This feature was easily available in Thymeleaf 2 / layout dialect
-# 1, but Thymeleaf 3 has made this much harder to support.
+# A test for checking the root element when a higher-precedence dialect is
+# executed first, thus modifying the root element that had the XML namespace
+# declaration of that dialect removed.
 # 
 # See: https://github.com/ultraq/thymeleaf-layout-dialect/issues/127
 
@@ -10,13 +10,10 @@
 
 
 %INPUT
-<html th:replace="~{new-page}">
-</html>
-
-
-%INPUT[new-page]
 <!DOCTYPE html>
-<html layout:decorate="~{Layout}">
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:high="http://high-priority-dialect.com/"
+	layout:decorate="~{Layout}">
 <head>
 	<title>Content page</title>
 	<script src="content-script.js"></script>
