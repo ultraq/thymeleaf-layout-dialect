@@ -56,16 +56,11 @@ class IContextExtensions {
 			 *         dialect being queried hasn't been configured.
 			 */
 			getPrefixForDialect << { Class<IProcessorDialect> dialectClass ->
-
-				// TODO: Would have loved to use @Memoized on this closure, but can't
-				//       because of https://issues.apache.org/jira/browse/GROOVY-6584
-
 				def dialectPrefixCache = delegate[DIALECT_PREFIX_CACHE]
 				if (!dialectPrefixCache) {
 					dialectPrefixCache = [:]
 					delegate[DIALECT_PREFIX_CACHE] = dialectPrefixCache
 				}
-
 				def dialectPrefix = dialectPrefixCache[dialectClass]
 				if (!dialectPrefix) {
 					def dialectConfiguration = delegate.configuration.dialectConfigurations.find { dialectConfig ->

@@ -5,6 +5,9 @@ Changelog
 As of 1.3.0, this project follows [Semantic Versioning](http://semver.org/).
 
 
+### 2.2.1
+
+
 ### 2.2.0
  - Rework how titles are handled to support inline expressions in Thymeleaf 3
    ([#145](https://github.com/ultraq/thymeleaf-layout-dialect/issues/145))
