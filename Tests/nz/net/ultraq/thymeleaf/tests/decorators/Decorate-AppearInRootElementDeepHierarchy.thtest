@@ -1,0 +1,87 @@
+
+# Test the root element requirement when working with a deep layout hierarchy
+# and the special merging of the th:with attribute processor.  Made to recreate
+# the situation mentioned here:
+# https://github.com/ultraq/thymeleaf-layout-dialect/issues/127#issuecomment-287559862
+
+%TEMPLATE_MODE HTML
+
+
+%INPUT
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{Parent}"
+	th:with="page1='child'">
+<head>
+	<title>Page title</title>
+	<script src="child-script.js"></script>
+</head>
+<body>
+	<div layout:fragment="content">
+		<p>This is a paragraph from the child page</p>
+	</div>
+</body>
+</html>
+
+
+%INPUT[Parent]
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{Grandparent}"
+	th:with="page2='parent'">
+<head>
+	<script src="parent-script.js"></script>
+</head>
+<body>
+	<section layout:fragment="section">
+		<header>
+			<h1>My website</h1>
+		</header>
+		<div layout:fragment="content">
+			<p>Page content goes here</p>
+		</div>
+		<footer>
+			<p>My footer</p>
+		</footer>
+	</section>
+</body>
+</html>
+
+
+%INPUT[Grandparent]
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+	<script src="grandparent-script.js"></script>
+</head>
+<body>
+	<section layout:fragment="section">
+		<p>Middle layout section goes here</p>
+	</section>
+</body>
+</html>
+
+
+%OUTPUT
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Page title</title>
+	<script src="grandparent-script.js"></script>
+	<script src="parent-script.js"></script>
+	<script src="child-script.js"></script>
+</head>
+<body>
+	<section>
+		<header>
+			<h1>My website</h1>
+		</header>
+		<div>
+			<p>This is a paragraph from the child page</p>
+		</div>
+		<footer>
+			<p>My footer</p>
+		</footer>
+	</section>  
+</body>
+</html>
