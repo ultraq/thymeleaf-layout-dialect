@@ -16,7 +16,9 @@
 
 package nz.net.ultraq.thymeleaf.models.extensions
 
+import org.thymeleaf.context.IContext
 import org.thymeleaf.model.IOpenElementTag
+import org.thymeleaf.standard.StandardDialect
 
 /**
  * Meta-programming extensions to the {@link IOpenElementTag} class.
@@ -49,17 +51,23 @@ class IOpenElementTagExtensions {
 			 * For use in comparing one tag with another by the decorator processor
 			 * when checking if root elements are the same.
 			 * 
+			 * @param context
 			 * @param other
 			 * @return {@code true} if this element shares the same name and all
-			 *         attributes that aren't XML namespace attributes as the other
-			 *         element.
+			 *         attributes as the other element, with the exception of XML
+			 *         namespace declarations and Thymeleaf's {@code th:with}
+			 *         attribute processor.
 			 */
-			equalsIgnoreXmlNamespaces << { Object other ->
+			equalsIgnoreXmlnsAndThWith << { IContext context, Object other ->
 				if (other instanceof IOpenElementTag && delegate.elementDefinition == other.elementDefinition) {
 					def difference = delegate.attributeMap - other.attributeMap
 					return difference.size() == 0 || difference
-						.collect { key, value -> key.startsWith('xmlns:') }
-						.inject { result, item -> result && item }
+						.collect { key, value ->
+							return key.startsWith('xmlns:') || key == "${context.getPrefixForDialect(StandardDialect)}:with"
+						}
+						.inject { result, item ->
+							return result && item
+						}
 				}
 				return false
 			}

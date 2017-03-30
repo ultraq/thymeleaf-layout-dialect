@@ -5,10 +5,18 @@ Changelog
 As of 1.3.0, this project follows [Semantic Versioning](http://semver.org/).
 
 
+### 2.2.2
+ - Another decorate processor root element check fix for deep hierarchies that
+   include a `th:with` attribute processor (which gets mutated by the various)
+   decoration processes)
+   ([#127](https://github.com/ultraq/thymeleaf-layout-dialect/issues/127))
+
+
 ### 2.2.1
  - Fix decorate processor root element check when interacting with high-priority
    custom dialects
    ([#127](https://github.com/ultraq/thymeleaf-layout-dialect/issues/127))
+
 
 ### 2.2.0
  - Rework how titles are handled to support inline expressions in Thymeleaf 3
