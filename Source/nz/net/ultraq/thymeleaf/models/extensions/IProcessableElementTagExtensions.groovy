@@ -17,22 +17,22 @@
 package nz.net.ultraq.thymeleaf.models.extensions
 
 import org.thymeleaf.context.IContext
-import org.thymeleaf.model.IOpenElementTag
+import org.thymeleaf.model.IProcessableElementTag
 import org.thymeleaf.standard.StandardDialect
 
 /**
- * Meta-programming extensions to the {@link IOpenElementTag} class.
+ * Meta-programming extensions to the {@link IProcessableElementTag} class.
  * 
  * @author Emanuel Rabina
  */
-class IOpenElementTagExtensions {
+class IProcessableElementTagExtensions {
 
 	/**
-	 * Apply extensions to the {@code IOpenElementTag} class.
+	 * Apply extensions to the {@code IProcessableElementTag} class.
 	 */
 	static void apply() {
 
-		IOpenElementTag.metaClass {
+		IProcessableElementTag.metaClass {
 
 			/**
 			 * Compares this open tag with another.
@@ -42,7 +42,7 @@ class IOpenElementTagExtensions {
 			 *         the other element.
 			 */
 			equals << { Object other ->
-				return other instanceof IOpenElementTag &&
+				return other instanceof IProcessableElementTag &&
 					delegate.elementDefinition == other.elementDefinition &&
 					delegate.attributeMap == other.attributeMap
 			}
@@ -59,7 +59,7 @@ class IOpenElementTagExtensions {
 			 *         attribute processor.
 			 */
 			equalsIgnoreXmlnsAndThWith << { IContext context, Object other ->
-				if (other instanceof IOpenElementTag && delegate.elementDefinition == other.elementDefinition) {
+				if (other instanceof IProcessableElementTag && delegate.elementDefinition == other.elementDefinition) {
 					def difference = delegate.attributeMap - other.attributeMap
 					return difference.size() == 0 || difference
 						.collect { key, value ->

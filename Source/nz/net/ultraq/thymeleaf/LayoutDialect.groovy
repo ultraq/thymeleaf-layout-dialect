@@ -29,7 +29,7 @@ import nz.net.ultraq.thymeleaf.includes.ReplaceProcessor
 import nz.net.ultraq.thymeleaf.models.extensions.IAttributeExtensions
 import nz.net.ultraq.thymeleaf.models.extensions.ICloseElementTagExtensions
 import nz.net.ultraq.thymeleaf.models.extensions.IModelExtensions
-import nz.net.ultraq.thymeleaf.models.extensions.IOpenElementTagExtensions
+import nz.net.ultraq.thymeleaf.models.extensions.IProcessableElementTagExtensions
 import nz.net.ultraq.thymeleaf.models.extensions.IStandaloneElementTagExtensions
 import nz.net.ultraq.thymeleaf.models.extensions.ITemplateEventExtensions
 import nz.net.ultraq.thymeleaf.models.extensions.ITextExtensions
@@ -64,7 +64,7 @@ class LayoutDialect extends AbstractProcessorDialect {
 			IAttributeExtensions,
 			ICloseElementTagExtensions,
 			IModelExtensions,
-			IOpenElementTagExtensions,
+			IProcessableElementTagExtensions,
 			IStandaloneElementTagExtensions,
 			ITemplateEventExtensions,
 			ITextExtensions,
