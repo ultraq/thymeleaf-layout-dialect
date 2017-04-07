@@ -82,7 +82,7 @@ out the layout's extension points, replace titles, and merge `<head>` items:
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Content page 1</title>
+  <title>Content page</title>
   <script src="common-script.js"></script>
   <script src="content-script.js"></script>
 </head>
@@ -91,11 +91,11 @@ out the layout's extension points, replace titles, and merge `<head>` items:
     <h1>My website</h1>
   </header>
   <section>
-    <p>This is a paragraph from content page 1</p>
+    <p>This is a paragraph from the content page</p>
   </section>
   <footer>
     <p>My footer</p>
-    <p>This is some footer content from content page 1</p>
+    <p>This is some footer content from the content page</p>
   </footer>  
 </body>
 </html>
