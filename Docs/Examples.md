@@ -175,6 +175,40 @@ to fill-up/overwrite the parent.  This way the layout acts as a sort of
 'default', with your content acting as implementations on top of this default.
 
 
+Passing data to layouts
+-----------------------
+
+Unlike other layout solutions in other technologies, the layout dialect doesn't
+have a special dialect-specific method of passing values between templates.
+Instead, it uses Thymeleaf's existing `th:with`/`data-th-with` attribute
+processors.
+
+For passing values from child templates up to their parent layouts, use
+`th:with`/`data-th-with` attribute processors on any element that's involved in
+the layout/decoration process, which would be anywhere `layout:decorate`/`data-layout-decorate`
+or `layout:fragment`/`data-layout-fragment` would be found, eg:
+
+Child/content template:
+
+```html
+<html layout:decorate="your-layout.html" th:with="greeting='Hello!'">
+```
+
+Parent/layout template:
+
+```html
+<html>
+  ...
+  <p th:with="${greeting}"></p> <!-- You'll end up with "Hello!" in here -->
+```
+
+In future, support may be added for using fragment local variables, much like
+how Thymeleaf uses them for creating "fragment signatures" as described here:
+http://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html#parameterizable-fragment-signatures
+Check out [#157](https://github.com/ultraq/thymeleaf-layout-dialect/issues/157)
+to see how progress on that is going.
+
+
 Configuring your title
 ----------------------
 
