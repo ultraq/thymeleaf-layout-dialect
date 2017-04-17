@@ -11,6 +11,7 @@ Table of Contents
     - [fragment](Processors.md#fragment)
  - [Examples](Examples.md)
     - [Layouts](Examples.md#layouts)
+    - [Passing data to layouts](Examples.md#passing-data-to-layouts)
     - [Configuring your title](Examples.md#configuring-your-title)
     - [Reusable templates](Examples.md#reusable-templates)
  - [Configuration](Configuration.md)
