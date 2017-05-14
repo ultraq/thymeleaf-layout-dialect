@@ -14,10 +14,13 @@
  * limitations under the License.
  */
 
-apply plugin: 'groovy'
-apply plugin: 'codenarc'
-apply plugin: 'maven'
-apply plugin: 'eclipse'
+plugins {
+	id 'groovy'
+	id 'codenarc'
+	id 'maven'
+	id 'net.saliman.cobertura' version '2.4.0'
+	id 'com.github.kt3k.coveralls' version '2.8.1'
+}
 apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/1.3.1/gradle-support.gradle'
 apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/1.3.1/maven-support.gradle'
 apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/1.3.1/bundle.gradle'
@@ -68,4 +71,8 @@ codenarc {
 
 groovydoc {
 	link('http://www.thymeleaf.org/apidocs/thymeleaf/3.0.0.RELEASE/', 'org.thymeleaf.')
+}
+
+cobertura {
+	coverageFormats = ['html', 'xml']
 }
