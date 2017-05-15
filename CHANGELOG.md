@@ -10,6 +10,9 @@ As of 1.3.0, this project follows [Semantic Versioning](http://semver.org/).
    include a `th:with` attribute processor (which gets mutated by the various)
    decoration processes)
    ([#127](https://github.com/ultraq/thymeleaf-layout-dialect/issues/127))
+ - Updated [thymeleaf-expression-processor](https://github.com/ultraq/thymeleaf-expression-processor),
+   which includes a `null` check for parsing fragment expressions, a potential
+   fix for ([#151](https://github.com/ultraq/thymeleaf-layout-dialect/issues/151))
 
 
 ### 2.2.1
