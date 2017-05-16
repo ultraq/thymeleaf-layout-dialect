@@ -32,7 +32,7 @@ project.sourceCompatibility = '1.7'
 
 project.group    = 'nz.net.ultraq.thymeleaf'
 project.artifact = 'thymeleaf-layout-dialect'
-project.version  = '2.2.2-SNAPSHOT'
+project.version  = '2.2.2'
 project.year     = '2012'
 project.contributors = [
 	[
