@@ -25,14 +25,16 @@ Add a dependency to your project with the following co-ordinates:
 ### Usage
 
 Once downloaded/installed as part of your project, add the Layout dialect to
-your existing Thymeleaf template engine, eg:
+your existing Thymeleaf template engine.
+
+For those who are configuring their own Thymeleaf template engine:
 
 ```java
-TemplateEngine templateEngine = new TemplateEngine();  // Or SpringTemplateEngine for Spring config
+TemplateEngine templateEngine = new TemplateEngine();  // Or SpringTemplateEngine for Spring
 templateEngine.addDialect(new LayoutDialect());
 ```
 
-Or, for those using XML config in Spring:
+For those using XML config in Spring:
 
 ```xml
 <bean id="templateEngine" class="org.thymeleaf.spring4.SpringTemplateEngine">
@@ -43,6 +45,19 @@ Or, for those using XML config in Spring:
   </property>
 </bean>
 ```
+
+For those using Spring Boot 2 and Java configuration:
+
+```java
+@Bean
+public LayoutDialect layoutDialect() {
+	return new LayoutDialect();
+}
+```
+
+> The layout dialect is already included as part of the Thymeleaf starter pack
+> in Spring Boot 1.x, but has been removed in Spring Boot 2, hence the
+> additional config step for Spring Boot 2 users above.
 
 This will introduce the `layout` namespace, and 5 new attribute processors that
 you can use in your templates: `decorate`, `title-pattern`, `insert`, `replace`,
