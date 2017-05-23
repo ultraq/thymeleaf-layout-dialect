@@ -18,8 +18,11 @@ concepts of this library will be very familiar to you.
 Docs
 ----
 
-For installation instructions, examples, and configuration options, check out
-the docs pages over on https://ultraq.github.io/thymeleaf-layout-dialect/
+For installation instructions, examples, and configuration options for version 2
+of the layout dialect, check out the docs pages over on https://ultraq.github.io/thymeleaf-layout-dialect/
+
+For docs on version 1 of the layout dialect, the classic readme still exists
+over on https://github.com/ultraq/thymeleaf-layout-dialect/tree/master-thymeleaf-2.1
 
 Upgrading an existing project to Thymeleaf 3 and layout dialect 2?  Then give
 the [migration guide](https://ultraq.github.io/thymeleaf-layout-dialect/MigrationGuide.html)
