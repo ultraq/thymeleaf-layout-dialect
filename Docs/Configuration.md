@@ -87,14 +87,17 @@ interface and the layout dialect provides 2 implementations to choose from:
  - `nz.net.ultraq.thymeleaf.decorators.strategies.GroupingStrategy`, groups like
    elements together
 
-To change to the grouping strategy, configure the Layout dialect like so:
+To change to the grouping strategy, configure the Layout dialect using one of
+the methods below.
+
+For those who are configuring their own Thymeleaf template engine:
 
 ```java
 TemplateEngine templateEngine = new TemplateEngine();  // Or SpringTemplateEngine for Spring
 templateEngine.addDialect(new LayoutDialect(new GroupingStrategy()));
 ```
 
-XML config for Spring:
+For those using XML config in Spring:
 
 ```xml
 <bean id="groupingStrategy" class="nz.net.ultraq.thymeleaf.decorators.strategies.GroupingStrategy"/>
@@ -110,5 +113,14 @@ XML config for Spring:
 </bean>
 ```
 
+For those using Spring Boot and Java configuration:
+
+```java
+@Bean
+public LayoutDialect layoutDialect() {
+	return new LayoutDialect(new GroupingStrategy());
+}
+```
+
 If neither strategy suits your needs, you can implement your own `SortingStrategy`
-and pass it along to the Layout dialect like above.
+and pass it along to the layout dialect like above.
