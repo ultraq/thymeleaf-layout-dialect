@@ -65,14 +65,14 @@ dependencies {
 }
 
 codenarc {
-	configFile = file('.codenarc.groovy')
-	toolVersion = '0.25.2'
-}
-
-groovydoc {
-	link('http://www.thymeleaf.org/apidocs/thymeleaf/3.0.0.RELEASE/', 'org.thymeleaf.')
+	def sharedConfig = 'https://raw.githubusercontent.com/ultraq/codenarc-config-ultraq/master/codenarc.groovy'.toURL().text
+	config = resources.text.fromString(sharedConfig)
 }
 
 cobertura {
 	coverageFormats = ['html', 'xml']
+}
+
+groovydoc {
+	link('http://www.thymeleaf.org/apidocs/thymeleaf/3.0.0.RELEASE/', 'org.thymeleaf.')
 }
