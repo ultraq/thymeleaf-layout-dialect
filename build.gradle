@@ -18,21 +18,21 @@ plugins {
 	id 'groovy'
 	id 'codenarc'
 	id 'maven'
-	id 'net.saliman.cobertura' version '2.4.0'
-	id 'com.github.kt3k.coveralls' version '2.8.1'
+	id 'net.saliman.cobertura' version '2.5.2'
+	id 'com.github.kt3k.coveralls' version '2.8.2'
 }
-apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/1.3.1/gradle-support.gradle'
-apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/1.3.1/maven-support.gradle'
-apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/1.3.1/bundle.gradle'
+apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/2.1.0/gradle-support.gradle'
+apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/2.1.0/maven-support.gradle'
+apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/2.1.0/bundle.gradle'
 
-//project.name      = 'Thymeleaf Layout Dialect'
+//project.name      = 'thymeleaf-layout-dialect'
 project.description = 'A dialect for Thymeleaf that allows you to use layout/decorator templates to style your content.'
 project.archivesBaseName = 'thymeleaf-layout-dialect'
 project.sourceCompatibility = '1.7'
 
 project.group    = 'nz.net.ultraq.thymeleaf'
 project.artifact = 'thymeleaf-layout-dialect'
-project.version  = '2.2.2'
+project.version  = '2.3.0-SNAPSHOT'
 project.year     = '2012'
 project.contributors = [
 	[
@@ -62,15 +62,6 @@ dependencies {
 	testRuntime(
 		'org.slf4j:slf4j-simple:1.7.12'
 	)
-}
-
-codenarc {
-	def sharedConfig = 'https://raw.githubusercontent.com/ultraq/codenarc-config-ultraq/master/codenarc.groovy'.toURL().text
-	config = resources.text.fromString(sharedConfig)
-}
-
-cobertura {
-	coverageFormats = ['html', 'xml']
 }
 
 groovydoc {
