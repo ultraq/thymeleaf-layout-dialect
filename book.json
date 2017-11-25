@@ -1,5 +1,5 @@
 {
-	"root": "Docs",
+	"root": "docs",
 	"title": "Thymeleaf Layout Dialect",
 	"structure": {
 		"readme": "Introduction.md",
