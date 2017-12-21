@@ -52,8 +52,9 @@ class FragmentMap extends HashMap<String,IModel> {
 	 */
 	static void setForNode(IContext context, IElementModelStructureHandler structureHandler,
 		Map<String,List> fragments) {
-		def res = get(context);
-		fragments.each{
+		def res = fragments;
+		def appned = get(context);
+		appned.each{
 			k, v ->
 			if (res[k]) {
 				res[k] += v;

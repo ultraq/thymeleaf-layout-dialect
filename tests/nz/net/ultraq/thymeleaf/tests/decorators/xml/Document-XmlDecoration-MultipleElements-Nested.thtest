@@ -44,12 +44,12 @@
 <root xmlns="http://www.example.org/">
 	<list>
 		<item>
-			<name>Tomatoes</name>
-			<price>3.99</price>
-		</item>
-		<item>
 			<name>Apples</name>
 			<price>2.75</price>
+		</item>
+		<item>
+			<name>Tomatoes</name>
+			<price>3.99</price>
 		</item>
 		<item>
 			<name>Potatoes</name>

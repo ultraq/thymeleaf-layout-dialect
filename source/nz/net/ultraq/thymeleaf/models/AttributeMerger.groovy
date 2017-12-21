@@ -16,13 +16,14 @@
 
 package nz.net.ultraq.thymeleaf.models
 
-import nz.net.ultraq.thymeleaf.LayoutDialect
-import nz.net.ultraq.thymeleaf.fragments.FragmentProcessor
-
 import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.model.IModel
 import org.thymeleaf.standard.StandardDialect
 import org.thymeleaf.standard.processor.StandardWithTagProcessor
+
+import nz.net.ultraq.thymeleaf.LayoutDialect
+import nz.net.ultraq.thymeleaf.fragments.CollectFragmentProcessor
+import nz.net.ultraq.thymeleaf.fragments.FragmentProcessor
 
 /**
  * Merges attributes from one element into another.
