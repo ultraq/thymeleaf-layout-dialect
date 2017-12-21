@@ -87,30 +87,30 @@ class CollectFragmentProcessor extends AbstractAttributeTagProcessor {
 		// Replace the tag body with the fragment
 		if (fragments) {
 			def modelFactory = context.modelFactory
-			def merger = new ElementMerger(context);
-			def replacementModel = modelFactory.createModel(tag);
-			def first = true;
-			fragments.each{
+			def merger = new ElementMerger(context)
+			def replacementModel = modelFactory.createModel(tag)
+			def first = true
+			fragments.each {
 				fragment ->
 				if (first) {
-					replacementModel = merger.merge(replacementModel, fragment);
-					first = false;
+					replacementModel = merger.merge(replacementModel, fragment)
+					first = false
 				} else {
-					def firstEvent = true;
-					fragment.each{
+					def firstEvent = true
+					fragment.each {
 						event ->
 						if (firstEvent) {
-							firstEvent = false;
-							replacementModel.add(new Text("\n"));
+							firstEvent = false
+							replacementModel.add(new Text('\n'))
 							replacementModel.add(modelFactory.removeAttribute(event,
-								dialectPrefix, PROCESSOR_DEFINE));
+								dialectPrefix, PROCESSOR_DEFINE))
 						} else {
-							replacementModel.add(event);
+							replacementModel.add(event)
 						}
-					};
+					}
 
 				}
-			};
+			}
 
 			// Remove the layout:fragment attribute - Thymeleaf won't do it for us
 			// when using StructureHandler.replaceWith(...)
