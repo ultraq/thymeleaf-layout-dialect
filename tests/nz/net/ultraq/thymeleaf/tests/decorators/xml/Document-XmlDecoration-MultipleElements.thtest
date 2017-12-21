@@ -1,0 +1,54 @@
+
+# Test that standard decoration can occur on XML documents.
+
+%TEMPLATE_MODE XML
+
+
+%INPUT
+<?xml version="1.0" encoding="utf-8"?>
+<root xmlns="http://www.example.org/"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{Layout}">
+	<item layout:define="item">
+		<name>Tomatoes</name>
+		<price>3.99</price>
+	</item>
+	<item layout:define="item">
+		<name>Apples</name>
+		<price>2.75</price>
+	</item>
+</root>
+
+
+%INPUT[Layout]
+<?xml version="1.0" encoding="utf-8"?>
+<root xmlns="http://www.example.org/"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	<list>
+		<item layout:collect="item"></item>
+		<item>
+			<name>Potatoes</name>
+			<price>4.99</price>
+		</item>
+	</list>
+</root>
+
+
+%OUTPUT
+<?xml version="1.0" encoding="utf-8"?>
+<root xmlns="http://www.example.org/">
+	<list>
+		<item>
+			<name>Tomatoes</name>
+			<price>3.99</price>
+		</item>
+		<item>
+			<name>Apples</name>
+			<price>2.75</price>
+		</item>
+		<item>
+			<name>Potatoes</name>
+			<price>4.99</price>
+		</item>
+	</list>
+</root>

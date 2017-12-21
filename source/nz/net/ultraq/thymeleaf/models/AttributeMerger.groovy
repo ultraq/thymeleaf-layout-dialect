@@ -72,7 +72,8 @@ class AttributeMerger implements ModelMerger {
 
 			// Don't include layout:fragment processors
 			.findAll { sourceAttribute ->
-				return !sourceAttribute.equalsName(layoutDialectPrefix, FragmentProcessor.PROCESSOR_NAME)
+				return !sourceAttribute.equalsName(layoutDialectPrefix, FragmentProcessor.PROCESSOR_NAME) &&
+					!sourceAttribute.equalsName(layoutDialectPrefix, CollectFragmentProcessor.PROCESSOR_DEFINE)
 			}
 
 			.each { sourceAttribute ->
