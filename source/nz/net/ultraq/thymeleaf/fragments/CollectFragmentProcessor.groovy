@@ -29,10 +29,9 @@ import org.thymeleaf.templatemode.TemplateMode
 import nz.net.ultraq.thymeleaf.models.ElementMerger
 
 /**
- * This processor serves a dual purpose: to mark sections of the template that
- * can be replaced, and to do the replacing when they're encountered.
+ * Processor produced from FragmentProcessor in order to separate include and define logic to avoid ambiguity
  *
- * @author Emanuel Rabina
+ * @authors Emanuel Rabina, George Vinokhodov
  */
 class CollectFragmentProcessor extends AbstractAttributeTagProcessor {
 
@@ -45,7 +44,7 @@ class CollectFragmentProcessor extends AbstractAttributeTagProcessor {
 	static final int PROCESSOR_PRECEDENCE = 1
 
 	/**
-	 * Constructor, sets this processor to work on the 'fragment' attribute.
+	 * Constructor, sets this processor to work on the 'collect' attribute.
 	 *
 	 * @param templateMode
 	 * @param dialectPrefix
@@ -56,7 +55,7 @@ class CollectFragmentProcessor extends AbstractAttributeTagProcessor {
 	}
 
 	/**
-	 * Inserts the content of fragments into the encountered fragment placeholder.
+	 * Inserts the content of <code>:define</code> fragments into the encountered collect placeholder.
 	 *
 	 * @param context
 	 * @param model
@@ -81,8 +80,9 @@ class CollectFragmentProcessor extends AbstractAttributeTagProcessor {
 			}
 		}
 
-		// Locate the fragment that corresponds to this decorator/include fragment
-		def fragments = FragmentMap.get(context)[(attributeValue)]
+		// All :define fragments we collected, :collect fragments included to determine where to stop.
+		// Fragments after :collect are preserved for the next :collect event
+		Queue fragments = FragmentMap.get(context)[(attributeValue)]
 
 		// Replace the tag body with the fragment
 		if (fragments) {
@@ -90,8 +90,11 @@ class CollectFragmentProcessor extends AbstractAttributeTagProcessor {
 			def merger = new ElementMerger(context)
 			def replacementModel = modelFactory.createModel(tag)
 			def first = true
-			fragments.each {
-				fragment ->
+			while (!fragments.empty) {
+				def fragment = fragments.poll()
+				if (fragment.get(0).getAttributeValue(dialectPrefix, CollectFragmentProcessor.PROCESSOR_COLLECT)) {
+					break
+				}
 				if (first) {
 					replacementModel = merger.merge(replacementModel, fragment)
 					first = false
@@ -108,11 +111,10 @@ class CollectFragmentProcessor extends AbstractAttributeTagProcessor {
 							replacementModel.add(event)
 						}
 					}
-
 				}
 			}
 
-			// Remove the layout:fragment attribute - Thymeleaf won't do it for us
+			// Remove the layout:collect attribute - Thymeleaf won't do it for us
 			// when using StructureHandler.replaceWith(...)
 			replacementModel.replace(0, modelFactory.removeAttribute(replacementModel.first(),
 				dialectPrefix, PROCESSOR_COLLECT))

@@ -56,14 +56,21 @@ class FragmentFinder {
 		while (eventIndex < model.size()) {
 			def event = model.get(eventIndex)
 			if (event instanceof IOpenElementTag) {
-				def fragmentName = event.getAttributeValue(dialectPrefix, FragmentProcessor.PROCESSOR_NAME) ?: 
-					event.getAttributeValue(dialectPrefix, CollectFragmentProcessor.PROCESSOR_DEFINE)
+				def fragmentName = event.getAttributeValue(dialectPrefix, FragmentProcessor.PROCESSOR_NAME)
+				def collect = false
+				if (!fragmentName) {
+					collect = true
+					fragmentName = event.getAttributeValue(dialectPrefix, CollectFragmentProcessor.PROCESSOR_DEFINE) ?: 
+						event.getAttributeValue(dialectPrefix, CollectFragmentProcessor.PROCESSOR_COLLECT)
+				}
 				if (fragmentName) {
 					def fragment = model.getModel(eventIndex)
-					fragmentsMap[fragmentName] = fragmentsMap[fragmentName] ?: []
+					fragmentsMap[fragmentName] = fragmentsMap[fragmentName] ?: [] as Queue
 					fragmentsMap[fragmentName] << fragment
-					eventIndex += fragment.size()
-					continue
+					if (!collect) {
+						eventIndex += fragment.size()
+						continue
+					}
 				}
 			}
 			eventIndex++
