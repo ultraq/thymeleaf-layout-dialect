@@ -50,15 +50,16 @@ class FragmentMap extends HashMap<String,IModel> {
 	 * @param structureHandler
 	 * @param fragments The new fragments to add to the map.
 	 */
-	static void setForNode(IContext context, IElementModelStructureHandler structureHandler,
-		Map<String,List> fragments) {
+	static void setForNode(IContext context, IElementModelStructureHandler structureHandler, Map<String,List> fragments) {
+
 		def res = fragments
-		def appned = get(context)
-		appned.each {
+		def append = get(context)
+		append.each {
 			k, v ->
 			if (res[k]) {
 				res[k] += v
-			} else {
+			}
+			else {
 				res[k] = v
 			}
 		}

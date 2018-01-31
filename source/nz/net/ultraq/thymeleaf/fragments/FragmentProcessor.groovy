@@ -16,6 +16,8 @@
 
 package nz.net.ultraq.thymeleaf.fragments
 
+import nz.net.ultraq.thymeleaf.models.ElementMerger
+
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.thymeleaf.context.ITemplateContext
@@ -24,8 +26,6 @@ import org.thymeleaf.model.IProcessableElementTag
 import org.thymeleaf.processor.element.AbstractAttributeTagProcessor
 import org.thymeleaf.processor.element.IElementTagStructureHandler
 import org.thymeleaf.templatemode.TemplateMode
-
-import nz.net.ultraq.thymeleaf.models.ElementMerger
 
 /**
  * This processor serves a dual purpose: to mark sections of the template that

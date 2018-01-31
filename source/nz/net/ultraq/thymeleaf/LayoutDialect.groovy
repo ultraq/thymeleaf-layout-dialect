@@ -16,11 +16,6 @@
 
 package nz.net.ultraq.thymeleaf
 
-import org.thymeleaf.dialect.AbstractProcessorDialect
-import org.thymeleaf.processor.IProcessor
-import org.thymeleaf.standard.processor.StandardXmlNsTagProcessor
-import org.thymeleaf.templatemode.TemplateMode
-
 import nz.net.ultraq.thymeleaf.context.extensions.IContextExtensions
 import nz.net.ultraq.thymeleaf.decorators.DecorateProcessor
 import nz.net.ultraq.thymeleaf.decorators.DecoratorProcessor
@@ -40,6 +35,11 @@ import nz.net.ultraq.thymeleaf.models.extensions.IStandaloneElementTagExtensions
 import nz.net.ultraq.thymeleaf.models.extensions.ITemplateEventExtensions
 import nz.net.ultraq.thymeleaf.models.extensions.ITextExtensions
 import nz.net.ultraq.thymeleaf.models.extensions.TemplateModelExtensions
+
+import org.thymeleaf.dialect.AbstractProcessorDialect
+import org.thymeleaf.processor.IProcessor
+import org.thymeleaf.standard.processor.StandardXmlNsTagProcessor
+import org.thymeleaf.templatemode.TemplateMode
 
 /**
  * A dialect for Thymeleaf that lets you build layouts and reusable templates in

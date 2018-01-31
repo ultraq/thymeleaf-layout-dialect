@@ -1,5 +1,5 @@
 /*
- * Copyright 2012, Emanuel Rabina (http://www.ultraq.net.nz/)
+ * Copyright 2017, Emanuel Rabina (http://www.ultraq.net.nz/)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,8 @@
 
 package nz.net.ultraq.thymeleaf.fragments
 
+import nz.net.ultraq.thymeleaf.models.ElementMerger
+
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.thymeleaf.context.ITemplateContext
@@ -26,10 +28,9 @@ import org.thymeleaf.processor.element.AbstractAttributeTagProcessor
 import org.thymeleaf.processor.element.IElementTagStructureHandler
 import org.thymeleaf.templatemode.TemplateMode
 
-import nz.net.ultraq.thymeleaf.models.ElementMerger
-
 /**
- * Processor produced from FragmentProcessor in order to separate include and define logic to avoid ambiguity
+ * Processor produced from FragmentProcessor in order to separate include and
+ * define logic to avoid ambiguity.
  *
  * @authors Emanuel Rabina, George Vinokhodov
  */
@@ -45,7 +46,7 @@ class CollectFragmentProcessor extends AbstractAttributeTagProcessor {
 
 	/**
 	 * Constructor, sets this processor to work on the 'collect' attribute.
-	 *
+	 * 
 	 * @param templateMode
 	 * @param dialectPrefix
 	 */
@@ -56,7 +57,7 @@ class CollectFragmentProcessor extends AbstractAttributeTagProcessor {
 
 	/**
 	 * Inserts the content of <code>:define</code> fragments into the encountered collect placeholder.
-	 *
+	 * 
 	 * @param context
 	 * @param model
 	 * @param attributeName
@@ -82,7 +83,7 @@ class CollectFragmentProcessor extends AbstractAttributeTagProcessor {
 
 		// All :define fragments we collected, :collect fragments included to determine where to stop.
 		// Fragments after :collect are preserved for the next :collect event
-		Queue fragments = FragmentMap.get(context)[(attributeValue)]
+		def fragments = FragmentMap.get(context)[(attributeValue)]
 
 		// Replace the tag body with the fragment
 		if (fragments) {
@@ -98,16 +99,17 @@ class CollectFragmentProcessor extends AbstractAttributeTagProcessor {
 				if (first) {
 					replacementModel = merger.merge(replacementModel, fragment)
 					first = false
-				} else {
+				}
+				else {
 					def firstEvent = true
 					fragment.each {
 						event ->
 						if (firstEvent) {
 							firstEvent = false
 							replacementModel.add(new Text('\n'))
-							replacementModel.add(modelFactory.removeAttribute(event,
-								dialectPrefix, PROCESSOR_DEFINE))
-						} else {
+							replacementModel.add(modelFactory.removeAttribute(event, dialectPrefix, PROCESSOR_DEFINE))
+						}
+						else {
 							replacementModel.add(event)
 						}
 					}
@@ -116,8 +118,7 @@ class CollectFragmentProcessor extends AbstractAttributeTagProcessor {
 
 			// Remove the layout:collect attribute - Thymeleaf won't do it for us
 			// when using StructureHandler.replaceWith(...)
-			replacementModel.replace(0, modelFactory.removeAttribute(replacementModel.first(),
-				dialectPrefix, PROCESSOR_COLLECT))
+			replacementModel.replace(0, modelFactory.removeAttribute(replacementModel.first(), dialectPrefix, PROCESSOR_COLLECT))
 
 			structureHandler.replaceWith(replacementModel, true)
 		}
