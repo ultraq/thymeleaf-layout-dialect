@@ -51,8 +51,17 @@ class FragmentMap extends HashMap<String,IModel> {
 	 * @param fragments The new fragments to add to the map.
 	 */
 	static void setForNode(IContext context, IElementModelStructureHandler structureHandler,
-		Map<String,IModel> fragments) {
-
-		structureHandler.setLocalVariable(FRAGMENT_COLLECTION_KEY, get(context) + fragments)
+		Map<String,List> fragments) {
+		def res = fragments
+		def appned = get(context)
+		appned.each {
+			k, v ->
+			if (res[k]) {
+				res[k] += v
+			} else {
+				res[k] = v
+			}
+		}
+		structureHandler.setLocalVariable(FRAGMENT_COLLECTION_KEY, res)
 	}
 }

@@ -16,8 +16,6 @@
 
 package nz.net.ultraq.thymeleaf.fragments
 
-import nz.net.ultraq.thymeleaf.models.ElementMerger
-
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.thymeleaf.context.ITemplateContext
@@ -26,6 +24,8 @@ import org.thymeleaf.model.IProcessableElementTag
 import org.thymeleaf.processor.element.AbstractAttributeTagProcessor
 import org.thymeleaf.processor.element.IElementTagStructureHandler
 import org.thymeleaf.templatemode.TemplateMode
+
+import nz.net.ultraq.thymeleaf.models.ElementMerger
 
 /**
  * This processor serves a dual purpose: to mark sections of the template that
@@ -80,10 +80,11 @@ class FragmentProcessor extends AbstractAttributeTagProcessor {
 		}
 
 		// Locate the fragment that corresponds to this decorator/include fragment
-		def fragment = FragmentMap.get(context)[(attributeValue)]
+		def fragments = FragmentMap.get(context)[(attributeValue)]
 
 		// Replace the tag body with the fragment
-		if (fragment) {
+		if (fragments) {
+			def fragment = fragments[-1]
 			def modelFactory = context.modelFactory
 			def replacementModel = new ElementMerger(context).merge(modelFactory.createModel(tag), fragment)
 

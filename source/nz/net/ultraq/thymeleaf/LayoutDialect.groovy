@@ -16,12 +16,18 @@
 
 package nz.net.ultraq.thymeleaf
 
+import org.thymeleaf.dialect.AbstractProcessorDialect
+import org.thymeleaf.processor.IProcessor
+import org.thymeleaf.standard.processor.StandardXmlNsTagProcessor
+import org.thymeleaf.templatemode.TemplateMode
+
 import nz.net.ultraq.thymeleaf.context.extensions.IContextExtensions
 import nz.net.ultraq.thymeleaf.decorators.DecorateProcessor
 import nz.net.ultraq.thymeleaf.decorators.DecoratorProcessor
 import nz.net.ultraq.thymeleaf.decorators.SortingStrategy
 import nz.net.ultraq.thymeleaf.decorators.TitlePatternProcessor
 import nz.net.ultraq.thymeleaf.decorators.strategies.AppendingStrategy
+import nz.net.ultraq.thymeleaf.fragments.CollectFragmentProcessor
 import nz.net.ultraq.thymeleaf.fragments.FragmentProcessor
 import nz.net.ultraq.thymeleaf.includes.IncludeProcessor
 import nz.net.ultraq.thymeleaf.includes.InsertProcessor
@@ -34,11 +40,6 @@ import nz.net.ultraq.thymeleaf.models.extensions.IStandaloneElementTagExtensions
 import nz.net.ultraq.thymeleaf.models.extensions.ITemplateEventExtensions
 import nz.net.ultraq.thymeleaf.models.extensions.ITextExtensions
 import nz.net.ultraq.thymeleaf.models.extensions.TemplateModelExtensions
-
-import org.thymeleaf.dialect.AbstractProcessorDialect
-import org.thymeleaf.processor.IProcessor
-import org.thymeleaf.standard.processor.StandardXmlNsTagProcessor
-import org.thymeleaf.templatemode.TemplateMode
 
 /**
  * A dialect for Thymeleaf that lets you build layouts and reusable templates in
@@ -104,6 +105,7 @@ class LayoutDialect extends AbstractProcessorDialect {
 			new InsertProcessor(TemplateMode.HTML, dialectPrefix),
 			new ReplaceProcessor(TemplateMode.HTML, dialectPrefix),
 			new FragmentProcessor(TemplateMode.HTML, dialectPrefix),
+			new CollectFragmentProcessor(TemplateMode.HTML, dialectPrefix),
 			new TitlePatternProcessor(TemplateMode.HTML, dialectPrefix),
 
 			// Processors available in the XML template mode
@@ -113,7 +115,8 @@ class LayoutDialect extends AbstractProcessorDialect {
 			new IncludeProcessor(TemplateMode.XML, dialectPrefix),
 			new InsertProcessor(TemplateMode.XML, dialectPrefix),
 			new ReplaceProcessor(TemplateMode.XML, dialectPrefix),
-			new FragmentProcessor(TemplateMode.XML, dialectPrefix)
+			new FragmentProcessor(TemplateMode.XML, dialectPrefix),
+			new CollectFragmentProcessor(TemplateMode.XML, dialectPrefix)
 		]
 	}
 }
