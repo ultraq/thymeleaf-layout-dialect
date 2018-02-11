@@ -5,7 +5,24 @@ Changelog
 As of 1.3.0, this project follows [Semantic Versioning](http://semver.org/).
 
 
+### 2.3.0
+
+ - Verification that the layout dialect plays well with Java 9 and Spring 5,
+   involved a patch upgrade of Groovy to 2.4.13
+   ([#161](https://github.com/ultraq/thymeleaf-layout-dialect/issues/161))
+ - Contribution from [@Vineg](https://github.com/Vineg) to add a
+   `layout:collect`/`data-layout-collect` processor that accumulates encountered
+   fragments of the same name.  Documentation is still pending, but eager devs
+   can take a look at the PR for more details
+   ([#166](https://github.com/ultraq/thymeleaf-layout-dialect/pull/166))
+ - A few tool updates for linting, automated testing, and code coverage w/
+   Travis CI (included dropping the JDK7 build as I could no longer get a
+   supported configuration working on Travis, but the layout dialect still aims
+   to support Java 7 for the remainder of the 2.x releases).
+
+
 ### 2.2.2
+
  - Another decorate processor root element check fix for deep hierarchies that
    include a `th:with` attribute processor (which gets mutated by the various)
    decoration processes)
@@ -22,6 +39,7 @@ As of 1.3.0, this project follows [Semantic Versioning](http://semver.org/).
 
 
 ### 2.2.0
+
  - Rework how titles are handled to support inline expressions in Thymeleaf 3
    ([#145](https://github.com/ultraq/thymeleaf-layout-dialect/issues/145))
  - Now that the complete title cannot be known during execution of the title
@@ -34,11 +52,13 @@ As of 1.3.0, this project follows [Semantic Versioning](http://semver.org/).
 
 
 ### 2.1.2
+
  - Fix insertion of elements into a `<head>` section that is empty, ie: `<head></head>`
    ([#144](https://github.com/ultraq/thymeleaf-layout-dialect/issues/144))
 
 
 ### 2.1.1
+
  - Simplify and fix the "model level" counting algorithm after a better
    understanding of attoparser and how it works
    ([#142](https://github.com/ultraq/thymeleaf-layout-dialect/issues/142),
@@ -46,6 +66,7 @@ As of 1.3.0, this project follows [Semantic Versioning](http://semver.org/).
 
 
 ### 2.1.0
+
  - Be less strict with HTML templates that are auto-balanced by Attoparser
    (usually a result of not knowing which HTML elements cause auto-closing
    behaviours), instead only using tags that are in the original templates to
@@ -108,6 +129,7 @@ Differences:
 
 
 ### 2.0.5
+
  - Upgrade thymeleaf-expression-processor to 1.1.2, which includes a fix for
    multiline fragment expressions
    ([#140](https://github.com/ultraq/thymeleaf-layout-dialect/issues/140))
@@ -117,17 +139,20 @@ Differences:
 
 
 ### 2.0.4
+
  - Have the `layout:title-pattern` processor work when using `th:utext`/`data-th-utext`
    on the `<title>` tag as well
    ([#136](https://github.com/ultraq/thymeleaf-layout-dialect/issues/136))
 
 
 ### 2.0.3
+
  - Kill the rise in memory usage found by
    ([#134](https://github.com/ultraq/thymeleaf-layout-dialect/issues/134))
 
 
 ### 2.0.2
+
  - Convert `FragmentProcessor` from a model processor to a tag processor to get
    around model level problems when inserting fragments that may alter the model
    level
@@ -139,6 +164,7 @@ Differences:
 
 
 ### 2.0.1
+
  - Fix `NullPointerException` when using any of the `include`/`insert`/`replace`
    processors with a full template fragment expression
    ([#120](https://github.com/ultraq/thymeleaf-layout-dialect/issues/120))
@@ -155,6 +181,7 @@ Differences:
 
 
 ### 2.0.0
+
  - Layout dialect rewritten to support Thymeleaf 3
    ([#68](https://github.com/ultraq/thymeleaf-layout-dialect/issues/68),
    [Layout Dialect 2.0 milestone](https://github.com/ultraq/thymeleaf-layout-dialect/milestone/6?closed=1))
@@ -181,6 +208,7 @@ upcoming patches so they don't hold up the release.
 
 
 ### 1.4.0
+
  - Change the behaviour of merging `th:with` attributes so that child pages can
    override layout values
    ([#99](https://github.com/ultraq/thymeleaf-layout-dialect/issues/99))
@@ -189,11 +217,13 @@ upcoming patches so they don't hold up the release.
 
 
 ### 1.3.3
+
  - Don't copy collapsible whitespace between `<head>` elements during decoration
    ([#92](https://github.com/ultraq/thymeleaf-layout-dialect/issues/92))
 
 
 ### 1.3.2
+
  - Prevent `IllegalArgumentException` when using a template with a condensed
    `<head>` section
    ([#90](https://github.com/ultraq/thymeleaf-layout-dialect/issues/90))
@@ -203,11 +233,13 @@ upcoming patches so they don't hold up the release.
 
 
 ### 1.3.1
+
  - Restore Java 6 support
    ([#85](https://github.com/ultraq/thymeleaf-layout-dialect/issues/85))
 
 
 ### 1.3.0
+
  - Dialect rewritten in Groovy
  - Dropped the deprecated `substituteby` processor
  - Allow the title to be completely processed
@@ -222,24 +254,28 @@ upcoming patches so they don't hold up the release.
 
 
 ### 1.2.9
+
  - Have all non-element nodes (text, comments) included in the merging of the
    `<head>` section
    ([#70](https://github.com/ultraq/thymeleaf-layout-dialect/issues/70))
 
 
 ### 1.2.8
+
  - Contribution from [Oliver Niekrenz](https://github.com/oniekrenz) to fix a
    recursion issue in the way fragments are picked out of templates
    ([#60](https://github.com/ultraq/thymeleaf-layout-dialect/pull/60))
 
 
 ### 1.2.7
+
  - Fix for `ArrayIndexOutOfBoundsException`s coming out of the grouping feature
    introduced in 1.2.6
    ([#54](https://github.com/ultraq/thymeleaf-layout-dialect/issues/54))
 
 
 ### 1.2.6
+
  - Reduce the amount of whitespace copied surrounding the `<html>` tag
    ([#50](https://github.com/ultraq/thymeleaf-layout-dialect/issues/50))
  - Start logic to group like elements in the merged `<head>` section together
@@ -247,6 +283,7 @@ upcoming patches so they don't hold up the release.
 
 
 ### 1.2.5
+
  - Restore title fallback behaviour when either content or decorator title
    elements are empty
    ([#45](https://github.com/ultraq/thymeleaf-layout-dialect/issues/45))
@@ -256,6 +293,7 @@ upcoming patches so they don't hold up the release.
 
 
 ### 1.2.4
+
  - Contribution from [Justin Munn](https://github.com/munnja001) to fix bugs in
    the `layout:title-pattern` processor, making it behave more naturally in the
    process
@@ -263,6 +301,7 @@ upcoming patches so they don't hold up the release.
 
 
 ### 1.2.3
+
  - Fix for nested layout fragments using the replace/substituteby processors
    ([#37](https://github.com/ultraq/thymeleaf-layout-dialect/issues/37))
  - Don't pass arbitrary attributes (ie: anything that isn't an attribute
@@ -271,6 +310,7 @@ upcoming patches so they don't hold up the release.
 
 
 ### 1.2.2
+
  - Allow passing variables for all document types, not just full HTML templates
    ([#32](https://github.com/ultraq/thymeleaf-layout-dialect/issues/32))
  - Remove the reliance on Thymeleaf's [literal substitutions](http://www.thymeleaf.org/whatsnew21.html#lsub)
@@ -282,12 +322,14 @@ upcoming patches so they don't hold up the release.
 
 
 ### 1.2.1
+
  - Restore `layout:decorator` behaviour when using it for deep page hierarchies
    in Thymeleaf 2.1.2
    ([#30](https://github.com/ultraq/thymeleaf-layout-dialect/issues/30))
 
 
 ### 1.2
+
  - Works with Thymeleaf 2.1
    ([#26](https://github.com/ultraq/thymeleaf-layout-dialect/issues/26))
  - `layout:title-pattern` now works on title text created using the `th:text`
@@ -296,11 +338,13 @@ upcoming patches so they don't hold up the release.
 
 
 ### 1.1.4
+
  - Minor bugfixes, small refactoring, and a large cleanup as a result of the
    work done towards being compatible with Thymeleaf 2.1.
 
 
 ### 1.1.3
+
  - Refactored handling of `<title>` elements for when they're lacking in either
    content or decorator templates and the `layout:title-pattern` processor is
    being used
@@ -314,12 +358,14 @@ upcoming patches so they don't hold up the release.
 
 
 ### 1.1.2
+
  - Relaxed the root element restriction when using the `LEGACYHTML5` template
    mode due to the way the NekoHTML parser works on HTML fragments
    ([#23](https://github.com/ultraq/thymeleaf-layout-dialect/issues/23))
 
 
 ### 1.1.1
+
  - Restore the help/documentation file so that this dialect will appear in
    content assist in the Thymeleaf Eclipse plugin. (I used a new build process
    for the 1.1 branch, and it missed this resource file!  Apologies for that
@@ -327,6 +373,7 @@ upcoming patches so they don't hold up the release.
 
 
 ### 1.1
+
  - Change package to `nz.net.ultraq.thymeleaf` (dropped the 'web' part).
  - Change XML namespace to `http://www.ultraq.net.nz/thymeleaf/layout` (dropped
    the 'web' part).
@@ -338,11 +385,13 @@ upcoming patches so they don't hold up the release.
 
 
 ### 1.0.6
+
  - Added a help/documentation file so that this dialect will appear in content
    assist in the Thymeleaf Eclipse plugin.
 
 
 ### 1.0.5
+
  - Added the ability to specify the final `<title>` through a configurable
    pattern, specified in a new `layout:title-pattern` attribute.
  - Made code emit a warning to the logs if the `layout:fragment` element was in
@@ -355,6 +404,7 @@ upcoming patches so they don't hold up the release.
 
 
 ### 1.0.4
+
  - Fixed enforcing of `layout:decorator` element being in the root element,
    leading to a better error message if this attribute is found elsewhere.
  - Fixed the resulting JAR which didn't recreate the proper Maven metadata in
@@ -366,6 +416,7 @@ upcoming patches so they don't hold up the release.
 
 
 ### 1.0.3
+
  - Added a `layout:include` attribute which works like `th:include` but allows
    for the passing of element fragments to the included page.
  - Allow `th:with` local variable declarations made in the decorator page to be
@@ -379,6 +430,7 @@ upcoming patches so they don't hold up the release.
 
 
 ### 1.0.2
+
  - Allow a decorator and content pages to contain just a `<head>` section, or
    just a `<body>` section, or neither section, or some other combination
    between pages
@@ -386,6 +438,7 @@ upcoming patches so they don't hold up the release.
 
 
 ### 1.0.1
+
  - Switched from Ant to Gradle as a build tool and to generate Maven-compatible
    artifacts.
  - To appease the Mavenites amongst you, the project is now being served from
@@ -395,4 +448,5 @@ upcoming patches so they don't hold up the release.
 
 
 ### 1.0
+
  - Initial release.
