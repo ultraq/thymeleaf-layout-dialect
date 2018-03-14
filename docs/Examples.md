@@ -194,7 +194,7 @@ Parent/layout template:
 ```html
 <html>
   ...
-  <p th:with="${greeting}"></p> <!-- You'll end up with "Hello!" in here -->
+  <p th:text="${greeting}"></p> <!-- You'll end up with "Hello!" in here -->
 ```
 
 In future, support may be added for using fragment local variables, much like
