@@ -48,7 +48,7 @@ class FragmentFinder {
 	 * @param model Model whose events are to be searched.
 	 * @return Map of fragment names and their elements.
 	 */
-	Map<String,IModel> findFragments(IModel model) {
+	Map<String,Queue<IModel>> findFragments(IModel model) {
 
 		def fragmentsMap = [:]
 
