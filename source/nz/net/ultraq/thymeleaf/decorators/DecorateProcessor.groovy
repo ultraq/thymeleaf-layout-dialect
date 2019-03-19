@@ -138,7 +138,7 @@ class DecorateProcessor extends AbstractAttributeModelProcessor {
 		// layout/template.
 		if (decorateTemplateExpression.hasParameters()) {
 			if (decorateTemplateExpression.hasSyntheticParameters()) {
-				throw new IllegalArgumentException("Fragment parameters must be named when used with layout:decorate/data-layout-decorate")
+				throw new IllegalArgumentException('Fragment parameters must be named when used with layout:decorate/data-layout-decorate')
 			}
 			decorateTemplateExpression.parameters.each { parameter ->
 				structureHandler.setLocalVariable(parameter.left.execute(context), parameter.right.execute(context))
