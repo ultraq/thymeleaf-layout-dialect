@@ -5,6 +5,11 @@ Changelog
 As of 1.3.0, this project follows [Semantic Versioning](http://semver.org/).
 
 
+### 2.4.0
+ - Allow passing of values up to layout templates using fragment parameters
+   ([#157](https://github.com/ultraq/thymeleaf-layout-dialect/issues/157))
+
+
 ### 2.3.0
 
  - Verification that the layout dialect plays well with Java 9 and Spring 5,
