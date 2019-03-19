@@ -1,0 +1,32 @@
+
+# Test decoration and passing of variables using fragment signatures
+
+%TEMPLATE_MODE HTML
+
+%CONTEXT
+var fruit = 'tomatoes'
+
+
+%INPUT
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout(thing=${fruit})}">
+</html>
+
+
+%INPUT[layout]
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<body>
+	<p th:text="'This is a page about ' + ${thing}">Page content goes here</p>
+</body>
+</html>
+
+
+%OUTPUT
+<!DOCTYPE html>
+<html>
+<body>
+	<p>This is a page about tomatoes</p>
+</body>
+</html>

@@ -178,15 +178,14 @@ to fill-up/overwrite the parent.  This way the layout acts as a sort of
 Passing data to layouts
 -----------------------
 
-For passing values from child templates up to their parent layouts, use
-`th:with`/`data-th-with` attribute processors on any element that's involved in
-the layout/decoration process, which would be anywhere `layout:decorate`/`data-layout-decorate`
-or `layout:fragment`/`data-layout-fragment` would be found, eg:
+Since locating templates is done using standard Thymeleaf fragment expressions,
+these can also be used to pass data from child templates up to their parent
+layouts, eg:
 
 Child/content template:
 
 ```html
-<html layout:decorate="your-layout.html" th:with="greeting='Hello!'">
+<html layout:decorate="~{your-layout.html(greeting='Hello!')}">
 ```
 
 Parent/layout template:
@@ -197,10 +196,15 @@ Parent/layout template:
   <p th:text="${greeting}"></p> <!-- You'll end up with "Hello!" in here -->
 ```
 
-In future, support may be added for using fragment local variables, much like
-how Thymeleaf uses them for creating [fragment signatures](http://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html#parameterizable-fragment-signatures).
-Check out [#157](https://github.com/ultraq/thymeleaf-layout-dialect/issues/157)
-to see how progress on that is going.
+> Parameters passed this way *must* be named - an exception will be thrown if
+> names are missing.
+
+This feature is available from Thymeleaf Layout Dialect 2.4.0.  For older
+versions, you can continue to use `th:with`/`data-th-with`, eg:
+
+```html
+<html layout:decorate="~{your-layout.html}" th:with="greeting='Hello!'">
+```
 
 
 Configuring your title

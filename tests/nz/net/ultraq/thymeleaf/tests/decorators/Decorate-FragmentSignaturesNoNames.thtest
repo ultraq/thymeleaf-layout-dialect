@@ -1,0 +1,25 @@
+
+# Test decoration and requirement of parameter names when using fragment
+# signatures
+
+%TEMPLATE_MODE HTML
+
+%CONTEXT
+var fruit = 'tomatoes'
+
+%INPUT
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout(${fruit})}">
+</html>
+
+%INPUT[layout]
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<body>
+	<p th:text="'This is a page about ' + ${thing}">Page content goes here</p>
+</body>
+</html>
+
+%EXCEPTION java.lang.IllegalArgumentException
+%EXCEPTION_MESSAGE_PATTERN Fragment parameters must be named when used with layout:decorate/data-layout-decorate

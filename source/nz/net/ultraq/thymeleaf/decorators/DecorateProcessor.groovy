@@ -132,5 +132,17 @@ class DecorateProcessor extends AbstractAttributeModelProcessor {
 
 		// Save layout fragments for use later by layout:fragment processors
 		FragmentMap.setForNode(context, structureHandler, pageFragments)
+
+		// Scope variables in fragment definition to template.  Parameters *must* be
+		// named as there is no mechanism for setting their name at the target
+		// layout/template.
+		if (decorateTemplateExpression.hasParameters()) {
+			if (decorateTemplateExpression.hasSyntheticParameters()) {
+				throw new IllegalArgumentException("Fragment parameters must be named when used with layout:decorate/data-layout-decorate")
+			}
+			decorateTemplateExpression.parameters.each { parameter ->
+				structureHandler.setLocalVariable(parameter.left.execute(context), parameter.right.execute(context))
+			}
+		}
 	}
 }
