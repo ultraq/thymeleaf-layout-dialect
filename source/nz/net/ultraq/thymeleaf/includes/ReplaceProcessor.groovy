@@ -19,8 +19,7 @@ package nz.net.ultraq.thymeleaf.includes
 import nz.net.ultraq.thymeleaf.expressions.ExpressionProcessor
 import nz.net.ultraq.thymeleaf.fragments.FragmentFinder
 import nz.net.ultraq.thymeleaf.fragments.FragmentMap
-import nz.net.ultraq.thymeleaf.fragments.FragmentParameterNamesExtractor
-import nz.net.ultraq.thymeleaf.fragments.FragmentProcessor
+import nz.net.ultraq.thymeleaf.fragments.FragmentParameterVariableUpdater
 import nz.net.ultraq.thymeleaf.models.TemplateModelFinder
 
 import org.thymeleaf.context.ITemplateContext
@@ -83,21 +82,8 @@ class ReplaceProcessor extends AbstractAttributeModelProcessor {
 		def fragmentForReplacementUse = fragmentForReplacement.cloneModel()
 		model.replaceModel(0, fragmentForReplacementUse)
 
-		// When fragment parameters aren't named, derive the name from the fragment definition
-		// TODO: Common code across all the inclusion processors
-		if (fragmentExpression.hasSyntheticParameters()) {
-			def fragmentDefinition = fragmentForReplacementUse.first()
-				.getAttributeValue(dialectPrefix, FragmentProcessor.PROCESSOR_NAME)
-			def parameterNames = new FragmentParameterNamesExtractor().extract(fragmentDefinition)
-			fragmentExpression.parameters.eachWithIndex { parameter, index ->
-				structureHandler.setLocalVariable(parameterNames[index], parameter.right.execute(context))
-			}
-		}
-		// Otherwise, apply values as is
-		else {
-			fragmentExpression.parameters.each { parameter ->
-				structureHandler.setLocalVariable(parameter.left.execute(context), parameter.right.execute(context))
-			}
-		}
+		// Scope variables in fragment definition to current fragment
+		new FragmentParameterVariableUpdater(dialectPrefix, context)
+			.updateLocalVariables(fragmentExpression, fragmentForReplacementUse, structureHandler)
 	}
 }

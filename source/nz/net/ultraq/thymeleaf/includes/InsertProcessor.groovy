@@ -19,8 +19,7 @@ package nz.net.ultraq.thymeleaf.includes
 import nz.net.ultraq.thymeleaf.expressions.ExpressionProcessor
 import nz.net.ultraq.thymeleaf.fragments.FragmentFinder
 import nz.net.ultraq.thymeleaf.fragments.FragmentMap
-import nz.net.ultraq.thymeleaf.fragments.FragmentParameterNamesExtractor
-import nz.net.ultraq.thymeleaf.fragments.FragmentProcessor
+import nz.net.ultraq.thymeleaf.fragments.FragmentParameterVariableUpdater
 import nz.net.ultraq.thymeleaf.models.TemplateModelFinder
 
 import org.thymeleaf.context.ITemplateContext
@@ -69,7 +68,7 @@ class InsertProcessor extends AbstractAttributeModelProcessor {
 
 		// Locate the page and fragment to insert
 		def fragmentExpression = new ExpressionProcessor(context).parseFragmentExpression(attributeValue)
-		def fragmentToInsert = new TemplateModelFinder(context).findFragment(fragmentExpression)
+		def fragmentForInsertion = new TemplateModelFinder(context).findFragment(fragmentExpression)
 
 		// Gather all fragment parts within this element, scoping them to this element
 		def includeFragments = new FragmentFinder(dialectPrefix).findFragments(model)
@@ -77,28 +76,15 @@ class InsertProcessor extends AbstractAttributeModelProcessor {
 
 		// Keep track of what template is being processed?  Thymeleaf does this for
 		// its include processor, so I'm just doing the same here.
-		structureHandler.templateData = fragmentToInsert.templateData
+		structureHandler.templateData = fragmentForInsertion.templateData
 
 		// Replace the children of this element with those of the to-be-inserted page fragment
-		def fragmentToInsertUse = fragmentToInsert.cloneModel()
+		def fragmentForInsertionUse = fragmentForInsertion.cloneModel()
 		model.clearChildren()
-		model.insertModel(1, fragmentToInsertUse)
+		model.insertModel(1, fragmentForInsertionUse)
 
-		// When fragment parameters aren't named, derive the name from the fragment definition
-		// TODO: Common code across all the inclusion processors
-		if (fragmentExpression.hasSyntheticParameters()) {
-			def fragmentDefinition = fragmentToInsertUse.first()
-				.getAttributeValue(dialectPrefix, FragmentProcessor.PROCESSOR_NAME)
-			def parameterNames = new FragmentParameterNamesExtractor().extract(fragmentDefinition)
-			fragmentExpression.parameters.eachWithIndex { parameter, index ->
-				structureHandler.setLocalVariable(parameterNames[index], parameter.right.execute(context))
-			}
-		}
-		// Otherwise, apply values as is
-		else {
-			fragmentExpression.parameters.each { parameter ->
-				structureHandler.setLocalVariable(parameter.left.execute(context), parameter.right.execute(context))
-			}
-		}
+		// Scope variables in fragment definition to current fragment
+		new FragmentParameterVariableUpdater(dialectPrefix, context)
+			.updateLocalVariables(fragmentExpression, fragmentForInsertionUse, structureHandler)
 	}
 }
