@@ -22,7 +22,6 @@ import nz.net.ultraq.thymeleaf.models.AttributeMerger
 
 import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.model.IModel
-import org.thymeleaf.model.IOpenElementTag
 
 /**
  * A decorator specific to processing an HTML {@code <head>} element.
@@ -62,33 +61,35 @@ class HtmlHeadDecorator implements Decorator {
 		}
 
 		def modelFactory = context.modelFactory
-		def isTitle = { event -> event instanceof IOpenElementTag && event.elementCompleteName == 'title' }
+		def isTitle = { event -> event.isElementOf('title') }
 
 		// New head model based off the target being decorated
 		def resultHeadModel = new AttributeMerger(context).merge(targetHeadModel, sourceHeadModel)
-		def titleIndex = resultHeadModel.findIndexOf(isTitle)
-		if (titleIndex != -1) {
-			resultHeadModel.removeModelWithWhitespace(titleIndex)
-		}
 
 		// Get the source and target title elements to pass to the title decorator
-		def titleRetriever = { headModel -> headModel?.findModel(isTitle) }
 		def resultTitle = new HtmlTitleDecorator(context).decorate(
-			titleRetriever(targetHeadModel),
-			titleRetriever(sourceHeadModel)
+			targetHeadModel?.findModel(isTitle),
+			sourceHeadModel?.findModel(isTitle)
 		)
-		resultHeadModel.insertModelWithWhitespace(1, resultTitle, modelFactory)
+		if (resultTitle) {
+			def targetTitleIndex = sortingStrategy.findPositionForModel(resultHeadModel, resultTitle)
+			if (isTitle(resultHeadModel.get(targetTitleIndex))) {
+				resultHeadModel.replaceModel(targetTitleIndex, resultTitle)
+			}
+			else {
+				resultHeadModel.insertModelWithWhitespace(targetTitleIndex, resultTitle, modelFactory)
+			}
+		}
 
 		// Merge the rest of the source <head> elements with the target <head>
 		// elements using the current merging strategy
 		if (sourceHeadModel && targetHeadModel) {
-			sourceHeadModel.childModelIterator()
+			sourceHeadModel?.childModelIterator()
 				.findAll { model -> !isTitle(model.first()) }
 				.each { model ->
-					def position = sortingStrategy.findPositionForModel(resultHeadModel, model)
-					if (position != -1) {
-						resultHeadModel.insertModelWithWhitespace(position, model, modelFactory)
-					}
+					resultHeadModel.insertModelWithWhitespace(
+						sortingStrategy.findPositionForModel(resultHeadModel, model),
+						model, modelFactory)
 				}
 		}
 

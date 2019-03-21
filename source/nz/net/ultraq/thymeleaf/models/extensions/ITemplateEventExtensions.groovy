@@ -16,6 +16,8 @@
 
 package nz.net.ultraq.thymeleaf.models.extensions
 
+import org.thymeleaf.model.ICloseElementTag
+import org.thymeleaf.model.IOpenElementTag
 import org.thymeleaf.model.ITemplateEvent
 import org.thymeleaf.model.IText
 
@@ -32,6 +34,36 @@ class ITemplateEventExtensions {
 	static void apply() {
 
 		ITemplateEvent.metaClass {
+
+			/**
+			 * Returns whether or not this event represents an opening element.
+			 * 
+			 * @return {@code true} if this event is an opening tag.
+			 */
+			isClosingElement << {
+				return delegate instanceof ICloseElementTag
+			}
+
+			/**
+			 * Returns whether or not this event represents an opening element of the
+			 * given name.
+			 * 
+			 * @param tagName
+			 * @return {@code true} if this event is an opening tag and has the given
+			 *         tag name.
+			 */
+			isElementOf << { tagName ->
+				return delegate.openingElement && delegate.elementCompleteName == tagName
+			}
+
+			/**
+			 * Returns whether or not this event represents an opening element.
+			 * 
+			 * @return {@code true} if this event is an opening tag.
+			 */
+			isOpeningElement << {
+				return delegate instanceof IOpenElementTag
+			}
 
 			/**
 			 * Returns whether or not this event represents collapsible whitespace.

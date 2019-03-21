@@ -255,26 +255,30 @@ class IModelExtensions {
 			 * Inserts a model, creating a whitespace event before it so that it
 			 * appears in line with all the existing events.
 			 * 
-			 * @param pos
+			 * @param pos          A valid index within the current model, otherwise
+			 *                     nothing happens.
 			 * @param model
 			 * @param modelFactory
 			 */
 			insertModelWithWhitespace << { int pos, IModel model, IModelFactory modelFactory ->
 
-				// Use existing whitespace at the insertion point
-				def whitespace = delegate.getModel(pos)
-				if (whitespace.whitespace) {
-					delegate.insertModel(pos, model)
-					delegate.insertModel(pos, whitespace)
-				}
+				if (0 <= pos && pos <= delegate.size()) {
 
-				// Generate whitespace, usually inserting into a tag that is immediately
-				// closed so whitespace should be added to either side
-				else {
-					whitespace = modelFactory.createModel(modelFactory.createText('\n\t'))
-					delegate.insertModel(pos, whitespace)
-					delegate.insertModel(pos, model)
-					delegate.insertModel(pos, whitespace)
+					// Use existing whitespace at the insertion point
+					def whitespace = delegate.getModel(pos)
+					if (whitespace.whitespace) {
+						delegate.insertModel(pos, model)
+						delegate.insertModel(pos, whitespace)
+					}
+
+					// Generate whitespace, usually inserting into a tag that is immediately
+					// closed so whitespace should be added to either side
+					else {
+						whitespace = modelFactory.createModel(modelFactory.createText('\n\t'))
+						delegate.insertModel(pos, whitespace)
+						delegate.insertModel(pos, model)
+						delegate.insertModel(pos, whitespace)
+					}
 				}
 			}
 
@@ -282,29 +286,34 @@ class IModelExtensions {
 			 * Inserts an event, creating a whitespace event before it so that it
 			 * appears in line with all the existing events.
 			 * 
-			 * @param pos
+			 * @param pos          A valid index within the current model, otherwise
+			 *                     nothing happens.
 			 * @param event
 			 * @param modelFactory
 			 */
 			insertWithWhitespace << { int pos, ITemplateEvent event, IModelFactory modelFactory ->
 
-				// TODO: Because I can't check the parent for whitespace hints, I should
-				//       make this smarter and find whitespace within the model to copy.
-				def whitespace = delegate.getModel(pos)  // Assumes that whitespace exists at the insertion point
-				if (whitespace.whitespace) {
-					delegate.insert(pos, event)
-					delegate.insertModel(pos, whitespace)
-				}
-				else {
-					def newLine = modelFactory.createText('\n')
-					if (pos == 0) {
-						delegate.insert(pos, newLine)
+				if (0 <= pos && pos <= delegate.size()) {
+
+					// TODO: Because I can't check the parent for whitespace hints, I
+					//       should make this smarter and find whitespace within the model
+					//       to copy.
+					def whitespace = delegate.getModel(pos) // Assumes that whitespace exists at the insertion point
+					if (whitespace.whitespace) {
 						delegate.insert(pos, event)
+						delegate.insertModel(pos, whitespace)
 					}
-					else if (pos == delegate.size()) {
-						delegate.insert(pos, newLine)
-						delegate.insert(pos, event)
-						delegate.insert(pos, newLine)
+					else {
+						def newLine = modelFactory.createText('\n')
+						if (pos == 0) {
+							delegate.insert(pos, newLine)
+							delegate.insert(pos, event)
+						}
+						else if (pos == delegate.size()) {
+							delegate.insert(pos, newLine)
+							delegate.insert(pos, event)
+							delegate.insert(pos, newLine)
+						}
 					}
 				}
 			}
@@ -317,7 +326,20 @@ class IModelExtensions {
 			 *         and the last event is the matching closing tag.
 			 */
 			isElement << {
-				return delegate.first() instanceof IOpenElementTag && delegate.last() instanceof ICloseElementTag
+				return delegate.first().openingElement && delegate.last().closingElement
+			}
+
+			/**
+			 * Returns whether or not this model represents an element of the given
+			 * name.
+			 * 
+			 * @param tagName
+			 * @return {@code true} if the first event in this model is an opening tag,
+			 *         the last event is the matching closing tag, and  whether the
+			 *         element has the given tag name.
+			 */
+			isElementOf << { tagName ->
+				return delegate.element && delegate.first().elementCompleteName == tagName
 			}
 
 			/**
@@ -385,12 +407,15 @@ class IModelExtensions {
 			/**
 			 * Replaces the model at the specified index with the given model.
 			 * 
-			 * @param pos
+			 * @param pos   A valid index within the current model, otherwise nothing
+			 *              happens.
 			 * @param model
 			 */
 			replaceModel << { int pos, IModel model ->
-				delegate.removeModel(pos)
-				delegate.insertModel(pos, model)
+				if (0 <= pos && pos <= model.size()) {
+					delegate.removeModel(pos)
+					delegate.insertModel(pos, model)
+				}
 			}
 
 			/**
