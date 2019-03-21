@@ -1,0 +1,42 @@
+
+# Test appending of elements in the head section that respect the position of
+# elements in the layout template
+
+%TEMPLATE_MODE HTML
+
+
+%INPUT
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{Layout}">
+<head>
+	<title>Content page</title>
+	<link rel="stylesheet" src="content-styles.css"/>
+	<script src="content-script.js"></script>
+</head>
+</html>
+
+
+%INPUT[Layout]
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8"/>
+	<link rel="stylesheet" src="common-styles.css"/>
+	<script src="common-script.js"></script>
+</head>
+</html>
+
+
+%OUTPUT
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8"/>
+	<link rel="stylesheet" src="common-styles.css"/>
+	<script src="common-script.js"></script>
+	<title>Content page</title>
+	<link rel="stylesheet" src="content-styles.css"/>
+	<script src="content-script.js"></script>
+</head>
+</html>

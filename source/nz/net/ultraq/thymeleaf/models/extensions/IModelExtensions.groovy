@@ -412,7 +412,7 @@ class IModelExtensions {
 			 * @param model
 			 */
 			replaceModel << { int pos, IModel model ->
-				if (0 <= pos && pos <= model.size()) {
+				if (0 <= pos && pos <= delegate.size()) {
 					delegate.removeModel(pos)
 					delegate.insertModel(pos, model)
 				}
