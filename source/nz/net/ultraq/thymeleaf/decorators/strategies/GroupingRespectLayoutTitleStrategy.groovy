@@ -34,7 +34,7 @@ import org.thymeleaf.model.IProcessableElementTag
  * development of this library easier.  However, this runs against the
  * expectations of developers who wished to control the order of elements, most
  * notably the position of a {@code <meta charset...>} element.  This sorting
- * strategy instead places {@code <title>}s wherever they exist within the
+ * strategy instead keep {@code <title>}s wherever they exist within the
  * target/layout template being decorated, and then appending everything else as
  * normal.
  * <p>

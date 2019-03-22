@@ -80,12 +80,33 @@ The Layout dialect can be configured to support either use case, with the
 ability for developers to define their own sorting.
 
 This sorting is exposed by the `nz.net.ultraq.thymeleaf.decorators.SortingStrategy`
-interface and the layout dialect provides 2 implementations to choose from:
+interface and the layout dialect provides 4 implementations to choose from:
 
  - `nz.net.ultraq.thymeleaf.decorators.strategies.AppendingStrategy`, the
-   default, appends content `<head>` elements after layout ones
+   default, appends content `<head>` elements after layout ones.  Deprecated.
  - `nz.net.ultraq.thymeleaf.decorators.strategies.GroupingStrategy`, groups like
-   elements together
+   elements together.  Deprecated.
+ - `nz.net.ultraq.thymeleaf.decorators.strategies.AppendingRepsectLayoutTitleStrategy`,
+   a new variant of the `AppendingStrategy` which respects the position of the
+   `<title>` element based on its position in the layout template.
+ - `nz.net.ultraq.thymeleaf.decorators.strategies.GroupingRepsectLayoutTitleStrategy`,
+   a new variant of the `GroupingStrategy` which respects the position of the
+   `<title>` element based on its position in the layout template.
+
+> The default behaviour of the layout dialect has historically been to place the
+> `<title>` element at the beginning of the `<head>` element during the
+> decoration process; an arbitrary design decision which made development of
+> this library easier.  However, this runs against the expectations of
+> developers who wished to control the order of elements, most notably the
+> practice of putting `<meta charset...>` as the first element in the `<head>`.
+> The new strategies (ones with `RespectLayoutTitle` in their name) instead keep
+> `<title>`s wherever they exist within the target/layout template being
+> decorated, and then work on everything else as normal.
+> 
+> The `RespectLayoutTitle` strategies will become the default strategies from
+> version 3.x.  The existing strategies are deprecated but have been updated to
+> retain the historic behaviour, maintaining backwards compatibility with the
+> 2.x versions.
 
 To change to the grouping strategy, configure the Layout dialect using one of
 the methods below.
