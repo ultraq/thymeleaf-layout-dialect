@@ -103,10 +103,10 @@ interface and the layout dialect provides 4 implementations to choose from:
 > `<title>`s wherever they exist within the target/layout template being
 > decorated, and then work on everything else as normal.
 > 
-> The `RespectLayoutTitle` strategies will become the default strategies from
-> version 3.x.  The existing strategies are deprecated but have been updated to
-> retain the historic behaviour, maintaining backwards compatibility with the
-> 2.x versions.
+> The `RespectLayoutTitle` strategies were introduced in version 2.4.0 and will
+> become the default strategies from version 3.x.  The existing strategies are
+> now deprecated but retain the historic behaviour, maintaining backwards
+> compatibility with the 2.x versions.
 
 To change to the grouping strategy, configure the Layout dialect using one of
 the methods below.
