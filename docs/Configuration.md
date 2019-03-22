@@ -86,10 +86,10 @@ interface and the layout dialect provides 4 implementations to choose from:
    default, appends content `<head>` elements after layout ones.  Deprecated.
  - `nz.net.ultraq.thymeleaf.decorators.strategies.GroupingStrategy`, groups like
    elements together.  Deprecated.
- - `nz.net.ultraq.thymeleaf.decorators.strategies.AppendingRepsectLayoutTitleStrategy`,
+ - `nz.net.ultraq.thymeleaf.decorators.strategies.AppendingRespectLayoutTitleStrategy`,
    a new variant of the `AppendingStrategy` which respects the position of the
    `<title>` element based on its position in the layout template.
- - `nz.net.ultraq.thymeleaf.decorators.strategies.GroupingRepsectLayoutTitleStrategy`,
+ - `nz.net.ultraq.thymeleaf.decorators.strategies.GroupingRespectLayoutTitleStrategy`,
    a new variant of the `GroupingStrategy` which respects the position of the
    `<title>` element based on its position in the layout template.
 
