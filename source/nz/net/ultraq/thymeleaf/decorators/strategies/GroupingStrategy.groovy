@@ -61,13 +61,14 @@ class GroupingStrategy implements SortingStrategy {
 			return -1
 		}
 
-		// For backwards compatibility, match the location of any <title> at the
+		// For backwards compatibility, match the location of any element at the
 		// beginning of the <head> element.
 		if (childModel.isElementOf('title')) {
-			def existingTitleIndex = headModel.findIndexOf { event -> event.isElementOf('title') }
-			if (existingTitleIndex != -1) {
-				return existingTitleIndex
+			def firstElementIndex = headModel.findIndexOf(1) { event -> event.openingElement }
+			if (firstElementIndex != -1) {
+				return firstElementIndex
 			}
+			return positions > 2 ? 2 : 1
 		}
 
 		def type = HeadEventTypes.findMatchingType(childModel)

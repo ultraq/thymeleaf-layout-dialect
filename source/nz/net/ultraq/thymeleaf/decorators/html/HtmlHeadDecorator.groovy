@@ -18,6 +18,8 @@ package nz.net.ultraq.thymeleaf.decorators.html
 
 import nz.net.ultraq.thymeleaf.decorators.Decorator
 import nz.net.ultraq.thymeleaf.decorators.SortingStrategy
+import nz.net.ultraq.thymeleaf.decorators.strategies.AppendingStrategy
+import nz.net.ultraq.thymeleaf.decorators.strategies.GroupingStrategy
 import nz.net.ultraq.thymeleaf.models.AttributeMerger
 
 import org.thymeleaf.context.ITemplateContext
@@ -72,6 +74,12 @@ class HtmlHeadDecorator implements Decorator {
 			sourceHeadModel?.findModel(isTitle)
 		)
 		if (resultTitle) {
+
+			// TODO: Pure hack for retaining 2.x compatibility, remove the <head> from the layout :/
+			if (sortingStrategy instanceof AppendingStrategy || sortingStrategy instanceof GroupingStrategy) {
+				resultHeadModel.removeModel(resultHeadModel.findIndexOf { event -> event.isElementOf('title') })
+			}
+
 			def targetTitleIndex = sortingStrategy.findPositionForModel(resultHeadModel, resultTitle)
 			if (isTitle(resultHeadModel.get(targetTitleIndex))) {
 				resultHeadModel.replaceModel(targetTitleIndex, resultTitle)

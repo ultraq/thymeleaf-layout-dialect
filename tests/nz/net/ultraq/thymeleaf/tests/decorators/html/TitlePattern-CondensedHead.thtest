@@ -22,6 +22,7 @@
 
 %OUTPUT
 <html>
-<head><title>Content title</title>
+<head>
+  <title>Content title</title>
 </head>
 </html>

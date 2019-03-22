@@ -18,6 +18,7 @@ package nz.net.ultraq.thymeleaf.models.extensions
 
 import org.thymeleaf.model.ICloseElementTag
 import org.thymeleaf.model.IOpenElementTag
+import org.thymeleaf.model.IStandaloneElementTag
 import org.thymeleaf.model.ITemplateEvent
 import org.thymeleaf.model.IText
 
@@ -41,7 +42,7 @@ class ITemplateEventExtensions {
 			 * @return {@code true} if this event is an opening tag.
 			 */
 			isClosingElement << {
-				return delegate instanceof ICloseElementTag
+				return delegate instanceof ICloseElementTag || delegate instanceof IStandaloneElementTag
 			}
 
 			/**
@@ -62,7 +63,7 @@ class ITemplateEventExtensions {
 			 * @return {@code true} if this event is an opening tag.
 			 */
 			isOpeningElement << {
-				return delegate instanceof IOpenElementTag
+				return delegate instanceof IOpenElementTag || delegate instanceof IStandaloneElementTag
 			}
 
 			/**

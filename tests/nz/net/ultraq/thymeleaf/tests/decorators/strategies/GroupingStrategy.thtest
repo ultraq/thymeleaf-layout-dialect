@@ -14,6 +14,8 @@
 
 	<script src="content-script1.js"></script>
 	<script src="content-script2.js"></script>
+
+	<title>Content page</title>
 </head>
 </html>
 
@@ -31,6 +33,7 @@
 	<script src="common-script.js"></script>
 
 	<link rel="alternate" type="application/rss+xml" href="feed/" title="Test RSS feed"/>
+	<title>Layout page</title>
 </head>
 </html>
 
@@ -39,6 +42,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<title>Content page</title>
 	<meta charset="UTF-8"/>
 	<base href="http://www.thymeleaf.org/test/"/>
 	<link rel="icon" href="images/icon.png"/>

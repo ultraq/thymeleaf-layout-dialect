@@ -176,7 +176,19 @@ class IModelExtensions {
 			 *         {@code -1} if nothing matched.
 			 */
 			findIndexOf << { Closure closure ->
-				for (def i = 0; i < delegate.size(); i++) {
+				return delegate.findIndexOf(0, closure)
+			}
+
+			/**
+			 * Returns the index of the first event in the model that meets the
+			 * criteria of the given closure, starting from a specified position.
+			 * 
+			 * @param closure
+			 * @return The index of the first event to match the closure criteria, or
+			 *         {@code -1} if nothing matched.
+			 */
+			findIndexOf << { int startIndex, Closure closure ->
+				for (def i = startIndex; i < delegate.size(); i++) {
 					def event = delegate.get(i)
 					def result = closure(event)
 					if (result) {
@@ -380,13 +392,16 @@ class IModelExtensions {
 			 * then it, and everything up to and including its matching end element,
 			 * is removed.
 			 * 
-			 * @param pos
+			 * @param pos A valid index within the current model, otherwise nothing
+			 *            happens.
 			 */
 			removeModel << { int pos ->
-				def modelSize = calculateModelSize(delegate, pos)
-				while (modelSize > 0) {
-					delegate.remove(pos)
-					modelSize--
+				if (0 <= pos && pos < delegate.size()) {
+					def modelSize = calculateModelSize(delegate, pos)
+					while (modelSize > 0) {
+						delegate.remove(pos)
+						modelSize--
+					}
 				}
 			}
 
