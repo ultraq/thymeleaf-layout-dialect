@@ -115,13 +115,13 @@ For those who are configuring their own Thymeleaf template engine:
 
 ```java
 TemplateEngine templateEngine = new TemplateEngine();  // Or SpringTemplateEngine for Spring
-templateEngine.addDialect(new LayoutDialect(new GroupingStrategy()));
+templateEngine.addDialect(new LayoutDialect(new GroupingRespectLayoutTitleStrategy()));
 ```
 
 For those using XML config in Spring:
 
 ```xml
-<bean id="groupingStrategy" class="nz.net.ultraq.thymeleaf.decorators.strategies.GroupingStrategy"/>
+<bean id="groupingStrategy" class="nz.net.ultraq.thymeleaf.decorators.strategies.GroupingRespectLayoutTitleStrategy"/>
 
 <bean id="templateEngine" class="org.thymeleaf.spring4.SpringTemplateEngine">
   <property name="additionalDialects">
@@ -139,7 +139,7 @@ For those using Spring Boot and Java configuration:
 ```java
 @Bean
 public LayoutDialect layoutDialect() {
-	return new LayoutDialect(new GroupingStrategy());
+	return new LayoutDialect(new GroupingRespectLayoutTitleStrategy());
 }
 ```
 
