@@ -2,6 +2,8 @@ language: groovy
 jdk:
  - oraclejdk8
  - oraclejdk9
+ - openjdk10
+ - openjdk11
 
 # No need to run tasks for dependencies
 install:
