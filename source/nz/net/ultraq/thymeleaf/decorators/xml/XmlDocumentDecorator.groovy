@@ -25,6 +25,7 @@ import org.thymeleaf.model.IComment
 import org.thymeleaf.model.IDocType
 import org.thymeleaf.model.IModel
 import org.thymeleaf.model.IOpenElementTag
+import org.thymeleaf.model.IProcessableElementTag
 
 /**
  * A decorator made to work over an XML document.
@@ -60,7 +61,7 @@ class XmlDocumentDecorator implements Decorator {
 		// Find the root element of each document to work with
 		def rootModelFinder = { documentModel ->
 			return documentModel.findModel { documentEvent ->
-				return documentEvent instanceof IOpenElementTag
+				return documentEvent instanceof IProcessableElementTag
 			}
 		}
 

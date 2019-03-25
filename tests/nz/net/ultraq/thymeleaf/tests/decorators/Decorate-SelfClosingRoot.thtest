@@ -6,26 +6,19 @@
 
 %INPUT
 <!DOCTYPE html>
-<html lang="de" data-layout-decorate="~{main}"/>
+<html lang="de" data-layout-decorate="~{main}"></html>
 
 %INPUT[main]
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<title>Title</title>
-	</head>
 	<body>
 		<p>Hi!</p>
 	</body>
 </html>
 
 %OUTPUT
+<!DOCTYPE html>
 <html lang="de">
-	<head>
-		<meta charset="UTF-8">
-		<title>Title</title>
-	</head>
 	<body>
 		<p>Hi!</p>
 	</body>

@@ -26,7 +26,7 @@ import nz.net.ultraq.thymeleaf.models.TemplateModelFinder
 import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.engine.AttributeName
 import org.thymeleaf.model.IModel
-import org.thymeleaf.model.IOpenElementTag
+import org.thymeleaf.model.IProcessableElementTag
 import org.thymeleaf.processor.element.AbstractAttributeModelProcessor
 import org.thymeleaf.processor.element.IElementModelStructureHandler
 import org.thymeleaf.templatemode.TemplateMode
@@ -93,7 +93,7 @@ class DecorateProcessor extends AbstractAttributeModelProcessor {
 		def contentTemplate = templateModelFinder.findTemplate(contentTemplateName).cloneModel()
 
 		// Check that the root element is the same as the one currently being processed
-		def contentRootEvent = contentTemplate.find { event -> event instanceof IOpenElementTag }
+		def contentRootEvent = contentTemplate.find { event -> event instanceof IProcessableElementTag }
 		def rootElement = model.first()
 		if (!contentRootEvent.equalsIgnoreXmlnsAndThWith(context, rootElement)) {
 			throw new IllegalArgumentException('layout:decorate/data-layout-decorate must appear in the root element of your template')
@@ -104,7 +104,7 @@ class DecorateProcessor extends AbstractAttributeModelProcessor {
 			rootElement = context.modelFactory.removeAttribute(rootElement, attributeName)
 			model.replace(0, rootElement)
 		}
-		contentTemplate.replaceModel(contentTemplate.findIndexOf { event -> event instanceof IOpenElementTag }, model)
+		contentTemplate.replaceModel(contentTemplate.findIndexOf { event -> event instanceof IProcessableElementTag }, model)
 
 		// Locate the template to decorate
 		def decorateTemplateExpression = new ExpressionProcessor(context).parseFragmentExpression(attributeValue)
