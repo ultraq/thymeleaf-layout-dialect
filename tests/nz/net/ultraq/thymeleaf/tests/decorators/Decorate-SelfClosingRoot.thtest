@@ -1,0 +1,32 @@
+
+# Test for a self-closing root element in the initial template, based off:
+# https://github.com/ultraq/thymeleaf-layout-dialect/issues/173
+
+%TEMPLATE_MODE HTML
+
+%INPUT
+<!DOCTYPE html>
+<html lang="de" data-layout-decorate="~{main}"/>
+
+%INPUT[main]
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Title</title>
+	</head>
+	<body>
+		<p>Hi!</p>
+	</body>
+</html>
+
+%OUTPUT
+<html lang="de">
+	<head>
+		<meta charset="UTF-8">
+		<title>Title</title>
+	</head>
+	<body>
+		<p>Hi!</p>
+	</body>
+</html>
