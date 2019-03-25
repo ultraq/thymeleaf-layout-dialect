@@ -1,0 +1,45 @@
+
+# Test for an infinite loop when nesting fragments, based off
+# https://github.com/ultraq/thymeleaf-layout-dialect/issues/178
+
+%TEMPLATE_MODE HTML
+
+
+%INPUT
+<html>
+<body>
+	<div layout:fragment="comment">
+		Comment structure
+		<div layout:fragment="comment-details">Default comment details</div>
+	</div>
+
+	<div layout:include="~{::comment}">
+		<div layout:fragment="comment-details">
+			Top level comment
+			<div layout:include="~{::comment}">
+				<div layout:fragment="comment-details">Nested comment</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+
+%OUTPUT
+<html>
+<body>
+	<div>
+		Comment structure
+		<div>Default comment details</div>
+	</div>
+	<div>
+		Comment structure
+		<div>
+			Top level comment
+			<div>
+				Comment structure
+				<div>Nested comment</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
