@@ -48,7 +48,7 @@ class FragmentFinder {
 	 * @param model Model whose events are to be searched.
 	 * @return Map of fragment names and their elements.
 	 */
-	Map<String,Queue<IModel>> findFragments(IModel model) {
+	Map<String,List<IModel>> findFragments(IModel model) {
 
 		def fragmentsMap = [:]
 
@@ -65,7 +65,7 @@ class FragmentFinder {
 				}
 				if (fragmentName) {
 					def fragment = model.getModel(eventIndex)
-					fragmentsMap[fragmentName] = fragmentsMap[fragmentName] ?: [] as Queue
+					fragmentsMap[fragmentName] = fragmentsMap[fragmentName] ?: []
 					fragmentsMap[fragmentName] << fragment
 					if (!collect) {
 						eventIndex += fragment.size()

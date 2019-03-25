@@ -56,7 +56,8 @@ class CollectFragmentProcessor extends AbstractAttributeTagProcessor {
 	}
 
 	/**
-	 * Inserts the content of <code>:define</code> fragments into the encountered collect placeholder.
+	 * Inserts the content of <code>:define</code> fragments into the encountered
+	 * collect placeholder.
 	 * 
 	 * @param context
 	 * @param model
@@ -81,8 +82,9 @@ class CollectFragmentProcessor extends AbstractAttributeTagProcessor {
 			}
 		}
 
-		// All :define fragments we collected, :collect fragments included to determine where to stop.
-		// Fragments after :collect are preserved for the next :collect event
+		// All :define fragments we collected, :collect fragments included to
+		// determine where to stop.  Fragments after :collect are preserved for the
+		// next :collect event.
 		def fragments = FragmentMap.get(context)[(attributeValue)]
 
 		// Replace the tag body with the fragment
@@ -92,8 +94,8 @@ class CollectFragmentProcessor extends AbstractAttributeTagProcessor {
 			def replacementModel = modelFactory.createModel(tag)
 			def first = true
 			while (!fragments.empty) {
-				def fragment = fragments.poll()
-				if (fragment.get(0).getAttributeValue(dialectPrefix, CollectFragmentProcessor.PROCESSOR_COLLECT)) {
+				def fragment = fragments.remove(0)
+				if (fragment.get(0).getAttributeValue(dialectPrefix, PROCESSOR_COLLECT)) {
 					break
 				}
 				if (first) {
@@ -102,8 +104,7 @@ class CollectFragmentProcessor extends AbstractAttributeTagProcessor {
 				}
 				else {
 					def firstEvent = true
-					fragment.each {
-						event ->
+					fragment.each { event ->
 						if (firstEvent) {
 							firstEvent = false
 							replacementModel.add(new Text('\n'))

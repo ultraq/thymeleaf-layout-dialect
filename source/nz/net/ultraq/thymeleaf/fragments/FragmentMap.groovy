@@ -26,7 +26,7 @@ import org.thymeleaf.processor.element.IElementModelStructureHandler
  * 
  * @author Emanuel Rabina
  */
-class FragmentMap extends HashMap<String,IModel> {
+class FragmentMap extends HashMap<String,List<IModel>> {
 
 	private static final String FRAGMENT_COLLECTION_KEY = 'LayoutDialect::FragmentCollection'
 
@@ -50,19 +50,19 @@ class FragmentMap extends HashMap<String,IModel> {
 	 * @param structureHandler
 	 * @param fragments The new fragments to add to the map.
 	 */
-	static void setForNode(IContext context, IElementModelStructureHandler structureHandler, Map<String,List> fragments) {
+	static void setForNode(IContext context, IElementModelStructureHandler structureHandler,
+		Map<String,List<IModel>> fragments) {
 
-		def res = fragments
-		def append = get(context)
-		append.each {
-			k, v ->
-			if (res[k]) {
-				res[k] += v
+		structureHandler.setLocalVariable(FRAGMENT_COLLECTION_KEY,
+			get(context).inject(fragments.clone()) { accumulator, fragmentName, fragmentList ->
+				if (accumulator[fragmentName]) {
+					accumulator[fragmentName] += fragmentList
+				}
+				else {
+					accumulator[fragmentName] = fragmentList
+				}
+				return accumulator
 			}
-			else {
-				res[k] = v
-			}
-		}
-		structureHandler.setLocalVariable(FRAGMENT_COLLECTION_KEY, res)
+		)
 	}
 }
