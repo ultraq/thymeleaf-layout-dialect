@@ -82,7 +82,7 @@ class HtmlDocumentDecoratorTests {
 	@Before
 	void setupHtmlDocumentDecorator() {
 
-		htmlDocumentDecorator = new HtmlDocumentDecorator(mockContext, new AppendingStrategy())
+		htmlDocumentDecorator = new HtmlDocumentDecorator(mockContext, new AppendingStrategy(), true)
 	}
 
 	/**

@@ -72,17 +72,23 @@ class LayoutDialect extends AbstractProcessorDialect {
 		]*.apply()
 	}
 
+	private final boolean autoHeadMerging
 	private final SortingStrategy sortingStrategy
 
 	/**
-	 * Constructor, configure the layout dialect with the given sorting strategy.
+	 * Constructor, configure the layout dialect.
 	 * 
 	 * @param sortingStrategy
+	 * @param autoHeadMerging Experimental option, set to {@code false} to skip
+	 *                        the automatic merging of an HTML {@code <head>}
+	 *                        section.
 	 */
-	LayoutDialect(SortingStrategy sortingStrategy = new AppendingStrategy()) {
+	LayoutDialect(SortingStrategy sortingStrategy = new AppendingStrategy(), boolean autoHeadMerging = true) {
 
 		super(DIALECT_NAME, DIALECT_PREFIX, DIALECT_PRECEDENCE)
+
 		this.sortingStrategy = sortingStrategy
+		this.autoHeadMerging = autoHeadMerging
 	}
 
 	/**
@@ -97,8 +103,8 @@ class LayoutDialect extends AbstractProcessorDialect {
 		return [
 			// Processors available in the HTML template mode
 			new StandardXmlNsTagProcessor(TemplateMode.HTML, dialectPrefix),
-			new DecorateProcessor(TemplateMode.HTML, dialectPrefix, sortingStrategy),
-			new DecoratorProcessor(TemplateMode.HTML, dialectPrefix, sortingStrategy),
+			new DecorateProcessor(TemplateMode.HTML, dialectPrefix, sortingStrategy, autoHeadMerging),
+			new DecoratorProcessor(TemplateMode.HTML, dialectPrefix, sortingStrategy, autoHeadMerging),
 			new IncludeProcessor(TemplateMode.HTML, dialectPrefix),
 			new InsertProcessor(TemplateMode.HTML, dialectPrefix),
 			new ReplaceProcessor(TemplateMode.HTML, dialectPrefix),
@@ -108,8 +114,8 @@ class LayoutDialect extends AbstractProcessorDialect {
 
 			// Processors available in the XML template mode
 			new StandardXmlNsTagProcessor(TemplateMode.XML, dialectPrefix),
-			new DecorateProcessor(TemplateMode.XML, dialectPrefix, sortingStrategy),
-			new DecoratorProcessor(TemplateMode.XML, dialectPrefix, sortingStrategy),
+			new DecorateProcessor(TemplateMode.XML, dialectPrefix, sortingStrategy, autoHeadMerging),
+			new DecoratorProcessor(TemplateMode.XML, dialectPrefix, sortingStrategy, autoHeadMerging),
 			new IncludeProcessor(TemplateMode.XML, dialectPrefix),
 			new InsertProcessor(TemplateMode.XML, dialectPrefix),
 			new ReplaceProcessor(TemplateMode.XML, dialectPrefix),

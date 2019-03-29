@@ -1,0 +1,43 @@
+
+# Test decoration of a page with automatic <head> merging disabled.
+
+%TEMPLATE_MODE HTML
+
+%INPUT
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout}">
+<head>
+	<title th:replace="~{title :: special-header}">Content page</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<p>This is a paragraph from the content page</p>
+	</div>
+</body>
+</html>
+
+%INPUT[layout]
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+	<title>Layout page</title>
+	<link rel="stylesheet" href="/common.css"/>
+</head>
+</html>
+
+%INPUT[title]
+<title th:fragment="special-header">Hi!</title>
+
+%OUTPUT
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Hi!</title>
+</head>
+<body>
+	<div>
+		<p>This is a paragraph from the content page</p>
+	</div>
+</body>
+</html>

@@ -43,6 +43,7 @@ class DecorateProcessor extends AbstractAttributeModelProcessor {
 	static final String PROCESSOR_NAME = 'decorate'
 	static final int PROCESSOR_PRECEDENCE = 0
 
+	private final boolean autoHeadMerging
 	private final SortingStrategy sortingStrategy
 
 	/**
@@ -52,10 +53,12 @@ class DecorateProcessor extends AbstractAttributeModelProcessor {
 	 * @param templateMode
 	 * @param dialectPrefix
 	 * @param sortingStrategy
+	 * @param autoHeadMerging
 	 */
-	DecorateProcessor(TemplateMode templateMode, String dialectPrefix, SortingStrategy sortingStrategy) {
+	DecorateProcessor(TemplateMode templateMode, String dialectPrefix, SortingStrategy sortingStrategy,
+		boolean autoHeadMerging) {
 
-		this(templateMode, dialectPrefix, sortingStrategy, PROCESSOR_NAME)
+		this(templateMode, dialectPrefix, sortingStrategy, autoHeadMerging, PROCESSOR_NAME)
 	}
 
 	/**
@@ -65,13 +68,16 @@ class DecorateProcessor extends AbstractAttributeModelProcessor {
 	 * @param templateMode
 	 * @param dialectPrefix
 	 * @param sortingStrategy
+	 * @param autoHeadMerging
 	 * @param attributeName
 	 */
 	protected DecorateProcessor(TemplateMode templateMode, String dialectPrefix, SortingStrategy sortingStrategy,
-		String attributeName) {
+		boolean autoHeadMerging, String attributeName) {
 
 		super(templateMode, dialectPrefix, null, false, attributeName, true, PROCESSOR_PRECEDENCE, false)
+
 		this.sortingStrategy = sortingStrategy
+		this.autoHeadMerging = autoHeadMerging
 	}
 
 	/**
@@ -120,7 +126,7 @@ class DecorateProcessor extends AbstractAttributeModelProcessor {
 
 		// Choose the decorator to use based on template mode, then apply it
 		def decorator =
-			templateMode == TemplateMode.HTML ? new HtmlDocumentDecorator(context, sortingStrategy) :
+			templateMode == TemplateMode.HTML ? new HtmlDocumentDecorator(context, sortingStrategy, autoHeadMerging) :
 			templateMode == TemplateMode.XML  ? new XmlDocumentDecorator(context) :
 			null
 		if (!decorator) {

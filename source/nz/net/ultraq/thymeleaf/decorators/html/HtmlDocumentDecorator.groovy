@@ -33,6 +33,7 @@ import org.thymeleaf.model.IOpenElementTag
  */
 class HtmlDocumentDecorator extends XmlDocumentDecorator {
 
+	private final boolean autoHeadMerging
 	private final SortingStrategy sortingStrategy
 
 	/**
@@ -40,11 +41,14 @@ class HtmlDocumentDecorator extends XmlDocumentDecorator {
 	 * 
 	 * @param context
 	 * @param sortingStrategy
+	 * @param autoHeadMerging
 	 */
-	HtmlDocumentDecorator(ITemplateContext context, SortingStrategy sortingStrategy) {
+	HtmlDocumentDecorator(ITemplateContext context, SortingStrategy sortingStrategy, boolean autoHeadMerging) {
 
 		super(context)
+
 		this.sortingStrategy = sortingStrategy
+		this.autoHeadMerging = autoHeadMerging
 	}
 
 	/**
@@ -61,24 +65,32 @@ class HtmlDocumentDecorator extends XmlDocumentDecorator {
 		def resultDocumentModel = targetDocumentModel.cloneModel()
 
 		// Head decoration
-		def headModelFinder = { event ->
-			return event instanceof IOpenElementTag && event.elementCompleteName == 'head'
+		def headModelFinder = { event -> event.isOpeningElementOf('head') }
+		if (autoHeadMerging) {
+			def targetHeadModel = resultDocumentModel.findModel(headModelFinder)
+			def resultHeadModel = new HtmlHeadDecorator(context, sortingStrategy)
+				.decorate(targetHeadModel, sourceDocumentModel.findModel(headModelFinder))
+			if (resultHeadModel) {
+				if (targetHeadModel) {
+					resultDocumentModel.replaceModel(resultDocumentModel.findIndexOfModel(targetHeadModel), resultHeadModel)
+				}
+				else {
+					resultDocumentModel.insertModelWithWhitespace(resultDocumentModel.findIndexOf { event ->
+						return (event instanceof IOpenElementTag && event.elementCompleteName == 'body') ||
+						       (event instanceof ICloseElementTag && event.elementCompleteName == 'html')
+					} - 1, resultHeadModel, modelFactory)
+				}
+			}
 		}
-		def targetHeadModel = resultDocumentModel.findModel(headModelFinder)
-		def resultHeadModel = new HtmlHeadDecorator(context, sortingStrategy).decorate(
-			targetHeadModel,
-			sourceDocumentModel.findModel(headModelFinder)
-		)
-		if (resultHeadModel) {
-			if (targetHeadModel) {
-				resultDocumentModel.replaceModel(resultDocumentModel.findIndexOfModel(targetHeadModel), resultHeadModel)
-			}
-			else {
-				resultDocumentModel.insertModelWithWhitespace(resultDocumentModel.findIndexOf { event ->
-					return (event instanceof IOpenElementTag && event.elementCompleteName == 'body') ||
-					       (event instanceof ICloseElementTag && event.elementCompleteName == 'html')
-				} - 1, resultHeadModel, modelFactory)
-			}
+		else {
+			// TODO: If autoHeadMerging is false, this really shouldn't be needed as
+			//       the basis for `resultDocumentModel` should be the source model.
+			//       This 'hack' is OK for an experimental option, but the fact that
+			//       it exists means I should rethink how the result model is made.
+			resultDocumentModel.replaceModel(
+				resultDocumentModel.findIndexOf(headModelFinder),
+				sourceDocumentModel.findModel(headModelFinder)
+			)
 		}
 
 		// Body decoration
