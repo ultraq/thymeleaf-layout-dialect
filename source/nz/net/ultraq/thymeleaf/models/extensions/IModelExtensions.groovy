@@ -185,11 +185,7 @@ class IModelExtensions {
 			 *         {@code null} if nothing matched.
 			 */
 			findModel << { Closure closure ->
-				def eventIndex = delegate.findIndexOf(closure)
-				if (eventIndex != -1) {
-					return delegate.getModel(eventIndex)
-				}
-				return null
+				return delegate.getModel(delegate.findIndexOf(closure))
 			}
 
 			/**
@@ -207,7 +203,8 @@ class IModelExtensions {
 			 * and all the way through to the matching closing element.
 			 * 
 			 * @param pos A valid index within the current model.
-			 * @return Model at the given position.
+			 * @return Model at the given position, or `null` if the position is
+			 *         outside of the event queue.
 			 */
 			getModel << { int pos ->
 				if (0 <= pos && pos < delegate.size()) {
@@ -239,7 +236,7 @@ class IModelExtensions {
 
 					// Use existing whitespace at the insertion point
 					def whitespace = delegate.getModel(pos)
-					if (whitespace.whitespace) {
+					if (whitespace?.whitespace) {
 						delegate.insertModel(pos, model)
 						delegate.insertModel(pos, whitespace)
 					}
@@ -270,8 +267,8 @@ class IModelExtensions {
 					// TODO: Because I can't check the parent for whitespace hints, I
 					//       should make this smarter and find whitespace within the model
 					//       to copy.
-					def whitespace = delegate.getModel(pos) // Assumes that whitespace exists at the insertion point
-					if (whitespace.whitespace) {
+					def whitespace = delegate.getModel(pos)
+					if (whitespace?.whitespace) {
 						delegate.insert(pos, event)
 						delegate.insertModel(pos, whitespace)
 					}
