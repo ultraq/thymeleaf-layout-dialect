@@ -33,7 +33,7 @@ class IModelExtensions {
 	/**
 	 * Applies several new methods to the {@code IModel} class.
 	 */
-	@SuppressWarnings(['MethodSize', 'UnnecessaryCallForLastElement'])
+	@SuppressWarnings(['EmptyIfStatement', 'MethodSize', 'NestedBlockDepth', 'UnnecessaryCallForLastElement'])
 	static void apply() {
 
 		IModel.metaClass {
