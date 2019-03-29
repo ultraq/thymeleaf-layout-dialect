@@ -145,3 +145,36 @@ public LayoutDialect layoutDialect() {
 
 If neither strategy suits your needs, you can implement your own `SortingStrategy`
 and pass it along to the layout dialect like above.
+
+
+Bypassing `<head>` element merging altogether
+---------------------------------------------
+
+From version 2.4.0, an experimental option was added to skip the special `<head>`
+merging entirely.  Reasons for this might be that you wish to manage that
+section yourself so are using things like Thymeleaf's `th:replace` to fill that
+special part of your HTML document in.
+
+To bypass the layout dialect's `<head>` element merging, a second parameter to
+the `LayoutDialect` constructor should be set to `false`.  (The first parameter
+can be set to `null` as a merging strategy isn't really relevant when `<head>`
+element merging is disabled.)
+
+For those who are configuring their own Thymeleaf template engine:
+
+```java
+TemplateEngine templateEngine = new TemplateEngine();  // Or SpringTemplateEngine for Spring
+templateEngine.addDialect(new LayoutDialect(null, false));
+```
+
+For those using Spring Boot and Java configuration:
+
+```java
+@Bean
+public LayoutDialect layoutDialect() {
+	return new LayoutDialect(null, false);
+}
+```
+
+When disabled, the `<head>` element will be whatever it was in the content
+template, so the `<head>` from the layout is not applied.

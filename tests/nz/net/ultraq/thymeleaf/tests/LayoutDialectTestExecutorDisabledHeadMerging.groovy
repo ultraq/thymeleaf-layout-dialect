@@ -17,7 +17,6 @@
 package nz.net.ultraq.thymeleaf.tests
 
 import nz.net.ultraq.thymeleaf.LayoutDialect
-import nz.net.ultraq.thymeleaf.decorators.strategies.GroupingStrategy
 import nz.net.ultraq.thymeleaf.testing.JUnitTestExecutor
 
 import org.junit.runners.Parameterized.Parameters
@@ -36,7 +35,7 @@ class LayoutDialectTestExecutorDisabledHeadMerging extends JUnitTestExecutor {
 
 	final List<? extends IDialect> testDialects = [
 		new StandardDialect(),
-		new LayoutDialect(new GroupingStrategy(), false)
+		new LayoutDialect(null, false)
 	]
 
 	/**
