@@ -26,7 +26,7 @@ import org.thymeleaf.dialect.IProcessorDialect
  */
 class IContextExtensions {
 
-	private static final String DIALECT_PREFIX_CACHE = 'DialectPrefixCache'
+	private static final String DIALECT_PREFIX_PREFIX = 'DialectPrefix::'
 
 	/**
 	 * Apply extensions to the {@code IContext} class.
@@ -48,30 +48,40 @@ class IContextExtensions {
 			}
 
 			/**
+			 * Retrieves an item from the context, or creates one on the context if it
+			 * doesn't yet exist.
+			 * 
+			 * @param key
+			 * @param closure
+			 * @return The item cached on the context through the given key, or first
+			 *         constructed through the closure.
+			 */
+			getOrCreate << { String key, Closure closure ->
+				def value = delegate[key]
+				if (!value) {
+					value = closure()
+					delegate[key] = value
+				}
+				return value
+			}
+
+			/**
 			 * Returns the configured prefix for the given dialect.  If the dialect
-			 * prefix has not been configured, then the dialect prefix is returned.
+			 * prefix has not been configured.
 			 * 
 			 * @param dialectClass
 			 * @return The configured prefix for the dialect, or {@code null} if the
 			 *         dialect being queried hasn't been configured.
 			 */
 			getPrefixForDialect << { Class<IProcessorDialect> dialectClass ->
-				def dialectPrefixCache = delegate[DIALECT_PREFIX_CACHE]
-				if (!dialectPrefixCache) {
-					dialectPrefixCache = [:]
-					delegate[DIALECT_PREFIX_CACHE] = dialectPrefixCache
-				}
-				def dialectPrefix = dialectPrefixCache[dialectClass]
-				if (!dialectPrefix) {
+				return delegate.getOrCreate(DIALECT_PREFIX_PREFIX + dialectClass.name) { ->
 					def dialectConfiguration = delegate.configuration.dialectConfigurations.find { dialectConfig ->
 						return dialectClass.isInstance(dialectConfig.dialect)
 					}
-					dialectPrefix = dialectConfiguration ?
-						dialectConfiguration.prefixSpecified ? dialectConfiguration.prefix : dialectConfiguration.dialect.prefix :
-						null
-					dialectPrefixCache[dialectClass] = dialectPrefix
+					return dialectConfiguration?.prefixSpecified ?
+							dialectConfiguration?.prefix :
+							dialectConfiguration?.dialect?.prefix
 				}
-				return dialectPrefix
 			}
 
 			/**

@@ -93,7 +93,7 @@ class AttributeMerger implements ModelMerger {
 				}
 
 				mergedModel.replace(0, context.modelFactory.replaceAttribute(mergedEvent,
-					sourceAttribute.attributeName, sourceAttribute.completeName,
+					sourceAttribute.attributeDefinition.attributeName, sourceAttribute.attributeCompleteName,
 					mergedAttributeValue))
 			}
 

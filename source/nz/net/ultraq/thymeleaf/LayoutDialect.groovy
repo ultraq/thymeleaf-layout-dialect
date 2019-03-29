@@ -34,7 +34,6 @@ import nz.net.ultraq.thymeleaf.models.extensions.IProcessableElementTagExtension
 import nz.net.ultraq.thymeleaf.models.extensions.IStandaloneElementTagExtensions
 import nz.net.ultraq.thymeleaf.models.extensions.ITemplateEventExtensions
 import nz.net.ultraq.thymeleaf.models.extensions.ITextExtensions
-import nz.net.ultraq.thymeleaf.models.extensions.TemplateModelExtensions
 
 import org.thymeleaf.dialect.AbstractProcessorDialect
 import org.thymeleaf.processor.IProcessor
@@ -68,8 +67,7 @@ class LayoutDialect extends AbstractProcessorDialect {
 			IProcessableElementTagExtensions,
 			IStandaloneElementTagExtensions,
 			ITemplateEventExtensions,
-			ITextExtensions,
-			TemplateModelExtensions
+			ITextExtensions
 
 		]*.apply()
 	}

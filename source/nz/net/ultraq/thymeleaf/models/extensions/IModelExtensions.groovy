@@ -51,23 +51,13 @@ class IModelExtensions {
 			 * If this model represents an element, then this method returns an
 			 * iterator over any potential child items as models of their own.
 			 * 
+			 * TODO: Replace with a `.children` method that is a model of only the children of this model?
+			 * 
 			 * @param modelFactory
 			 * @return New model iterator.
 			 */
 			childModelIterator << {
 				return delegate.element ? new ChildModelIterator(delegate) : null
-			}
-
-			/**
-			 * If the model represents an element open to close tags, then this method
-			 * removes all of the inner events.  Otherwise, it does nothing.
-			 */
-			clearChildren << {
-				if (delegate.element) {
-					while (delegate.size() > 2) {
-						delegate.remove(1)
-					}
-				}
 			}
 
 			/**
@@ -90,9 +80,7 @@ class IModelExtensions {
 			 */
 			equals << { Object other ->
 				if (other instanceof IModel && delegate.size() == other.size()) {
-					return delegate.everyWithIndex { event, index ->
-						return event == other.get(index)
-					}
+					return delegate.everyWithIndex { event, index -> event == other.get(index) }
 				}
 				return false
 			}
@@ -106,29 +94,11 @@ class IModelExtensions {
 			 *         the other one.
 			 */
 			equalsIgnoreWhitespace << { IModel other ->
-
-				def thisEventIndex = 0
-				def otherEventIndex = 0
-
-				while (thisEventIndex < delegate.size() || otherEventIndex < other.size()) {
-					def thisEvent = delegate.get(thisEventIndex)
-					def otherEvent = other.get(otherEventIndex)
-					if (thisEvent.whitespace) {
-						thisEventIndex++
-						continue
-					}
-					else if (otherEvent.whitespace) {
-						otherEventIndex++
-						continue
-					}
-					if (thisEvent != otherEvent) {
-						return false
-					}
-					thisEventIndex++
-					otherEventIndex++
+				if (other instanceof IModel) {
+					def nonWhitespaceEvents = { event -> !event.whitespace }
+					return delegate.findAll(nonWhitespaceEvents) == other.findAll(nonWhitespaceEvents)
 				}
-
-				return thisEventIndex == delegate.size() && otherEventIndex == other.size()
+				return false
 			}
 
 			/**
@@ -160,11 +130,29 @@ class IModelExtensions {
 					def event = delegate.get(i)
 					def result = closure(event)
 					if (result) {
-						event.metaClass.index = i
 						return event
 					}
 				}
 				return null
+			}
+
+			/**
+			 * Find all events in the model that match the given closure.
+			 * 
+			 * @param closure
+			 * @return A copy of the model but containing only the matched events.
+			 */
+			findAll << { Closure closure ->
+				def clone = delegate.cloneModel()
+				for (def i = 0; i < clone.size(); ) {
+					if (!closure(clone.get(i))) {
+						clone.remove(i)
+					}
+					else {
+						i++
+					}
+				}
+				return clone
 			}
 
 			/**
@@ -232,24 +220,23 @@ class IModelExtensions {
 			 * @return Model at the given position.
 			 */
 			getModel << { int pos ->
-				def modelSize = calculateModelSize(delegate, pos)
-				def subModel = delegate.cloneModel()
+				def clone = delegate.cloneModel()
 				def removeBefore = delegate instanceof TemplateModel ? pos - 1 : pos
-				def removeAfter = subModel.size() - (removeBefore + modelSize)
+				def removeAfter = clone.size() - (removeBefore + delegate.sizeOfModelAt(pos))
 				while (removeBefore-- > 0) {
-					subModel.removeFirst()
+					clone.removeFirst()
 				}
 				while (removeAfter-- > 0) {
-					subModel.removeLast()
+					clone.removeLast()
 				}
-				return subModel
+				return clone
 			}
 
 			/**
 			 * Returns the index of the given model within this model.
 			 * 
-			 * This is not an equality check, but an object reference check, so if a
-			 * submodel is ever located from a parent (eg: any of the {@code find}
+			 * This doesn't use an equality check, but an object reference check, so
+			 * if a submodel is ever located from a parent (eg: any of the {@code find}
 			 * methods, you can use this method to find the location of that submodel
 			 * within the event queue.
 			 * 
@@ -258,17 +245,14 @@ class IModelExtensions {
 			 */
 			indexOf << { IModel model ->
 				def modelEvent = model.first()
-				return delegate.findIndexOf { event ->
-					return event.is(modelEvent)
-				}
+				return delegate.findIndexOf { event -> event.is(modelEvent) }
 			}
 
 			/**
 			 * Inserts a model, creating a whitespace event before it so that it
 			 * appears in line with all the existing events.
 			 * 
-			 * @param pos          A valid index within the current model, otherwise
-			 *                     nothing happens.
+			 * @param pos          A valid index within the current model.
 			 * @param model
 			 * @param modelFactory
 			 */
@@ -298,8 +282,7 @@ class IModelExtensions {
 			 * Inserts an event, creating a whitespace event before it so that it
 			 * appears in line with all the existing events.
 			 * 
-			 * @param pos          A valid index within the current model, otherwise
-			 *                     nothing happens.
+			 * @param pos          A valid index within the current model.
 			 * @param event
 			 * @param modelFactory
 			 */
@@ -373,6 +356,18 @@ class IModelExtensions {
 			}
 
 			/**
+			 * If the model represents an element open to close tags, then this method
+			 * removes all of the inner events.
+			 */
+			removeChildren << {
+				if (delegate.element) {
+					while (delegate.size() > 2) {
+						delegate.remove(1)
+					}
+				}
+			}
+
+			/**
 			 * Removes the first event on the model.
 			 */
 			removeFirst << {
@@ -392,12 +387,11 @@ class IModelExtensions {
 			 * then it, and everything up to and including its matching end element,
 			 * is removed.
 			 * 
-			 * @param pos A valid index within the current model, otherwise nothing
-			 *            happens.
+			 * @param pos A valid index within the current model.
 			 */
 			removeModel << { int pos ->
 				if (0 <= pos && pos < delegate.size()) {
-					def modelSize = calculateModelSize(delegate, pos)
+					def modelSize = delegate.sizeOfModelAt(pos)
 					while (modelSize > 0) {
 						delegate.remove(pos)
 						modelSize--
@@ -406,24 +400,9 @@ class IModelExtensions {
 			}
 
 			/**
-			 * Removes a models-worth of events from the specified position, plus the
-			 * preceeding whitespace event if any.
-			 * 
-			 * @param pos
-			 */
-			removeModelWithWhitespace << { int pos ->
-				delegate.removeModel(pos)
-				def priorEvent = delegate.get(pos - 1)
-				if (priorEvent.whitespace) {
-					delegate.remove(pos - 1)
-				}
-			}
-
-			/**
 			 * Replaces the model at the specified index with the given model.
 			 * 
-			 * @param pos   A valid index within the current model, otherwise nothing
-			 *              happens.
+			 * @param pos   A valid index within the current model.
 			 * @param model
 			 */
 			replaceModel << { int pos, IModel model ->
@@ -431,6 +410,47 @@ class IModelExtensions {
 					delegate.removeModel(pos)
 					delegate.insertModel(pos, model)
 				}
+			}
+
+			/**
+			 * If an opening element exists at the given position, this method will
+			 * return the 'size' of that element (number of events from here to its
+			 * matching closing tag).
+			 * 
+			 * @param model
+			 * @param index
+			 * @return Size of an element from the given position, or 1 if the event
+			 *         at the position isn't an opening element.
+			 */
+			sizeOfModelAt << { int index ->
+
+				def eventIndex = index
+				def event = delegate.get(eventIndex++)
+
+				if (event instanceof IOpenElementTag) {
+					def level = 0
+					while (true) {
+						event = delegate.get(eventIndex++)
+						if (event instanceof IOpenElementTag) {
+							level++
+						}
+						else if (event instanceof ICloseElementTag) {
+							if (event.unmatched) {
+								// Do nothing.  Unmatched closing tags do not correspond to any
+								// opening element, and so should not affect the model level.
+							}
+							else if (level == 0) {
+								break
+							}
+							else {
+								level--
+							}
+						}
+					}
+					return eventIndex - index
+				}
+
+				return 1
 			}
 
 			/**
@@ -446,47 +466,5 @@ class IModelExtensions {
 				}
 			}
 		}
-	}
-
-	/**
-	 * If an opening element exists at the given position, this method will
-	 * return the 'size' of that element (number of events from here to its
-	 * matching closing tag).  Otherwise, a size of 1 is returned.
-	 * 
-	 * @param model
-	 * @param index
-	 * @return Size of an element from the given position, or 1 if the event
-	 *         at the position isn't an opening element.
-	 */
-	@SuppressWarnings('EmptyIfStatement')
-	private static int calculateModelSize(IModel model, int index) {
-
-		def eventIndex = index
-		def event = model.get(eventIndex++)
-
-		if (event instanceof IOpenElementTag) {
-			def level = 0
-			while (true) {
-				event = model.get(eventIndex++)
-				if (event instanceof IOpenElementTag) {
-					level++
-				}
-				else if (event instanceof ICloseElementTag) {
-					if (event.unmatched) {
-						// Do nothing.  Unmatched closing tags do not correspond to any
-						// opening element, and so should not affect the model level.
-					}
-					else if (level == 0) {
-						break
-					}
-					else {
-						level--
-					}
-				}
-			}
-			return eventIndex - index
-		}
-
-		return 1
 	}
 }

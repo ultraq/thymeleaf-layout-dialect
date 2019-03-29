@@ -23,12 +23,14 @@ import nz.net.ultraq.thymeleaf.fragments.FragmentMap
 import nz.net.ultraq.thymeleaf.fragments.FragmentFinder
 import nz.net.ultraq.thymeleaf.models.TemplateModelFinder
 
+import org.thymeleaf.context.IContext
 import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.engine.AttributeName
 import org.thymeleaf.model.IModel
 import org.thymeleaf.model.IProcessableElementTag
 import org.thymeleaf.processor.element.AbstractAttributeModelProcessor
 import org.thymeleaf.processor.element.IElementModelStructureHandler
+import org.thymeleaf.standard.StandardDialect
 import org.thymeleaf.templatemode.TemplateMode
 
 /**
@@ -95,7 +97,7 @@ class DecorateProcessor extends AbstractAttributeModelProcessor {
 		// Check that the root element is the same as the one currently being processed
 		def contentRootEvent = contentTemplate.find { event -> event instanceof IProcessableElementTag }
 		def rootElement = model.first()
-		if (!contentRootEvent.equalsIgnoreXmlnsAndThWith(context, rootElement)) {
+		if (!rootElementsEqual(contentRootEvent, rootElement, context)) {
 			throw new IllegalArgumentException('layout:decorate/data-layout-decorate must appear in the root element of your template')
 		}
 
@@ -144,5 +146,29 @@ class DecorateProcessor extends AbstractAttributeModelProcessor {
 				structureHandler.setLocalVariable(parameter.left.execute(context), parameter.right.execute(context))
 			}
 		}
+	}
+
+	/**
+	 * Compare the root elements, barring some attributes, to see if they are the
+	 * same.
+	 * 
+	 * @param root1
+	 * @param root2
+	 * @param context
+	 * @return {@code true} if the elements share the same name and all attributes,
+	 *         with the exception of XML namespace declarations and Thymeleaf's
+	 *         {@code th:with} attribute processor.
+	 */
+	private static boolean rootElementsEqual(IProcessableElementTag element1,
+		IProcessableElementTag element2, IContext context) {
+
+		if (element1 instanceof IProcessableElementTag && element2 instanceof IProcessableElementTag &&
+			element1.elementDefinition == element2.elementDefinition) {
+			def difference = element1.attributeMap - element2.attributeMap
+			return difference.size() == 0 || difference
+				.collect { key, value -> key.startsWith('xmlns:') || key == "${context.getPrefixForDialect(StandardDialect)}:with" }
+				.inject { result, item -> result && item }
+		}
+		return false
 	}
 }

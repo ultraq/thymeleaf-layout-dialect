@@ -80,7 +80,7 @@ class InsertProcessor extends AbstractAttributeModelProcessor {
 
 		// Replace the children of this element with those of the to-be-inserted page fragment
 		def fragmentForInsertionUse = fragmentForInsertion.cloneModel()
-		model.clearChildren()
+		model.removeChildren()
 		model.insertModel(1, fragmentForInsertionUse)
 
 		// Scope variables in fragment definition to current fragment

@@ -43,18 +43,9 @@ class IAttributeExtensions {
 			 *         matching name.
 			 */
 			equalsName << { String prefix, String name ->
-				def attributeName = delegate.completeName
+				def attributeName = delegate.attributeCompleteName
 				return attributeName == "${prefix}:${name}" ||
 				       attributeName == "data-${prefix}-${name}"
-			}
-
-			/**
-			 * Shortcut to the attribute name class on the attribute definition.
-			 * 
-			 * @return Attribute name object.
-			 */
-			getAttributeName << {
-				return delegate.definition.attributeName
 			}
 		}
 	}

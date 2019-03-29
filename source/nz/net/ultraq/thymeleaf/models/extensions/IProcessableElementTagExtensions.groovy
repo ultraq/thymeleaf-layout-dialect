@@ -16,9 +16,7 @@
 
 package nz.net.ultraq.thymeleaf.models.extensions
 
-import org.thymeleaf.context.IContext
 import org.thymeleaf.model.IProcessableElementTag
-import org.thymeleaf.standard.StandardDialect
 
 /**
  * Meta-programming extensions to the {@link IProcessableElementTag} class.
@@ -45,31 +43,6 @@ class IProcessableElementTagExtensions {
 				return other instanceof IProcessableElementTag &&
 					delegate.elementDefinition == other.elementDefinition &&
 					delegate.attributeMap == other.attributeMap
-			}
-
-			/**
-			 * For use in comparing one tag with another by the decorator processor
-			 * when checking if root elements are the same.
-			 * 
-			 * @param context
-			 * @param other
-			 * @return {@code true} if this element shares the same name and all
-			 *         attributes as the other element, with the exception of XML
-			 *         namespace declarations and Thymeleaf's {@code th:with}
-			 *         attribute processor.
-			 */
-			equalsIgnoreXmlnsAndThWith << { IContext context, Object other ->
-				if (other instanceof IProcessableElementTag && delegate.elementDefinition == other.elementDefinition) {
-					def difference = delegate.attributeMap - other.attributeMap
-					return difference.size() == 0 || difference
-						.collect { key, value ->
-							return key.startsWith('xmlns:') || key == "${context.getPrefixForDialect(StandardDialect)}:with"
-						}
-						.inject { result, item ->
-							return result && item
-						}
-				}
-				return false
 			}
 		}
 	}

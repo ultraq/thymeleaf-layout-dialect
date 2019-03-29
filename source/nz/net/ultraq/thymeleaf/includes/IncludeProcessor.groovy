@@ -99,7 +99,7 @@ class IncludeProcessor extends AbstractAttributeModelProcessor {
 
 		// Replace the children of this element with the children of the included page fragment
 		def fragmentForInclusionUse = fragmentForInclusion.cloneModel()
-		model.clearChildren()
+		model.removeChildren()
 		fragmentForInclusionUse.trim()
 		fragmentForInclusionUse.childModelIterator().each { fragmentChildModel ->
 			model.insertModel(model.size() - 1, fragmentChildModel)

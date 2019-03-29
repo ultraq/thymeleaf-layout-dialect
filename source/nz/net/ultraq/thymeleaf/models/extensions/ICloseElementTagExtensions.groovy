@@ -26,7 +26,7 @@ import org.thymeleaf.model.ICloseElementTag
 class ICloseElementTagExtensions {
 
 	/**
-	 * Apply extensions to the {@code ICloseElement} class.
+	 * Apply extensions to the {@code ICloseElementTag} class.
 	 */
 	static void apply() {
 
