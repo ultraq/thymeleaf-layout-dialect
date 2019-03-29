@@ -1,5 +1,5 @@
 /* 
- * Copyright 2016, Emanuel Rabina (http://www.ultraq.net.nz/)
+ * Copyright 2019, Emanuel Rabina (http://www.ultraq.net.nz/)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,32 +17,28 @@
 package nz.net.ultraq.thymeleaf.models.extensions
 
 import org.thymeleaf.model.IModel
+import org.thymeleaf.model.ITemplateEvent
 
 /**
- * An iterator that works with a model's immediate children, returning each one
- * as a model of its own.
- * 
- * @author Emanuel Rabina
+ * An iterator that treats a model as a queue of events.
  */
-class ChildModelIterator implements Iterator<IModel> {
+class EventIterator implements Iterator<ITemplateEvent> {
 
-	private final IModel parent
-	private int currentIndex = 1  // Starts after the root element
+	private final IModel model
+	private int currentIndex = 0
 
-	ChildModelIterator(IModel parent) {
-		this.parent = parent
+	private EventIterator(IModel model) {
+		this.model = model
 	}
 
 	@Override
 	boolean hasNext() {
-		return currentIndex < (parent.size() - 1)
+		return currentIndex < model.size()
 	}
 
 	@Override
-	IModel next() {
-		def subModel = parent.getModel(currentIndex)
-		currentIndex += subModel.size()
-		return subModel
+	ITemplateEvent next() {
+		return model.get(currentIndex++)
 	}
 
 	// TODO: Not needed from Java 8 onwards - default method does this

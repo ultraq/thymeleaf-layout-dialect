@@ -63,7 +63,7 @@ class HtmlHeadDecorator implements Decorator {
 		}
 
 		def modelFactory = context.modelFactory
-		def isTitle = { event -> event.isElementOf('title') }
+		def isTitle = { event -> event.isOpeningElementOf('title') }
 
 		// New head model based off the target being decorated
 		def resultHeadModel = new AttributeMerger(context).merge(targetHeadModel, sourceHeadModel)
@@ -77,7 +77,7 @@ class HtmlHeadDecorator implements Decorator {
 
 			// TODO: Pure hack for retaining 2.x compatibility, remove the <head> from the layout :/
 			if (sortingStrategy instanceof AppendingStrategy || sortingStrategy instanceof GroupingStrategy) {
-				resultHeadModel.removeModel(resultHeadModel.findIndexOf { event -> event.isElementOf('title') })
+				resultHeadModel.removeModel(resultHeadModel.findIndexOf { event -> event.isOpeningElementOf('title') })
 			}
 
 			def targetTitleIndex = sortingStrategy.findPositionForModel(resultHeadModel, resultTitle)

@@ -46,15 +46,15 @@ class ITemplateEventExtensions {
 			}
 
 			/**
-			 * Returns whether or not this event represents an opening element of the
+			 * Returns whether or not this event represents a closing element of the
 			 * given name.
 			 * 
 			 * @param tagName
-			 * @return {@code true} if this event is an opening tag and has the given
+			 * @return {@code true} if this event is a closing tag and has the given
 			 *         tag name.
 			 */
-			isElementOf << { tagName ->
-				return delegate.openingElement && delegate.elementCompleteName == tagName
+			isClosingElementOf << { tagName ->
+				return delegate.closingElement && delegate.elementCompleteName == tagName
 			}
 
 			/**
@@ -64,6 +64,18 @@ class ITemplateEventExtensions {
 			 */
 			isOpeningElement << {
 				return delegate instanceof IOpenElementTag || delegate instanceof IStandaloneElementTag
+			}
+
+			/**
+			 * Returns whether or not this event represents an opening element of the
+			 * given name.
+			 * 
+			 * @param tagName
+			 * @return {@code true} if this event is an opening tag and has the given
+			 *         tag name.
+			 */
+			isOpeningElementOf << { tagName ->
+				return delegate.openingElement && delegate.elementCompleteName == tagName
 			}
 
 			/**

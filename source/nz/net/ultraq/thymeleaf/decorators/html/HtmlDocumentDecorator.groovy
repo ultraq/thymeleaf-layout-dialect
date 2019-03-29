@@ -71,7 +71,7 @@ class HtmlDocumentDecorator extends XmlDocumentDecorator {
 		)
 		if (resultHeadModel) {
 			if (targetHeadModel) {
-				resultDocumentModel.replaceModel(resultDocumentModel.indexOf(targetHeadModel), resultHeadModel)
+				resultDocumentModel.replaceModel(resultDocumentModel.findIndexOfModel(targetHeadModel), resultHeadModel)
 			}
 			else {
 				resultDocumentModel.insertModelWithWhitespace(resultDocumentModel.findIndexOf { event ->
@@ -92,11 +92,11 @@ class HtmlDocumentDecorator extends XmlDocumentDecorator {
 		)
 		if (resultBodyModel) {
 			if (targetBodyModel) {
-				resultDocumentModel.replaceModel(resultDocumentModel.indexOf(targetBodyModel), resultBodyModel)
+				resultDocumentModel.replaceModel(resultDocumentModel.findIndexOfModel(targetBodyModel), resultBodyModel)
 			}
 			else {
 				resultDocumentModel.insertModelWithWhitespace(resultDocumentModel.findIndexOf { event ->
-					return event instanceof ICloseElementTag && event.elementCompleteName == 'html'
+					return event.isClosingElementOf('html')
 				} - 1, resultBodyModel, modelFactory)
 			}
 		}

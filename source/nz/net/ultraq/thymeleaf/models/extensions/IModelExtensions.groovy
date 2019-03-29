@@ -51,8 +51,6 @@ class IModelExtensions {
 			 * If this model represents an element, then this method returns an
 			 * iterator over any potential child items as models of their own.
 			 * 
-			 * TODO: Replace with a `.children` method that is a model of only the children of this model?
-			 * 
 			 * @param modelFactory
 			 * @return New model iterator.
 			 */
@@ -66,9 +64,7 @@ class IModelExtensions {
 			 * @param closure
 			 */
 			each << { Closure closure ->
-				for (def i = 0; i < delegate.size(); i++) {
-					closure(delegate.get(i))
-				}
+				delegate.iterator().each(closure)
 			}
 
 			/**
@@ -126,33 +122,17 @@ class IModelExtensions {
 			 *         if nothing matched.
 			 */
 			find << { Closure closure ->
-				for (def i = 0; i < delegate.size(); i++) {
-					def event = delegate.get(i)
-					def result = closure(event)
-					if (result) {
-						return event
-					}
-				}
-				return null
+				return delegate.iterator().find(closure)
 			}
 
 			/**
 			 * Find all events in the model that match the given closure.
 			 * 
 			 * @param closure
-			 * @return A copy of the model but containing only the matched events.
+			 * @return A list of matched events.
 			 */
 			findAll << { Closure closure ->
-				def clone = delegate.cloneModel()
-				for (def i = 0; i < clone.size(); ) {
-					if (!closure(clone.get(i))) {
-						clone.remove(i)
-					}
-					else {
-						i++
-					}
-				}
-				return clone
+				return delegate.iterator().findAll(closure)
 			}
 
 			/**
@@ -164,7 +144,7 @@ class IModelExtensions {
 			 *         {@code -1} if nothing matched.
 			 */
 			findIndexOf << { Closure closure ->
-				return delegate.findIndexOf(0, closure)
+				return delegate.iterator().findIndexOf(closure)
 			}
 
 			/**
@@ -176,14 +156,24 @@ class IModelExtensions {
 			 *         {@code -1} if nothing matched.
 			 */
 			findIndexOf << { int startIndex, Closure closure ->
-				for (def i = startIndex; i < delegate.size(); i++) {
-					def event = delegate.get(i)
-					def result = closure(event)
-					if (result) {
-						return i
-					}
-				}
-				return -1
+				return delegate.iterator().findIndexOf(startIndex, closure)
+			}
+
+			/**
+			 * A special variant of {@code findIndexOf} that uses models, as I seem to
+			 * be using those a lot.
+			 * 
+			 * This doesn't use an equality check, but an object reference check, so
+			 * if a submodel is ever located from a parent (eg: any of the {@code find}
+			 * methods, you can use this method to find the location of that submodel
+			 * within the event queue.
+			 * 
+			 * @param model
+			 * @return Index of an extracted submodel within this model.
+			 */
+			findIndexOfModel << { IModel model ->
+				def modelEvent = model.first()
+				return delegate.findIndexOf { event -> event.is(modelEvent) }
 			}
 
 			/**
@@ -216,36 +206,23 @@ class IModelExtensions {
 			 * opening element, then the returned model will consist of that element
 			 * and all the way through to the matching closing element.
 			 * 
-			 * @param pos
+			 * @param pos A valid index within the current model.
 			 * @return Model at the given position.
 			 */
 			getModel << { int pos ->
-				def clone = delegate.cloneModel()
-				def removeBefore = delegate instanceof TemplateModel ? pos - 1 : pos
-				def removeAfter = clone.size() - (removeBefore + delegate.sizeOfModelAt(pos))
-				while (removeBefore-- > 0) {
-					clone.removeFirst()
+				if (0 <= pos && pos < delegate.size()) {
+					def clone = delegate.cloneModel()
+					def removeBefore = delegate instanceof TemplateModel ? pos - 1 : pos
+					def removeAfter = clone.size() - (removeBefore + delegate.sizeOfModelAt(pos))
+					while (removeBefore-- > 0) {
+						clone.removeFirst()
+					}
+					while (removeAfter-- > 0) {
+						clone.removeLast()
+					}
+					return clone
 				}
-				while (removeAfter-- > 0) {
-					clone.removeLast()
-				}
-				return clone
-			}
-
-			/**
-			 * Returns the index of the given model within this model.
-			 * 
-			 * This doesn't use an equality check, but an object reference check, so
-			 * if a submodel is ever located from a parent (eg: any of the {@code find}
-			 * methods, you can use this method to find the location of that submodel
-			 * within the event queue.
-			 * 
-			 * @param model
-			 * @return Index of an extracted submodel within this model.
-			 */
-			indexOf << { IModel model ->
-				def modelEvent = model.first()
-				return delegate.findIndexOf { event -> event.is(modelEvent) }
+				return null
 			}
 
 			/**
@@ -347,6 +324,15 @@ class IModelExtensions {
 			}
 
 			/**
+			 * Used to make this class iterable as an event queue.
+			 * 
+			 * @return A new iterator over the events of this model.
+			 */
+			iterator << {
+				return new EventIterator(delegate)
+			}
+
+			/**
 			 * Returns the last event on the model.
 			 * 
 			 * @return The model's last event.
@@ -406,7 +392,7 @@ class IModelExtensions {
 			 * @param model
 			 */
 			replaceModel << { int pos, IModel model ->
-				if (0 <= pos && pos <= delegate.size()) {
+				if (0 <= pos && pos < delegate.size()) {
 					delegate.removeModel(pos)
 					delegate.insertModel(pos, model)
 				}

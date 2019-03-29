@@ -66,7 +66,7 @@ class GroupingRespectLayoutTitleStrategy implements SortingStrategy {
 
 		// Locate any matching <title> element
 		if (childModel.isElementOf('title')) {
-			def existingTitleIndex = headModel.findIndexOf { event -> event.isElementOf('title') }
+			def existingTitleIndex = headModel.findIndexOf { event -> event.isOpeningElementOf('title') }
 			if (existingTitleIndex != -1) {
 				return existingTitleIndex
 			}
@@ -76,7 +76,7 @@ class GroupingRespectLayoutTitleStrategy implements SortingStrategy {
 		def matchingModel = headModel.childModelIterator().reverse().find { headSubModel ->
 			return type == HeadEventTypes.findMatchingType(headSubModel)
 		}
-		return matchingModel ? headModel.indexOf(matchingModel) + matchingModel.size() : 1
+		return matchingModel ? headModel.findIndexOfModel(matchingModel) + matchingModel.size() : 1
 	}
 
 

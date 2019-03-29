@@ -60,7 +60,7 @@ class AppendingRespectLayoutTitleStrategy implements SortingStrategy {
 
 		// Locate any matching <title> element
 		if (childModel.isElementOf('title')) {
-			def existingTitleIndex = headModel.findIndexOf { event -> event.isElementOf('title') }
+			def existingTitleIndex = headModel.findIndexOf { event -> event.isOpeningElementOf('title') }
 			if (existingTitleIndex != -1) {
 				return existingTitleIndex
 			}
