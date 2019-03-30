@@ -8,6 +8,19 @@ As of 1.3.0, this project follows [Semantic Versioning](http://semver.org/).
 ### 2.4.0
  - Allow passing of values up to layout templates using fragment parameters
    ([#157](https://github.com/ultraq/thymeleaf-layout-dialect/issues/157))
+ - Updated how `<head>` element sorting was done so that the `<title>` can now
+   optionally be put as the first element, instead of always making it first.
+   Also created 2 new sorting strategies that reflect this respecting of the
+   `<title>` and other element positions.
+   ([#176](https://github.com/ultraq/thymeleaf-layout-dialect/issues/176))
+ - Fixed a bug around nested elements which arose in 2.3.0
+   ([#178](https://github.com/ultraq/thymeleaf-layout-dialect/issues/178))
+ - Fixed a bug when self-closing `<html>` tags are used as a root element
+   ([#173](https://github.com/ultraq/thymeleaf-layout-dialect/issues/173))
+ - Added an experimental option to allow developers to opt-out of the automatic
+   `<head>` merging that normally occurs, useful if wanted to manage that
+   section using other Thymeleaf processors
+   ([#165](https://github.com/ultraq/thymeleaf-layout-dialect/issues/165))
 
 
 ### 2.3.0
