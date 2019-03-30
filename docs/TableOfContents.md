@@ -16,6 +16,7 @@ Table of Contents
     - [Reusable templates](Examples.md#reusable-templates)
  - [Configuration](Configuration.md)
     - [`head` element merging](Configuration.md#head-element-merging)
+    - [Bypassing `<head>` element merging altogether](Configuration.md#bypassing-head-element-merging-altogether)
 
 ---
 
