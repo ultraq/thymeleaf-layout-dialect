@@ -68,7 +68,7 @@ class GroupingStrategy implements SortingStrategy {
 			if (firstElementIndex != -1) {
 				return firstElementIndex
 			}
-			return positions > 2 ? 2 : 1
+			return headModel.size() > 2 ? 2 : 1
 		}
 
 		def type = HeadEventTypes.findMatchingType(childModel)

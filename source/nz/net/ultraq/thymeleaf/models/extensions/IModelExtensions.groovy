@@ -234,21 +234,27 @@ class IModelExtensions {
 
 				if (0 <= pos && pos <= delegate.size()) {
 
-					// Use existing whitespace at the insertion point
+					// Use existing whitespace found at or before the insertion point
 					def whitespace = delegate.getModel(pos)
 					if (whitespace?.whitespace) {
 						delegate.insertModel(pos, model)
 						delegate.insertModel(pos, whitespace)
+						return
+					}
+					if (pos > 0) {
+						whitespace = delegate.getModel(pos - 1)
+						if (whitespace?.whitespace) {
+							delegate.insertModel(pos, whitespace)
+							delegate.insertModel(pos, model)
+							return
+						}
 					}
 
-					// Generate whitespace, usually inserting into a tag that is immediately
-					// closed so whitespace should be added to either side
-					else {
-						whitespace = modelFactory.createModel(modelFactory.createText('\n\t'))
-						delegate.insertModel(pos, whitespace)
-						delegate.insertModel(pos, model)
-						delegate.insertModel(pos, whitespace)
-					}
+					// Generate whitespace on either side of the model to insert
+					whitespace = modelFactory.createModel(modelFactory.createText('\n\t'))
+					delegate.insertModel(pos, whitespace)
+					delegate.insertModel(pos, model)
+					delegate.insertModel(pos, whitespace)
 				}
 			}
 
