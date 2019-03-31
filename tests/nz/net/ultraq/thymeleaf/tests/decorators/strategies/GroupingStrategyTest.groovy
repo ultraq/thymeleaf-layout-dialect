@@ -67,7 +67,7 @@ class GroupingStrategyTest {
 	 * Whitespace nodes return a -1 index value to mean to discard them.
 	 */
 	@Test
-	void DiscardWhitespace() {
+	void discardWhitespace() {
 
 		def headModel = modelBuilder.build {
 			head()
@@ -83,7 +83,7 @@ class GroupingStrategyTest {
 	 * Historic behaviour, have <title> elements always be first.
 	 */
 	@Test
-	void TitleFirst() {
+	void titleFirst() {
 
 		def titleModel = modelBuilder.build {
 			title('Page title')
