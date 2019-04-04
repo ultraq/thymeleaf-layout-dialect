@@ -185,7 +185,7 @@ layouts, eg:
 Child/content template:
 
 ```html
-<html layout:decorate="~{your-layout.html(greeting='Hello!')}">
+<html layout:decorate="~{your-layout(greeting='Hello!')}">
 ```
 
 Parent/layout template:
@@ -200,10 +200,10 @@ Parent/layout template:
 > names are missing.
 
 This feature is available from Thymeleaf Layout Dialect 2.4.0.  For older
-versions, you can continue to use `th:with`/`data-th-with`, eg:
+versions, you can continue to use `th:with`/`data-th-with`:
 
 ```html
-<html layout:decorate="~{your-layout.html}" th:with="greeting='Hello!'">
+<html layout:decorate="~{your-layout}" th:with="greeting='Hello!'">
 ```
 
 
