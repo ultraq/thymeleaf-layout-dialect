@@ -1,16 +1,7 @@
-
-# Generated
 /.gradle
+/.idea
 /_book
 /build
-/Classes
 /node_modules
 npm-debug.log
-bin
-
-# IDEs
-/.idea
-/.settings
-.classpath
-.project
 *.iml

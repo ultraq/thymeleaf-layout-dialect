@@ -26,30 +26,23 @@ import org.thymeleaf.model.IText
 class ITextExtensions {
 
 	/**
-	 * Apply extensions to the {@code IText} class.
+	 * Compares this text with another.
+	 * 
+	 * @param self
+	 * @param other
+	 * @return {@code true} if the text content matches.
 	 */
-	static void apply() {
+	static equals(IText self, Object other) {
+		return other instanceof IText && self.text == other.text
+	}
 
-		IText.metaClass {
-
-			/**
-			 * Compares this text with another.
-			 * 
-			 * @param other
-			 * @return {@code true} if the text content matches.
-			 */
-			equals << { Object other ->
-				return other instanceof IText && delegate.text == other.text
-			}
-
-			/**
-			 * Returns whether or not this text event is collapsible whitespace.
-			 * 
-			 * @return {@code true} if, when trimmed, the text content is empty.
-			 */
-			isWhitespace << {
-				return delegate.text.trim().empty
-			}
-		}
+	/**
+	 * Returns whether or not this text event is collapsible whitespace.
+	 * 
+	 * @param self
+	 * @return {@code true} if, when trimmed, the text content is empty.
+	 */
+	static isWhitespace(IText self) {
+		return self.text.trim().empty
 	}
 }

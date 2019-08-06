@@ -16,7 +16,6 @@
 
 package nz.net.ultraq.thymeleaf
 
-import nz.net.ultraq.thymeleaf.context.extensions.IContextExtensions
 import nz.net.ultraq.thymeleaf.decorators.DecorateProcessor
 import nz.net.ultraq.thymeleaf.decorators.DecoratorProcessor
 import nz.net.ultraq.thymeleaf.decorators.SortingStrategy
@@ -27,13 +26,6 @@ import nz.net.ultraq.thymeleaf.fragments.FragmentProcessor
 import nz.net.ultraq.thymeleaf.includes.IncludeProcessor
 import nz.net.ultraq.thymeleaf.includes.InsertProcessor
 import nz.net.ultraq.thymeleaf.includes.ReplaceProcessor
-import nz.net.ultraq.thymeleaf.models.extensions.IAttributeExtensions
-import nz.net.ultraq.thymeleaf.models.extensions.ICloseElementTagExtensions
-import nz.net.ultraq.thymeleaf.models.extensions.IModelExtensions
-import nz.net.ultraq.thymeleaf.models.extensions.IProcessableElementTagExtensions
-import nz.net.ultraq.thymeleaf.models.extensions.IStandaloneElementTagExtensions
-import nz.net.ultraq.thymeleaf.models.extensions.ITemplateEventExtensions
-import nz.net.ultraq.thymeleaf.models.extensions.ITextExtensions
 
 import org.thymeleaf.dialect.AbstractProcessorDialect
 import org.thymeleaf.processor.IProcessor
@@ -51,26 +43,6 @@ class LayoutDialect extends AbstractProcessorDialect {
 	static final String DIALECT_NAME = 'Layout'
 	static final String DIALECT_PREFIX = 'layout'
 	static final int DIALECT_PRECEDENCE = 10
-
-	/**
-	 * Apply object extensions.
-	 */
-	static {
-		[
-			// Context extensions
-			IContextExtensions,
-
-			// Model extensions
-			IAttributeExtensions,
-			ICloseElementTagExtensions,
-			IModelExtensions,
-			IProcessableElementTagExtensions,
-			IStandaloneElementTagExtensions,
-			ITemplateEventExtensions,
-			ITextExtensions
-
-		]*.apply()
-	}
 
 	private final boolean autoHeadMerging
 	private final SortingStrategy sortingStrategy

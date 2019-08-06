@@ -26,24 +26,16 @@ import org.thymeleaf.model.IStandaloneElementTag
 class IStandaloneElementTagExtensions {
 
 	/**
-	 * Apply extensions to the {@code IStandaloneElementTag} class.
+	 * Compares this standalone tag with another.
+	 * 
+	 * @param self
+	 * @param other
+	 * @return {@code true} if this tag has the same name and attributes as
+	 *         the other element.
 	 */
-	static void apply() {
-
-		IStandaloneElementTag.metaClass {
-
-			/**
-			 * Compares this standalone tag with another.
-			 * 
-			 * @param other
-			 * @return {@code true} if this tag has the same name and attributes as
-			 *         the other element.
-			 */
-			equals << { Object other ->
-				return other instanceof IStandaloneElementTag &&
-					delegate.elementDefinition == other.elementDefinition &&
-					delegate.attributeMap == other.attributeMap
-			}
-		}
+	static equals(IStandaloneElementTag self, Object other) {
+		return other instanceof IStandaloneElementTag &&
+			self.elementDefinition == other.elementDefinition &&
+			self.attributeMap == other.attributeMap
 	}
 }

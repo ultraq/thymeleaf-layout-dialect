@@ -30,62 +30,58 @@ import org.thymeleaf.model.IText
 class ITemplateEventExtensions {
 
 	/**
-	 * Apply extensions to the {@code ITemplateEvent} class.
+	 * Returns whether or not this event represents an opening element.
+	 * 
+	 * @param self
+	 * @return {@code true} if this event is an opening tag.
 	 */
-	static void apply() {
+	static isClosingElement(ITemplateEvent self) {
+		return self instanceof ICloseElementTag || self instanceof IStandaloneElementTag
+	}
 
-		ITemplateEvent.metaClass {
+	/**
+	 * Returns whether or not this event represents a closing element of the
+	 * given name.
+	 * 
+	 * @param self
+	 * @param tagName
+	 * @return {@code true} if this event is a closing tag and has the given
+	 *         tag name.
+	 */
+	static isClosingElementOf(ITemplateEvent self, String tagName) {
+		return self.closingElement && self.elementCompleteName == tagName
+	}
 
-			/**
-			 * Returns whether or not this event represents an opening element.
-			 * 
-			 * @return {@code true} if this event is an opening tag.
-			 */
-			isClosingElement << {
-				return delegate instanceof ICloseElementTag || delegate instanceof IStandaloneElementTag
-			}
+	/**
+	 * Returns whether or not this event represents an opening element.
+	 * 
+	 * @param self
+	 * @return {@code true} if this event is an opening tag.
+	 */
+	static isOpeningElement(ITemplateEvent self) {
+		return self instanceof IOpenElementTag || self instanceof IStandaloneElementTag
+	}
 
-			/**
-			 * Returns whether or not this event represents a closing element of the
-			 * given name.
-			 * 
-			 * @param tagName
-			 * @return {@code true} if this event is a closing tag and has the given
-			 *         tag name.
-			 */
-			isClosingElementOf << { tagName ->
-				return delegate.closingElement && delegate.elementCompleteName == tagName
-			}
+	/**
+	 * Returns whether or not this event represents an opening element of the
+	 * given name.
+	 * 
+	 * @param self
+	 * @param tagName
+	 * @return {@code true} if this event is an opening tag and has the given
+	 *         tag name.
+	 */
+	static isOpeningElementOf(ITemplateEvent self, String tagName) {
+		return self.isOpeningElement() && self.elementCompleteName == tagName
+	}
 
-			/**
-			 * Returns whether or not this event represents an opening element.
-			 * 
-			 * @return {@code true} if this event is an opening tag.
-			 */
-			isOpeningElement << {
-				return delegate instanceof IOpenElementTag || delegate instanceof IStandaloneElementTag
-			}
-
-			/**
-			 * Returns whether or not this event represents an opening element of the
-			 * given name.
-			 * 
-			 * @param tagName
-			 * @return {@code true} if this event is an opening tag and has the given
-			 *         tag name.
-			 */
-			isOpeningElementOf << { tagName ->
-				return delegate.openingElement && delegate.elementCompleteName == tagName
-			}
-
-			/**
-			 * Returns whether or not this event represents collapsible whitespace.
-			 * 
-			 * @return {@code true} if this is a collapsible text node.
-			 */
-			isWhitespace << {
-				return delegate instanceof IText && delegate.whitespace
-			}
-		}
+	/**
+	 * Returns whether or not this event represents collapsible whitespace.
+	 * 
+	 * @param self
+	 * @return {@code true} if this is a collapsible text node.
+	 */
+	static isWhitespace(ITemplateEvent self) {
+		return self instanceof IText && self.whitespace
 	}
 }

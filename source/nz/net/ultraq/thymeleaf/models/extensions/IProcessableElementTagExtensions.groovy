@@ -26,24 +26,16 @@ import org.thymeleaf.model.IProcessableElementTag
 class IProcessableElementTagExtensions {
 
 	/**
-	 * Apply extensions to the {@code IProcessableElementTag} class.
+	 * Compares this open tag with another.
+	 *
+	 * @param self
+	 * @param other
+	 * @return {@code true} if this tag has the same name and attributes as
+	 *         the other element.
 	 */
-	static void apply() {
-
-		IProcessableElementTag.metaClass {
-
-			/**
-			 * Compares this open tag with another.
-			 * 
-			 * @param other
-			 * @return {@code true} if this tag has the same name and attributes as
-			 *         the other element.
-			 */
-			equals << { Object other ->
-				return other instanceof IProcessableElementTag &&
-					delegate.elementDefinition == other.elementDefinition &&
-					delegate.attributeMap == other.attributeMap
-			}
-		}
+	static equals(IProcessableElementTag self, Object other) {
+		return other instanceof IProcessableElementTag &&
+			self.elementDefinition == other.elementDefinition &&
+			self.attributeMap == other.attributeMap
 	}
 }

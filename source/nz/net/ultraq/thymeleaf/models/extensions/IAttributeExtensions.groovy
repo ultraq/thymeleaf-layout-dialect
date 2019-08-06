@@ -26,27 +26,19 @@ import org.thymeleaf.model.IAttribute
 class IAttributeExtensions {
 
 	/**
-	 * Apply extensions to the {@code IAttribute} class.
+	 * Returns whether or not an attribute is an attribute processor of
+	 * the given name, checks both prefix:processor and
+	 * data-prefix-processor variants.
+	 * 
+	 * @param self
+	 * @param prefix
+	 * @param name
+	 * @return {@code true} if this attribute is an attribute processor of the
+	 *         matching name.
 	 */
-	static void apply() {
-
-		IAttribute.metaClass {
-
-			/**
-			 * Returns whether or not an attribute is an attribute processor of
-			 * the given name, checks both prefix:processor and
-			 * data-prefix-processor variants.
-			 * 
-			 * @param prefix
-			 * @param name
-			 * @return {@code true} if this attribute is an attribute processor of the
-			 *         matching name.
-			 */
-			equalsName << { String prefix, String name ->
-				def attributeName = delegate.attributeCompleteName
-				return attributeName == "${prefix}:${name}" ||
-				       attributeName == "data-${prefix}-${name}"
-			}
-		}
+	static equalsName(IAttribute self, String prefix, String name) {
+		def attributeName = self.attributeCompleteName
+		return attributeName == "${prefix}:${name}" ||
+		       attributeName == "data-${prefix}-${name}"
 	}
 }

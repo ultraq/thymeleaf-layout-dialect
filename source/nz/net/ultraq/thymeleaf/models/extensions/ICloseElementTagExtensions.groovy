@@ -26,23 +26,15 @@ import org.thymeleaf.model.ICloseElementTag
 class ICloseElementTagExtensions {
 
 	/**
-	 * Apply extensions to the {@code ICloseElementTag} class.
+	 * Compares this close tag with another.
+	 * 
+	 * @param self
+	 * @param other
+	 * @return {@code true} if this tag has the same name as the other
+	 *         element.
 	 */
-	static void apply() {
-
-		ICloseElementTag.metaClass {
-
-			/**
-			 * Compares this close tag with another.
-			 * 
-			 * @param other
-			 * @return {@code true} if this tag has the same name as the other
-			 *         element.
-			 */
-			equals << { Object other ->
-				return other instanceof ICloseElementTag &&
-					delegate.elementDefinition == other.elementDefinition
-			}
-		}
+	static equals(ICloseElementTag self, Object other) {
+		return other instanceof ICloseElementTag &&
+			self.elementDefinition == other.elementDefinition
 	}
 }
