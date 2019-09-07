@@ -33,6 +33,7 @@ class IProcessableElementTagExtensions {
 	 * @return {@code true} if this tag has the same name and attributes as
 	 *         the other element.
 	 */
+	@SuppressWarnings('EqualsOverloaded')
 	static equals(IProcessableElementTag self, Object other) {
 		return other instanceof IProcessableElementTag &&
 			self.elementDefinition == other.elementDefinition &&

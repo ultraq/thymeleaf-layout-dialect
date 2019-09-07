@@ -32,6 +32,7 @@ class ITextExtensions {
 	 * @param other
 	 * @return {@code true} if the text content matches.
 	 */
+	@SuppressWarnings('EqualsOverloaded')
 	static equals(IText self, Object other) {
 		return other instanceof IText && self.text == other.text
 	}

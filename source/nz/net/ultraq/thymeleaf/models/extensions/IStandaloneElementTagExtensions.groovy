@@ -33,6 +33,7 @@ class IStandaloneElementTagExtensions {
 	 * @return {@code true} if this tag has the same name and attributes as
 	 *         the other element.
 	 */
+	@SuppressWarnings('EqualsOverloaded')
 	static equals(IStandaloneElementTag self, Object other) {
 		return other instanceof IStandaloneElementTag &&
 			self.elementDefinition == other.elementDefinition &&

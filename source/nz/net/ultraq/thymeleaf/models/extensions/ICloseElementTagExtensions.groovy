@@ -33,6 +33,7 @@ class ICloseElementTagExtensions {
 	 * @return {@code true} if this tag has the same name as the other
 	 *         element.
 	 */
+	@SuppressWarnings('EqualsOverloaded')
 	static equals(ICloseElementTag self, Object other) {
 		return other instanceof ICloseElementTag &&
 			self.elementDefinition == other.elementDefinition

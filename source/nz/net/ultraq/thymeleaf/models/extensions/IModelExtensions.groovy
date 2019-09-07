@@ -71,6 +71,7 @@ class IModelExtensions {
 	 * @param other
 	 * @return {@code true} if this model is the same as the other one.
 	 */
+	@SuppressWarnings('EqualsOverloaded')
 	static equals(IModel self, Object other) {
 		if (other instanceof IModel && self.size() == other.size()) {
 			return self.everyWithIndex { event, index -> event == other.get(index) }
