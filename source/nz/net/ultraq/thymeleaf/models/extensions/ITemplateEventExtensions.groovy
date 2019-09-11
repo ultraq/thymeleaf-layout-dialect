@@ -35,7 +35,7 @@ class ITemplateEventExtensions {
 	 * @param self
 	 * @return {@code true} if this event is an opening tag.
 	 */
-	static isClosingElement(ITemplateEvent self) {
+	static boolean isClosingElement(ITemplateEvent self) {
 		return self instanceof ICloseElementTag || self instanceof IStandaloneElementTag
 	}
 
@@ -48,7 +48,7 @@ class ITemplateEventExtensions {
 	 * @return {@code true} if this event is a closing tag and has the given
 	 *         tag name.
 	 */
-	static isClosingElementOf(ITemplateEvent self, String tagName) {
+	static boolean isClosingElementOf(ITemplateEvent self, String tagName) {
 		return self.closingElement && self.elementCompleteName == tagName
 	}
 
@@ -58,7 +58,7 @@ class ITemplateEventExtensions {
 	 * @param self
 	 * @return {@code true} if this event is an opening tag.
 	 */
-	static isOpeningElement(ITemplateEvent self) {
+	static boolean isOpeningElement(ITemplateEvent self) {
 		return self instanceof IOpenElementTag || self instanceof IStandaloneElementTag
 	}
 
@@ -71,8 +71,8 @@ class ITemplateEventExtensions {
 	 * @return {@code true} if this event is an opening tag and has the given
 	 *         tag name.
 	 */
-	static isOpeningElementOf(ITemplateEvent self, String tagName) {
-		return self.isOpeningElement() && self.elementCompleteName == tagName
+	static boolean isOpeningElementOf(ITemplateEvent self, String tagName) {
+		return self.openingElement && self.elementCompleteName == tagName
 	}
 
 	/**
@@ -81,7 +81,7 @@ class ITemplateEventExtensions {
 	 * @param self
 	 * @return {@code true} if this is a collapsible text node.
 	 */
-	static isWhitespace(ITemplateEvent self) {
+	static boolean isWhitespace(ITemplateEvent self) {
 		return self instanceof IText && self.whitespace
 	}
 }

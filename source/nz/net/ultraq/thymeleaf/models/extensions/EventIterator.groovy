@@ -27,7 +27,7 @@ class EventIterator implements Iterator<ITemplateEvent> {
 	private final IModel model
 	private int currentIndex = 0
 
-	private EventIterator(IModel model) {
+	EventIterator(IModel model) {
 		this.model = model
 	}
 

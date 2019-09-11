@@ -37,7 +37,7 @@ class IContextExtensions {
 	 * @return The variable value, or {@code null} if the variable isn't
 	 *         mapped to anything on the context.
 	 */
-	static getAt(IContext self, String name) {
+	static Object getAt(IContext self, String name) {
 		return self.getVariable(name)
 	}
 
@@ -51,7 +51,7 @@ class IContextExtensions {
 	 * @return The item cached on the context through the given key, or first
 	 *         constructed through the closure.
 	 */
-	static getOrCreate(IContext self, String key, Closure closure) {
+	static Object getOrCreate(IContext self, String key, Closure closure) {
 		def value = self[key]
 		if (!value) {
 			value = closure()
@@ -69,7 +69,7 @@ class IContextExtensions {
 	 * @return The configured prefix for the dialect, or {@code null} if the
 	 *         dialect being queried hasn't been configured.
 	 */
-	static getPrefixForDialect(IContext self, Class<IProcessorDialect> dialectClass) {
+	static String getPrefixForDialect(IContext self, Class<IProcessorDialect> dialectClass) {
 		return self.getOrCreate(DIALECT_PREFIX_PREFIX + dialectClass.name) { ->
 			def dialectConfiguration = self.configuration.dialectConfigurations.find { dialectConfig ->
 				return dialectClass.isInstance(dialectConfig.dialect)

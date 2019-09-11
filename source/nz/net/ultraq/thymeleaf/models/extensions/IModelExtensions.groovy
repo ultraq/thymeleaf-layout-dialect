@@ -28,7 +28,6 @@ import org.thymeleaf.model.ITemplateEvent
  * 
  * @author Emanuel Rabina
  */
-@SuppressWarnings(['EmptyIfStatement', 'MethodSize', 'NestedBlockDepth', 'UnnecessaryCallForLastElement'])
 class IModelExtensions {
 
 	/**
@@ -37,7 +36,7 @@ class IModelExtensions {
 	 * @param self
 	 * @return {@code true} if this model has events.
 	 */
-	static asBoolean(IModel self) {
+	static boolean asBoolean(IModel self) {
 		return self.size() > 0
 	}
 
@@ -49,7 +48,7 @@ class IModelExtensions {
 	 * @param modelFactory
 	 * @return New model iterator.
 	 */
-	static childModelIterator(IModel self) {
+	static ChildModelIterator childModelIterator(IModel self) {
 		return self.element ? new ChildModelIterator(self) : null
 	}
 
@@ -59,7 +58,7 @@ class IModelExtensions {
 	 * @param self
 	 * @param closure
 	 */
-	static each(IModel self, Closure closure) {
+	static void each(IModel self, Closure closure) {
 		self.iterator().each(closure)
 	}
 
@@ -72,7 +71,7 @@ class IModelExtensions {
 	 * @return {@code true} if this model is the same as the other one.
 	 */
 	@SuppressWarnings('EqualsOverloaded')
-	static equals(IModel self, Object other) {
+	static boolean equals(IModel self, Object other) {
 		if (other instanceof IModel && self.size() == other.size()) {
 			return self.everyWithIndex { event, index -> event == other.get(index) }
 		}
@@ -88,7 +87,7 @@ class IModelExtensions {
 	 * @return {@code true} if this model is the same (barring whitespace) as
 	 *         the other one.
 	 */
-	static equalsIgnoreWhitespace(IModel self, IModel other) {
+	static boolean equalsIgnoreWhitespace(IModel self, IModel other) {
 		if (other instanceof IModel) {
 			def nonWhitespaceEvents = { event -> !event.whitespace }
 			return self.findAll(nonWhitespaceEvents) == other.findAll(nonWhitespaceEvents)
@@ -104,7 +103,7 @@ class IModelExtensions {
 	 * @param closure
 	 * @return {@code true} if every event satisfies the closure.
 	 */
-	static everyWithIndex(IModel self, Closure closure) {
+	static boolean everyWithIndex(IModel self, Closure closure) {
 		for (def i = 0; i < self.size(); i++) {
 			if (!closure(self.get(i), i)) {
 				return false
@@ -122,7 +121,7 @@ class IModelExtensions {
 	 * @return The first event to match the closure criteria, or {@code null}
 	 *         if nothing matched.
 	 */
-	static find(IModel self, Closure closure) {
+	static ITemplateEvent find(IModel self, Closure closure) {
 		return self.iterator().find(closure)
 	}
 
@@ -133,7 +132,7 @@ class IModelExtensions {
 	 * @param closure
 	 * @return A list of matched events.
 	 */
-	static findAll(IModel self, Closure closure) {
+	static List<ITemplateEvent> findAll(IModel self, Closure closure) {
 		return self.iterator().findAll(closure)
 	}
 
@@ -146,7 +145,7 @@ class IModelExtensions {
 	 * @return The index of the first event to match the closure criteria, or
 	 *         {@code -1} if nothing matched.
 	 */
-	static findIndexOf(IModel self, Closure closure) {
+	static int findIndexOf(IModel self, Closure closure) {
 		return self.iterator().findIndexOf(closure)
 	}
 
@@ -159,7 +158,7 @@ class IModelExtensions {
 	 * @return The index of the first event to match the closure criteria, or
 	 *         {@code -1} if nothing matched.
 	 */
-	static findIndexOf(IModel self, int startIndex, Closure closure) {
+	static int findIndexOf(IModel self, int startIndex, Closure closure) {
 		return self.iterator().findIndexOf(startIndex, closure)
 	}
 
@@ -176,7 +175,7 @@ class IModelExtensions {
 	 * @param model
 	 * @return Index of an extracted submodel within this model.
 	 */
-	static findIndexOfModel(IModel self, IModel model) {
+	static int findIndexOfModel(IModel self, IModel model) {
 		def modelEvent = model.first()
 		return self.findIndexOf { event -> event.is(modelEvent) }
 	}
@@ -190,7 +189,7 @@ class IModelExtensions {
 	 * @return A model over the event that matches the closure criteria, or
 	 *         {@code null} if nothing matched.
 	 */
-	static findModel(IModel self, Closure closure) {
+	static IModel findModel(IModel self, Closure closure) {
 		return self.getModel(self.findIndexOf(closure))
 	}
 
@@ -200,7 +199,7 @@ class IModelExtensions {
 	 * @param self
 	 * @return The model's first event.
 	 */
-	static first(IModel self) {
+	static ITemplateEvent first(IModel self) {
 		return self.get(0)
 	}
 
@@ -214,7 +213,7 @@ class IModelExtensions {
 	 * @return Model at the given position, or `null` if the position is
 	 *         outside of the event queue.
 	 */
-	static getModel(IModel self, int pos) {
+	static IModel getModel(IModel self, int pos) {
 		if (0 <= pos && pos < self.size()) {
 			def clone = self.cloneModel()
 			def removeBefore = self instanceof TemplateModel ? pos - 1 : pos
@@ -239,7 +238,7 @@ class IModelExtensions {
 	 * @param model
 	 * @param modelFactory
 	 */
-	static insertModelWithWhitespace(IModel self, int pos, IModel model, IModelFactory modelFactory) {
+	static void insertModelWithWhitespace(IModel self, int pos, IModel model, IModelFactory modelFactory) {
 
 		if (0 <= pos && pos <= self.size()) {
 
@@ -276,13 +275,12 @@ class IModelExtensions {
 	 * @param event
 	 * @param modelFactory
 	 */
-	static insertWithWhitespace(IModel self, int pos, ITemplateEvent event, IModelFactory modelFactory) {
+	static void insertWithWhitespace(IModel self, int pos, ITemplateEvent event, IModelFactory modelFactory) {
 
 		if (0 <= pos && pos <= self.size()) {
 
-			// TODO: Because I can't check the parent for whitespace hints, I
-			//       should make this smarter and find whitespace within the model
-			//       to copy.
+			// TODO: Because I can't check the parent for whitespace hints, I should
+			//       make this smarter and find whitespace within the model to copy.
 			def whitespace = self.getModel(pos)
 			if (whitespace?.whitespace) {
 				self.insert(pos, event)
@@ -311,7 +309,7 @@ class IModelExtensions {
 	 * @return {@code true} if the first event in this model is an opening tag
 	 *         and the last event is the matching closing tag.
 	 */
-	static isElement(IModel self) {
+	static boolean isElement(IModel self) {
 		return self.first().openingElement && self.last().closingElement
 	}
 
@@ -325,7 +323,7 @@ class IModelExtensions {
 	 *         the last event is the matching closing tag, and  whether the
 	 *         element has the given tag name.
 	 */
-	static isElementOf(IModel self, tagName) {
+	static boolean isElementOf(IModel self, tagName) {
 		return self.element && self.first().elementCompleteName == tagName
 	}
 
@@ -335,7 +333,7 @@ class IModelExtensions {
 	 * @param self
 	 * @return {@code true} if this is a collapsible text model.
 	 */
-	static isWhitespace(IModel self) {
+	static boolean isWhitespace(IModel self) {
 		return self.size() == 1 && self.first().whitespace
 	}
 
@@ -345,7 +343,7 @@ class IModelExtensions {
 	 * @param self
 	 * @return A new iterator over the events of this model.
 	 */
-	static iterator(IModel self) {
+	static EventIterator iterator(IModel self) {
 		return new EventIterator(self)
 	}
 
@@ -355,7 +353,8 @@ class IModelExtensions {
 	 * @param self
 	 * @return The model's last event.
 	 */
-	static last(IModel self) {
+	@SuppressWarnings('UnnecessaryCallForLastElement')
+	static ITemplateEvent last(IModel self) {
 		return self.get(self.size() - 1)
 	}
 
@@ -365,7 +364,7 @@ class IModelExtensions {
 	 * 
 	 * @param self
 	 */
-	static removeChildren(IModel self) {
+	static void removeChildren(IModel self) {
 		if (self.element) {
 			while (self.size() > 2) {
 				self.remove(1)
@@ -378,7 +377,7 @@ class IModelExtensions {
 	 * 
 	 * @param self
 	 */
-	static removeFirst(IModel self) {
+	static void removeFirst(IModel self) {
 		self.remove(0)
 	}
 
@@ -387,7 +386,7 @@ class IModelExtensions {
 	 * 
 	 * @param self
 	 */
-	static removeLast(IModel self) {
+	static void removeLast(IModel self) {
 		self.remove(self.size() - 1)
 	}
 
@@ -400,7 +399,7 @@ class IModelExtensions {
 	 * @param self
 	 * @param pos A valid index within the current model.
 	 */
-	static removeModel(IModel self, int pos) {
+	static void removeModel(IModel self, int pos) {
 		if (0 <= pos && pos < self.size()) {
 			def modelSize = self.sizeOfModelAt(pos)
 			while (modelSize > 0) {
@@ -417,7 +416,7 @@ class IModelExtensions {
 	 * @param pos   A valid index within the current model.
 	 * @param model
 	 */
-	static replaceModel(IModel self, int pos, IModel model) {
+	static void replaceModel(IModel self, int pos, IModel model) {
 		if (0 <= pos && pos < self.size()) {
 			self.removeModel(pos)
 			self.insertModel(pos, model)
@@ -435,7 +434,8 @@ class IModelExtensions {
 	 * @return Size of an element from the given position, or 1 if the event
 	 *         at the position isn't an opening element.
 	 */
-	static sizeOfModelAt(IModel self, int index) {
+	@SuppressWarnings('EmptyIfStatement')
+	static int sizeOfModelAt(IModel self, int index) {
 
 		def eventIndex = index
 		def event = self.get(eventIndex++)
@@ -472,7 +472,7 @@ class IModelExtensions {
 	 * 
 	 * @param self
 	 */
-	static trim(IModel self) {
+	static void trim(IModel self) {
 		while (self.first().whitespace) {
 			self.removeFirst()
 		}

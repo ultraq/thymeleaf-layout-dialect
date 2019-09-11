@@ -36,7 +36,7 @@ class IAttributeExtensions {
 	 * @return {@code true} if this attribute is an attribute processor of the
 	 *         matching name.
 	 */
-	static equalsName(IAttribute self, String prefix, String name) {
+	static boolean equalsName(IAttribute self, String prefix, String name) {
 		def attributeName = self.attributeCompleteName
 		return attributeName == "${prefix}:${name}" ||
 		       attributeName == "data-${prefix}-${name}"

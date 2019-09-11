@@ -34,7 +34,7 @@ class IProcessableElementTagExtensions {
 	 *         the other element.
 	 */
 	@SuppressWarnings('EqualsOverloaded')
-	static equals(IProcessableElementTag self, Object other) {
+	static boolean equals(IProcessableElementTag self, Object other) {
 		return other instanceof IProcessableElementTag &&
 			self.elementDefinition == other.elementDefinition &&
 			self.attributeMap == other.attributeMap

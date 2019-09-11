@@ -34,7 +34,7 @@ class ICloseElementTagExtensions {
 	 *         element.
 	 */
 	@SuppressWarnings('EqualsOverloaded')
-	static equals(ICloseElementTag self, Object other) {
+	static boolean equals(ICloseElementTag self, Object other) {
 		return other instanceof ICloseElementTag &&
 			self.elementDefinition == other.elementDefinition
 	}

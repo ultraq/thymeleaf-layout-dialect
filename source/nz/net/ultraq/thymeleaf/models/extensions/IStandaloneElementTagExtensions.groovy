@@ -34,7 +34,7 @@ class IStandaloneElementTagExtensions {
 	 *         the other element.
 	 */
 	@SuppressWarnings('EqualsOverloaded')
-	static equals(IStandaloneElementTag self, Object other) {
+	static boolean equals(IStandaloneElementTag self, Object other) {
 		return other instanceof IStandaloneElementTag &&
 			self.elementDefinition == other.elementDefinition &&
 			self.attributeMap == other.attributeMap

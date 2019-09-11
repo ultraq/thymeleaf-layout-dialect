@@ -33,7 +33,7 @@ class ITextExtensions {
 	 * @return {@code true} if the text content matches.
 	 */
 	@SuppressWarnings('EqualsOverloaded')
-	static equals(IText self, Object other) {
+	static boolean equals(IText self, Object other) {
 		return other instanceof IText && self.text == other.text
 	}
 
@@ -43,7 +43,7 @@ class ITextExtensions {
 	 * @param self
 	 * @return {@code true} if, when trimmed, the text content is empty.
 	 */
-	static isWhitespace(IText self) {
+	static boolean isWhitespace(IText self) {
 		return self.text.trim().empty
 	}
 }
