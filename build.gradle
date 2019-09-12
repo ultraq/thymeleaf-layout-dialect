@@ -32,7 +32,7 @@ project.sourceCompatibility = '1.7'
 
 project.group    = 'nz.net.ultraq.thymeleaf'
 project.artifact = 'thymeleaf-layout-dialect'
-project.version  = '2.4.1'
+project.version  = '2.5.0-SNAPSHOT'
 project.year     = '2012'
 project.contributors = [
 	[
@@ -51,7 +51,7 @@ project.contributors = [
 dependencies {
 	compile(
 		'nz.net.ultraq.thymeleaf:thymeleaf-expression-processor:1.1.3',
-		'org.codehaus.groovy:groovy:2.4.13',
+		'org.codehaus.groovy:groovy:2.5.8',
 		'org.thymeleaf:thymeleaf:3.0.0.RELEASE'
 	)
 	testCompile(
