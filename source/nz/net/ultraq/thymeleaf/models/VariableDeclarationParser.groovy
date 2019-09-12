@@ -19,6 +19,8 @@ package nz.net.ultraq.thymeleaf.models
 import org.thymeleaf.context.IExpressionContext
 import org.thymeleaf.standard.expression.AssignationUtils
 
+import groovy.transform.TupleConstructor
+
 /**
  * Parser for variable declaration strings, which are the expressions that are
  * found withing {@code th:with} processors.  This is really a wrapper around
@@ -27,19 +29,10 @@ import org.thymeleaf.standard.expression.AssignationUtils
  * 
  * @author Emanuel Rabina
  */
+@TupleConstructor(defaults = false)
 class VariableDeclarationParser {
 
-	private final IExpressionContext context
-
-	/**
-	 * Constructor, sets the processing context for the parser.
-	 * 
-	 * @param context
-	 */
-	VariableDeclarationParser(IExpressionContext context) {
-
-		this.context = context
-	}
+	final IExpressionContext context
 
 	/**
 	 * Parse a variable declaration string, returning as many variable declaration

@@ -22,24 +22,17 @@ import org.thymeleaf.model.IModel
 import org.thymeleaf.model.IOpenElementTag
 import org.thymeleaf.model.IStandaloneElementTag
 
+import groovy.transform.TupleConstructor
+
 /**
  * Merges an element and all its children into an existing element.
  * 
  * @author Emanuel Rabina
  */
+@TupleConstructor(defaults = false)
 class ElementMerger implements ModelMerger {
 
-	private final ITemplateContext context
-
-	/**
-	 * Constructor, sets up the element merger context.
-	 * 
-	 * @param context
-	 */
-	ElementMerger(ITemplateContext context) {
-
-		this.context = context
-	}
+	final ITemplateContext context
 
 	/**
 	 * Replace the content of the target element, with the content of the source

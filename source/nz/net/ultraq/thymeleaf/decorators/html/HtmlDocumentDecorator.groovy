@@ -19,10 +19,11 @@ package nz.net.ultraq.thymeleaf.decorators.html
 import nz.net.ultraq.thymeleaf.decorators.SortingStrategy
 import nz.net.ultraq.thymeleaf.decorators.xml.XmlDocumentDecorator
 
-import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.model.ICloseElementTag
 import org.thymeleaf.model.IModel
 import org.thymeleaf.model.IOpenElementTag
+
+import groovy.transform.TupleConstructor
 
 /**
  * A decorator made to work over an HTML document.  Decoration for a document
@@ -31,25 +32,11 @@ import org.thymeleaf.model.IOpenElementTag
  * 
  * @author Emanuel Rabina
  */
+@TupleConstructor(callSuper = true, defaults = false, includeSuperProperties = true)
 class HtmlDocumentDecorator extends XmlDocumentDecorator {
 
-	private final boolean autoHeadMerging
-	private final SortingStrategy sortingStrategy
-
-	/**
-	 * Constructor, apply the given sorting strategy to the decorator.
-	 * 
-	 * @param context
-	 * @param sortingStrategy
-	 * @param autoHeadMerging
-	 */
-	HtmlDocumentDecorator(ITemplateContext context, SortingStrategy sortingStrategy, boolean autoHeadMerging) {
-
-		super(context)
-
-		this.sortingStrategy = sortingStrategy
-		this.autoHeadMerging = autoHeadMerging
-	}
+	final SortingStrategy sortingStrategy
+	final boolean autoHeadMerging
 
 	/**
 	 * Decorate an entire HTML page.

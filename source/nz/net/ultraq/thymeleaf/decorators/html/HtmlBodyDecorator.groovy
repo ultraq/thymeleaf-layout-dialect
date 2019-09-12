@@ -22,24 +22,17 @@ import nz.net.ultraq.thymeleaf.models.AttributeMerger
 import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.model.IModel
 
+import groovy.transform.TupleConstructor
+
 /**
  * A decorator specific to processing an HTML {@code <body>} element.
  * 
  * @author Emanuel Rabina
  */
+@TupleConstructor(defaults = false)
 class HtmlBodyDecorator implements Decorator {
 
-	private final ITemplateContext context
-
-	/**
-	 * Constructor, sets up the element decorator context.
-	 * 
-	 * @param context
-	 */
-	HtmlBodyDecorator(ITemplateContext context) {
-
-		this.context = context
-	}
+	final ITemplateContext context
 
 	/**
 	 * Decorate the {@code <body>} part.

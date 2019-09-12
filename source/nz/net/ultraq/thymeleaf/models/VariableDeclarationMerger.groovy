@@ -18,6 +18,8 @@ package nz.net.ultraq.thymeleaf.models
 
 import org.thymeleaf.context.IExpressionContext
 
+import groovy.transform.TupleConstructor
+
 /**
  * Merges variable declarations in a {@code th:with} attribute processor, taking
  * the declarations in the target and combining them with the declarations in
@@ -25,19 +27,10 @@ import org.thymeleaf.context.IExpressionContext
  * 
  * @author Emanuel Rabina
  */
+@TupleConstructor(defaults = false)
 class VariableDeclarationMerger {
 
-	private final IExpressionContext context
-
-	/**
-	 * Constructor, sets the processing context for the merger.
-	 * 
-	 * @oaram context
-	 */
-	VariableDeclarationMerger(IExpressionContext context) {
-
-		this.context = context
-	}
+	final IExpressionContext context
 
 	/**
 	 * Merge {@code th:with} attributes so that names from the source value

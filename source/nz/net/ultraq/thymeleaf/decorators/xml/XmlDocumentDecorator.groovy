@@ -27,24 +27,17 @@ import org.thymeleaf.model.IModel
 import org.thymeleaf.model.IOpenElementTag
 import org.thymeleaf.model.IProcessableElementTag
 
+import groovy.transform.TupleConstructor
+
 /**
  * A decorator made to work over an XML document.
  * 
  * @author Emanuel Rabina
  */
+@TupleConstructor(defaults = false)
 class XmlDocumentDecorator implements Decorator {
 
-	protected final ITemplateContext context
-
-	/**
-	 * Constructor, set up the document decorator context.
-	 * 
-	 * @param context
-	 */
-	XmlDocumentDecorator(ITemplateContext context) {
-
-		this.context = context
-	}
+	final ITemplateContext context
 
 	/**
 	 * Decorates the target XML document with the source one.

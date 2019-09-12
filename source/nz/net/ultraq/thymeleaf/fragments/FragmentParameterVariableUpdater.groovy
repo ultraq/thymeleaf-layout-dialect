@@ -21,27 +21,19 @@ import org.thymeleaf.model.IModel
 import org.thymeleaf.processor.element.IElementModelStructureHandler
 import org.thymeleaf.standard.expression.FragmentExpression
 
+import groovy.transform.TupleConstructor
+
 /**
  * Updates the variables at a given element/fragment scope to include those in
  * a fragment expression.
  * 
  * @author Emanuel Rabina
  */
+@TupleConstructor(defaults = false)
 class FragmentParameterVariableUpdater {
 
-	private final String dialectPrefix
-	private final ITemplateContext context
-
-	/**
-	 * Constructor, set the dialect prefix currently being used.
-	 * 
-	 * @param dialectPrefix
-	 */
-	FragmentParameterVariableUpdater(String dialectPrefix, ITemplateContext context) {
-
-		this.dialectPrefix = dialectPrefix
-		this.context = context
-	}
+	final String dialectPrefix
+	final ITemplateContext context
 
 	/**
 	 * Given a fragment expression, update the local variables of the element

@@ -25,24 +25,17 @@ import org.thymeleaf.model.IModel
 import org.thymeleaf.standard.StandardDialect
 import org.thymeleaf.standard.processor.StandardWithTagProcessor
 
+import groovy.transform.TupleConstructor
+
 /**
  * Merges attributes from one element into another.
  * 
  * @author Emanuel Rabina
  */
+@TupleConstructor(defaults = false)
 class AttributeMerger implements ModelMerger {
 
-	private final ITemplateContext context
-
-	/**
-	 * Constructor, sets up the attribute merger context.
-	 * 
-	 * @param context
-	 */
-	AttributeMerger(ITemplateContext context) {
-
-		this.context = context
-	}
+	final ITemplateContext context
 
 	/**
 	 * Merge the attributes of the source element with those of the target

@@ -19,26 +19,18 @@ package nz.net.ultraq.thymeleaf.fragments
 import org.thymeleaf.model.IModel
 import org.thymeleaf.model.IOpenElementTag
 
+import groovy.transform.TupleConstructor
+
 /**
  * Searches for and returns layout dialect fragments within a given
  * scope/element.
  * 
  * @author Emanuel Rabina
  */
+@TupleConstructor(defaults = false)
 class FragmentFinder {
 
-	private final String dialectPrefix
-
-	/**
-	 * Constructor, create a new fragment finder to search for fragments using the
-	 * given prefix as the one configured for the layout dialect.
-	 * 
-	 * @param dialectPrefix
-	 */
-	FragmentFinder(String dialectPrefix) {
-
-		this.dialectPrefix = dialectPrefix
-	}
+	final String dialectPrefix
 
 	/**
 	 * Find and return models for layout dialect fragments within the scope of the
