@@ -16,8 +16,6 @@
 
 package nz.net.ultraq.thymeleaf.fragments
 
-import java.util.regex.Pattern
-
 /**
  * Extracts just the parameter names from a fragment definition.  Used for when
  * unnamed fragment parameters need to be mapped to their respective names.
@@ -25,8 +23,6 @@ import java.util.regex.Pattern
  * @author Emanuel Rabina
  */
 class FragmentParameterNamesExtractor {
-
-	private static final Pattern FRAGMENT_WITH_PARAMETERS_PATTERN = ~/.*?\(.*\)/
 
 	/**
 	 * Returns a list of parameter names for the given fragment definition.
@@ -36,14 +32,10 @@ class FragmentParameterNamesExtractor {
 	 */
 	List<String> extract(String fragmentDefinition) {
 
-		def parameterNames = []
-		if (fragmentDefinition.matches(FRAGMENT_WITH_PARAMETERS_PATTERN)) {
-			def parametersDefinition = fragmentDefinition.substring(
-				fragmentDefinition.indexOf('(') + 1, fragmentDefinition.lastIndexOf(')'))
-			parameterNames = parametersDefinition.split(',').collect { parameter ->
-				return parameter.contains('=') ? parameter.substring(0, parameter.indexOf('=')).trim() : parameter.trim()
-			}
-		}
-		return parameterNames
+		def matcher = fragmentDefinition =~ /.*?\((.*)\)/
+		return matcher ?
+			matcher[0][1].split(',').collect { parameter ->
+				return (parameter =~ /([^=]+)=?.*/)[0][1].trim()
+			} : []
 	}
 }
