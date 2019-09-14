@@ -38,11 +38,7 @@ class VariableDeclaration {
 	 */
 	VariableDeclaration(Assignation assignation) {
 
-		def declaration = assignation.stringRepresentation
-		def equalsIndex = declaration.indexOf('=')
-
-		name = declaration.substring(0, equalsIndex)
-		value = declaration.substring(equalsIndex + 1)
+		(name, value) = assignation.stringRepresentation.split('=')
 	}
 
 	/**
