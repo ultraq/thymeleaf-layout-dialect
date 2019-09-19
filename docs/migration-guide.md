@@ -1,3 +1,7 @@
+---
+layout: default
+title: Migration guide
+---
 
 Migrating to 2.0
 ================

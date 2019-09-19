@@ -1,3 +1,7 @@
+---
+layout: default
+title: Introduction
+---
 
 Thymeleaf Layout Dialect
 ========================
