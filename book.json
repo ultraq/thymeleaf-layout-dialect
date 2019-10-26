@@ -1,4 +1,5 @@
 {
+	"gitbook": "3.2.3",
 	"root": "docs",
 	"title": "Thymeleaf Layout Dialect",
 	"structure": {
@@ -8,11 +9,13 @@
 	"plugins": [
 		"edit-link",
 		"github",
-		"prism", "-highlight"
+		"prism",
+		"-highlight",
+		"-sharing"
 	],
 	"pluginsConfig": {
 		"edit-link": {
-			"base": "https://github.com/ultraq/thymeleaf-layout-dialect/tree/master"
+			"base": "https://github.com/ultraq/thymeleaf-layout-dialect/tree/master/docs"
 		},
 		"github": {
 			"url": "https://github.com/ultraq/thymeleaf-layout-dialect"
