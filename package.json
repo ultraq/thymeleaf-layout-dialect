@@ -1,6 +1,6 @@
 {
 	"name": "thymeleaf-layout-dialect",
-	"version": "2.4.1",
+	"version": "2.5.0-SNAPSHOT",
 	"description": "A dialect for Thymeleaf that lets you build layouts and reusable templates in order to improve code reuse",
 	"author": "Emanuel Rabina <emanuelrabina@gmail.com> (http://www.ultraq.net.nz/)",
 	"scripts": {
@@ -10,12 +10,11 @@
 		"docs:watch": "npm run docs:init && gitbook serve",
 		"docs:publish": "npm run docs:clean && npm run docs:build && cd _book && git init && git checkout -b gh-pages && touch .nojekyll && git add . && git commit -am 'Update docs' && git push git@github.com:ultraq/thymeleaf-layout-dialect gh-pages --force"
 	},
-	"dependencies": {
-		"gitbook-plugin-prism": "^2.4.0"
-	},
 	"devDependencies": {
 		"gitbook-cli": "~2.3.0",
-		"gitbook-plugin-prism": "^2.3.0",
+		"gitbook-plugin-edit-link": "~2.0.2",
+		"gitbook-plugin-github": "~2.0.0",
+		"gitbook-plugin-prism": "~2.4.0",
 		"rimraf": "~2.5.3"
 	},
 	"private": true
