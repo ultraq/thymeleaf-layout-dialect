@@ -18,7 +18,6 @@ package nz.net.ultraq.thymeleaf.includes
 
 import nz.net.ultraq.thymeleaf.expressions.ExpressionProcessor
 import nz.net.ultraq.thymeleaf.fragments.FragmentFinder
-import nz.net.ultraq.thymeleaf.fragments.FragmentMap
 import nz.net.ultraq.thymeleaf.fragments.FragmentParameterVariableUpdater
 import nz.net.ultraq.thymeleaf.models.TemplateModelFinder
 
@@ -71,8 +70,8 @@ class InsertProcessor extends AbstractAttributeModelProcessor {
 		def fragmentForInsertion = new TemplateModelFinder(context).findFragment(fragmentExpression)
 
 		// Gather all fragment parts within this element, scoping them to this element
-		def includeFragments = new FragmentFinder(dialectPrefix).findFragments(model)
-		FragmentMap.setForNode(context, structureHandler, includeFragments)
+		def insertFragments = new FragmentFinder(dialectPrefix).findFragments(model)
+		structureHandler.setLocalFragmentCollection(context, insertFragments)
 
 		// Keep track of what template is being processed?  Thymeleaf does this for
 		// its include processor, so I'm just doing the same here.

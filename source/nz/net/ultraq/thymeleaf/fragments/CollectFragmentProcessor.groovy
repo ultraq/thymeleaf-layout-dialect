@@ -85,7 +85,7 @@ class CollectFragmentProcessor extends AbstractAttributeTagProcessor {
 		// All :define fragments we collected, :collect fragments included to
 		// determine where to stop.  Fragments after :collect are preserved for the
 		// next :collect event.
-		def fragments = FragmentMap.get(context)[(attributeValue)]
+		def fragments = context.fragmentCollection[attributeValue]
 
 		// Replace the tag body with the fragment
 		if (fragments) {

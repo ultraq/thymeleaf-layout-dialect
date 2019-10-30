@@ -34,7 +34,7 @@ class FragmentFinder {
 
 	/**
 	 * Find and return models for layout dialect fragments within the scope of the
-	 * given model, without delving into {@code layout:include} or
+	 * given model, without delving into {@code layout:insert} or
 	 * {@code layout:replace} elements, mapped by the name of each fragment.
 	 * 
 	 * @param model Model whose events are to be searched.

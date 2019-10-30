@@ -80,7 +80,7 @@ class FragmentProcessor extends AbstractAttributeTagProcessor {
 		}
 
 		// Locate the fragment that corresponds to this decorator/include fragment
-		def fragments = FragmentMap.get(context)[(attributeValue)]
+		def fragments = context.fragmentCollection[attributeValue]
 
 		// Replace the tag body with the fragment
 		if (fragments) {

@@ -1,6 +1,7 @@
 moduleName = thymeleaf-extensions
 moduleVersion = ${version}
 extensionClasses = nz.net.ultraq.thymeleaf.context.extensions.IContextExtensions,\
+                   nz.net.ultraq.thymeleaf.fragments.extensions.FragmentExtensions,\
                    nz.net.ultraq.thymeleaf.models.extensions.IAttributeExtensions,\
                    nz.net.ultraq.thymeleaf.models.extensions.ICloseElementTagExtensions,\
                    nz.net.ultraq.thymeleaf.models.extensions.IModelExtensions,\

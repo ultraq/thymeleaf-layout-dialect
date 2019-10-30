@@ -19,7 +19,6 @@ package nz.net.ultraq.thymeleaf.decorators
 import nz.net.ultraq.thymeleaf.decorators.html.HtmlDocumentDecorator
 import nz.net.ultraq.thymeleaf.decorators.xml.XmlDocumentDecorator
 import nz.net.ultraq.thymeleaf.expressions.ExpressionProcessor
-import nz.net.ultraq.thymeleaf.fragments.FragmentMap
 import nz.net.ultraq.thymeleaf.fragments.FragmentFinder
 import nz.net.ultraq.thymeleaf.models.TemplateModelFinder
 
@@ -139,7 +138,7 @@ class DecorateProcessor extends AbstractAttributeModelProcessor {
 		structureHandler.templateData = decorateTemplateData
 
 		// Save layout fragments for use later by layout:fragment processors
-		FragmentMap.setForNode(context, structureHandler, pageFragments)
+		structureHandler.setLocalFragmentCollection(context, pageFragments, true)
 
 		// Scope variables in fragment definition to template.  Parameters *must* be
 		// named as there is no mechanism for setting their name at the target
