@@ -16,74 +16,60 @@
 
 package nz.net.ultraq.thymeleaf.tests.fragments.extensions
 
-import org.junit.Before
-import org.junit.Test
 import org.thymeleaf.cache.ICacheEntryValidity
 import org.thymeleaf.context.ITemplateContext
-import static nz.net.ultraq.thymeleaf.fragments.extensions.FragmentExtensions.FRAGMENT_COLLECTION_KEY
+import nz.net.ultraq.thymeleaf.fragments.extensions.FragmentExtensions
 
 import org.thymeleaf.engine.TemplateData
 import org.thymeleaf.templatemode.TemplateMode
 import org.thymeleaf.templateresource.ITemplateResource
-import static org.mockito.Mockito.*
+import spock.lang.Specification
 
 /**
  * Tests for extensions made to Thymeleaf classes for working with fragments.
  * 
  * @author Emanuel Rabina
  */
-class FragmentExtensionsTests {
+class FragmentExtensionsTests extends Specification {
 
-	private ITemplateContext context
+	private ITemplateContext context = Mock(ITemplateContext)
 
-	/**
-	 * Context setup.
-	 */
-	@Before
-	void newContext() {
+	def "Contexts without a fragment collection get a new one"() {
+		given:
+			context.templateStack >> []
 
-		context = mock(ITemplateContext)
+		when:
+			def newMap = context.fragmentCollection
+
+		then:
+			newMap != null
 	}
 
-	/**
-	 * Test that contexts without a fragment map get a new one.
-	 */
-	@Test
-	void getNewMap() {
+	def "An existing map is returned if available"() {
+		given:
+			context.templateStack >> []
+			def existingMap = [:]
+			context.getVariable(FragmentExtensions.FRAGMENT_COLLECTION_KEY) >> existingMap
 
-		assert context.variableNames.empty
+		when:
+			def map = context.fragmentCollection
 
-		def newMap = context.fragmentCollection
-		assert newMap != null
+		then:
+			map.is(existingMap)
 	}
 
-	/**
-	 * Test that an existing map is returned if available.
-	 */
-	@Test
-	void getExistingMap() {
+	def "A new map is always returned when template stack size == 1 and in decorator call"() {
+		given:
+			def existingMap = [:]
+			context.getVariable(FragmentExtensions.FRAGMENT_COLLECTION_KEY) >> existingMap
+			context.templateStack >> [
+				new TemplateData('template', [] as Set, Mock(ITemplateResource), TemplateMode.HTML, Mock(ICacheEntryValidity))
+			]
 
-		def existingMap = [:]
-		when(context[FRAGMENT_COLLECTION_KEY]).thenReturn(existingMap)
+		when:
+			def map = context.getFragmentCollection(true)
 
-		def map = context.fragmentCollection
-		assert map.is(existingMap)
-	}
-
-	/**
-	 * Test that a new map is always returned when we think we're running a fresh
-	 * decorator process (the template stack size is 1 and we're in the context of
-	 * the decorator).
-	 */
-	@Test
-	void getNewMapWhenRunningAFreshDecorator() {
-
-		def existingMap = [:]
-		when(context[FRAGMENT_COLLECTION_KEY]).thenReturn(existingMap)
-		when(context.templateStack).thenReturn([new TemplateData('template', [] as Set,
-			mock(ITemplateResource), TemplateMode.HTML, mock(ICacheEntryValidity))])
-
-		def map = context.getFragmentCollection(true)
-		assert !map.is(existingMap)
+		then:
+			!map.is(existingMap)
 	}
 }

@@ -20,25 +20,21 @@ import nz.net.ultraq.thymeleaf.LayoutDialect
 import nz.net.ultraq.thymeleaf.fragments.FragmentFinder
 import nz.net.ultraq.thymeleaf.models.ModelBuilder
 
-import org.junit.BeforeClass
-import org.junit.Test
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.templatemode.TemplateMode
+import spock.lang.Specification
 
 /**
  * Tests for the {@link FragmentFinder} utility.
  * 
  * @author Emanuel Rabina
  */
-class FragmentFinderTests {
+class FragmentFinderTests extends Specification {
 
-	private static ModelBuilder modelBuilder
+	private ModelBuilder modelBuilder
+	private FragmentFinder fragmentFinder
 
-	/**
-	 * Set up, create a template engine.
-	 */
-	@BeforeClass
-	static void setupThymeleafEngine() {
+	def setup() {
 
 		def templateEngine = new TemplateEngine(
 			additionalDialects: [
@@ -47,31 +43,28 @@ class FragmentFinderTests {
 		)
 		modelBuilder = new ModelBuilder(templateEngine.configuration.getModelFactory(TemplateMode.HTML),
 			templateEngine.configuration.elementDefinitions, TemplateMode.HTML)
+
+		fragmentFinder = new FragmentFinder('layout')
 	}
 
-	/**
-	 * Test that the fragment finder finds basic fragments and returns a map whose
-	 * keys are the names of the found fragments.
-	 */
-	@Test
-	@SuppressWarnings('ExplicitCallToDivMethod')
-	void findFragments() {
-
-		def source = modelBuilder.build {
-			main {
-				header('layout:fragment': 'header-fragment')
-				div {
-					p('layout:fragment': 'paragraph-fragment')
+	def "Finds basic fragments and returns a map of names:fragments"() {
+		given:
+			def source = modelBuilder.build {
+				main {
+					header('layout:fragment': 'header-fragment')
+					div {
+						p('layout:fragment': 'paragraph-fragment')
+					}
+					footer('layout:fragment': 'footer-fragment')
 				}
-				footer('layout:fragment': 'footer-fragment')
 			}
-		}
 
-		def fragmentFinder = new FragmentFinder('layout')
-		def fragments = fragmentFinder.findFragments(source)
+		when:
+			def fragments = fragmentFinder.findFragments(source)
 
-		assert fragments.containsKey('header-fragment')
-		assert fragments.containsKey('paragraph-fragment')
-		assert fragments.containsKey('footer-fragment')
+		then:
+			fragments.containsKey('header-fragment')
+			fragments.containsKey('paragraph-fragment')
+			fragments.containsKey('footer-fragment')
 	}
 }

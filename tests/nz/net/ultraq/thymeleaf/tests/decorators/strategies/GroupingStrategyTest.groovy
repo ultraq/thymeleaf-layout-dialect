@@ -17,32 +17,28 @@
 package nz.net.ultraq.thymeleaf.tests.decorators.strategies
 
 import nz.net.ultraq.thymeleaf.LayoutDialect
-import nz.net.ultraq.thymeleaf.decorators.SortingStrategy
 import nz.net.ultraq.thymeleaf.decorators.strategies.GroupingStrategy
 import nz.net.ultraq.thymeleaf.models.ModelBuilder
 
-import org.junit.Before
-import org.junit.BeforeClass
-import org.junit.Test
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.templatemode.TemplateMode
+import spock.lang.*
 
 /**
  * Test the results of the grouping strategy.
  * 
  * @author Emanuel Rabina
  */
-class GroupingStrategyTest {
+class GroupingStrategyTest extends Specification {
 
-	private static ModelBuilder modelBuilder
+	@Shared ModelBuilder modelBuilder
 
-	private SortingStrategy groupingStrategy
+	def groupingStrategy = new GroupingStrategy()
 
 	/**
 	 * Set up, create a template engine for the model builder.
 	 */
-	@BeforeClass
-	static void setupThymeleafEngine() {
+	def setupSpec() {
 
 		def templateEngine = new TemplateEngine(
 			additionalDialects: [
@@ -54,59 +50,43 @@ class GroupingStrategyTest {
 		modelBuilder = new ModelBuilder(modelFactory, templateEngine.configuration.elementDefinitions, TemplateMode.HTML)
 	}
 
-	/**
-	 * Set up, create a new grouping strategy.
-	 */
-	@Before
-	void setupGroupingStrategy() {
-
-		groupingStrategy = new GroupingStrategy()
-	}
-
-	/**
-	 * Whitespace nodes return a -1 index value to mean to discard them.
-	 */
-	@Test
-	void discardWhitespace() {
-
-		def headModel = modelBuilder.build {
-			head()
-		}
-		def whitespace = modelBuilder.build {
-			p('   ')
-		}.getModel(1)
-		def result = groupingStrategy.findPositionForModel(headModel, whitespace)
-		assert result == -1
-	}
-
-	/**
-	 * Historic behaviour, have <title> elements always be first.
-	 */
-	@Test
-	void titleFirst() {
-
-		def titleModel = modelBuilder.build {
-			title('Page title')
-		}
-
-		def headModel = modelBuilder.build {
-			head()
-		}
-		def result = groupingStrategy.findPositionForModel(headModel, titleModel)
-		assert result == 1
-
-		headModel = modelBuilder.build {
-			head('   ')
-		}
-		result = groupingStrategy.findPositionForModel(headModel, titleModel)
-		assert result == 2
-
-		headModel = modelBuilder.build {
-			head  {
-				meta(charset: 'UTF-8')
+	def "Whitespace nodes return a -1 index value to mean to discard them"() {
+		given:
+			def headModel = modelBuilder.build {
+				head()
 			}
-		}
-		result = groupingStrategy.findPositionForModel(headModel, titleModel)
-		assert result == 1
+			def whitespace = modelBuilder.build {
+				p('   ')
+			}.getModel(1)
+
+		when:
+			def result = groupingStrategy.findPositionForModel(headModel, whitespace)
+
+		then:
+			result == -1
+	}
+
+	def "Historic behaviour, have <title> elements always be first"() {
+		expect:
+			groupingStrategy.findPositionForModel(headModel, titleModel) == result
+
+		where:
+			titleModel = modelBuilder.build {
+				title('Page title')
+			}
+			headModel << [
+				modelBuilder.build {
+					head()
+				},
+				modelBuilder.build {
+					head  {
+						meta(charset: 'UTF-8')
+					}
+				},
+				modelBuilder.build {
+					head('   ')
+				}
+			]
+			result << [1, 1, 2]
 	}
 }

@@ -20,31 +20,27 @@ import nz.net.ultraq.thymeleaf.LayoutDialect
 import nz.net.ultraq.thymeleaf.models.ElementMerger
 import nz.net.ultraq.thymeleaf.models.ModelBuilder
 
-import org.junit.Before
-import org.junit.BeforeClass
-import org.junit.Test
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.dialect.IProcessorDialect
 import org.thymeleaf.templatemode.TemplateMode
+import spock.lang.Specification
 
 /**
  * Tests for the element merger.
  * 
  * @author Emanuel Rabina
  */
-class ElementMergerTests {
+class ElementMergerTests extends Specification {
 
-	private static ITemplateContext mockContext
-	private static ModelBuilder modelBuilder
-
+	private ITemplateContext mockContext
+	private ModelBuilder modelBuilder
 	private ElementMerger elementMerger
 
 	/**
-	 * Set up, create a template engine.
+	 * Set up, create a template engine and element merger.
 	 */
-	@BeforeClass
-	static void setupThymeleafEngine() {
+	def setup() {
 
 		def templateEngine = new TemplateEngine(
 			additionalDialects: [
@@ -54,115 +50,88 @@ class ElementMergerTests {
 		def modelFactory = templateEngine.configuration.getModelFactory(TemplateMode.HTML)
 
 		modelBuilder = new ModelBuilder(modelFactory, templateEngine.configuration.elementDefinitions, TemplateMode.HTML)
-		mockContext = [
-			getConfiguration: { ->
-				return templateEngine.configuration
-			},
-			getModelFactory: { ->
-				return modelFactory
-			}
-		] as ITemplateContext
+		mockContext = Mock(ITemplateContext)
+		mockContext.configuration >> templateEngine.configuration
+		mockContext.modelFactory >> modelFactory
 		mockContext.metaClass {
 			getPrefixForDialect = { Class<IProcessorDialect> dialectClass ->
 				return 'mock-prefix'
 			}
 		}
-	}
-
-	/**
-	 * Set up, create a new attribute merger.
-	 */
-	@Before
-	void setupElementMerger() {
 
 		elementMerger = new ElementMerger(mockContext)
 	}
 
-	/**
-	 * Test that the element merger doesn't modify the source parameters.
-	 */
-	@Test
-	@SuppressWarnings('ExplicitCallToDivMethod')
-	void immutability() {
+	def "Doesn't modify source parameters"() {
+		given:
+			def source = modelBuilder.build {
+				div(id: 'source-element')
+			}
+			def target = modelBuilder.build {
+				div(id: 'target-element')
+			}
+			def sourceOrig = source.cloneModel()
+			def targetOrig = target.cloneModel()
 
-		def source = modelBuilder.build {
-			div(id: 'source-element')
-		}
-		def target = modelBuilder.build {
-			div(id: 'target-element')
-		}
+		when:
+			elementMerger.merge(target, source)
 
-		def sourceOrig = source.cloneModel()
-		def targetOrig = target.cloneModel()
-
-		elementMerger.merge(target, source)
-
-		def sourceAfter = source.cloneModel()
-		def targetAfter = target.cloneModel()
-
-		assert sourceOrig == sourceAfter
-		assert targetOrig == targetAfter
+		then:
+			sourceOrig == source.cloneModel()
+			targetOrig == target.cloneModel()
 	}
 
-	/**
-	 * Test that the merger merges the source elements into the target.
-	 */
-	@Test
-	@SuppressWarnings('ExplicitCallToDivMethod')
-	void mergeElements() {
-
-		def source = modelBuilder.build {
-			section {
-				header()
+	def "Merge source elements into the target"() {
+		given:
+			def source = modelBuilder.build {
+				section {
+					header()
+				}
 			}
-		}
-		def target = modelBuilder.build {
-			div {
-				p('Hello')
+			def target = modelBuilder.build {
+				div {
+					p('Hello')
+				}
 			}
-		}
 
-		def result = elementMerger.merge(target, source)
-		assert result == source
+		when:
+			def result = elementMerger.merge(target, source)
+
+		then:
+			result == source
 	}
 
-	/**
-	 * Test that the merger merges the source root element attributes into the
-	 * target root element attributes.
-	 */
-	@Test
-	@SuppressWarnings('ExplicitCallToDivMethod')
-	void mergeRootAttributes() {
+	def "Merge source root element attributes into the target root element"() {
+		given:
+			def source = modelBuilder.build {
+				div(id: 'source-id')
+			}
+			def target = modelBuilder.build {
+				div(id: 'target-id')
+			}
 
-		def source = modelBuilder.build {
-			div(id: 'source-id')
-		}
-		def target = modelBuilder.build {
-			div(id: 'target-id')
-		}
+		when:
+			def result = elementMerger.merge(target, source)
 
-		def result = elementMerger.merge(target, source)
-		assert result == source
+		then:
+			result == source
 	}
 
-	/**
-	 * Test that the merging of the root element attributes doesn't mess with the
-	 * root element type (a plain old attribute merger would do that).
-	 */
-	@Test
-	@SuppressWarnings('ExplicitCallToDivMethod')
-	void retainSourceShape() {
-
-		def source = modelBuilder.build {
-			section {
-				header()
+	def "Merging root element attributes doesn't mess with the root element type"() {
+		given:
+			def source = modelBuilder.build {
+				section {
+					header()
+				}
 			}
-		}
-		def target = modelBuilder.build {
-			div(standalone: true)
-		}
+			def target = modelBuilder.build {
+				div(standalone: true)
+			}
 
-		def result = elementMerger.merge(target, source)
-		assert result == source
+		when:
+			def result = elementMerger.merge(target, source)
+
+		then:
+			result == source
 	}
 }

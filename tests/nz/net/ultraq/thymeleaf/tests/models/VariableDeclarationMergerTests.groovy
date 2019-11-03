@@ -19,115 +19,91 @@ package nz.net.ultraq.thymeleaf.tests.models
 import nz.net.ultraq.thymeleaf.LayoutDialect
 import nz.net.ultraq.thymeleaf.models.VariableDeclarationMerger
 
-import org.junit.BeforeClass
-import org.junit.Test
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.context.ExpressionContext
-import org.thymeleaf.context.IExpressionContext
+import spock.lang.Specification
 
 /**
  * Tests for the variable declaration merger.
  * 
  * @author Emanuel Rabina
  */
-class VariableDeclarationMergerTests {
+class VariableDeclarationMergerTests extends Specification {
 
-	private static IExpressionContext context
+	private VariableDeclarationMerger merger
 
 	/**
 	 * Set up, create an expression context.
 	 */
-	@BeforeClass
-	static void setupContext() {
+	def setup() {
 
 		def templateEngine = new TemplateEngine(
 			additionalDialects: [
 				new LayoutDialect()
 			]
 		)
-		context = new ExpressionContext(templateEngine.configuration)
+		def context = new ExpressionContext(templateEngine.configuration)
+
+		merger = new VariableDeclarationMerger(context)
 	}
 
-	/**
-	 * Test that the merger just concatenates values when none of the names in the
-	 * source and target match.
-	 */
-	@Test
-	@SuppressWarnings('GStringExpressionWithinString')
-	void noMerges() {
+	def "Concatenates values when none of the names in the source and target match"() {
+		given:
+			def target = 'name1=${value1}'
+			def source = 'name2=${value2}'
 
-		def target = 'name1=${value1}'
-		def source = 'name2=${value2}'
+		when:
+			def result = merger.merge(target, source)
 
-		def merger = new VariableDeclarationMerger(context)
-		def result = merger.merge(target, source)
-
-		assert result == 'name1=${value1},name2=${value2}'
+		then:
+			result == 'name1=${value1},name2=${value2}'
 	}
 
-	/**
-	 * Test that the merger replaces the target value because the source value has
-	 * the same name.
-	 */
-	@Test
-	@SuppressWarnings('GStringExpressionWithinString')
-	void basicMerge() {
+	def "Replaces target values when the source value has the same name"() {
+		given:
+			def target = 'name=${value1}'
+			def source = 'name=${value2}'
 
-		def target = 'name=${value1}'
-		def source = 'name=${value2}'
+		when:
+			def result = merger.merge(target, source)
 
-		def merger = new VariableDeclarationMerger(context)
-		def result = merger.merge(target, source)
-
-		assert result == 'name=${value2}'
+		then:
+			result == 'name=${value2}'
 	}
 
-	/**
-	 * Test that the merger replaces just the target value with the same name in
-	 * the source, leaving the rest of the target string alone.
-	 */
-	@Test
-	@SuppressWarnings('GStringExpressionWithinString')
-	void mixedMerge() {
+	def "Replaces only the target value with the same name in the source"() {
+		given:
+			def target = 'name1=${value1},name2=${value2}'
+			def source = 'name1=${newValue},name3=${value3}'
 
-		def target = 'name1=${value1},name2=${value2}'
-		def source = 'name1=${newValue},name3=${value3}'
+		when:
+			def result = merger.merge(target, source)
 
-		def merger = new VariableDeclarationMerger(context)
-		def result = merger.merge(target, source)
-
-		assert result == 'name1=${newValue},name2=${value2},name3=${value3}'
+		then:
+			result == 'name1=${newValue},name2=${value2},name3=${value3}'
 	}
 
-	/**
-	 * Test that the merger just uses the target value when no source is present.
-	 */
-	@Test
-	@SuppressWarnings('GStringExpressionWithinString')
-	void noSource() {
+	def "Uses the target value when no source present"() {
+		given:
+			def target = 'name=${value}'
+			def source = null
 
-		def target = 'name=${value}'
-		def source = null
+		when:
+			def result = merger.merge(target, source)
 
-		def merger = new VariableDeclarationMerger(context)
-		def result = merger.merge(target, source)
-
-		assert result == target
+		then:
+			result == target
 	}
 
-	/**
-	 * Test that the merger just uses the source value when no target is present.
-	 */
-	@Test
-	@SuppressWarnings('GStringExpressionWithinString')
-	void noTarget() {
+	def "Uses the source value when no target is present"() {
+		given:
+			def target = null
+			def source = 'name=${value}'
 
-		def target = null
-		def source = 'name=${value}'
+		when:
+			def result = merger.merge(target, source)
 
-		def merger = new VariableDeclarationMerger(context)
-		def result = merger.merge(target, source)
-
-		assert result == source
+		then:
+			result == source
 	}
 }

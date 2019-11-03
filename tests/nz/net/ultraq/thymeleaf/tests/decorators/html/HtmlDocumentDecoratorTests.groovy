@@ -21,32 +21,28 @@ import nz.net.ultraq.thymeleaf.decorators.html.HtmlDocumentDecorator
 import nz.net.ultraq.thymeleaf.decorators.strategies.AppendingStrategy
 import nz.net.ultraq.thymeleaf.models.ModelBuilder
 
-import org.junit.Before
-import org.junit.BeforeClass
-import org.junit.Test
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.dialect.IProcessorDialect
 import org.thymeleaf.standard.StandardDialect
 import org.thymeleaf.templatemode.TemplateMode
+import spock.lang.Specification
 
 /**
  * Unit tests for the HTML document decorator.
  * 
  * @author Emanuel Rabina
  */
-class HtmlDocumentDecoratorTests {
+class HtmlDocumentDecoratorTests extends Specification {
 
-	private static ITemplateContext mockContext
-	private static ModelBuilder modelBuilder
-
+	private ITemplateContext mockContext
+	private ModelBuilder modelBuilder
 	private HtmlDocumentDecorator htmlDocumentDecorator
 
 	/**
-	 * Set up, create a template engine.
+	 * Set up, create a template engine, HTML document decorator.
 	 */
-	@BeforeClass
-	static void setupThymeleafEngine() {
+	def setup() {
 
 		def templateEngine = new TemplateEngine(
 			additionalDialects: [
@@ -56,17 +52,10 @@ class HtmlDocumentDecoratorTests {
 		def modelFactory = templateEngine.configuration.getModelFactory(TemplateMode.HTML)
 
 		modelBuilder = new ModelBuilder(modelFactory, templateEngine.configuration.elementDefinitions, TemplateMode.HTML)
-		mockContext = [
-			getConfiguration: { ->
-				return templateEngine.configuration
-			},
-			getModelFactory: { ->
-				return modelFactory
-			},
-			getTemplateMode: { ->
-				return TemplateMode.HTML
-			}
-		] as ITemplateContext
+		mockContext = Mock(ITemplateContext)
+		mockContext.configuration >> templateEngine.configuration
+		mockContext.modelFactory >> modelFactory
+		mockContext.templateMode >> TemplateMode.HTML
 		mockContext.metaClass {
 			getPrefixForDialect = { Class<IProcessorDialect> dialectClass ->
 				return dialectClass == StandardDialect ? 'th' :
@@ -74,13 +63,6 @@ class HtmlDocumentDecoratorTests {
 				       'mock-prefix'
 			}
 		}
-	}
-
-	/**
-	 * Set up, create a new HTML document decorator.
-	 */
-	@Before
-	void setupHtmlDocumentDecorator() {
 
 		htmlDocumentDecorator = new HtmlDocumentDecorator(mockContext, new AppendingStrategy(), true)
 	}
@@ -88,56 +70,52 @@ class HtmlDocumentDecoratorTests {
 	/**
 	 * Test that the HTML document decorator doesn't modify the source parameters.
 	 */
-	@Test
-	void immutability() {
-
-		def content = modelBuilder.build {
-			html('xmlns:layout': 'http://www.ultraq.net.nz/thymeleaf/layout') {
-				head {
-					title('Content page')
-					script(src: 'content-script.js')
-				}
-				body {
-					section('layout:fragment': 'content') {
-						p('This is a paragraph from the content page')
+	def "Doesn't modify source parameters"() {
+		given:
+			def content = modelBuilder.build {
+				html('xmlns:layout': 'http://www.ultraq.net.nz/thymeleaf/layout') {
+					head {
+						title('Content page')
+						script(src: 'content-script.js')
 					}
-					footer {
-						p(['layout:fragment': 'custom-footer'], 'This is some footer content from the content page')
-					}
-				}
-			}
-		}
-
-		def layout = modelBuilder.build {
-			html('xmlns:layout': 'http://www.ultraq.net.nz/thymeleaf/layout') {
-				head {
-					title('Layout page')
-					script(src: 'common-script.js')
-				}
-				body {
-					header {
-						h1('My website')
-					}
-					section('layout:fragment': 'content') {
-						p('Page content goes here')
-					}
-					footer {
-						p('My footer')
-						p(['layout:fragment': 'custom-footer'], 'Custom footer here')
+					body {
+						section('layout:fragment': 'content') {
+							p('This is a paragraph from the content page')
+						}
+						footer {
+							p(['layout:fragment': 'custom-footer'], 'This is some footer content from the content page')
+						}
 					}
 				}
 			}
-		}
+			def layout = modelBuilder.build {
+				html('xmlns:layout': 'http://www.ultraq.net.nz/thymeleaf/layout') {
+					head {
+						title('Layout page')
+						script(src: 'common-script.js')
+					}
+					body {
+						header {
+							h1('My website')
+						}
+						section('layout:fragment': 'content') {
+							p('Page content goes here')
+						}
+						footer {
+							p('My footer')
+							p(['layout:fragment': 'custom-footer'], 'Custom footer here')
+						}
+					}
+				}
+			}
+			def contentOrig = content.cloneModel()
+			def layoutOrig = layout.cloneModel()
 
-		def contentOrig = content.cloneModel()
-		def layoutOrig = layout.cloneModel()
+		when:
+			htmlDocumentDecorator.decorate(layout, content)
 
-		htmlDocumentDecorator.decorate(layout, content)
-
-		def contentAfter = content.cloneModel()
-		def layoutAfter = layout.cloneModel()
-
-		assert contentOrig == contentAfter
-		assert layoutOrig == layoutAfter
+		then:
+			contentOrig == content.cloneModel()
+			layoutOrig == layout.cloneModel()
 	}
 }

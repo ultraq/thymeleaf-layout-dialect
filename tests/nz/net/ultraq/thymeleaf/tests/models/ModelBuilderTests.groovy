@@ -19,12 +19,11 @@ package nz.net.ultraq.thymeleaf.tests.models
 import nz.net.ultraq.thymeleaf.LayoutDialect
 import nz.net.ultraq.thymeleaf.models.ModelBuilder
 
-import org.junit.BeforeClass
-import org.junit.Test
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.engine.TemplateData
 import org.thymeleaf.engine.TemplateManager
 import org.thymeleaf.templatemode.TemplateMode
+import spock.lang.Specification
 
 /**
  * Tests the model builder against Thymeleaf's normal model-creation mechanisms
@@ -32,16 +31,15 @@ import org.thymeleaf.templatemode.TemplateMode
  * 
  * @author Emanuel Rabina
  */
-class ModelBuilderTests {
+class ModelBuilderTests extends Specification {
 
-	private static ModelBuilder modelBuilder
-	private static TemplateManager templateManager
+	private ModelBuilder modelBuilder
+	private TemplateManager templateManager
 
 	/**
 	 * Set up, create a template engine.
 	 */
-	@BeforeClass
-	static void setupThymeleafEngine() {
+	def setup() {
 
 		def templateEngine = new TemplateEngine(
 			additionalDialects: [
@@ -53,58 +51,55 @@ class ModelBuilderTests {
 			templateEngine.configuration.elementDefinitions, TemplateMode.HTML)
 	}
 
-	/**
-	 * Compares a model created by the builder with a similar model created by
-	 * Thymeleaf's template engine.
-	 */
-	@Test
-	void compareModel() {
+	def "Compare with Thymeleaf's model builder"() {
+		given:
+			def modelFromTemplate = templateManager.parseString(
+				new TemplateData('test', null, null, TemplateMode.HTML, null),
+				'''
+					<html>
+					<head>
+						<title>Model comparison</title>
+						<meta charset="utf-8">
+						<meta name="description" value="bad void tag"></meta>
+					</head>
+					<body>
+						<main>
+							<header>
+								<h1>Hello!</h1>
+							</header>
+							<hr/>
+							<div class="content">
+								<p>Some random text</p>
+							</div>
+						</main>
+					</body>
+					</html>
+				'''.stripIndent().trim(), 0, 0, TemplateMode.HTML, false)
+				.cloneModel() // To drop the template start/end events
 
-		def modelFromTemplate = templateManager.parseString(
-			new TemplateData('test', null, null, TemplateMode.HTML, null),
-			'''
-				<html>
-				<head>
-					<title>Model comparison</title>
-					<meta charset="utf-8">
-					<meta name="description" value="bad void tag"></meta>
-				</head>
-				<body>
-					<main>
-						<header>
-							<h1>Hello!</h1>
-						</header>
-						<hr/>
-						<div class="content">
-							<p>Some random text</p>
-						</div>
-					</main>
-				</body>
-				</html>
-			'''.stripIndent().trim(), 0, 0, TemplateMode.HTML, false)
-			.cloneModel() // To drop the template start/end events
-
-		def modelFromBuilder = modelBuilder.build {
-			html {
-				head {
-					title('Model comparison')
-					meta(charset: 'utf-8', void: true)
-					meta(name: 'description', value: 'bad void tag')
-				}
-				body {
-					main {
-						header {
-							h1('Hello!')
-						}
-						hr(standalone: true)
-						div(class: 'content') {
-							p('Some random text')
+		when:
+			def modelFromBuilder = modelBuilder.build {
+				html {
+					head {
+						title('Model comparison')
+						meta(charset: 'utf-8', void: true)
+						meta(name: 'description', value: 'bad void tag')
+					}
+					body {
+						main {
+							header {
+								h1('Hello!')
+							}
+							hr(standalone: true)
+							div(class: 'content') {
+								p('Some random text')
+							}
 						}
 					}
 				}
 			}
-		}
 
-		assert modelFromBuilder.equalsIgnoreWhitespace(modelFromTemplate)
+		then:
+			modelFromBuilder.equalsIgnoreWhitespace(modelFromTemplate)
 	}
 }

@@ -18,68 +18,50 @@ package nz.net.ultraq.thymeleaf.tests.fragments
 
 import nz.net.ultraq.thymeleaf.fragments.FragmentParameterNamesExtractor
 
-import org.junit.Before
-import org.junit.Test
+import spock.lang.Specification
 
 /**
  * Tests for the fragment parameter names extractor.
  * 
  * @author Emanuel Rabina
  */
-class FragmentParameterNamesExtractorTests {
+class FragmentParameterNamesExtractorTests extends Specification {
 
-	private FragmentParameterNamesExtractor fragmentParameterNamesExtractor
+	private FragmentParameterNamesExtractor fragmentParameterNamesExtractor = new FragmentParameterNamesExtractor()
 
-	@Before
-	void setup() {
-
-		fragmentParameterNamesExtractor = new FragmentParameterNamesExtractor()
+	def "A fragment definition without parameters returns an empty list"() {
+		given:
+			def fragmentDefinition = 'simple-definition'
+		when:
+			def parameterNames = fragmentParameterNamesExtractor.extract(fragmentDefinition)
+		then:
+			parameterNames == []
 	}
 
-	/**
-	 * Test that a fragment definition without any parameters returns an empty
-	 * list.
-	 */
-	@Test
-	void noParameters() {
-
-		def fragmentDefinition = 'simple-definition'
-		def parameterNames = fragmentParameterNamesExtractor.extract(fragmentDefinition)
-		assert parameterNames == []
+	def "A fragment definition with parameters has all names extracted"() {
+		given:
+			def fragmentDefinition = 'complex-definition(param1=${expression},param2=\'something\')'
+		when:
+			def parameterNames = fragmentParameterNamesExtractor.extract(fragmentDefinition)
+		then:
+			parameterNames == ['param1', 'param2']
 	}
 
-	/**
-	 * Test that a fragment definition with parameters has all names extracted.
-	 */
-	@Test
-	@SuppressWarnings('GStringExpressionWithinString')
-	void hasParameters() {
-
-		def fragmentDefinition = 'complex-definition(param1=${expression},param2=\'something\')'
-		def parameterNames = fragmentParameterNamesExtractor.extract(fragmentDefinition)
-		assert parameterNames == ['param1', 'param2']
+	def "A fragment definition without a full assignation sequence is extracted"() {
+		given:
+			def fragmentDefinition = 'no-assignment(param)'
+		when:
+			def parameterNames = fragmentParameterNamesExtractor.extract(fragmentDefinition)
+		then:
+			parameterNames == ['param']
 	}
 
-	/**
-	 * Test a fragment definition without a full assignation sequence.
-	 */
-	@Test
-	void hasParametersNoAssignment() {
-
-		def fragmentDefinition = 'no-assignment(param)'
-		def parameterNames = fragmentParameterNamesExtractor.extract(fragmentDefinition)
-		assert parameterNames == ['param']
-	}
-
-	/**
-	 * Test some whitespace cases.
-	 */
-	@Test
-	@SuppressWarnings('GStringExpressionWithinString')
-	void hasParametersWhitespace() {
-
-		def fragmentDefinition = 'complex-definition ( param1 = ${expression}, param2 )'
-		def parameterNames = fragmentParameterNamesExtractor.extract(fragmentDefinition)
-		assert parameterNames == ['param1', 'param2']
+	def "Some whitespace cases"() {
+		given:
+			def fragmentDefinition = 'complex-definition ( param1 = ${expression}, param2 )'
+		when:
+			def parameterNames = fragmentParameterNamesExtractor.extract(fragmentDefinition)
+		then:
+			parameterNames == ['param1', 'param2']
 	}
 }

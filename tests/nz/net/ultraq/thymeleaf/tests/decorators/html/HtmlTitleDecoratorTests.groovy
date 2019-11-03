@@ -20,32 +20,28 @@ import nz.net.ultraq.thymeleaf.LayoutDialect
 import nz.net.ultraq.thymeleaf.decorators.html.HtmlTitleDecorator
 import nz.net.ultraq.thymeleaf.models.ModelBuilder
 
-import org.junit.Before
-import org.junit.BeforeClass
-import org.junit.Test
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.dialect.IProcessorDialect
 import org.thymeleaf.standard.StandardDialect
 import org.thymeleaf.templatemode.TemplateMode
+import spock.lang.Specification
 
 /**
  * Unit tests for the HTML head decorator.
  * 
  * @author Emanuel Rabina
  */
-class HtmlTitleDecoratorTests {
+class HtmlTitleDecoratorTests extends Specification {
 
-	private static ITemplateContext mockContext
-	private static ModelBuilder modelBuilder
-
+	private ITemplateContext mockContext
+	private ModelBuilder modelBuilder
 	private HtmlTitleDecorator htmlTitleDecorator
 
 	/**
-	 * Set up, create a template engine.
+	 * Set up, create a template engine, HTML title decorator.
 	 */
-	@BeforeClass
-	static void setupThymeleafEngine() {
+	def setup() {
 
 		def templateEngine = new TemplateEngine(
 			additionalDialects: [
@@ -55,17 +51,10 @@ class HtmlTitleDecoratorTests {
 		def modelFactory = templateEngine.configuration.getModelFactory(TemplateMode.HTML)
 
 		modelBuilder = new ModelBuilder(modelFactory, templateEngine.configuration.elementDefinitions, TemplateMode.HTML)
-		mockContext = [
-			getConfiguration: { ->
-				return templateEngine.configuration
-			},
-			getModelFactory: { ->
-				return modelFactory
-			},
-			getTemplateMode: { ->
-				return TemplateMode.HTML
-			}
-		] as ITemplateContext
+		mockContext = Mock(ITemplateContext)
+		mockContext.configuration >> templateEngine.configuration
+		mockContext.modelFactory >> modelFactory
+		mockContext.templateMode >> TemplateMode.HTML
 		mockContext.metaClass {
 			getPrefixForDialect = { Class<IProcessorDialect> dialectClass ->
 				return dialectClass == StandardDialect ? 'th' :
@@ -73,40 +62,26 @@ class HtmlTitleDecoratorTests {
 				       'mock-prefix'
 			}
 		}
-	}
-
-	/**
-	 * Set up, create a new HTML title decorator.
-	 */
-	@Before
-	void setupHtmlDocumentDecorator() {
 
 		htmlTitleDecorator = new HtmlTitleDecorator(mockContext)
 	}
 
-	/**
-	 * Test that the HTML title decorator doesn't modify the source parameters.
-	 */
-	@Test
-	void immutability() {
+	def "Doesn't modify source parameters"() {
+		given:
+			def content = modelBuilder.build {
+				title('Content page')
+			}
+			def layout = modelBuilder.build {
+				title('Layout page')
+			}
+			def contentOrig = content.cloneModel()
+			def layoutOrig = layout.cloneModel()
 
-		def content = modelBuilder.build {
-			title('Content page')
-		}
+		when:
+			htmlTitleDecorator.decorate(layout, content)
 
-		def layout = modelBuilder.build {
-			title('Layout page')
-		}
-
-		def contentOrig = content.cloneModel()
-		def layoutOrig = layout.cloneModel()
-
-		htmlTitleDecorator.decorate(layout, content)
-
-		def contentAfter = content.cloneModel()
-		def layoutAfter = layout.cloneModel()
-
-		assert contentOrig == contentAfter
-		assert layoutOrig == layoutAfter
+		then:
+			contentOrig == content.cloneModel()
+			layoutOrig == layout.cloneModel()
 	}
 }

@@ -20,14 +20,12 @@ import nz.net.ultraq.thymeleaf.LayoutDialect
 import nz.net.ultraq.thymeleaf.models.AttributeMerger
 import nz.net.ultraq.thymeleaf.models.ModelBuilder
 
-import org.junit.Before
-import org.junit.BeforeClass
-import org.junit.Test
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.dialect.IProcessorDialect
 import org.thymeleaf.standard.StandardDialect
 import org.thymeleaf.templatemode.TemplateMode
+import spock.lang.*
 
 /**
  * Tests for the attribute merger, spins up a Thymeleaf template engine so that
@@ -35,18 +33,16 @@ import org.thymeleaf.templatemode.TemplateMode
  * 
  * @author Emanuel Rabina
  */
-class AttributeMergerTests {
+class AttributeMergerTests extends Specification {
 
-	private static ITemplateContext mockContext
-	private static ModelBuilder modelBuilder
-
+	private ITemplateContext mockContext
+	private ModelBuilder modelBuilder
 	private AttributeMerger attributeMerger
 
 	/**
 	 * Set up, create a template engine.
 	 */
-	@BeforeClass
-	static void setupThymeleafEngine() {
+	def setup() {
 
 		def templateEngine = new TemplateEngine(
 			additionalDialects: [
@@ -56,14 +52,10 @@ class AttributeMergerTests {
 		def modelFactory = templateEngine.configuration.getModelFactory(TemplateMode.HTML)
 
 		modelBuilder = new ModelBuilder(modelFactory, templateEngine.configuration.elementDefinitions, TemplateMode.HTML)
-		mockContext = [
-			getConfiguration: { ->
-				return templateEngine.configuration
-			},
-			getModelFactory: { ->
-				return modelFactory
-			}
-		] as ITemplateContext
+
+		mockContext = Mock(ITemplateContext)
+		mockContext.configuration >> templateEngine.configuration
+		mockContext.modelFactory >> modelFactory
 		mockContext.metaClass {
 			getPrefixForDialect = { Class<IProcessorDialect> dialectClass ->
 				return dialectClass == StandardDialect ? 'th' :
@@ -71,104 +63,81 @@ class AttributeMergerTests {
 				       'mock-prefix'
 			}
 		}
-	}
-
-	/**
-	 * Set up, create a new attribute merger.
-	 */
-	@Before
-	void setupAttributeMerger() {
 
 		attributeMerger = new AttributeMerger(mockContext)
 	}
 
-	/**
-	 * Test that the merger just adds attributes found in the source to the target
-	 * that don't already exist in the target
-	 */
-	@Test
-	@SuppressWarnings('ExplicitCallToDivMethod')
-	void addAttributes() {
+	def "Adds attributes from the source that don't already exist in the target"() {
+		given:
+			def source = modelBuilder.build {
+				div(id: 'test-element')
+			}
+			def target = modelBuilder.build {
+				div(class: 'container')
+			}
+			def expected = modelBuilder.build {
+				div(class: 'container', id: 'test-element')
+			}
 
-		def source = modelBuilder.build {
-			div(id: 'test-element')
-		}
-		def target = modelBuilder.build {
-			div(class: 'container')
-		}
-		def expected = modelBuilder.build {
-			div(class: 'container', id: 'test-element')
-		}
+		when:
+			def result = attributeMerger.merge(target, source)
 
-		def result = attributeMerger.merge(target, source)
-		assert result == expected
+		then:
+			assert result == expected
 	}
 
-	/**
-	 * Test that the attribute merger doesn't modify the source parameters.
-	 */
-	@Test
-	@SuppressWarnings('ExplicitCallToDivMethod')
-	void immutability() {
+	def "Doesn't modify the source parameters"() {
+		given:
+			def source = modelBuilder.build {
+				div(id: 'source-element')
+			}
+			def target = modelBuilder.build {
+				div(id: 'target-element')
+			}
+			def sourceOrig = source.cloneModel()
+			def targetOrig = target.cloneModel()
 
-		def source = modelBuilder.build {
-			div(id: 'source-element')
-		}
-		def target = modelBuilder.build {
-			div(id: 'target-element')
-		}
+		when:
+			attributeMerger.merge(target, source)
 
-		def sourceOrig = source.cloneModel()
-		def targetOrig = target.cloneModel()
-
-		attributeMerger.merge(target, source)
-
-		def sourceAfter = source.cloneModel()
-		def targetAfter = target.cloneModel()
-
-		assert sourceOrig == sourceAfter
-		assert targetOrig == targetAfter
+		then:
+			sourceOrig == source.cloneModel()
+			targetOrig == target.cloneModel()
 	}
 
-	/**
-	 * Test that attributes in the source element override those of the target.
-	 */
-	@Test
-	@SuppressWarnings('ExplicitCallToDivMethod')
-	void mergeAttributes() {
+	def "Override target attributes"() {
+		given:
+			def source = modelBuilder.build {
+				div(class: 'roflcopter')
+			}
+			def target = modelBuilder.build {
+				div(class: 'container')
+			}
 
-		def source = modelBuilder.build {
-			div(class: 'roflcopter')
-		}
-		def target = modelBuilder.build {
-			div(class: 'container')
-		}
-		def expected = modelBuilder.build {
-			div(class: 'roflcopter')
-		}
+		when:
+			def result = attributeMerger.merge(target, source)
 
-		def result = attributeMerger.merge(target, source)
-		assert result == expected
+		then:
+			result == modelBuilder.build {
+				div(class: 'roflcopter')
+			}
 	}
 
-	/**
-	 * Test attribute merging when {@code th:with} attributes are involved.
-	 */
-	@Test
-	@SuppressWarnings('ExplicitCallToDivMethod')
-	void mergeAttributesWith() {
+	def "Merge th:with attributes"() {
+		given:
+			def source = modelBuilder.build {
+				div('th:with': "value1='Hello!'")
+			}
+			def target = modelBuilder.build {
+				div('th:with': "value2='World!'")
+			}
 
-		def source = modelBuilder.build {
-			div('th:with': 'value1=\'Hello!\'')
-		}
-		def target = modelBuilder.build {
-			div('th:with': 'value2=\'World!\'')
-		}
-		def expected = modelBuilder.build {
-			div('th:with': 'value1=\'Hello!\',value2=\'World!\'')
-		}
+		when:
+			def result = attributeMerger.merge(target, source)
 
-		def result = attributeMerger.merge(target, source)
-		assert result == expected
+		then:
+			result == modelBuilder.build {
+				div('th:with': "value1='Hello!',value2='World!'")
+			}
 	}
 }

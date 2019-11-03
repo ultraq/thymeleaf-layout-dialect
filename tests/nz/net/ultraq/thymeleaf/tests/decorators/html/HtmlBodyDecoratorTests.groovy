@@ -20,32 +20,28 @@ import nz.net.ultraq.thymeleaf.LayoutDialect
 import nz.net.ultraq.thymeleaf.decorators.html.HtmlBodyDecorator
 import nz.net.ultraq.thymeleaf.models.ModelBuilder
 
-import org.junit.Before
-import org.junit.BeforeClass
-import org.junit.Test
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.dialect.IProcessorDialect
 import org.thymeleaf.standard.StandardDialect
 import org.thymeleaf.templatemode.TemplateMode
+import spock.lang.Specification
 
 /**
  * Unit tests for the HTML body decorator.
  * 
  * @author Emanuel Rabina
  */
-class HtmlBodyDecoratorTests {
+class HtmlBodyDecoratorTests extends Specification {
 
-	private static ITemplateContext mockContext
-	private static ModelBuilder modelBuilder
-
+	private ITemplateContext mockContext
+	private ModelBuilder modelBuilder
 	private HtmlBodyDecorator htmlBodyDecorator
 
 	/**
 	 * Set up, create a template engine.
 	 */
-	@BeforeClass
-	static void setupThymeleafEngine() {
+	def setup() {
 
 		def templateEngine = new TemplateEngine(
 			additionalDialects: [
@@ -55,14 +51,10 @@ class HtmlBodyDecoratorTests {
 		def modelFactory = templateEngine.configuration.getModelFactory(TemplateMode.HTML)
 
 		modelBuilder = new ModelBuilder(modelFactory, templateEngine.configuration.elementDefinitions, TemplateMode.HTML)
-		mockContext = [
-			getConfiguration: { ->
-				return templateEngine.configuration
-			},
-			getModelFactory: { ->
-				return modelFactory
-			}
-		] as ITemplateContext
+
+		mockContext = Mock(ITemplateContext)
+		mockContext.configuration >> templateEngine.configuration
+		mockContext.modelFactory >> modelFactory
 		mockContext.metaClass {
 			getPrefixForDialect = { Class<IProcessorDialect> dialectClass ->
 				return dialectClass == StandardDialect ? 'th' :
@@ -70,58 +62,44 @@ class HtmlBodyDecoratorTests {
 				       'mock-prefix'
 			}
 		}
-	}
-
-	/**
-	 * Set up, create a new HTML body decorator.
-	 */
-	@Before
-	void setupHtmlDocumentDecorator() {
 
 		htmlBodyDecorator = new HtmlBodyDecorator(mockContext)
 	}
 
-	/**
-	 * Test that the HTML body decorator doesn't modify the source parameters.
-	 */
-	@Test
-	void immutability() {
-
-		def content = modelBuilder.build {
-			body {
-				section('layout:fragment': 'content') {
-					p('This is a paragraph from the content page')
-				}
-				footer {
-					p(['layout:fragment': 'custom-footer'], 'This is some footer content from the content page')
+	def "The HTML body decorator doesn't modify the source parameters"() {
+		given:
+			def content = modelBuilder.build {
+				body {
+					section('layout:fragment': 'content') {
+						p('This is a paragraph from the content page')
+					}
+					footer {
+						p(['layout:fragment': 'custom-footer'], 'This is some footer content from the content page')
+					}
 				}
 			}
-		}
-
-		def layout = modelBuilder.build {
-			body {
-				header {
-					h1('My website')
-				}
-				section('layout:fragment': 'content') {
-					p('Page content goes here')
-				}
-				footer {
-					p('My footer')
-					p(['layout:fragment': 'custom-footer'], 'Custom footer here')
+			def layout = modelBuilder.build {
+				body {
+					header {
+						h1('My website')
+					}
+					section('layout:fragment': 'content') {
+						p('Page content goes here')
+					}
+					footer {
+						p('My footer')
+						p(['layout:fragment': 'custom-footer'], 'Custom footer here')
+					}
 				}
 			}
-		}
+			def contentOrig = content.cloneModel()
+			def layoutOrig = layout.cloneModel()
 
-		def contentOrig = content.cloneModel()
-		def layoutOrig = layout.cloneModel()
+		when:
+			htmlBodyDecorator.decorate(layout, content)
 
-		htmlBodyDecorator.decorate(layout, content)
-
-		def contentAfter = content.cloneModel()
-		def layoutAfter = layout.cloneModel()
-
-		assert contentOrig == contentAfter
-		assert layoutOrig == layoutAfter
+		then:
+			contentOrig == content.cloneModel()
+			layoutOrig == layout.cloneModel()
 	}
 }

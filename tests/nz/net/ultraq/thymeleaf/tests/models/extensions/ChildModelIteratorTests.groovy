@@ -20,25 +20,23 @@ import nz.net.ultraq.thymeleaf.LayoutDialect
 import nz.net.ultraq.thymeleaf.models.ModelBuilder
 import nz.net.ultraq.thymeleaf.models.extensions.ChildModelIterator
 
-import org.junit.BeforeClass
-import org.junit.Test
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.templatemode.TemplateMode
+import spock.lang.*
 
 /**
  * Tests for the {@link ChildModelIterator} class.
  * 
  * @author Emanuel Rabina
  */
-class ChildModelIteratorTests {
+class ChildModelIteratorTests extends Specification {
 
-	private static ModelBuilder modelBuilder
+	private ModelBuilder modelBuilder
 
 	/**
 	 * Set up, create a template engine.
 	 */
-	@BeforeClass
-	static void setupThymeleafEngine() {
+	def setup() {
 
 		def templateEngine = new TemplateEngine(
 			additionalDialects: [
@@ -49,42 +47,32 @@ class ChildModelIteratorTests {
 			templateEngine.configuration.elementDefinitions, TemplateMode.HTML)
 	}
 
-	/**
-	 * Test the child model iterator to retrieve only the immediate children of a
-	 * model as their own models.
-	 */
-	@Test
-	void childModelIterator() {
-
-		def pModel1 = modelBuilder.build {
-			p('Test paragraph')
-		}
-		def hrModel = modelBuilder.build {
-			hr(standalone: true)
-		}
-		def pModel2 = modelBuilder.build {
-			p('Another test paragraph')
-		}
-
-		def model = modelBuilder.build {
-			div(class: 'content') {
-				add(pModel1)
-				add(hrModel)
-				add(pModel2)
+	def "Retrieve only immediate children as their own models"() {
+		given:
+			def pModel1 = modelBuilder.build {
+				p('Test paragraph')
 			}
-		}
+			def hrModel = modelBuilder.build {
+				hr(standalone: true)
+			}
+			def pModel2 = modelBuilder.build {
+				p('Another test paragraph')
+			}
+			def model = modelBuilder.build {
+				div(class: 'content') {
+					add(pModel1)
+					add(hrModel)
+					add(pModel2)
+				}
+			}
 
-		def childModelIterator = model.childModelIterator()
+		when:
+			def childModelIterator = model.childModelIterator()
 
-		def nextModel = childModelIterator.next()
-		assert nextModel.equalsIgnoreWhitespace(pModel1)
-
-		nextModel = childModelIterator.next()
-		assert nextModel.equalsIgnoreWhitespace(hrModel)
-
-		nextModel = childModelIterator.next()
-		assert nextModel.equalsIgnoreWhitespace(pModel2)
-
-		assert childModelIterator.hasNext() == false
+		then:
+			childModelIterator.next().equalsIgnoreWhitespace(pModel1)
+			childModelIterator.next().equalsIgnoreWhitespace(hrModel)
+			childModelIterator.next().equalsIgnoreWhitespace(pModel2)
+			!childModelIterator.hasNext()
 	}
 }

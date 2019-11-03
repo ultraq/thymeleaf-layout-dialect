@@ -18,12 +18,11 @@ package nz.net.ultraq.thymeleaf.tests
 
 import nz.net.ultraq.thymeleaf.LayoutDialect
 
-import org.junit.BeforeClass
-import org.junit.Test
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.context.Context
 import org.thymeleaf.standard.StandardDialect
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver
+import spock.lang.*
 
 /**
  * A test of the layout dialect but changing the standard and layout dialect
@@ -31,42 +30,32 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver
  * 
  * @author Emanuel Rabina
  */
-class ConfigurablePrefixTest {
+class ConfigurablePrefixTest extends Specification {
 
-	private static TemplateEngine templateEngine
-
-	/**
-	 * Set up, create the template engine with the altered dialect prefixes.
-	 */
-	@BeforeClass
-	static void setupThymeleafEngine() {
-
-		templateEngine = new TemplateEngine(
-			dialectsByPrefix: [
-				t: new StandardDialect(),
-				l: new LayoutDialect()
-			],
-			templateResolver: new ClassLoaderTemplateResolver(
-				prefix: 'nz/net/ultraq/thymeleaf/tests/ConfigurablePrefixTest-',
-				suffix: '.html'
-			)
+	// Template engine with altered dialect prefixes
+	def templateEngine = new TemplateEngine(
+		dialectsByPrefix: [
+			t: new StandardDialect(),
+			l: new LayoutDialect()
+		],
+		templateResolver: new ClassLoaderTemplateResolver(
+			prefix: 'nz/net/ultraq/thymeleaf/tests/ConfigurablePrefixTest-',
+			suffix: '.html'
 		)
-	}
+	)
 
-	/**
-	 * A copy of the first layout example, except using the changed prefixes.
-	 */
-	@Test
-	void testExampleLayout1() {
+	def "Example layout with changed prefixes"() {
+		given:
+			def processingResultAsTokens = { template ->
+				def result = templateEngine.process(template, new Context())
+				return result.split(/(\t|\n)/).findAll { token -> token.size() > 0 }
+			}
 
-		def processingResultAsTokens = { template ->
-			def result = templateEngine.process(template, new Context())
-			return result.split(/(\t|\n)/).findAll { token -> token.size() > 0 }
-		}
+		when:
+			def actualAsTokens = processingResultAsTokens('Content')
+			def expectedAsTokens = processingResultAsTokens('Result')
 
-		def actualAsTokens = processingResultAsTokens('Content')
-		def expectedAsTokens = processingResultAsTokens('Result')
-
-		assert actualAsTokens == expectedAsTokens
+		then:
+			actualAsTokens == expectedAsTokens
 	}
 }

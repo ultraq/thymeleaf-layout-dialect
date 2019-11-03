@@ -55,8 +55,8 @@ dependencies {
 		'org.thymeleaf:thymeleaf:3.0.0.RELEASE'
 	)
 	testCompile(
-		'junit:junit:4.12',
 		'nz.net.ultraq.thymeleaf:thymeleaf-testing-junit:2.2.0',
+		'org.spockframework:spock-core:1.3-groovy-2.5',
 		'org.thymeleaf:thymeleaf-testing:3.0.0.RELEASE'
 	)
 	testRuntime(

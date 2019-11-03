@@ -19,25 +19,23 @@ package nz.net.ultraq.thymeleaf.tests.models.extensions
 import nz.net.ultraq.thymeleaf.LayoutDialect
 import nz.net.ultraq.thymeleaf.models.ModelBuilder
 
-import org.junit.BeforeClass
-import org.junit.Test
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.templatemode.TemplateMode
+import spock.lang.*
 
 /**
  * Tests for some of the more complicated additions to the model class.
  * 
  * @author Emanuel Rabina
  */
-class IModelExtensionsTests {
+class IModelExtensionsTests extends Specification {
 
-	private static ModelBuilder modelBuilder
+	private ModelBuilder modelBuilder
 
 	/**
 	 * Set up, create a template engine.
 	 */
-	@BeforeClass
-	static void setupThymeleafEngine() {
+	def setup() {
 
 		def templateEngine = new TemplateEngine(
 			additionalDialects: [
@@ -48,61 +46,59 @@ class IModelExtensionsTests {
 			templateEngine.configuration.elementDefinitions, TemplateMode.HTML)
 	}
 
-	/**
-	 * Test the retrieval of models containing standard HTML/XML elements.
-	 */
-	@Test
-	void getModel() {
-
-		def model = modelBuilder.build {
-			section {
-				header {
-					h1('Test title')
-				}
-				div(class: 'content') {
-					p('Test paragraph')
-					p('Another test paragraph')
+	def "Retrieve models with standard HTML/XML elements"() {
+		given:
+			def model = modelBuilder.build {
+				section {
+					header {
+						h1('Test title')
+					}
+					div(class: 'content') {
+						p('Test paragraph')
+						p('Another test paragraph')
+					}
 				}
 			}
-		}
 
-		def modelExtract = model.getModel(0)
-		assert modelExtract == model
+		when:
+			def modelExtract = model.getModel(0)
+
+		then:
+			modelExtract == model
 	}
 
-	/**
-	 * Tests the retrieval of models containing void elements that are
-	 * self-closed, usually to be XML compliant a la XHTML.
-	 */
-	@Test
-	@SuppressWarnings('ExplicitCallToDivMethod')
-	void getModelStandalone() {
-
-		def model = modelBuilder.build {
-			div {
-				hr(standalone: true)
+	def "Retrieve models with standalone elements"() {
+		given:
+			def model = modelBuilder.build {
+				div {
+					hr(standalone: true)
+				}
 			}
-		}
 
-		def modelExtract = model.getModel(0)
-		assert modelExtract == model
+		when:
+			def modelExtract = model.getModel(0)
+
+		then:
+			modelExtract == model
 	}
 
 	/**
 	 * Tests the retrieval of void elements that are neither self-closed or have
 	 * a matching closing tag, as per the HTML spec.
 	 */
-	@Test
-	void getModelVoid() {
-
-		def model = modelBuilder.build {
-			head {
-				meta(charset: 'utf-8', void: true)
+	def "Retrieve models with void elements"() {
+		given:
+			def model = modelBuilder.build {
+				head {
+					meta(charset: 'utf-8', void: true)
+				}
 			}
-		}
 
-		def modelExtract = model.getModel(0)
-		assert modelExtract == model
+		when:
+			def modelExtract = model.getModel(0)
+
+		then:
+			modelExtract == model
 	}
 
 	/**
@@ -111,16 +107,18 @@ class IModelExtensionsTests {
 	 * Thymeleaf 2 to HTML-based Thymeleaf 3, we may see a lot of as seen here:
 	 * https://github.com/ultraq/thymeleaf-layout-dialect/issues/110
 	 */
-	@Test
-	void getModelVoidClosed() {
-
-		def model = modelBuilder.build {
-			head {
-				meta(charset: 'utf-8')
+	def "Retrieve models with closed void elements"() {
+		given:
+			def model = modelBuilder.build {
+				head {
+					meta(charset: 'utf-8')
+				}
 			}
-		}
 
-		def modelExtract = model.getModel(0)
-		assert modelExtract == model
+		when:
+			def modelExtract = model.getModel(0)
+
+		then:
+			modelExtract == model
 	}
 }
