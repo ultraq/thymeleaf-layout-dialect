@@ -25,7 +25,7 @@ import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.dialect.IProcessorDialect
 import org.thymeleaf.standard.StandardDialect
 import org.thymeleaf.templatemode.TemplateMode
-import spock.lang.*
+import spock.lang.Specification
 
 /**
  * Tests for the attribute merger, spins up a Thymeleaf template engine so that
@@ -33,6 +33,7 @@ import spock.lang.*
  * 
  * @author Emanuel Rabina
  */
+@SuppressWarnings('ExplicitCallToDivMethod')
 class AttributeMergerTests extends Specification {
 
 	private ITemplateContext mockContext

@@ -31,6 +31,7 @@ import spock.lang.Specification
  * 
  * @author Emanuel Rabina
  */
+@SuppressWarnings('ExplicitCallToDivMethod')
 class ElementMergerTests extends Specification {
 
 	private ITemplateContext mockContext

@@ -47,6 +47,7 @@ class FragmentFinderTests extends Specification {
 		fragmentFinder = new FragmentFinder('layout')
 	}
 
+	@SuppressWarnings('ExplicitCallToDivMethod')
 	def "Finds basic fragments and returns a map of names:fragments"() {
 		given:
 			def source = modelBuilder.build {

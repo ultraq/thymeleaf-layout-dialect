@@ -22,24 +22,24 @@ import nz.net.ultraq.thymeleaf.models.ModelBuilder
 
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.templatemode.TemplateMode
-import spock.lang.*
+import spock.lang.Specification
 
 /**
  * Test the results of the grouping strategy.
  * 
  * @author Emanuel Rabina
  */
+@SuppressWarnings(['AssignmentToStaticFieldFromInstanceMethod', 'PrivateFieldCouldBeFinal'])
 class GroupingStrategyTest extends Specification {
 
-	@Shared ModelBuilder modelBuilder
-
-	def groupingStrategy = new GroupingStrategy()
+	private static ModelBuilder modelBuilder
+	private GroupingStrategy groupingStrategy = new GroupingStrategy()
 
 	/**
-	 * Set up, create a template engine for the model builder.
+	 * Set up a model builder.  Has to be done as a setupSpec otherwise it can't
+	 * be used in a where: block.
 	 */
 	def setupSpec() {
-
 		def templateEngine = new TemplateEngine(
 			additionalDialects: [
 				new LayoutDialect()

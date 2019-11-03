@@ -22,7 +22,7 @@ import org.thymeleaf.TemplateEngine
 import org.thymeleaf.context.Context
 import org.thymeleaf.standard.StandardDialect
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver
-import spock.lang.*
+import spock.lang.Specification
 
 /**
  * A test of the layout dialect but changing the standard and layout dialect

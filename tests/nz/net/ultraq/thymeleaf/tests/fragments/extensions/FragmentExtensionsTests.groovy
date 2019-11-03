@@ -30,6 +30,7 @@ import spock.lang.Specification
  * 
  * @author Emanuel Rabina
  */
+@SuppressWarnings('PrivateFieldCouldBeFinal')
 class FragmentExtensionsTests extends Specification {
 
 	private ITemplateContext context = Mock(ITemplateContext)

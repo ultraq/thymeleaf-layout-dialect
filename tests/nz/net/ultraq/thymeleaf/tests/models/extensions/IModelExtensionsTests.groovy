@@ -21,13 +21,14 @@ import nz.net.ultraq.thymeleaf.models.ModelBuilder
 
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.templatemode.TemplateMode
-import spock.lang.*
+import spock.lang.Specification
 
 /**
  * Tests for some of the more complicated additions to the model class.
  * 
  * @author Emanuel Rabina
  */
+@SuppressWarnings('ExplicitCallToDivMethod')
 class IModelExtensionsTests extends Specification {
 
 	private ModelBuilder modelBuilder

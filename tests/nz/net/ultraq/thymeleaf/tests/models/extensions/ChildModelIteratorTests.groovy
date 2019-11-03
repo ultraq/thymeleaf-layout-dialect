@@ -22,7 +22,7 @@ import nz.net.ultraq.thymeleaf.models.extensions.ChildModelIterator
 
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.templatemode.TemplateMode
-import spock.lang.*
+import spock.lang.Specification
 
 /**
  * Tests for the {@link ChildModelIterator} class.

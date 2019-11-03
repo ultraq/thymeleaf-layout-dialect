@@ -28,6 +28,7 @@ import spock.lang.Specification
  * 
  * @author Emanuel Rabina
  */
+@SuppressWarnings('GStringExpressionWithinString')
 class VariableDeclarationMergerTests extends Specification {
 
 	private VariableDeclarationMerger merger

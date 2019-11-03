@@ -25,6 +25,7 @@ import spock.lang.Specification
  * 
  * @author Emanuel Rabina
  */
+@SuppressWarnings(['GStringExpressionWithinString', 'PrivateFieldCouldBeFinal'])
 class FragmentParameterNamesExtractorTests extends Specification {
 
 	private FragmentParameterNamesExtractor fragmentParameterNamesExtractor = new FragmentParameterNamesExtractor()
