@@ -1,0 +1,75 @@
+/* 
+ * Copyright 2016, Emanuel Rabina (http://www.ultraq.net.nz/)
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import java.time.LocalDateTime
+
+plugins {
+	id 'groovy'
+	id 'org.springframework.boot' version '2.1.8.RELEASE'
+	id 'com.github.psxpaul.execfork' version '0.1.12'
+}
+apply plugin: 'io.spring.dependency-management'
+apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/2.1.0/gradle-support.gradle'
+
+description = 'A basic web application to test the performance of the Thymeleaf Layout Dialect'
+archivesBaseName = 'thymeleaf-layout-dialect-benchmark'
+sourceCompatibility = '1.8'
+
+configurations.all {
+	resolutionStrategy.cacheChangingModulesFor(5, 'minutes')
+}
+
+def dialectVersion = '2.5.0-SNAPSHOT'
+
+dependencies {
+	compile(
+		"nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:${dialectVersion}",
+		'org.codehaus.groovy:groovy:2.5.8',
+		'org.springframework.boot:spring-boot-starter-thymeleaf',
+		'org.springframework.boot:spring-boot-starter-web'
+	)
+}
+
+bootJar {
+	mainClassName = 'nz.net.ultraq.thymeleaf.benchmark.BenchmarkApplication'
+}
+
+task startWebApp(type: com.github.psxpaul.task.ExecFork, dependsOn: build) {
+	executable = 'java'
+	args = [
+	  '-jar', 'build/libs/thymeleaf-layout-dialect-benchmark.jar',
+		'-Xmx512m'
+	]
+	waitForOutput = 'Started BenchmarkApplication'
+}
+
+task benchmark(type: Exec, dependsOn: startWebApp) {
+	def dateTimeString = LocalDateTime.now().format('yyyy-MM-dd_HHmmss')
+	def resultsDir = "build/results/${dialectVersion}"
+	def reportsDir = "build/reports/${dialectVersion}"
+	doFirst {
+		mkdir resultsDir
+		mkdir reportsDir
+	}
+	executable = 'jmeter'
+	args = [
+		'-n',
+		'-t', 'tests/simulate-load.jmx',
+		'-l', "${resultsDir}/${dateTimeString}.csv",
+		'-e',
+		'-o', "${reportsDir}/${dateTimeString}"
+	]
+}
