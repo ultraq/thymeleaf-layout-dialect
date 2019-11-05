@@ -6,7 +6,7 @@
 	"scripts": {
 		"docs:clean": "rimraf _book",
 		"docs:init": "gitbook install",
-		"docs:build": "npm run docs:init && gitbook build && gradle clean groovydoc && cp -r build/docs/groovydoc/ _book/groovydoc/",
+		"docs:build": "npm run docs:init && gitbook build && cp -r ../thymeleaf-layout-dialect/build/docs/groovydoc/ _book/groovydoc/",
 		"docs:watch": "npm run docs:init && gitbook serve",
 		"docs:publish": "npm run docs:clean && npm run docs:build && cd _book && git init && git checkout -b gh-pages && touch .nojekyll && git add . && git commit -am 'Update docs' && git push git@github.com:ultraq/thymeleaf-layout-dialect gh-pages --force"
 	},

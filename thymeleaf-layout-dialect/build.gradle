@@ -25,14 +25,12 @@ apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/2.1.0/gradl
 apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/2.1.0/maven-support.gradle'
 apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/2.1.0/bundle.gradle'
 
-//project.name      = 'thymeleaf-layout-dialect'
 project.description = 'A dialect for Thymeleaf that allows you to use layout/decorator templates to style your content.'
 project.archivesBaseName = 'thymeleaf-layout-dialect'
 project.sourceCompatibility = '1.7'
 
 project.group    = 'nz.net.ultraq.thymeleaf'
 project.artifact = 'thymeleaf-layout-dialect'
-project.version  = '2.5.0-SNAPSHOT'
 project.year     = '2012'
 project.contributors = [
 	[

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import com.github.psxpaul.task.ExecFork
 import java.time.LocalDateTime
 
 plugins {
@@ -28,15 +29,9 @@ description = 'A basic web application to test the performance of the Thymeleaf 
 archivesBaseName = 'thymeleaf-layout-dialect-benchmark'
 sourceCompatibility = '1.8'
 
-configurations.all {
-	resolutionStrategy.cacheChangingModulesFor(5, 'minutes')
-}
-
-def dialectVersion = '2.5.0-SNAPSHOT'
-
 dependencies {
 	compile(
-		"nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:${dialectVersion}",
+		project(':thymeleaf-layout-dialect'),
 		'org.codehaus.groovy:groovy:2.5.8',
 		'org.springframework.boot:spring-boot-starter-thymeleaf',
 		'org.springframework.boot:spring-boot-starter-web'
@@ -47,7 +42,7 @@ bootJar {
 	mainClassName = 'nz.net.ultraq.thymeleaf.benchmark.BenchmarkApplication'
 }
 
-task startWebApp(type: com.github.psxpaul.task.ExecFork, dependsOn: build) {
+task startWebApp(type: ExecFork, dependsOn: build) {
 	executable = 'java'
 	args = [
 	  '-jar', 'build/libs/thymeleaf-layout-dialect-benchmark.jar',
@@ -58,8 +53,8 @@ task startWebApp(type: com.github.psxpaul.task.ExecFork, dependsOn: build) {
 
 task benchmark(type: Exec, dependsOn: startWebApp) {
 	def dateTimeString = LocalDateTime.now().format('yyyy-MM-dd_HHmmss')
-	def resultsDir = "build/results/${dialectVersion}"
-	def reportsDir = "build/reports/${dialectVersion}"
+	def resultsDir = "build/results/${version}"
+	def reportsDir = "build/reports/${version}"
 	doFirst {
 		mkdir resultsDir
 		mkdir reportsDir

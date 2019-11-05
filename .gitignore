@@ -1,7 +1,5 @@
-/.gradle
 /.idea
-/_book
-/build
-/node_modules
-npm-debug.log
-*.iml
+.gradle
+_book
+build
+node_modules
