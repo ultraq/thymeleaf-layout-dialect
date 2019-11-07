@@ -23,7 +23,4 @@ jobs:
           touch .nojekyll
           git add .
           git commit -am 'Update docs'
-          git push https://$user:$token@github.com/ultraq/thymeleaf-layout-dialect.git gh-pages --force
-        env:
-          user: ${{ GITHUB_ACTOR }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+          git push https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/ultraq/thymeleaf-layout-dialect.git gh-pages --force
