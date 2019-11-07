@@ -22,5 +22,5 @@ jobs:
           git checkout -b gh-pages
           touch .nojekyll
           git add .
-          git -c user.name="Publish Docs action" -c user-email="emanuelrabina@gmail.com" commit -am 'Update docs'
+          git -c user.name="Publish Docs action" -c user.email="emanuelrabina@gmail.com" commit -am 'Update docs'
           git push https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/ultraq/thymeleaf-layout-dialect.git gh-pages --force
