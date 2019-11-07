@@ -13,4 +13,14 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: 11
-      - run: ./gradlew publishDocs
+      - run: ./gradlew buildDocs
+      # The following does the same as the docs:publish npm script, but in a GitHub actions environment
+      - name: Push to GitHub Pages
+        run: |
+          cd thymeleaf-layout-dialect-docs/_book
+          git init
+          git checkout -b gh-pages
+          touch .nojekyll
+          git add .
+          git commit -am 'Update docs'
+          git push https://${{ GITHUB_ACTOR }}:${{ secrets.GITHUB_TOKEN }}@github.com/ultraq/thymeleaf-layout-dialect.git gh-pages --force
