@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import com.moowork.gradle.node.npm.NpmTask
-
 plugins {
 	id 'base'
 	id 'com.moowork.node' version '1.3.1'
@@ -32,11 +30,15 @@ task cleanDocs(type: NpmTask, dependsOn: npmInstall) {
 	args = ['run', 'docs:clean']
 }
 
-task buildDocs(type: NpmTask, dependsOn: npmInstall) {
+task initDocs(type: NpmTask, dependsOn: npmInstall) {
+	args = ['run', 'docs:init']
+}
+
+task buildDocs(type: NpmTask, dependsOn: [initDocs, ':thymeleaf-layout-dialect:groovydoc']) {
 	args = ['run', 'docs:build']
 }
 
-task publishDocs(type: NpmTask, dependsOn: npmInstall) {
+task publishDocs(type: NpmTask, dependsOn: buildDocs) {
 	args = ['run', 'docs:publish']
 }
 
@@ -45,5 +47,5 @@ clean {
 }
 
 assemble {
-	dependsOn ':thymeleaf-layout-dialect:groovydoc', buildDocs
+	dependsOn buildDocs
 }
