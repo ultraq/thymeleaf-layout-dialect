@@ -1,10 +1,7 @@
 name: Publish Docs
 on:
-  push:
-    branches:
-      - docs-via-actions
-#  release:
-#    types: [published]
+  release:
+    types: [published]
 jobs:
   deploy-docs:
     runs-on: ubuntu-latest
