@@ -25,14 +25,14 @@ apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/2.1.0/gradl
 apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/2.1.0/maven-support.gradle'
 apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/2.1.0/bundle.gradle'
 
-project.description = 'A dialect for Thymeleaf that allows you to use layout/decorator templates to style your content.'
-project.archivesBaseName = 'thymeleaf-layout-dialect'
-project.sourceCompatibility = '1.7'
+description = 'A dialect for Thymeleaf that allows you to use layout/decorator templates to style your content.'
+archivesBaseName = 'thymeleaf-layout-dialect'
+sourceCompatibility = '1.7'
 
-project.group    = 'nz.net.ultraq.thymeleaf'
-project.artifact = 'thymeleaf-layout-dialect'
-project.year     = '2012'
-project.contributors = [
+group    = 'nz.net.ultraq.thymeleaf'
+artifact = 'thymeleaf-layout-dialect'
+year     = '2012'
+contributors = [
 	[
 		name:  'Justin Munn',
 		roles: ['developer'],
@@ -47,17 +47,17 @@ project.contributors = [
 ]
 
 dependencies {
-	compile(
-		'nz.net.ultraq.thymeleaf:thymeleaf-expression-processor:1.1.3',
+	implementation(
+		'nz.net.ultraq.thymeleaf:thymeleaf-expression-processor:1.2.0-SNAPSHOT',
 		'org.codehaus.groovy:groovy:2.5.8',
 		'org.thymeleaf:thymeleaf:3.0.0.RELEASE'
 	)
-	testCompile(
+	testImplementation(
 		'nz.net.ultraq.thymeleaf:thymeleaf-testing-junit:2.2.0',
 		'org.spockframework:spock-core:1.3-groovy-2.5',
 		'org.thymeleaf:thymeleaf-testing:3.0.0.RELEASE'
 	)
-	testRuntime(
+	testRuntimeOnly(
 		'org.slf4j:slf4j-simple:1.7.12'
 	)
 }
