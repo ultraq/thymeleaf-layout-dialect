@@ -16,6 +16,7 @@
 
 package nz.net.ultraq.thymeleaf.tests.fragments
 
+import nz.net.ultraq.thymeleaf.context.extensions.IContextExtensions
 import nz.net.ultraq.thymeleaf.fragments.FragmentMap
 
 import org.junit.Before
@@ -31,6 +32,10 @@ import static org.mockito.Mockito.mock
  * @author Emanuel Rabina
  */
 class FragmentMapTests {
+
+	static {
+		IContextExtensions.apply()
+	}
 
 	private IContext context
 
