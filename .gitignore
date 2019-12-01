@@ -1,5 +1,3 @@
-/.idea
+.idea
 .gradle
-_book
 build
-node_modules
