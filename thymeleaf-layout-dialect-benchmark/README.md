@@ -2,8 +2,8 @@
 Thymeleaf Layout Dialect benchmarking web app
 =============================================
 
-A basic web application to test the memory profile of the
-[Thymeleaf Layout Dialect](https://github.com/ultraq/thymeleaf-layout-dialect).
+A basic web application to test the memory profile of the Thymeleaf Layout
+Dialect.
 
 To execute the benchmark, use `./gradlew benchmark` from the command line.  This
 will start the test application, then execute the JMeter test plan over it.
