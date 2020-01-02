@@ -48,6 +48,7 @@ contributors = [
 
 dependencies {
 	implementation(
+		'nz.net.ultraq.extensions:groovy-extensions:0.1.0-SNAPSHOT',
 		'nz.net.ultraq.thymeleaf:thymeleaf-expression-processor:1.2.0-SNAPSHOT',
 		'org.codehaus.groovy:groovy:2.5.8',
 		'org.thymeleaf:thymeleaf:3.0.0.RELEASE'

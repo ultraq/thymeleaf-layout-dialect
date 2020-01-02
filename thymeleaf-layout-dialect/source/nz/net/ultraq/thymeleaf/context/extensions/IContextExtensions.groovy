@@ -42,25 +42,6 @@ class IContextExtensions {
 	}
 
 	/**
-	 * Retrieves an item from the context, or creates one on the context if it
-	 * doesn't yet exist.
-	 * 
-	 * @param self
-	 * @param key
-	 * @param closure
-	 * @return The item cached on the context through the given key, or first
-	 *         constructed through the closure.
-	 */
-	static Object getOrCreate(IContext self, String key, Closure closure) {
-		def value = self[key]
-		if (!value) {
-			value = closure()
-			self[key] = value
-		}
-		return value
-	}
-
-	/**
 	 * Returns the configured prefix for the given dialect.  If the dialect
 	 * prefix has not been configured.
 	 * 
@@ -88,7 +69,7 @@ class IContextExtensions {
 	 * @param name Name of the variable to map the value to.
 	 * @param value The value to set.
 	 */
-	static putAt(IContext self, String name, Object value) {
+	static void putAt(IContext self, String name, Object value) {
 		self.setVariable(name, value)
 	}
 }
