@@ -8,15 +8,10 @@
 %INPUT
 <html>
 <body>
-	<div layout:fragment="comment">
-		Comment structure
-		<div layout:fragment="comment-details">Default comment details</div>
-	</div>
-
-	<div layout:replace="~{::comment}">
+	<div layout:replace="~{comments :: comment}">
 		<div layout:fragment="comment-details">
 			Top level comment
-			<div layout:replace="~{::comment}">
+			<div layout:replace="~{comments :: comment}">
 				<div layout:fragment="comment-details">Nested comment</div>
 			</div>
 		</div>
@@ -24,13 +19,15 @@
 </body>
 </html>
 
+%INPUT[comments]
+	<div layout:fragment="comment">
+		Comment structure
+		<div layout:fragment="comment-details">Default comment details</div>
+	</div>
+
 %OUTPUT
 <html>
 <body>
-	<div>
-		Comment structure
-		<div>Default comment details</div>
-	</div>
 	<div>
 		Comment structure
 		<div>
