@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Migration guide
+nav_order: 6
 ---
 
 Migrating to 2.0
