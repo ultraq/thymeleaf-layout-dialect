@@ -1,4 +1,10 @@
 title: "Thymeleaf Layout Dialect"
 description: "A dialect for Thymeleaf that lets you build layouts and reusable templates in order to improve code reuse"
-baseurl: "/thymeleaf-layout-dialect"
+#baseurl: "/thymeleaf-layout-dialect"
+lang: "en-NZ"
 theme: "just-the-docs"
+aux_links:
+  "GitHub":
+    - "https://github.com/ultraq/thymeleaf-layout-dialect"
+  "GroovyDoc/API":
+    - "/thymeleaf-layout-dialect/groovydoc/"

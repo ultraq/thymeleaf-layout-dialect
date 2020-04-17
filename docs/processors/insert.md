@@ -16,5 +16,5 @@ fragments to the inserted template.  Useful if you have some HTML that you want
 to reuse, but whose contents are too complex to determine or construct with
 context variables alone.
 
-Check out the [Reusable templates](docs/examples/examples.md#reusable-templates) example for
+Check out the [Reusable templates](docs/examples/index.md#reusable-templates) example for
 how to pass HTML code to the templates you want to insert.

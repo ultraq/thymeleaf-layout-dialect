@@ -16,5 +16,5 @@ this processor takes a [fragment expression](https://github.com/thymeleaf/thymel
 that specifies the layout template to decorate with the current, content
 template.
 
-Check out the [Layouts](docs/examples/examples.md#layouts) example for how to decorate a
+Check out the [Layouts](docs/examples/index.md#layouts) example for how to decorate a
 layout template with your content templates.
