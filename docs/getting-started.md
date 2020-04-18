@@ -18,8 +18,8 @@ On this page
 {:toc}
 
 
-Adding to your project
-----------------------
+Installation
+------------
 
 A minimum of Java 7 and Thymeleaf 3.0 is required.  Add the layout dialect by
 configuring Maven or your Maven-compatible dependency manager to the following
@@ -34,11 +34,10 @@ for a list of available versions.  Each release page also includes a
 downloadable JAR if you want to manually add it to your project classpath.
 
 
-Using in your application
--------------------------
+Usage
+-----
 
-Once downloaded/installed as part of your project, add the layout dialect to
-your existing Thymeleaf template engine using one of the methods below:
+Configure Thymeleaf to include the layout dialect using one of the methods below:
 
  - Spring or Spring Boot 2 w/ Java/annotation config:
    ```java
@@ -48,7 +47,7 @@ your existing Thymeleaf template engine using one of the methods below:
    }
    ```
 
- - For those who are configuring their own Thymeleaf template engine:
+ - DIY management of the Thymeleaf template engine:
    ```java
    TemplateEngine templateEngine = new TemplateEngine();
    templateEngine.addDialect(new LayoutDialect());
