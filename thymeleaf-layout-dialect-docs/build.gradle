@@ -16,33 +16,27 @@
 
 plugins {
 	id 'base'
-	id 'com.github.node-gradle.node' version '2.2.0'
 }
 
 description = 'Documentation for the Thymeleaf Layout Dialect'
 
-node {
-	version = '12.13.1'
-	download = true
-	npmInstallCommand = 'ci'
+task buildDocs(
+	type: Copy,
+	dependsOn: ':thymeleaf-layout-dialect:groovydoc'
+) {
+	from '../thymeleaf-layout-dialect/build/docs/groovydoc/'
+	into './groovydoc'
 }
 
-task cleanDocs(type: NpmTask, dependsOn: npmInstall) {
-	args = ['run', 'docs:clean']
-}
-
-task buildDocs(type: NpmTask, dependsOn: npmInstall) {
-	args = ['run', 'docs:build']
-}
-
-task publishDocs(type: NpmTask, dependsOn: npmInstall) {
-	args = ['run', 'docs:publish']
+task publishDocs {
+	// TODO!
+	// git init && git checkout -b gh-pages && touch .nojekyll && git add . && git commit -am 'Update docs' && git push git@github.com:ultraq/thymeleaf-layout-dialect gh-pages --force
 }
 
 clean {
-	dependsOn cleanDocs
+	delete './groovydoc'
 }
 
 assemble {
-	dependsOn ':thymeleaf-layout-dialect:groovydoc', buildDocs
+	dependsOn buildDocs
 }

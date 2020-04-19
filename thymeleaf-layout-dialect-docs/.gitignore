@@ -1,2 +1,2 @@
-_book
-node_modules
+/.sass-cache
+_site
