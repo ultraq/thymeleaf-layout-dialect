@@ -99,5 +99,6 @@ Learn more
 ----------
 
 Check out the [getting started]({% link getting-started.md %}) guide to learn
-how to add the layout dialect to your Thymeleaf project, or the [examples]({% link examples/index.md %})
-for more ways of how the layout dialect can help you build your templates.
+how to add the layout dialect to your Thymeleaf project, or the [processors]({% link processors/index.md %})
+pages for in-depth examples of each of the layout dialect features and how they
+can help you build your templates.
