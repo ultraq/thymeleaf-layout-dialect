@@ -1,7 +1,6 @@
 ---
 layout: default
 title: title-pattern
-permalink: /processors/title-pattern
 parent: Processors
 nav_order: 2
 ---

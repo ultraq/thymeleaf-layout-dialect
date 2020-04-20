@@ -1,7 +1,6 @@
 ---
 layout: default
 title: replace
-permalink: /processors/replace
 parent: Processors
 nav_order: 4
 ---
@@ -56,5 +55,5 @@ the result would be this:
 
 Note the `<div>` that included the `layout:replace` processor is gone.  This is
 in line with how Thymeleaf's `th:replace` behaves.  If you need to keep the
-original element, try [`layout:insert`]({% link processors/insert.md %})
+original element, try [`layout:insert`]({{ site.baseurl }}{% link processors/insert.md %})
 instead, whose behaviour aligns with Thymeleaf's `th:insert`.

@@ -1,7 +1,6 @@
 ---
 layout: default
 title: decorate
-permalink: /processors/decorate
 parent: Processors
 nav_order: 1
 ---
@@ -398,7 +397,7 @@ Parent/layout template:
 > names are missing.
 
 This feature is available from Thymeleaf Layout Dialect 2.4.0.  For older
-versions, you can continue to use `th:with`/`data-th-with`:
+versions, you can continue to use `th:with`:
 
 ```html
 <html layout:decorate="~{your-layout}" th:with="greeting='Hello!'">

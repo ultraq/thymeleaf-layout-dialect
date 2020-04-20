@@ -1,7 +1,6 @@
 ---
 layout: default
 title: Getting started
-permalink: /getting-started
 nav_order: 2
 ---
 
@@ -57,5 +56,5 @@ This will introduce the `layout` namespace, and 5 new attribute processors that
 you can use in your templates: `decorate`, `title-pattern`, `insert`, `replace`,
 and `fragment`.
 
-Continue on to the [processors]({% link processors/index.md %}) section to
-learn how to use these in your templates.
+Continue on to the [processors]({{ site.baseurl }}{% link processors/index.md %})
+section to learn how to use these in your templates.

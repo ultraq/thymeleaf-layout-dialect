@@ -1,7 +1,6 @@
 ---
 layout: default
 title: fragment
-permalink: /processors/fragment
 parent: Processors
 nav_order: 5
 ---

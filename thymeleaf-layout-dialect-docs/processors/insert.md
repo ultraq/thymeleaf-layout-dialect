@@ -1,7 +1,6 @@
 ---
 layout: default
 title: insert
-permalink: /processors/insert
 parent: Processors
 nav_order: 3
 ---
@@ -60,5 +59,5 @@ the result would be this:
 
 Note the surrounding `<div>` from the calling template remains.  This is in line
 with how Thymeleaf's `th:insert` behaves.  One way to remove the `<div>` would
-be to use [`layout:replace`]({% link processors/replace.md %}) instead, whose
-behaviour aligns with Thymeleaf's `th:replace`.
+be to use [`layout:replace`]({{ site.baseurl }}{% link processors/replace.md %})
+instead, whose behaviour aligns with Thymeleaf's `th:replace`.
