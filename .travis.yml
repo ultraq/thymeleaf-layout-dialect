@@ -6,4 +6,4 @@ jdk:
 # No need to run tasks for dependencies
 install: skip
 
-after_success: ./gradlew cobertura coveralls
+after_success: ./gradlew jacocoTestReport coveralls

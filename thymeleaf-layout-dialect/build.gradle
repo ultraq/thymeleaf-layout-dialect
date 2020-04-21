@@ -18,7 +18,7 @@ plugins {
 	id 'groovy'
 	id 'codenarc'
 	id 'maven'
-	id 'net.saliman.cobertura' version '3.0.0'
+	id 'jacoco'
 	id 'com.github.kt3k.coveralls' version '2.8.2'
 }
 apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/2.1.0/gradle-support.gradle'
@@ -65,4 +65,11 @@ dependencies {
 
 groovydoc {
 	link('http://www.thymeleaf.org/apidocs/thymeleaf/3.0.0.RELEASE/', 'org.thymeleaf.')
+}
+
+jacocoTestReport {
+	reports {
+		xml.enabled = true
+		html.enabled = true
+	}
 }
