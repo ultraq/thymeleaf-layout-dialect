@@ -1,23 +1,24 @@
+---
+layout: default
+title: Home
+nav_order: 1
+---
 
 Thymeleaf Layout Dialect
 ========================
-
-[![Build Status](https://travis-ci.com/ultraq/thymeleaf-layout-dialect.svg)](https://travis-ci.com/ultraq/thymeleaf-layout-dialect)
-[![Coverage Status](https://coveralls.io/repos/github/ultraq/thymeleaf-layout-dialect/badge.svg?branch=master)](https://coveralls.io/github/ultraq/thymeleaf-layout-dialect?branch=master)
-[![Maven Central](https://img.shields.io/maven-central/v/nz.net.ultraq.thymeleaf/thymeleaf-layout-dialect.svg?maxAge=3600)](http://search.maven.org/#search|ga|1|g%3A%22nz.net.ultraq.thymeleaf%22%20AND%20a%3A%22thymeleaf-layout-dialect%22)
+{: .no_toc }
 
 A dialect for Thymeleaf that lets you build layouts and reusable templates in
 order to improve code reuse.
+{: .fs-6 .fw-300 }
 
 
-Documentation
--------------
+On this page
+------------
+{: .no_toc .text-delta }
 
-All of the latest documentation on the layout dialect can be found on the
-dedicated docs website at https://ultraq.github.io/thymeleaf-layout-dialect/
-
-For version 1 docs which supported Thymeleaf 2, the classic readme still exists
-over on https://github.com/ultraq/thymeleaf-layout-dialect/tree/1.4.0
+1. TOC
+{:toc}
 
 
 What does it do?
@@ -97,7 +98,8 @@ When Thymeleaf processes your content template, the resulting HTML will be:
 Learn more
 ----------
 
-Check out the [getting started](https://ultraq.github.io/thymeleaf-layout-dialect/getting-started)
+Check out the [getting started]({{ site.baseurl }}{% link getting-started.md %})
 guide to learn how to add the layout dialect to your Thymeleaf project, or the
-[examples](https://ultraq.github.io/thymeleaf-layout-dialect/examples/) for more
-ways of how the layout dialect can help you build your templates.
+[processors]({{ site.baseurl}}{% link processors/index.md %}) pages for in-depth
+examples of each of the layout dialect features and how they can help you build
+your templates.
