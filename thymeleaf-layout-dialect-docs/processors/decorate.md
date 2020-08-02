@@ -271,7 +271,7 @@ Result:
 The Layout dialect can be configured to support either use case, with the
 ability for developers to define their own sorting.
 
-This sorting is exposed by the `nz.net.ultraq.thymeleaf.decorators.SortingStrategy`
+This sorting is exposed by the [`SortingStrategy`](/thymeleaf-layout-dialect/groovydoc/nz/net/ultraq/thymeleaf/decorators/SortingStrategy.html)
 interface and the layout dialect provides 4 implementations to choose from:
 
  - `nz.net.ultraq.thymeleaf.decorators.strategies.AppendingStrategy`, the
@@ -301,41 +301,23 @@ interface and the layout dialect provides 4 implementations to choose from:
 > compatibility with the 2.x versions.
 
 To change to the grouping strategy, configure the Layout dialect using one of
-the methods below.
+the methods below:
 
-For those who are configuring their own Thymeleaf template engine:
+ - Spring or Spring Boot 2 w/ Java/annotation config:
+   ```java
+   @Bean
+   public LayoutDialect layoutDialect() {
+   	return new LayoutDialect(new GroupingRespectLayoutTitleStrategy());
+   }
+   ```
 
-```java
-TemplateEngine templateEngine = new TemplateEngine();  // Or SpringTemplateEngine for Spring
-templateEngine.addDialect(new LayoutDialect(new GroupingRespectLayoutTitleStrategy()));
-```
+ - DIY management of the Thymeleaf template engine:
+   ```java
+   TemplateEngine templateEngine = new TemplateEngine();
+   templateEngine.addDialect(new LayoutDialect(new GroupingRespectLayoutTitleStrategy()));
+   ```
 
-For those using XML config in Spring:
-
-```xml
-<bean id="groupingStrategy" class="nz.net.ultraq.thymeleaf.decorators.strategies.GroupingRespectLayoutTitleStrategy"/>
-
-<bean id="templateEngine" class="org.thymeleaf.spring4.SpringTemplateEngine">
-  <property name="additionalDialects">
-    <set>
-      <bean class="nz.net.ultraq.thymeleaf.LayoutDialect">
-        <constructor-arg ref="groupingStrategy"/>
-      </bean>
-    </set>
-  </property>
-</bean>
-```
-
-For those using Spring Boot and Java configuration:
-
-```java
-@Bean
-public LayoutDialect layoutDialect() {
-	return new LayoutDialect(new GroupingRespectLayoutTitleStrategy());
-}
-```
-
-If neither strategy suits your needs, you can implement your own `SortingStrategy`
+If neither strategy suits your needs, you can implement your own [`SortingStrategy`](/thymeleaf-layout-dialect/groovydoc/nz/net/ultraq/thymeleaf/decorators/SortingStrategy.html)
 and pass it along to the layout dialect like above.
 
 
@@ -347,26 +329,24 @@ merging entirely.  Reasons for this might be that you wish to manage that
 section yourself so are using things like Thymeleaf's `th:replace` to fill that
 special part of your HTML document in.
 
-To bypass the layout dialect's `<head>` element merging, a second parameter to
-the `LayoutDialect` constructor should be set to `false`.  (The first parameter
-can be set to `null` as a merging strategy isn't really relevant when `<head>`
-element merging is disabled.)
+To bypass the layout dialect's `<head>` element merging, the second optional
+parameter to the `LayoutDialect` constructor should be set to `false`.  (The
+first parameter can be set to `null` as a merging strategy isn't really relevant
+when `<head>` element merging is disabled.)
 
-For those using Spring Boot and Java configuration:
+ - Spring or Spring Boot 2 w/ Java/annotation config:
+   ```java
+   @Bean
+   public LayoutDialect layoutDialect() {
+   	return new LayoutDialect(null, false);
+   }
+   ```
 
-```java
-@Bean
-public LayoutDialect layoutDialect() {
-  return new LayoutDialect(null, false);
-}
-```
-
-For those who are configuring their own Thymeleaf template engine:
-
-```java
-TemplateEngine templateEngine = new TemplateEngine();  // Or SpringTemplateEngine for Spring
-templateEngine.addDialect(new LayoutDialect(null, false));
-```
+ - DIY management of the Thymeleaf template engine:
+   ```java
+   TemplateEngine templateEngine = new TemplateEngine();
+   templateEngine.addDialect(new LayoutDialect(null, false));
+   ```
 
 When disabled, the `<head>` element will be whatever it was in the content
 template, so the `<head>` from the layout is not applied.

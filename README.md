@@ -98,6 +98,6 @@ Learn more
 ----------
 
 Check out the [getting started](https://ultraq.github.io/thymeleaf-layout-dialect/getting-started)
-guide to learn how to add the layout dialect to your Thymeleaf project, or the
-[examples](https://ultraq.github.io/thymeleaf-layout-dialect/examples/) for more
-ways of how the layout dialect can help you build your templates.
+guide to learn how to add the layout dialect to your Thymeleaf project, or read
+up on the many [processors](https://ultraq.github.io/thymeleaf-layout-dialect/processors/)
+for more ways of how the layout dialect can help you build your templates.
