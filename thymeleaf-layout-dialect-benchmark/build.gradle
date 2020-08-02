@@ -45,7 +45,7 @@ bootJar {
 task startWebApp(type: ExecFork, dependsOn: build) {
 	executable = 'java'
 	args = [
-	  '-jar', 'build/libs/thymeleaf-layout-dialect-benchmark.jar',
+	  '-jar', "build/libs/thymeleaf-layout-dialect-benchmark-${version}.jar",
 		'-Xmx512m'
 	]
 	waitForOutput = 'Started BenchmarkApplication'
