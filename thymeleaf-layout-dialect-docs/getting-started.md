@@ -2,6 +2,8 @@
 layout: default
 title: Getting started
 nav_order: 2
+redirect_from:
+  - /Installation.html
 ---
 
 Getting started

@@ -3,6 +3,8 @@ layout: default
 title: decorate
 parent: Processors
 nav_order: 1
+redirect_from:
+  - /Configuration.html
 ---
 
 decorate

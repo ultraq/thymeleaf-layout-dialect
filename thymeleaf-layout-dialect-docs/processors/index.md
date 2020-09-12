@@ -3,6 +3,9 @@ layout: default
 title: Processors
 nav_order: 3
 has_children: true
+redirect_from:
+  - /Processors.html
+  - /Examples.html
 ---
 
 Processors

@@ -9,3 +9,5 @@ aux_links:
     - https://github.com/ultraq/thymeleaf-layout-dialect
   "GroovyDoc/API":
     - /thymeleaf-layout-dialect/groovydoc/
+plugins:
+  - jekyll-redirect-from
