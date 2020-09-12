@@ -1,0 +1,29 @@
+
+# Test of the example in the docs for the layout:insert processor
+
+%TEMPLATE_MODE HTML
+
+%INPUT
+<div layout:insert="~{modal :: modal(title='Greetings')}">
+  <p layout:fragment="modal-content">Hi there! 👋</p>
+</div>
+
+%INPUT[modal]
+<section class="modal" layout:fragment="modal(title)">
+  <header th:text="${title}">Title goes here</header>
+  <div class="modal-body">
+    <div layout:fragment="modal-content">
+      Content goes here
+    </div>
+  </div>
+</section>
+
+%OUTPUT
+<div>
+  <section class="modal">
+    <header>Greetings</header>
+    <div class="modal-body">
+      <p>Hi there! 👋</p>
+    </div>
+  </section>
+</div>

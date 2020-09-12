@@ -15,10 +15,8 @@ Similar to `layout:insert` in that you can pass HTML content to the
 template/fragments you're replacing, but with the behaviour of Thymeleaf's `th:replace`.
 
 ```html
-<div layout:replace="~{modal :: title='Greetings'}">
-  <div layout:fragment="modal-content">
-    <p>Hi there! 👋</p>
-  </div>
+<div layout:replace="~{modal :: modal(title='Greetings')}">
+  <p layout:fragment="modal-content">Hi there! 👋</p>
 </div>
 ```
 
@@ -33,10 +31,12 @@ the body to be defined by the calling template:
 ```html
 modal.html
 
-<section class="modal">
+<section class="modal" layout:fragment="modal(title)">
   <header th:text="${title}">Title goes here</header>
   <div class="modal-body">
-    <div layout:fragment="modal-content">Content goes here</div>
+    <div layout:fragment="modal-content">
+      Content goes here
+    </div>
   </div>
 </section>
 ```

@@ -92,13 +92,13 @@ using this content template.  The content template defines its own title and
 script, as well as both the `content` and `custom-footer` fragments.  The `custom-footer`
 fragment is within a `<footer>` element, which isn't really necessary, but might
 be handy if you wish to do static templating of the content template which is
-one of the reasons one uses Thymeleaf in the first place :)
+one of the reasons one uses Thymeleaf in the first place 😊
 
 > Fragment names must be unique within a template, otherwise fragment mismatches
 > can occur and all sorts of hilarity will ensue.
 
-Anyway, once you tell Thymeleaf to process `content1.html`, the resulting page
-will look like this:
+Once you tell Thymeleaf to process `content1.html`, the resulting page will
+look like this:
 
 ```html
 <!DOCTYPE html>
@@ -157,7 +157,7 @@ absolute minimum of HTML code:
 ```html
 Content2.html
 
-<p layout:decorate="~{Layout}" layout:fragment="custom-footer">
+<p layout:decorate="~{layout}" layout:fragment="custom-footer">
   This is some footer text from content page 2.
 </p>
 ```
@@ -304,18 +304,18 @@ To change to the grouping strategy, configure the Layout dialect using one of
 the methods below:
 
  - Spring or Spring Boot 2 w/ Java/annotation config:
-   ```java
-   @Bean
-   public LayoutDialect layoutDialect() {
-   	return new LayoutDialect(new GroupingRespectLayoutTitleStrategy());
-   }
-   ```
+```java
+@Bean
+public LayoutDialect layoutDialect() {
+  return new LayoutDialect(new GroupingRespectLayoutTitleStrategy());
+}
+```
 
  - DIY management of the Thymeleaf template engine:
-   ```java
-   TemplateEngine templateEngine = new TemplateEngine();
-   templateEngine.addDialect(new LayoutDialect(new GroupingRespectLayoutTitleStrategy()));
-   ```
+```java
+TemplateEngine templateEngine = new TemplateEngine();
+templateEngine.addDialect(new LayoutDialect(new GroupingRespectLayoutTitleStrategy()));
+```
 
 If neither strategy suits your needs, you can implement your own [`SortingStrategy`](/thymeleaf-layout-dialect/groovydoc/nz/net/ultraq/thymeleaf/decorators/SortingStrategy.html)
 and pass it along to the layout dialect like above.
@@ -335,18 +335,18 @@ first parameter can be set to `null` as a merging strategy isn't really relevant
 when `<head>` element merging is disabled.)
 
  - Spring or Spring Boot 2 w/ Java/annotation config:
-   ```java
-   @Bean
-   public LayoutDialect layoutDialect() {
-   	return new LayoutDialect(null, false);
-   }
-   ```
+```java
+@Bean
+public LayoutDialect layoutDialect() {
+  return new LayoutDialect(null, false);
+}
+```
 
  - DIY management of the Thymeleaf template engine:
-   ```java
-   TemplateEngine templateEngine = new TemplateEngine();
-   templateEngine.addDialect(new LayoutDialect(null, false));
-   ```
+```java
+TemplateEngine templateEngine = new TemplateEngine();
+templateEngine.addDialect(new LayoutDialect(null, false));
+```
 
 When disabled, the `<head>` element will be whatever it was in the content
 template, so the `<head>` from the layout is not applied.

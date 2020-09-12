@@ -17,10 +17,8 @@ reuse but whose contents are best constructed in the context of the calling
 template.
 
 ```html
-<div layout:insert="~{modal :: title='Greetings'}">
-  <div layout:fragment="modal-content">
-    <p>Hi there! 👋</p>
-  </div>
+<div layout:insert="~{modal :: modal(title='Greetings')}">
+  <p layout:fragment="modal-content">Hi there! 👋</p>
 </div>
 ```
 
@@ -35,10 +33,12 @@ the body to be defined by the calling template:
 ```html
 modal.html
 
-<section class="modal">
+<section class="modal" layout:fragment="modal(title)">
   <header th:text="${title}">Title goes here</header>
   <div class="modal-body">
-    <div layout:fragment="modal-content">Content goes here</div>
+    <div layout:fragment="modal-content">
+      Content goes here
+    </div>
   </div>
 </section>
 ```
