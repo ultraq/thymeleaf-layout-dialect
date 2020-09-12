@@ -23,7 +23,7 @@ plugins {
 	id 'com.github.psxpaul.execfork' version '0.1.12'
 }
 apply plugin: 'io.spring.dependency-management'
-apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/3.1.3/gradle-support.gradle'
+apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/3.2.0/gradle-support.gradle'
 
 description = 'A basic web application to test the performance of the Thymeleaf Layout Dialect'
 archivesBaseName = 'thymeleaf-layout-dialect-benchmark'
