@@ -376,9 +376,38 @@ Parent/layout template:
 > Parameters passed this way *must* be named - an exception will be thrown if
 > names are missing.
 
-This feature is available from Thymeleaf Layout Dialect 2.4.0.  For older
-versions, you can continue to use `th:with`:
+### Workaround for Thymeleaf Layout Dialect 2.3.0 and older
+
+Parameterized fragments was made available from Thymeleaf Layout Dialect 2.4.0.
+For older versions, you can continue to use `th:with`:
 
 ```html
 <html layout:decorate="~{your-layout}" th:with="greeting='Hello!'">
+```
+
+### Attributes in the element with `layout:decorate` will also get copied over
+
+Say you have a content template like so:
+
+```html
+<div class="container" layout:decorate="~{layout}">
+```
+
+Notice the `class` attribute alongside `layout:decorate`.  That attribute will
+be copied over to the root element of the template you are decorating.
+
+This behaviour has been around since the beginning when Thymeleaf was a bit more
+limited in supported template types (ie: when it *had* to have a root element
+like `<html>`) and didn't yet support passing data between fragments (so was a
+handy way to be able to set IDs or classes from content to layout).  However,
+it has tripped some people up before, so this section is only here to document
+that behaviour.
+
+If you don't want to have those attributes present in the output, then a
+workaround is to split the element that has `layout:decorate` from your
+attributes:
+
+```html
+<div layout:decorate="~{layout}">
+  <div layout:fragment="content" class="container">
 ```
