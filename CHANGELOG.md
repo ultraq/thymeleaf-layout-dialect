@@ -4,6 +4,26 @@ Changelog
 
 As of 1.3.0, this project follows [Semantic Versioning](http://semver.org/).
 
+### 2.5.0
+
+ - Upgrade Groovy dependency to 2.5.x, fixing bytecode compatibility issues with
+   JDK11+ in certain situations
+   ([#205](https://github.com/ultraq/thymeleaf-layout-dialect/issues/205))
+ - Groovy metaprogramming enhancements to Thymeleaf objects is now done via
+   [extension modules](http://groovy-lang.org/metaprogramming.html#_extension_modules).
+   This has led to a slight improvement in performance: ~10% faster to complete
+   the included benchmark project on JDK8, memory footprint remains unchanged.
+ - Fixed the fragment cache not being cleared when dispatching/forwarding to the
+   error page
+   ([#189](https://github.com/ultraq/thymeleaf-layout-dialect/issues/189))
+ - Revamped the documentation website on https://ultraq.github.io/thymeleaf-layout-dialect/
+   ([#204](https://github.com/ultraq/thymeleaf-layout-dialect/issues/204))
+ - Rolled the benchmark project into this repo so that performance testing can
+   be done right next to the code
+   ([#192](https://github.com/ultraq/thymeleaf-layout-dialect/issues/192))
+ - Migrated unit tests from JUnit to Spock
+   ([#193](https://github.com/ultraq/thymeleaf-layout-dialect/issues/193))
+
 
 ### 2.4.1
  - Fix missing `positions` value from `GroupingStrategy` sorting method
