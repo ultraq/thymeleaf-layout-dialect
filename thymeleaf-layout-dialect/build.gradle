@@ -16,7 +16,7 @@
 
 plugins {
 	id 'groovy'
-	id 'codenarc'
+//	id 'codenarc' Codenarc + Java 14 = 💥  Waiting for Codenarc 2.0 to fix this
 	id 'jacoco'
 	id 'com.github.kt3k.coveralls' version '2.10.1'
 	id 'distribution'
