@@ -28,12 +28,11 @@ task copyGroovyDocs(
 	into './groovydoc'
 }
 
-task buildDocs(
+task serveDocs(
 	type: Exec,
 	dependsOn: copyGroovyDocs
 ) {
-	workingDir projectDir
-	commandLine 'bundle', 'exec', 'jekyll', 'build'
+	commandLine 'bundle', 'exec', 'jekyll', 'serve'
 }
 
 task publishDocs(
@@ -69,10 +68,13 @@ def execute(command) {
 	}
 }
 
-clean {
-	delete './groovydoc'
+task cleanDocs(
+	type: Exec
+) {
+	commandLine 'bundle', 'exec', 'jekyll', 'clean'
 }
 
-assemble {
-	dependsOn buildDocs
+clean {
+	dependsOn cleanDocs
+	delete './groovydoc'
 }
