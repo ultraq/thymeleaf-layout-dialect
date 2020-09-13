@@ -51,9 +51,8 @@ task publishDocs(
 		execute(["git", "add", "*.md"])
 		execute(["git", "commit", "-m", "'Update docs'"])
 		execute(["git", "push", "git@github.com:ultraq/thymeleaf-layout-dialect", "gh-pages", "--force"])
+		execute(["rm", "-rf", ".git"])
 	}
-	// TODO!
-	// git init && git checkout -b gh-pages && touch .nojekyll && git add . && git commit -am 'Update docs' && git push git@github.com:ultraq/thymeleaf-layout-dialect gh-pages --force
 }
 
 /**
