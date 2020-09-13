@@ -20,7 +20,7 @@ plugins {
 
 description = 'Documentation for the Thymeleaf Layout Dialect'
 
-task buildDocs(
+task copyGroovyDocs(
 	type: Copy,
 	dependsOn: ':thymeleaf-layout-dialect:groovydoc'
 ) {
@@ -28,9 +28,46 @@ task buildDocs(
 	into './groovydoc'
 }
 
-task publishDocs {
+task buildDocs(
+	type: Exec,
+	dependsOn: copyGroovyDocs
+) {
+	workingDir projectDir
+	commandLine 'bundle', 'exec', 'jekyll', 'build'
+}
+
+task publishDocs(
+	dependsOn: copyGroovyDocs
+) {
+	doLast {
+		execute(["git", "init"])
+		execute(["git", "checkout", "-b", "gh-pages"])
+		execute(["git", "add", "_sass"])
+		execute(["git", "add", "groovydoc", "--force"]) // Is in .gitignore but needed for docs
+		execute(["git", "add", "processors"])
+		execute(["git", "add", "_config.yml"])
+		execute(["git", "add", "favicon.ico"])
+		execute(["git", "add", "Gemfile*"])
+		execute(["git", "add", "*.md"])
+		execute(["git", "commit", "-m", "'Update docs'"])
+		execute(["git", "push", "git@github.com:ultraq/thymeleaf-layout-dialect", "gh-pages", "--force"])
+	}
 	// TODO!
 	// git init && git checkout -b gh-pages && touch .nojekyll && git add . && git commit -am 'Update docs' && git push git@github.com:ultraq/thymeleaf-layout-dialect gh-pages --force
+}
+
+/**
+ * Execute an individual command and wait for the process to complete.
+ * 
+ * @param command
+ */
+def execute(command) {
+	println "Executing: ${command.join(" ")}"
+	def proc = command.execute(null, projectDir)
+	proc.waitForProcessOutput(System.out, System.err)
+	if (proc.exitValue() > 0) {
+		println "${proc.err.text}"
+	}
 }
 
 clean {
