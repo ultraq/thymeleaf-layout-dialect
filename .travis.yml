@@ -2,8 +2,9 @@ language: groovy
 jdk:
  - openjdk8
  - openjdk11
+ - openjdk14
 
 # No need to run tasks for dependencies
 install: skip
 
-after_success: ./gradlew cobertura coveralls
+after_success: ./gradlew jacocoTestReport coveralls

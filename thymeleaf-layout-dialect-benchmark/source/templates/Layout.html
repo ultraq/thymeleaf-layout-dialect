@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+	<title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">Layout page</title>
+	<meta charset="UTF-8"/>
+	<script src="common-script.js"></script>
+</head>
+
+<body>
+	<header>
+		<h1>My website</h1>
+	</header>
+	<section layout:fragment="content">
+		<p>Page content goes here</p>
+	</section>
+	<footer>
+		<p>My footer</p>
+		<p layout:fragment="custom-footer">Custom footer here</p>
+	</footer>
+
+	<div layout:include="~{Fragments :: text-fragment}">
+		<p>Here's some random text to see if it makes it into the heap.</p>
+	</div>
+
+	<div layout:insert="~{Fragments :: text-fragment}">
+		<p>Your bones don't break, mine do. That's clear. Your cells react to bacteria and viruses differently than mine. You don't get sick, I do. That's also clear. But for some reason, you and I react the exact same way to water. We swallow it too fast, we choke. We get some in our lungs, we drown. However unreal it may seem, we are connected, you and I. We're on the same curve, just on opposite ends. </p>
+		<p>Do you see any Teletubbies in here? Do you see a slender plastic tag clipped to my shirt with my name printed on it? Do you see a little Asian child with a blank expression on his face sitting outside on a mechanical helicopter that shakes when you put quarters in it? No? Well, that's what you see at a toy store. And you must think you're in a toy store, because you're here shopping for an infant named Jeb. </p>
+		<p>Do you see any Teletubbies in here? Do you see a slender plastic tag clipped to my shirt with my name printed on it? Do you see a little Asian child with a blank expression on his face sitting outside on a mechanical helicopter that shakes when you put quarters in it? No? Well, that's what you see at a toy store. And you must think you're in a toy store, because you're here shopping for an infant named Jeb. </p>
+		<p>You think water moves fast? You should see ice. It moves like it has a mind. Like it knows it killed the world once and got a taste for murder. After the avalanche, it took us a week to climb out. Now, I don't know exactly when we turned on each other, but I know that seven of us survived the slide... and only five made it out. Now we took an oath, that I'm breaking now. We said we'd say it was the snow that killed the other two, but it wasn't. Nature is lethal but it doesn't hold a candle to man. </p>
+		<p>The path of the righteous man is beset on all sides by the iniquities of the selfish and the tyranny of evil men. Blessed is he who, in the name of charity and good will, shepherds the weak through the valley of darkness, for he is truly his brother's keeper and the finder of lost children. And I will strike down upon thee with great vengeance and furious anger those who would attempt to poison and destroy My brothers. And you will know My name is the Lord when I lay My vengeance upon thee. </p>
+	</div>
+
+	<div layout:replace="~{Fragments :: text-fragment}">
+		<p>Hodor. Hodor hodor hodor hodor... Hodor hodor hodor... Hodor hodor hodor. Hodor. Hodor hodor hodor - hodor?! Hodor, hodor... Hodor hodor HODOR hodor, hodor hodor, hodor, hodor hodor. Hodor, hodor hodor hodor? Hodor hodor - hodor, hodor. Hodor hodor hodor hodor, hodor, hodor hodor. Hodor, hodor hodor; hodor hodor - hodor?! Hodor, hodor. Hodor. Hodor, hodor... Hodor hodor hodor, hodor. Hodor hodor hodor, hodor, hodor hodor. Hodor hodor hodor hodor - hodor?! </p>
+		<p>Hodor! Hodor hodor, HODOR hodor, hodor hodor... Hodor hodor hodor - hodor hodor! Hodor. Hodor hodor; hodor hodor, hodor, hodor hodor. Hodor! Hodor hodor, hodor... Hodor hodor hodor. Hodor. Hodor. Hodor hodor, hodor. Hodor hodor. Hodor. </p>
+		<p>Hodor, hodor. Hodor. Hodor, hodor, hodor. Hodor hodor - hodor; hodor hodor? Hodor hodor HODOR! Hodor hodor - HODOR hodor, hodor hodor. Hodor hodor HODOR! Hodor hodor hodor hodor?! Hodor HODOR hodor, hodor HODOR hodor, hodor hodor... Hodor hodor HODOR hodor, hodor hodor?! Hodor hodor HODOR! Hodor hodor - HODOR hodor, hodor hodor hodor. Hodor. Hodor hodor; hodor HODOR hodor, hodor hodor hodor! Hodor hodor... Hodor hodor hodor hodor! Hodor. Hodor hodor, hodor. Hodor hodor hodor hodor hodor! Hodor. Hodor hodor hodor hodor? Hodor! Hodor hodor, hodor hodor hodor hodor. Hodor. </p>
+		<p>Hodor, hodor. Hodor. Hodor, hodor hodor hodor hodor, hodor. Hodor hodor; hodor hodor. Hodor hodor - hodor; hodor hodor, hodor, hodor hodor. Hodor hodor - hodor... Hodor hodor hodor hodor! Hodor hodor - HODOR hodor, hodor hodor hodor hodor hodor hodor, hodor, hodor hodor. Hodor. Hodor hodor, hodor. Hodor hodor. Hodor. Hodor, hodor, hodor. Hodor hodor hodor! Hodor! Hodor hodor, hodor hodor hodor, hodor, hodor hodor. Hodor, hodor. Hodor. Hodor, hodor - hodor. Hodor. </p>
+		<p>Hodor, hodor. Hodor. Hodor, hodor... Hodor hodor hodor hodor! Hodor hodor HODOR! Hodor hodor... Hodor hodor hodor; hodor HODOR hodor, hodor hodor? Hodor! Hodor hodor, hodor - hodor - hodor?! Hodor. Hodor hodor; hodor hodor, hodor. Hodor hodor? Hodor hodor - hodor, hodor. Hodor hodor. Hodor. Hodor, hodor. Hodor. Hodor, HODOR hodor, hodor hodor hodor! Hodor! Hodor hodor, hodor hodor hodor, hodor, hodor hodor. </p>
+	</div>
+</body>
+
+</html>

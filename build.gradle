@@ -1,5 +1,5 @@
 /* 
- * Copyright 2012, Emanuel Rabina (http://www.ultraq.net.nz/)
+ * Copyright 2019, Emanuel Rabina (http://www.ultraq.net.nz/)
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,56 +14,6 @@
  * limitations under the License.
  */
 
-plugins {
-	id 'groovy'
-	id 'codenarc'
-	id 'maven'
-	id 'net.saliman.cobertura' version '2.5.2'
-	id 'com.github.kt3k.coveralls' version '2.8.2'
-}
-apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/2.1.0/gradle-support.gradle'
-apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/2.1.0/maven-support.gradle'
-apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/2.1.0/bundle.gradle'
-
-//project.name      = 'thymeleaf-layout-dialect'
-project.description = 'A dialect for Thymeleaf that allows you to use layout/decorator templates to style your content.'
-project.archivesBaseName = 'thymeleaf-layout-dialect'
-project.sourceCompatibility = '1.7'
-
-project.group    = 'nz.net.ultraq.thymeleaf'
-project.artifact = 'thymeleaf-layout-dialect'
-project.version  = '2.4.1'
-project.year     = '2012'
-project.contributors = [
-	[
-		name:  'Justin Munn',
-		roles: ['developer'],
-		contribution: 'https://github.com/ultraq/thymeleaf-layout-dialect/pull/42'
-	],
-	[
-		name:  'Oliver Niekrenz',
-		email: 'oliver@niekrenz.de',
-		roles: ['developer'],
-		contribution: 'https://github.com/ultraq/thymeleaf-layout-dialect/pull/60'
-	]
-]
-
-dependencies {
-	compile(
-		'nz.net.ultraq.thymeleaf:thymeleaf-expression-processor:1.1.3',
-		'org.codehaus.groovy:groovy:2.4.13',
-		'org.thymeleaf:thymeleaf:3.0.0.RELEASE'
-	)
-	testCompile(
-		'junit:junit:4.12',
-		'nz.net.ultraq.thymeleaf:thymeleaf-testing-junit:2.2.0',
-		'org.thymeleaf:thymeleaf-testing:3.0.0.RELEASE'
-	)
-	testRuntime(
-		'org.slf4j:slf4j-simple:1.7.12'
-	)
-}
-
-groovydoc {
-	link('http://www.thymeleaf.org/apidocs/thymeleaf/3.0.0.RELEASE/', 'org.thymeleaf.')
+allprojects {
+	version = '2.5.0-SNAPSHOT'
 }
