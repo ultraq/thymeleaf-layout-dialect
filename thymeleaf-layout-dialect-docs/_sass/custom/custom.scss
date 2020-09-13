@@ -1,2 +1,21 @@
 
-$link-color: lighten(#005f0f, 10%); // The Thymeleaf link colour
+blockquote {
+	border-left: 0.25em solid $border-color;
+	margin: 0;
+	padding: 0 1em;
+}
+
+code {
+	font-size: 0.8em;
+}
+
+.site-title {
+	@media (min-width: 50rem) {
+		font-size: 17px !important;
+		padding-right: 1rem;
+	}
+}
+
+.navigation-list-child-list {
+	display: block !important;
+}

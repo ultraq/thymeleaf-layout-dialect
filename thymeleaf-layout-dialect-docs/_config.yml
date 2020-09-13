@@ -4,6 +4,7 @@ lang: en-NZ
 baseurl: /thymeleaf-layout-dialect
 permalink: pretty
 remote_theme:  pmarsceill/just-the-docs@v0.3.1-r
+color_scheme: thymeleaf
 aux_links:
   "GitHub":
     - https://github.com/ultraq/thymeleaf-layout-dialect
