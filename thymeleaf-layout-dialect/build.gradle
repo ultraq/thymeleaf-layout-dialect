@@ -65,3 +65,16 @@ dependencies {
 groovydoc {
 	link('http://www.thymeleaf.org/apidocs/thymeleaf/3.0.11.RELEASE/', 'org.thymeleaf.')
 }
+
+distributions {
+	main {
+		contents {
+			// Have to mention explicitly because of the subproject layout
+			from('..') {
+				include 'CHANGELOG.md'
+				include 'LICENSE.txt'
+				include 'README.md'
+			}
+		}
+	}
+}
