@@ -3,7 +3,7 @@ description: A dialect for Thymeleaf that lets you build layouts and reusable te
 lang: en-NZ
 baseurl: /thymeleaf-layout-dialect
 permalink: pretty
-theme: just-the-docs
+remote_theme:  pmarsceill/just-the-docs@v0.3.1-r
 aux_links:
   "GitHub":
     - https://github.com/ultraq/thymeleaf-layout-dialect
@@ -11,3 +11,4 @@ aux_links:
     - /thymeleaf-layout-dialect/groovydoc/
 plugins:
   - jekyll-redirect-from
+  - jekyll-remote-theme
