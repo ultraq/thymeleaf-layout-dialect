@@ -4,6 +4,13 @@ Changelog
 
 As of 1.3.0, this project follows [Semantic Versioning](http://semver.org/).
 
+### 2.5.1
+
+ - Fix POM generation issue that declared dependencies as `runtime` instead of
+   `compile`
+   ([#208](https://github.com/ultraq/thymeleaf-layout-dialect/issues/208))
+
+
 ### 2.5.0
 
  - Upgrade Groovy dependency to 2.5.x, fixing bytecode compatibility issues with
