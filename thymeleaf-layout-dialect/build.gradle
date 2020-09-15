@@ -46,7 +46,7 @@ contributors = [
 ]
 
 dependencies {
-	implementation(
+	compile(
 		'nz.net.ultraq.extensions:groovy-extensions:0.3.0',
 		'nz.net.ultraq.thymeleaf:thymeleaf-expression-processor:1.2.0',
 		'org.codehaus.groovy:groovy:2.5.11',
