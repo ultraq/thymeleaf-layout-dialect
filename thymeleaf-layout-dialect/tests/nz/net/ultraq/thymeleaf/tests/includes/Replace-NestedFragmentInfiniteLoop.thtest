@@ -12,11 +12,10 @@
 		Comment structure
 		<div layout:fragment="comment-details">Default comment details</div>
 	</div>
-
 	<div layout:replace="~{::comment}">
 		<div layout:fragment="comment-details">
 			Top level comment
-			<div layout:replace="~{::comment}">
+			<div layout:replace="~{:: comment}">
 				<div layout:fragment="comment-details">Nested comment</div>
 			</div>
 		</div>

@@ -58,8 +58,10 @@ class FragmentExtensions {
 	 * 
 	 * @param self
 	 * @param context
-	 * @param fromDecorator
-	 * @param fragments The new fragments to add to the cache.
+	 * @param fragments     The new fragments to add to the cache.
+	 * @param fromDecorator Whether the call was from {@code DecorateProcessor},
+	 *                      used for determining if a new fragment collection
+	 *                      should be used and the order of collected fragments.
 	 */
 	static void setLocalFragmentCollection(IElementModelStructureHandler self, ITemplateContext context,
 		Map<String,List<IModel>> fragments, boolean fromDecorator = false) {
@@ -68,6 +70,9 @@ class FragmentExtensions {
 			context.getFragmentCollection(fromDecorator).inject(fragments) { accumulator, fragmentName, fragmentList ->
 				if (accumulator[fragmentName]) {
 					accumulator[fragmentName] += fragmentList
+					if (!fromDecorator) {
+						accumulator[fragmentName].reverse(true)
+					}
 				}
 				else {
 					accumulator[fragmentName] = fragmentList

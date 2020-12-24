@@ -84,7 +84,7 @@ class FragmentProcessor extends AbstractAttributeTagProcessor {
 
 		// Replace the tag body with the fragment
 		if (fragments) {
-			def fragment = fragments.first()
+			def fragment = fragments.last()
 			def modelFactory = context.modelFactory
 			def replacementModel = new ElementMerger(context).merge(modelFactory.createModel(tag), fragment)
 
