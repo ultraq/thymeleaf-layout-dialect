@@ -23,8 +23,8 @@ plugins {
 	id 'distribution'
 	id 'maven-publish'
 }
-apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/3.2.1/gradle-support.gradle'
-apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/3.2.1/maven-publish-support.gradle'
+apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/3.3.0/gradle-support.gradle'
+apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/3.3.0/maven-publish-support.gradle'
 
 description = 'A dialect for Thymeleaf that allows you to use layout/decorator templates to style your content.'
 sourceCompatibility = 1.7
@@ -32,19 +32,6 @@ sourceCompatibility = 1.7
 group    = 'nz.net.ultraq.thymeleaf'
 artifact = 'thymeleaf-layout-dialect'
 year     = '2012'
-contributors = [
-	[
-		name:  'Justin Munn',
-		roles: ['developer'],
-		contribution: 'https://github.com/ultraq/thymeleaf-layout-dialect/pull/42'
-	],
-	[
-		name:  'Oliver Niekrenz',
-		email: 'oliver@niekrenz.de',
-		roles: ['developer'],
-		contribution: 'https://github.com/ultraq/thymeleaf-layout-dialect/pull/60'
-	]
-]
 
 dependencies {
 	api(
