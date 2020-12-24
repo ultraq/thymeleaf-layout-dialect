@@ -1,0 +1,89 @@
+
+# Test a deep layout hierarchy (3 levels).
+
+%TEMPLATE_MODE HTML
+
+
+%INPUT
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{Parent}">
+<head>
+	<title>Page title</title>
+	<script src="child-script.js"></script>
+</head>
+<body>
+	<div layout:fragment="content">
+		<p>Page content</p>
+	</div>
+	<footer layout:fragment="footer">
+	  <p>Page footer</p>
+	</footer>
+</body>
+</html>
+
+
+%INPUT[Parent]
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{Grandparent}">
+<head>
+	<script src="parent-script.js"></script>
+</head>
+<body>
+	<section layout:fragment="section">
+		<header>
+			<h1>My website</h1>
+		</header>
+		<div layout:fragment="content">
+			<p>Parent content</p>
+		</div>
+	</section>
+	<!-- parent redeclares footer -->
+	<footer layout:fragment="footer">
+		<p>Parent footer</p>
+	</footer>
+</body>
+</html>
+
+
+%INPUT[Grandparent]
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+	<script src="grandparent-script.js"></script>
+</head>
+<body>
+	<section layout:fragment="section">
+		<p>Grandparent section</p>
+	</section>
+	<footer layout:fragment="footer">
+		<p>Grandparent footer</p>
+	</footer>
+</body>
+</html>
+
+
+%OUTPUT
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Page title</title>
+	<script src="grandparent-script.js"></script>
+	<script src="parent-script.js"></script>
+	<script src="child-script.js"></script>
+</head>
+<body>
+	<section>
+		<header>
+			<h1>My website</h1>
+		</header>
+		<div>
+			<p>Page content</p>
+		</div>
+	</section>
+	<footer>
+		<p>Page footer</p>
+	</footer>
+</body>
+</html>
