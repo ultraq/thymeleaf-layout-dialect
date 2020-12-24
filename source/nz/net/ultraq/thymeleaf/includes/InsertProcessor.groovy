@@ -72,7 +72,7 @@ class InsertProcessor extends AbstractAttributeModelProcessor {
 
 		// Gather all fragment parts within this element, scoping them to this element
 		def includeFragments = new FragmentFinder(dialectPrefix).findFragments(model)
-		FragmentMap.setForNodeIncludeProcessing(context, structureHandler, includeFragments)
+		FragmentMap.setForNode(context, structureHandler, includeFragments, true)
 
 		// Keep track of what template is being processed?  Thymeleaf does this for
 		// its include processor, so I'm just doing the same here.

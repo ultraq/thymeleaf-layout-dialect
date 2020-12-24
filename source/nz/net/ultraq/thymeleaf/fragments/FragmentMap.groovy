@@ -45,42 +45,21 @@ class FragmentMap extends HashMap<String,List<IModel>> {
 	/**
 	 * Set the fragment collection to contain whatever it initially had, plus the
 	 * given fragments, just for the scope of the current node.
-	 *
-	 * This must be used when processing non include/insert/replace related directives.
 	 * 
 	 * @param context
 	 * @param structureHandler
 	 * @param fragments The new fragments to add to the map.
+	 * @param isIncludeProcessing
 	 */
 	static void setForNode(IContext context, IElementModelStructureHandler structureHandler,
-		Map<String,List<IModel>> fragments) {
-		setForNodeInternal(context, structureHandler, fragments, false)
-	}
-
-	/**
-	 * Set the fragment collection to contain whatever it initially had, plus the
-	 * given fragments, just for the scope of the current node.
-	 *
-	 * This must be used when processing include/insert/replace related directives.
-	 *
-	 * @param context
-	 * @param structureHandler
-	 * @param fragments The new fragments to add to the map.
-	 */
-	static void setForNodeIncludeProcessing(IContext context, IElementModelStructureHandler structureHandler,
-		Map<String,List<IModel>> fragments) {
-		setForNodeInternal(context, structureHandler, fragments, true)
-	}
-
-	private static void setForNodeInternal(IContext context, IElementModelStructureHandler structureHandler,
-		Map<String,List<IModel>> fragments, boolean isIncludeProcessing) {
+		Map<String,List<IModel>> fragments, boolean isIncludeProcessing = false) {
 
 		structureHandler.setLocalVariable(FRAGMENT_COLLECTION_KEY,
 			get(context).inject(fragments.clone()) { accumulator, fragmentName, fragmentList ->
 				if (accumulator[fragmentName]) {
 					accumulator[fragmentName] += fragmentList
 					if (isIncludeProcessing) {
-						accumulator[fragmentName] = ((List) accumulator[fragmentName]).reverse()
+						accumulator[fragmentName].reverse(true)
 					}
 				}
 				else {
