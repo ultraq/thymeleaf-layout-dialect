@@ -4,6 +4,15 @@ Changelog
 
 As of 1.3.0, this project follows [Semantic Versioning](http://semver.org/).
 
+
+### 2.5.2
+
+ - Fix from [@silkentrance](https://github.com/silkentrance) for re-declared
+   layout fragments in deep hierarchies, where the layout dialect would return
+   the wrong fragment from the template hierarchy
+   ([#200])(https://github.com/ultraq/thymeleaf-layout-dialect/issues/200)
+
+
 ### 2.5.1
 
  - Fix POM generation issue that declared dependencies as `runtime` instead of
@@ -33,6 +42,7 @@ As of 1.3.0, this project follows [Semantic Versioning](http://semver.org/).
 
 
 ### 2.4.1
+
  - Fix missing `positions` value from `GroupingStrategy` sorting method
    ([#185](https://github.com/ultraq/thymeleaf-layout-dialect/issues/185))
 
@@ -83,6 +93,7 @@ As of 1.3.0, this project follows [Semantic Versioning](http://semver.org/).
 
 
 ### 2.2.1
+
  - Fix decorate processor root element check when interacting with high-priority
    custom dialects
    ([#127](https://github.com/ultraq/thymeleaf-layout-dialect/issues/127))
