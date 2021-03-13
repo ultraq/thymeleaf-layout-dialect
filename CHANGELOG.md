@@ -9,6 +9,11 @@ As of 1.3.0, this project follows [Semantic Versioning](http://semver.org/).
    ([#214](https://github.com/ultraq/thymeleaf-layout-dialect/issues/214))
 
 
+### 3.0.0
+
+ - Now requires Java 8 as the minimum Java version
+
+
 ### 2.5.2
 
  - Fix from [@silkentrance](https://github.com/silkentrance) for re-declared

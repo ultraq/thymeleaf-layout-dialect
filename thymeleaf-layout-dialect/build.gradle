@@ -27,7 +27,7 @@ apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/3.3.0/gradl
 apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/3.3.0/maven-publish-support.gradle'
 
 description = 'A dialect for Thymeleaf that allows you to use layout/decorator templates to style your content.'
-sourceCompatibility = 1.7
+sourceCompatibility = 1.8
 
 group    = 'nz.net.ultraq.thymeleaf'
 artifact = 'thymeleaf-layout-dialect'
