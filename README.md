@@ -3,7 +3,7 @@ Thymeleaf Layout Dialect
 ========================
 
 [![Build Status](https://travis-ci.com/ultraq/thymeleaf-layout-dialect.svg)](https://travis-ci.com/ultraq/thymeleaf-layout-dialect)
-[![Coverage Status](https://coveralls.io/repos/github/ultraq/thymeleaf-layout-dialect/badge.svg?branch=master)](https://coveralls.io/github/ultraq/thymeleaf-layout-dialect?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/ultraq/thymeleaf-layout-dialect/badge.svg?branch=main)](https://coveralls.io/github/ultraq/thymeleaf-layout-dialect?branch=main)
 [![Maven Central](https://img.shields.io/maven-central/v/nz.net.ultraq.thymeleaf/thymeleaf-layout-dialect.svg?maxAge=3600)](http://search.maven.org/#search|ga|1|g%3A%22nz.net.ultraq.thymeleaf%22%20AND%20a%3A%22thymeleaf-layout-dialect%22)
 
 A dialect for Thymeleaf that lets you build layouts and reusable templates in
