@@ -35,7 +35,7 @@ year     = '2012'
 
 dependencies {
 	api(
-		'org.codehaus.groovy:groovy:2.5.11'
+		'org.codehaus.groovy:groovy:2.5.14'
 	)
 	implementation(
 		'nz.net.ultraq.extensions:groovy-extensions:0.3.0',
