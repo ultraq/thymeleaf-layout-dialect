@@ -2,6 +2,9 @@ language: groovy
 jdk:
  - openjdk8
  - openjdk11
+env:
+ global:
+  - JAVA_TOOL_OPTIONS=-Dhttps.protocols=TLSv1.2
 
 # No need to run tasks for dependencies
 install: skip
