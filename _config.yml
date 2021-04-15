@@ -1,0 +1,16 @@
+title: Thymeleaf Layout Dialect
+description: A dialect for Thymeleaf that lets you build layouts and reusable templates in order to improve code reuse
+lang: en-NZ
+baseurl: /thymeleaf-layout-dialect
+url: "https://ultraq.github.io"
+permalink: pretty
+remote_theme:  pmarsceill/just-the-docs@v0.3.1-r
+color_scheme: thymeleaf
+aux_links:
+  "GitHub":
+    - https://github.com/ultraq/thymeleaf-layout-dialect
+  "GroovyDoc/API":
+    - /thymeleaf-layout-dialect/groovydoc/
+plugins:
+  - jekyll-redirect-from
+  - jekyll-remote-theme

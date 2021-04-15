@@ -1,0 +1,11 @@
+nz.net.ultraq.thymeleaf
+nz.net.ultraq.thymeleaf.context.extensions
+nz.net.ultraq.thymeleaf.decorators
+nz.net.ultraq.thymeleaf.decorators.html
+nz.net.ultraq.thymeleaf.decorators.strategies
+nz.net.ultraq.thymeleaf.decorators.xml
+nz.net.ultraq.thymeleaf.fragments
+nz.net.ultraq.thymeleaf.fragments.extensions
+nz.net.ultraq.thymeleaf.includes
+nz.net.ultraq.thymeleaf.models
+nz.net.ultraq.thymeleaf.models.extensions
