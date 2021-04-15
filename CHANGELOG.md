@@ -4,6 +4,10 @@ Changelog
 
 As of 1.3.0, this project follows [Semantic Versioning](http://semver.org/).
 
+### 2.5.3
+ - Upgrade Gradle to 2.5.14 
+   ([#214](https://github.com/ultraq/thymeleaf-layout-dialect/issues/214))
+
 
 ### 2.5.2
 
