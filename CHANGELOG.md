@@ -2,16 +2,17 @@
 Changelog
 =========
 
-As of 1.3.0, this project follows [Semantic Versioning](http://semver.org/).
+### 3.0.0
+
+ - Now requires Java 8 as the minimum Java version
+   ([#213](https://github.com/ultraq/thymeleaf-layout-dialect/issues/213))
+ - Upgrade Groovy to 3.0.8
+   ([#202](https://github.com/ultraq/thymeleaf-layout-dialect/issues/202))
+
 
 ### 2.5.3
  - Upgrade Groovy to 2.5.14 
    ([#214](https://github.com/ultraq/thymeleaf-layout-dialect/issues/214))
-
-
-### 3.0.0
-
- - Now requires Java 8 as the minimum Java version
 
 
 ### 2.5.2
@@ -309,6 +310,8 @@ upcoming patches so they don't hold up the release.
 
 
 ### 1.3.0
+
+From 1.3.0, this project follows [semantic versioning](http://semver.org/).
 
  - Dialect rewritten in Groovy
  - Dropped the deprecated `substituteby` processor
