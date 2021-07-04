@@ -32,7 +32,7 @@ sourceCompatibility = 1.8
 dependencies {
 	implementation(
 		project(':thymeleaf-layout-dialect'),
-		'org.codehaus.groovy:groovy:2.5.14',
+		'org.codehaus.groovy:groovy:3.0.8',
 		'org.springframework.boot:spring-boot-starter-thymeleaf',
 		'org.springframework.boot:spring-boot-starter-web'
 	)
