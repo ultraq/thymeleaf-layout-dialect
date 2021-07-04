@@ -20,7 +20,6 @@ import nz.net.ultraq.thymeleaf.LayoutDialect
 import nz.net.ultraq.thymeleaf.decorators.strategies.GroupingRespectLayoutTitleStrategy
 import nz.net.ultraq.thymeleaf.testing.JUnitTestExecutor
 
-import org.junit.runners.Parameterized.Parameters
 import org.reflections.Reflections
 import org.reflections.scanners.ResourcesScanner
 import org.thymeleaf.dialect.IDialect
@@ -46,8 +45,7 @@ class LayoutDialectTestExecutorGroupingRespectLayoutTitle extends JUnitTestExecu
 	 * @return List of all the Thymeleaf testing files for the grouping head
 	 *         element sorter.
 	 */
-	@Parameters(name = '{0}')
-	static List<String> listGroupingLayoutDialectTests() {
+	static List<String> getThymeleafTestFiles() {
 
 		return new Reflections('', new ResourcesScanner())
 			.getResources(~/GroupingRespectLayoutTitleStrategy.*\.thtest/) as List

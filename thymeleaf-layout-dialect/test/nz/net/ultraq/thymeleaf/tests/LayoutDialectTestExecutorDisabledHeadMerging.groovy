@@ -19,7 +19,6 @@ package nz.net.ultraq.thymeleaf.tests
 import nz.net.ultraq.thymeleaf.LayoutDialect
 import nz.net.ultraq.thymeleaf.testing.JUnitTestExecutor
 
-import org.junit.runners.Parameterized.Parameters
 import org.reflections.Reflections
 import org.reflections.scanners.ResourcesScanner
 import org.thymeleaf.dialect.IDialect
@@ -44,8 +43,7 @@ class LayoutDialectTestExecutorDisabledHeadMerging extends JUnitTestExecutor {
 	 * 
 	 * @return List of all the Thymeleaf testing files for disabled head merging.
 	 */
-	@Parameters(name = '{0}')
-	static List<String> listDisabledHeadLayoutDialectTests() {
+	static List<String> getThymeleafTestFiles() {
 
 		return new Reflections('', new ResourcesScanner())
 			.getResources(~/Decorate-DisabledHead\.thtest/) as List

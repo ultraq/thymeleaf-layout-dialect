@@ -20,7 +20,6 @@ import nz.net.ultraq.thymeleaf.LayoutDialect
 import nz.net.ultraq.thymeleaf.decorators.strategies.AppendingStrategy
 import nz.net.ultraq.thymeleaf.testing.JUnitTestExecutor
 
-import org.junit.runners.Parameterized.Parameters
 import org.reflections.Reflections
 import org.reflections.scanners.ResourcesScanner
 import org.thymeleaf.dialect.IDialect
@@ -47,8 +46,7 @@ class LayoutDialectTestExecutor extends JUnitTestExecutor {
 	 * @return List of all Thymeleaf test files for the standard head element
 	 *         sorter.
 	 */
-	@Parameters(name = '{0}')
-	static List<String> listStandardLayoutDialectTests() {
+	static List<String> getThymeleafTestFiles() {
 
 		def tests = new Reflections('', new ResourcesScanner())
 			.getResources(~/(?!Examples|GroupingStrategy|Interaction).*\.thtest/) as List

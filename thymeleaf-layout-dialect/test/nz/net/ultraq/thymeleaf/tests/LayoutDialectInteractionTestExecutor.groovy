@@ -20,7 +20,6 @@ import nz.net.ultraq.thymeleaf.LayoutDialect
 import nz.net.ultraq.thymeleaf.decorators.strategies.GroupingStrategy
 import nz.net.ultraq.thymeleaf.testing.JUnitTestExecutor
 
-import org.junit.runners.Parameterized
 import org.reflections.Reflections
 import org.reflections.scanners.ResourcesScanner
 import org.thymeleaf.dialect.AbstractProcessorDialect
@@ -47,11 +46,10 @@ class LayoutDialectInteractionTestExecutor extends JUnitTestExecutor {
 	/**
 	 * Return only Thymeleaf testing files involved in the testing of dialect
 	 * interaction.
-	 *
+	 * 
 	 * @return List of all the Thymeleaf testing files for dialect interaction.
 	 */
-	@Parameterized.Parameters(name = '{0}')
-	static List<String> listInteractionLayoutDialectTests() {
+	static List<String> getThymeleafTestFiles() {
 
 		return new Reflections('', new ResourcesScanner())
 			.getResources(~/Interaction.*\.thtest/) as List

@@ -43,15 +43,13 @@ dependencies {
 		'org.thymeleaf:thymeleaf:3.0.0.RELEASE'
 	)
 	testImplementation(
-		'nz.net.ultraq.thymeleaf:thymeleaf-testing-junit:3.0.1',
-		platform('org.junit:junit-bom:5.7.2'),
-		'org.junit.vintage:junit-vintage-engine',
+		'nz.net.ultraq.thymeleaf:thymeleaf-testing-junit:4.0.0-SNAPSHOT',
 		'org.reflections:reflections:0.9.12',
 		'org.spockframework:spock-core:2.0-groovy-3.0',
 		'org.thymeleaf:thymeleaf-testing:3.0.4.RELEASE'
 	)
 	testRuntimeOnly(
-		'org.slf4j:slf4j-simple:1.7.12'
+		'org.slf4j:slf4j-simple:1.7.31'
 	)
 }
 
