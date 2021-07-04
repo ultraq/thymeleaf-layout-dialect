@@ -19,11 +19,11 @@ import java.time.LocalDateTime
 
 plugins {
 	id 'groovy'
-	id 'org.springframework.boot' version '2.1.8.RELEASE'
-	id 'com.github.psxpaul.execfork' version '0.1.12'
+	id 'org.springframework.boot' version '2.4.3'
+	id 'com.github.psxpaul.execfork' version '0.1.13'
 }
 apply plugin: 'io.spring.dependency-management'
-apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/3.3.0/gradle-support.gradle'
+apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/3.4.0/gradle-support.gradle'
 
 description = 'A basic web application to test the performance of the Thymeleaf Layout Dialect'
 archivesBaseName = 'thymeleaf-layout-dialect-benchmark'
@@ -36,10 +36,6 @@ dependencies {
 		'org.springframework.boot:spring-boot-starter-thymeleaf',
 		'org.springframework.boot:spring-boot-starter-web'
 	)
-}
-
-bootJar {
-	mainClassName = 'nz.net.ultraq.thymeleaf.benchmark.BenchmarkApplication'
 }
 
 task startWebApp(type: ExecFork, dependsOn: build) {

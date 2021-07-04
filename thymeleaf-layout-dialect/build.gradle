@@ -19,12 +19,12 @@ plugins {
 	id 'groovy'
 	id 'codenarc'
 	id 'jacoco'
-	id 'com.github.kt3k.coveralls' version '2.10.1'
+	id 'com.github.kt3k.coveralls' version '2.10.2'
 	id 'distribution'
 	id 'maven-publish'
 }
-apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/3.3.0/gradle-support.gradle'
-apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/3.3.0/maven-publish-support.gradle'
+apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/3.4.0/gradle-support.gradle'
+apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/3.4.0/maven-publish-support.gradle'
 
 description = 'A dialect for Thymeleaf that allows you to use layout/decorator templates to style your content.'
 sourceCompatibility = 1.8
