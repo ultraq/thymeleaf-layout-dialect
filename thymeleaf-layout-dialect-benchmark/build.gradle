@@ -58,7 +58,7 @@ task benchmark(type: Exec, dependsOn: startWebApp) {
 	executable = 'jmeter'
 	args = [
 		'-n',
-		'-t', 'tests/simulate-load.jmx',
+		'-t', 'test/simulate-load.jmx',
 		'-l', "${resultsDir}/${dateTimeString}.csv",
 		'-e',
 		'-o', "${reportsDir}/${dateTimeString}"
