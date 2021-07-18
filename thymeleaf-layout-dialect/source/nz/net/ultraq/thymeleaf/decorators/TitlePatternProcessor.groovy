@@ -16,8 +16,6 @@
 
 package nz.net.ultraq.thymeleaf.decorators
 
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.engine.AttributeName
 import org.thymeleaf.model.IProcessableElementTag
@@ -37,15 +35,9 @@ import java.util.regex.Pattern
  */
 class TitlePatternProcessor extends AbstractAttributeTagProcessor {
 
-	private static final Logger logger = LoggerFactory.getLogger(TitlePatternProcessor)
-
-	@Deprecated
-	private static final String TOKEN_DECORATOR_TITLE = '$DECORATOR_TITLE'
 //	private static final String TOKEN_CONTENT_TITLE   = '$CONTENT_TITLE'
 	private static final String TOKEN_LAYOUT_TITLE    = '$LAYOUT_TITLE'
-	private static final Pattern TOKEN_PATTERN = ~/(\$(LAYOUT|DECORATOR|CONTENT)_TITLE)/
-
-	private static boolean warned = false
+	private static final Pattern TOKEN_PATTERN = ~/(\$(LAYOUT|CONTENT)_TITLE)/
 
 	static final String PROCESSOR_NAME = 'title-pattern'
 	static final int PROCESSOR_PRECEDENCE = 1
@@ -90,17 +82,6 @@ class TitlePatternProcessor extends AbstractAttributeTagProcessor {
 		def contentTitle = context[CONTENT_TITLE_KEY]
 		def layoutTitle = context[LAYOUT_TITLE_KEY]
 
-		if (titlePattern && titlePattern.contains(TOKEN_DECORATOR_TITLE)) {
-			if (!warned) {
-				logger.warn(
-					'The $DECORATOR_TITLE token is deprecated and will be removed in the next major version of the layout dialect.  ' +
-					'Please use the $LAYOUT_TITLE token instead to future-proof your code.  ' +
-					'See https://github.com/ultraq/thymeleaf-layout-dialect/issues/95 for more information.'
-				)
-				warned = true
-			}
-		}
-
 		// Break the title pattern up into tokens to map to their respective models
 		def titleModel = modelFactory.createModel()
 		if (layoutTitle && contentTitle) {
@@ -111,7 +92,7 @@ class TitlePatternProcessor extends AbstractAttributeTagProcessor {
 					titleModel.add(modelFactory.createText(text))
 				}
 				def token = matcher.group(1)
-				titleModel.addModel(token == TOKEN_LAYOUT_TITLE || token == TOKEN_DECORATOR_TITLE ? layoutTitle : contentTitle)
+				titleModel.addModel(token == TOKEN_LAYOUT_TITLE ? layoutTitle : contentTitle)
 				matcher.region(matcher.regionStart() + text.length() + token.length(), titlePattern.length())
 			}
 			def remainingText = titlePattern.substring(matcher.regionStart())

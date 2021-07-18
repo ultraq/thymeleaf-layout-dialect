@@ -30,3 +30,10 @@ Deprecated `decorator` processor has been deleted
 
 This was deprecated back in 2.0 ([thymeleaf-layout-dialect/issues/95](https://github.com/ultraq/thymeleaf-layout-dialect/issues/95))
 in favour of `decorate` as the naming was misleading, and has now been deleted.
+
+
+Deprecated `$DECORATOR_TITLE` constant has been deleted
+-------------------------------------------------------
+
+Similar to the change above, another poorly-named constant that was deprecated
+is now deleted.
