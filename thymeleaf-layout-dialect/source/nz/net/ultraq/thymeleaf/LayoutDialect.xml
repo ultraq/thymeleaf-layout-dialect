@@ -25,7 +25,6 @@
 	class="nz.net.ultraq.thymeleaf.LayoutDialect">
 
 	<attribute-processor name="decorate"      class="nz.net.ultraq.thymeleaf.decorators.DecorateProcessor"/>
-	<attribute-processor name="decorator"     class="nz.net.ultraq.thymeleaf.decorators.DecoratorProcessor"/>
 	<attribute-processor name="title-pattern" class="nz.net.ultraq.thymeleaf.decorators.TitlePatternProcessor">
 		<restrictions tags="title"/>
 	</attribute-processor>
