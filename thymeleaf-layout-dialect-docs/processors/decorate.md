@@ -274,33 +274,12 @@ The Layout dialect can be configured to support either use case, with the
 ability for developers to define their own sorting.
 
 This sorting is exposed by the [`SortingStrategy`](/thymeleaf-layout-dialect/groovydoc/nz/net/ultraq/thymeleaf/decorators/SortingStrategy.html)
-interface and the layout dialect provides 4 implementations to choose from:
+interface and the layout dialect provides 2 implementations to choose from:
 
  - `nz.net.ultraq.thymeleaf.decorators.strategies.AppendingStrategy`, the
-   default, appends content `<head>` elements after layout ones.  Deprecated.
+   default, appends content `<head>` elements after layout ones.
  - `nz.net.ultraq.thymeleaf.decorators.strategies.GroupingStrategy`, groups like
-   elements together.  Deprecated.
- - `nz.net.ultraq.thymeleaf.decorators.strategies.AppendingRespectLayoutTitleStrategy`,
-   a new variant of the `AppendingStrategy` which respects the position of the
-   `<title>` element based on its position in the layout template.
- - `nz.net.ultraq.thymeleaf.decorators.strategies.GroupingRespectLayoutTitleStrategy`,
-   a new variant of the `GroupingStrategy` which respects the position of the
-   `<title>` element based on its position in the layout template.
-
-> The default behaviour of the layout dialect has historically been to place the
-> `<title>` element at the beginning of the `<head>` element during the
-> decoration process; an arbitrary design decision which made development of
-> this library easier.  However, this runs against the expectations of
-> developers who wished to control the order of elements, most notably the
-> practice of putting `<meta charset...>` as the first element in the `<head>`.
-> The new strategies (ones with `RespectLayoutTitle` in their name) instead keep
-> `<title>`s wherever they exist within the target/layout template being
-> decorated, and then work on everything else as normal.
-> 
-> The `RespectLayoutTitle` strategies were introduced in version 2.4.0 and will
-> become the default strategies from version 3.x.  The existing strategies are
-> now deprecated but retain the historic behaviour, maintaining backwards
-> compatibility with the 2.x versions.
+   elements together.
 
 To change to the grouping strategy, configure the Layout dialect using one of
 the methods below:
@@ -309,14 +288,14 @@ the methods below:
 ```java
 @Bean
 public LayoutDialect layoutDialect() {
-  return new LayoutDialect(new GroupingRespectLayoutTitleStrategy());
+  return new LayoutDialect(new GroupingStrategy());
 }
 ```
 
  - DIY management of the Thymeleaf template engine:
 ```java
 TemplateEngine templateEngine = new TemplateEngine();
-templateEngine.addDialect(new LayoutDialect(new GroupingRespectLayoutTitleStrategy()));
+templateEngine.addDialect(new LayoutDialect(new GroupingStrategy()));
 ```
 
 If neither strategy suits your needs, you can implement your own [`SortingStrategy`](/thymeleaf-layout-dialect/groovydoc/nz/net/ultraq/thymeleaf/decorators/SortingStrategy.html)

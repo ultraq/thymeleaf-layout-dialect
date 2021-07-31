@@ -21,21 +21,8 @@ import nz.net.ultraq.thymeleaf.decorators.SortingStrategy
 import org.thymeleaf.model.IModel
 
 /**
- * A special version of the {@link AppendingStrategy} sorter that respects the
- * position of the {@code <title>} element within the layout page.
- * <p>
- * The default behaviour of the layout dialect has historically been to place
- * the {@code <title>} element at the beginning of the {@code <head>} element
- * during the decoration process; an arbitrary design decision which made
- * development of this library easier.  However, this runs against the
- * expectations of developers who wished to control the order of elements, most
- * notably the position of a {@code <meta charset...>} element.  This sorting
- * strategy instead keep {@code <title>}s wherever they exist within the
- * target/layout template being decorated, and then appending everything else as
- * normal.
- * <p>
- * This will become the default behaviour of the layout dialect from version 3.x
- * onwards, but was introduced in 2.4.0 to be a non-breaking change.
+ * The standard {@code <head>} merging strategy, which simply appends the
+ * content elements to the layout ones.
  * 
  * @author Emanuel Rabina
  * @since 2.4.0
