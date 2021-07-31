@@ -30,7 +30,7 @@ import org.thymeleaf.model.IProcessableElementTag
  * @author Emanuel Rabina
  * @since 2.4.0
  */
-class GroupingRespectLayoutTitleStrategy implements SortingStrategy {
+class GroupingStrategy implements SortingStrategy {
 
 	/**
 	 * For {@code <title>} elements, returns the position of the matching

@@ -65,28 +65,4 @@ class GroupingStrategyTest extends Specification {
 		then:
 			result == -1
 	}
-
-	def "Historic behaviour, have <title> elements always be first"() {
-		expect:
-			groupingStrategy.findPositionForModel(headModel, titleModel) == result
-
-		where:
-			titleModel = modelBuilder.build {
-				title('Page title')
-			}
-			headModel << [
-				modelBuilder.build {
-					head()
-				},
-				modelBuilder.build {
-					head  {
-						meta(charset: 'UTF-8')
-					}
-				},
-				modelBuilder.build {
-					head('   ')
-				}
-			]
-			result << [1, 1, 2]
-	}
 }

@@ -53,8 +53,7 @@ class LayoutDialectTestExecutor extends JUnitTestExecutor {
 		def exclusions = [
 			'nz/net/ultraq/thymeleaf/tests/decorators/Decorate-DisabledHead.thtest',
 			'nz/net/ultraq/thymeleaf/tests/decorators/html/TitlePattern-AllowOtherProcessors.thtest',
-			'nz/net/ultraq/thymeleaf/tests/decorators/strategies/AppendingRespectLayoutTitleStrategy.thtest',
-			'nz/net/ultraq/thymeleaf/tests/decorators/strategies/GroupingRespectLayoutTitleStrategy.thtest',
+			'nz/net/ultraq/thymeleaf/tests/decorators/strategies/GroupingStrategy.thtest',
 
 			// Disabled, see test file for details
 			'nz/net/ultraq/thymeleaf/tests/decorators/html/TitlePattern-DynamicContent.thtest'

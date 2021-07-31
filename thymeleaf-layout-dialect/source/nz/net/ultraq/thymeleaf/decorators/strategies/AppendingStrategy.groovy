@@ -27,7 +27,7 @@ import org.thymeleaf.model.IModel
  * @author Emanuel Rabina
  * @since 2.4.0
  */
-class AppendingRespectLayoutTitleStrategy implements SortingStrategy {
+class AppendingStrategy implements SortingStrategy {
 
 	/**
 	 * For {@code <title>} elements, returns the position of the matching
