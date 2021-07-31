@@ -37,3 +37,23 @@ Deprecated `$DECORATOR_TITLE` constant has been deleted
 
 Similar to the change above, another poorly-named constant that was deprecated
 is now deleted.
+
+
+`<head>` merging strategies now respect the `<title>` position by default
+-------------------------------------------------------------------------
+
+The default behaviour of the layout dialect has historically been to place the
+`<title>` element at the beginning of the `<head>` element during the decoration
+process; an arbitrary design decision which made development of this library
+easier.  However, this runs against the expectations of developers who wished to
+control the order of elements, most notably the practice of putting
+`<meta charset...>` as the first element in the `<head>`.
+
+In 2.4.0, new `<head>` merging strategies were introduced ([thymeleaf-layout-dialect/issues/177](https://github.com/ultraq/thymeleaf-layout-dialect/issues/177),
+`AppendingRespectLayoutTitleStrategy` and `GroupingRespectLayoutTitleStrategy`)
+to keep `<title>`s wherever they exist within the target/layout template being
+decorated, and then work on everything else as normal.
+
+These strategies have been renamed to replace the old strategies (`AppendingRespectLayoutTitleStrategy
+-> AppendingStrategy` and `GroupingRespectLayoutTitleStrategy -> GroupingStrategy`)
+and the old strategies have been removed.
