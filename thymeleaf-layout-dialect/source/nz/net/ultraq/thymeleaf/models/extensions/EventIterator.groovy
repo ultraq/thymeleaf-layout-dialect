@@ -40,10 +40,4 @@ class EventIterator implements Iterator<ITemplateEvent> {
 	ITemplateEvent next() {
 		return model.get(currentIndex++)
 	}
-
-	// TODO: Not needed from Java 8 onwards - default method does this
-	@Override
-	void remove() {
-		throw new UnsupportedOperationException()
-	}
 }

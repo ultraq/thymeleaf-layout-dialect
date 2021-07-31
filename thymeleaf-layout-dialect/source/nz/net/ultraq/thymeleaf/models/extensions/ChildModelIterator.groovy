@@ -44,10 +44,4 @@ class ChildModelIterator implements Iterator<IModel> {
 		currentIndex += subModel.size()
 		return subModel
 	}
-
-	// TODO: Not needed from Java 8 onwards - default method does this
-	@Override
-	void remove() {
-		throw new UnsupportedOperationException()
-	}
 }
