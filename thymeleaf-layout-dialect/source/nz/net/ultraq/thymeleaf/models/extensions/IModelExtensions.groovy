@@ -230,7 +230,7 @@ class IModelExtensions {
 	}
 
 	/**
-	 * Inserts a model, creating a whitespace event before it so that it
+	 * Inserts a model, creating whitespace events either side of it so that it
 	 * appears in line with all the existing events.
 	 * 
 	 * @param self
@@ -323,7 +323,7 @@ class IModelExtensions {
 	 *         the last event is the matching closing tag, and  whether the
 	 *         element has the given tag name.
 	 */
-	static boolean isElementOf(IModel self, tagName) {
+	static boolean isElementOf(IModel self, String tagName) {
 		return self.element && self.first().elementCompleteName == tagName
 	}
 
@@ -356,6 +356,24 @@ class IModelExtensions {
 	@SuppressWarnings('UnnecessaryCallForLastElement')
 	static ITemplateEvent last(IModel self) {
 		return self.get(self.size() - 1)
+	}
+
+	/**
+	 * Remove a model identified by an event matched by the given closure.  Note
+	 * that this closure can match any event in the model, including the top-level
+	 * model itself.
+	 * 
+	 * @param self
+	 * @param closure
+	 */
+	static void removeAllModels(IModel self, Closure closure) {
+		while (true) {
+			def modelIndex = self.findIndexOf(closure)
+			if (modelIndex == -1) {
+				return
+			}
+			self.removeModel(modelIndex)
+		}
 	}
 
 	/**

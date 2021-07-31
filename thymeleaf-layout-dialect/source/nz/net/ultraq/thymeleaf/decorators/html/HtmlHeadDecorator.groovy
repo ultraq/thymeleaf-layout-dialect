@@ -18,8 +18,6 @@ package nz.net.ultraq.thymeleaf.decorators.html
 
 import nz.net.ultraq.thymeleaf.decorators.Decorator
 import nz.net.ultraq.thymeleaf.decorators.SortingStrategy
-import nz.net.ultraq.thymeleaf.decorators.strategies.AppendingStrategy
-import nz.net.ultraq.thymeleaf.decorators.strategies.GroupingStrategy
 import nz.net.ultraq.thymeleaf.models.AttributeMerger
 
 import org.thymeleaf.context.ITemplateContext
@@ -54,42 +52,26 @@ class HtmlHeadDecorator implements Decorator {
 		}
 
 		def modelFactory = context.modelFactory
-		def isTitle = { event -> event.isOpeningElementOf('title') }
 
 		// New head model based off the target being decorated
 		def resultHeadModel = new AttributeMerger(context).merge(targetHeadModel, sourceHeadModel)
-
-		// Get the source and target title elements to pass to the title decorator
-		def resultTitle = new HtmlTitleDecorator(context).decorate(
-			targetHeadModel?.findModel(isTitle),
-			sourceHeadModel?.findModel(isTitle)
-		)
-		if (resultTitle) {
-
-			// TODO: Pure hack for retaining 2.x compatibility, remove the <head> from the layout :/
-			if (sortingStrategy instanceof AppendingStrategy || sortingStrategy instanceof GroupingStrategy) {
-				resultHeadModel.removeModel(resultHeadModel.findIndexOf { event -> event.isOpeningElementOf('title') })
-			}
-
-			def targetTitleIndex = sortingStrategy.findPositionForModel(resultHeadModel, resultTitle)
-			if (isTitle(resultHeadModel.get(targetTitleIndex))) {
-				resultHeadModel.replaceModel(targetTitleIndex, resultTitle)
-			}
-			else {
-				resultHeadModel.insertModelWithWhitespace(targetTitleIndex, resultTitle, modelFactory)
+		if (sourceHeadModel && targetHeadModel) {
+			sourceHeadModel.childModelIterator().each { model ->
+				resultHeadModel.insertModelWithWhitespace(
+					sortingStrategy.findPositionForModel(resultHeadModel, model),
+					model, modelFactory)
 			}
 		}
 
-		// Merge the rest of the source <head> elements with the target <head>
-		// elements using the current merging strategy
-		if (sourceHeadModel && targetHeadModel) {
-			sourceHeadModel?.childModelIterator()
-				.findAll { model -> !isTitle(model.first()) }
-				.each { model ->
-					resultHeadModel.insertModelWithWhitespace(
-						sortingStrategy.findPositionForModel(resultHeadModel, model),
-						model, modelFactory)
-				}
+		// Replace <title>s in the result with a proper merge of the source and target <title> elements
+		def indexOfTitle = resultHeadModel.findIndexOf { event -> event.isOpeningElementOf('title') }
+		if (indexOfTitle != -1) {
+			resultHeadModel.removeAllModels { event -> !event.whitespace && event.isOpeningElementOf('title') }
+			def resultTitle = new HtmlTitleDecorator(context).decorate(
+				targetHeadModel?.findModel { event -> event.isOpeningElementOf('title') },
+				sourceHeadModel?.findModel { event -> event.isOpeningElementOf('title') }
+			)
+			resultHeadModel.insertModelWithWhitespace(indexOfTitle, resultTitle, modelFactory)
 		}
 
 		return resultHeadModel

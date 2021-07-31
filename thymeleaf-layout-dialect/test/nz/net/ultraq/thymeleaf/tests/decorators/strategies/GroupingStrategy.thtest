@@ -1,5 +1,6 @@
 
-# Test the sort order imposed on elements in the head section
+# Test grouping of elements in the head section that respect the position of
+# elements in the layout template
 
 %TEMPLATE_MODE HTML
 
@@ -9,13 +10,12 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{Layout}">
 <head>
+	<title>Page title</title>
 	<link rel="stylesheet" src="content-styles1.css"/>
 	<link rel="stylesheet" src="content-styles2.css"/>
 
 	<script src="content-script1.js"></script>
 	<script src="content-script2.js"></script>
-
-	<title>Content page</title>
 </head>
 </html>
 
@@ -25,6 +25,7 @@
 <html>
 <head>
 	<meta charset="UTF-8"/>
+	<title>Layout page</title>
 	<base href="http://www.thymeleaf.org/test/"/>
 	<link rel="icon" href="images/icon.png"/>
 
@@ -33,7 +34,6 @@
 	<script src="common-script.js"></script>
 
 	<link rel="alternate" type="application/rss+xml" href="feed/" title="Test RSS feed"/>
-	<title>Layout page</title>
 </head>
 </html>
 
@@ -42,8 +42,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Content page</title>
 	<meta charset="UTF-8"/>
+	<title>Page title</title>
 	<base href="http://www.thymeleaf.org/test/"/>
 	<link rel="icon" href="images/icon.png"/>
 

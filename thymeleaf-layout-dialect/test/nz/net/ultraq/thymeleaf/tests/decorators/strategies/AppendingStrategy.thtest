@@ -1,5 +1,6 @@
 
-# Test appending of elements in the head section
+# Test appending of elements in the head section that respect the position of
+# elements in the layout template
 
 %TEMPLATE_MODE HTML
 
@@ -9,9 +10,9 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{Layout}">
 <head>
+	<title>Content page</title>
 	<link rel="stylesheet" src="content-styles.css"/>
 	<script src="content-script.js"></script>
-	<title>Content page</title>
 </head>
 </html>
 
@@ -20,9 +21,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta charset="UTF-8"/>
 	<link rel="stylesheet" src="common-styles.css"/>
 	<script src="common-script.js"></script>
-	<title>Layout page</title>
 </head>
 </html>
 
@@ -31,9 +32,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Content page</title>
+	<meta charset="UTF-8"/>
 	<link rel="stylesheet" src="common-styles.css"/>
 	<script src="common-script.js"></script>
+	<title>Content page</title>
 	<link rel="stylesheet" src="content-styles.css"/>
 	<script src="content-script.js"></script>
 </head>

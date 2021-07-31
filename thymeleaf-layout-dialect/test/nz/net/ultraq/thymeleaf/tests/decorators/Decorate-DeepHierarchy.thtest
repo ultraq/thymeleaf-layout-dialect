@@ -61,9 +61,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Page title</title>
 	<script src="grandparent-script.js"></script>
 	<script src="parent-script.js"></script>
+	<title>Page title</title>
 	<script src="child-script.js"></script>
 </head>
 <body>
