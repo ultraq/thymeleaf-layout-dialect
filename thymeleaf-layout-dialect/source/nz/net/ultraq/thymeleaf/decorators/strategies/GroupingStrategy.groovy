@@ -33,10 +33,8 @@ import org.thymeleaf.model.IProcessableElementTag
 class GroupingStrategy implements SortingStrategy {
 
 	/**
-	 * For {@code <title>} elements, returns the position of the matching
-	 * {@code <title>} in the {@code headModel} argument, otherwise returns the
-	 * index of the last set of elements that are of the same 'type' as the
-	 * content node.  eg: groups scripts with scripts, stylesheets with
+	 * Returns the index of the last set of elements that are of the same 'type'
+	 * as the content node.  eg: groups scripts with scripts, stylesheets with
 	 * stylesheets, and so on.
 	 * 
 	 * @param headModel
@@ -48,14 +46,6 @@ class GroupingStrategy implements SortingStrategy {
 		// Discard text/whitespace nodes
 		if (childModel.whitespace) {
 			return -1
-		}
-
-		// Locate any matching <title> element
-		if (childModel.isElementOf('title')) {
-			def existingTitleIndex = headModel.findIndexOf { event -> event.isOpeningElementOf('title') }
-			if (existingTitleIndex != -1) {
-				return existingTitleIndex
-			}
 		}
 
 		def type = HeadEventTypes.findMatchingType(childModel)
@@ -87,6 +77,9 @@ class GroupingStrategy implements SortingStrategy {
 		STYLESHEET({ event ->
 			return event instanceof IProcessableElementTag && event.elementCompleteName == 'link' &&
 				event.getAttributeValue('rel') == 'stylesheet'
+		}),
+		TITLE({ event ->
+			return event instanceof IOpenElementTag && event.elementCompleteName == 'title'
 		}),
 		OTHER({ event ->
 			return event instanceof IElementTag

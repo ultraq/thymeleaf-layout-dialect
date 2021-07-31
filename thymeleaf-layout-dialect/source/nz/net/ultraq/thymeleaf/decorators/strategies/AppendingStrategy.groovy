@@ -30,9 +30,7 @@ import org.thymeleaf.model.IModel
 class AppendingStrategy implements SortingStrategy {
 
 	/**
-	 * For {@code <title>} elements, returns the position of the matching
-	 * {@code <title>} in the {@code headModel} argument, otherwise returns the
-	 * position at the end of the {@code <head>} section.
+	 * Returns the position at the end of the {@code <head>} section.
 	 * 
 	 * @param headModel
 	 * @param event
@@ -45,15 +43,6 @@ class AppendingStrategy implements SortingStrategy {
 			return -1
 		}
 
-		// Locate any matching <title> element
-		if (childModel.isElementOf('title')) {
-			def existingTitleIndex = headModel.findIndexOf { event -> event.isOpeningElementOf('title') }
-			if (existingTitleIndex != -1) {
-				return existingTitleIndex
-			}
-		}
-
-		// Return the end of the <head> element
 		def positions = headModel.size()
 		return positions - (positions > 2 ? 2 : 1)
 	}
