@@ -40,7 +40,7 @@ dependencies {
 	implementation(
 		'nz.net.ultraq.extensions:groovy-extensions:1.0.0',
 		'nz.net.ultraq.thymeleaf:thymeleaf-expression-processor:2.0.1',
-		'org.thymeleaf:thymeleaf:3.0.0.RELEASE'
+		'org.thymeleaf:thymeleaf:3.0.12.RELEASE'
 	)
 	testImplementation(
 		'nz.net.ultraq.thymeleaf:thymeleaf-testing-junit:4.0.0',
@@ -49,7 +49,7 @@ dependencies {
 		'org.thymeleaf:thymeleaf-testing:3.0.4.RELEASE'
 	)
 	testRuntimeOnly(
-		'org.slf4j:slf4j-simple:1.7.31'
+		'org.slf4j:slf4j-simple:1.7.32'
 	)
 }
 
