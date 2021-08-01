@@ -8,6 +8,23 @@ Changelog
    ([#213](https://github.com/ultraq/thymeleaf-layout-dialect/issues/213))
  - Upgrade Groovy to 3.0.8
    ([#202](https://github.com/ultraq/thymeleaf-layout-dialect/issues/202))
+ - Deprecated `layout:decorator` processor has been deleted
+   ([#95](https://github.com/ultraq/thymeleaf-layout-dialect/issues/95))
+ - Deprecated `$DECORATOR_TITLE` constant has been deleted
+   ([#95](https://github.com/ultraq/thymeleaf-layout-dialect/issues/95))
+ - `<head>` merging strategies now respect the `<title>` position by default
+   ([#177](https://github.com/ultraq/thymeleaf-layout-dialect/issues/177)
+ - Deprecated `layout:collect`
+
+Version 3.0 of the layout dialect is largely an upgrade to use Groovy 3.0 which
+removes the 'reflective access warning' in Java (which is set to become an error
+in Java 17) and the deletion of code that has been deprecated in version 2.x.
+As such, if you never encountered logs about deprecations using version 2.x,
+then there's likely nothing you need to do to upgrade to version 3.0!
+
+I've written a migration guide to help make the assessment of what an upgrade to
+3.0 would entail for you.  Check it out on the documentation site:
+https://ultraq.github.io/thymeleaf-layout-dialect/migrating-to-3.0/
 
 
 ### 2.5.3

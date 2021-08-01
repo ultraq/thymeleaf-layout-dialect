@@ -34,11 +34,13 @@ import org.thymeleaf.templatemode.TemplateMode
  *
  * @authors Emanuel Rabina, George Vinokhodov
  */
+@Deprecated
 class CollectFragmentProcessor extends AbstractAttributeTagProcessor {
 
 	private static final Logger logger = LoggerFactory.getLogger(CollectFragmentProcessor)
 
 	private static boolean warned = false
+	private static boolean deprecationWarned = false
 
 	static final String PROCESSOR_DEFINE = 'define'
 	static final String PROCESSOR_COLLECT = 'collect'
@@ -69,6 +71,13 @@ class CollectFragmentProcessor extends AbstractAttributeTagProcessor {
 	@SuppressWarnings('AssignmentToStaticFieldFromInstanceMethod')
 	protected void doProcess(ITemplateContext context, IProcessableElementTag tag,
 		AttributeName attributeName, String attributeValue, IElementTagStructureHandler structureHandler) {
+
+		if (!deprecationWarned) {
+			logger.warn(
+				'The layout:collect/data-layout-collect processor is deprecated and will be removed in the next major version of the layout dialect.'
+			)
+			deprecationWarned = true
+		}
 
 		// Emit a warning if found in the <head> section
 		if (templateMode == TemplateMode.HTML &&

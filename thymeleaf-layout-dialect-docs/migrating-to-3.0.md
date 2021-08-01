@@ -10,8 +10,8 @@ Migrating to 3.0
 
 Version 3.0 of the layout dialect is largely an upgrade to use Groovy 3.0 which
 removes the 'reflective access warning' in Java (which is set to become an error
-in Java 17) and the deletion of code that has been deprecated in version 2.0.
-As such, if you never encountered logs about deprecations using version 2.0,
+in Java 17) and the deletion of code that has been deprecated in version 2.x.
+As such, if you never encountered logs about deprecations using version 2.x,
 then there's likely nothing you need to do to upgrade to version 3.0!
 
 All the changes are listed below to help make the assessment on what an upgrade
@@ -57,3 +57,12 @@ decorated, and then work on everything else as normal.
 These strategies have been renamed to replace the old strategies (`AppendingRespectLayoutTitleStrategy
 -> AppendingStrategy` and `GroupingRespectLayoutTitleStrategy -> GroupingStrategy`)
 and the old strategies have been removed.
+
+
+Deprecated `layout:collect` with no replacement
+-----------------------------------------------
+
+This was a feature added in 2.3.0 ([#166](https://github.com/ultraq/thymeleaf-layout-dialect/pull/166)).
+However, it has complicated the maintenance of the layout dialect, and, after
+some time with it, feels like a very special purpose tool that this library
+doesn't need to cover.  As such, I am deprecating this feature.
