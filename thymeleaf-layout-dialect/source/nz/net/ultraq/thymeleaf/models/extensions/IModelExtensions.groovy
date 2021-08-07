@@ -23,6 +23,9 @@ import org.thymeleaf.model.IModelFactory
 import org.thymeleaf.model.IOpenElementTag
 import org.thymeleaf.model.ITemplateEvent
 
+import groovy.transform.stc.ClosureParams
+import groovy.transform.stc.SimpleType
+
 /**
  * Meta-programming extensions to the {@link IModel} class.
  * 
@@ -48,7 +51,7 @@ class IModelExtensions {
 	 * @param modelFactory
 	 * @return New model iterator.
 	 */
-	static ChildModelIterator childModelIterator(IModel self) {
+	static Iterator<IModel> childModelIterator(IModel self) {
 		return self.element ? new ChildModelIterator(self) : null
 	}
 
@@ -58,7 +61,9 @@ class IModelExtensions {
 	 * @param self
 	 * @param closure
 	 */
-	static void each(IModel self, Closure closure) {
+	static void each(IModel self,
+		@ClosureParams(value = SimpleType, options = "org.thymeleaf.model.ITemplateEvent")
+		Closure closure) {
 		self.iterator().each(closure)
 	}
 
@@ -103,7 +108,9 @@ class IModelExtensions {
 	 * @param closure
 	 * @return {@code true} if every event satisfies the closure.
 	 */
-	static boolean everyWithIndex(IModel self, Closure closure) {
+	static boolean everyWithIndex(IModel self,
+		@ClosureParams(value = SimpleType, options = ["org.thymeleaf.model.ITemplateEvent", "int"])
+		Closure<Boolean> closure) {
 		for (def i = 0; i < self.size(); i++) {
 			if (!closure(self.get(i), i)) {
 				return false
@@ -121,7 +128,9 @@ class IModelExtensions {
 	 * @return The first event to match the closure criteria, or {@code null}
 	 *         if nothing matched.
 	 */
-	static ITemplateEvent find(IModel self, Closure closure) {
+	static ITemplateEvent find(IModel self,
+		@ClosureParams(value = SimpleType, options = "org.thymeleaf.model.ITemplateEvent")
+		Closure<Boolean> closure) {
 		return self.iterator().find(closure)
 	}
 
@@ -132,7 +141,9 @@ class IModelExtensions {
 	 * @param closure
 	 * @return A list of matched events.
 	 */
-	static List<ITemplateEvent> findAll(IModel self, Closure closure) {
+	static List<ITemplateEvent> findAll(IModel self,
+		@ClosureParams(value = SimpleType, options = "org.thymeleaf.model.ITemplateEvent")
+		Closure<Boolean> closure) {
 		return self.iterator().findAll(closure)
 	}
 
@@ -145,21 +156,10 @@ class IModelExtensions {
 	 * @return The index of the first event to match the closure criteria, or
 	 *         {@code -1} if nothing matched.
 	 */
-	static int findIndexOf(IModel self, Closure closure) {
+	static int findIndexOf(IModel self,
+		@ClosureParams(value = SimpleType, options = "org.thymeleaf.model.ITemplateEvent")
+		Closure<Boolean> closure) {
 		return self.iterator().findIndexOf(closure)
-	}
-
-	/**
-	 * Returns the index of the first event in the model that meets the
-	 * criteria of the given closure, starting from a specified position.
-	 * 
-	 * @param self
-	 * @param closure
-	 * @return The index of the first event to match the closure criteria, or
-	 *         {@code -1} if nothing matched.
-	 */
-	static int findIndexOf(IModel self, int startIndex, Closure closure) {
-		return self.iterator().findIndexOf(startIndex, closure)
 	}
 
 	/**
@@ -189,7 +189,9 @@ class IModelExtensions {
 	 * @return A model over the event that matches the closure criteria, or
 	 *         {@code null} if nothing matched.
 	 */
-	static IModel findModel(IModel self, Closure closure) {
+	static IModel findModel(IModel self,
+		@ClosureParams(value = SimpleType, options = "org.thymeleaf.model.ITemplateEvent")
+		Closure<Boolean> closure) {
 		return self.getModel(self.findIndexOf(closure))
 	}
 
@@ -259,7 +261,7 @@ class IModelExtensions {
 			}
 
 			// Generate whitespace on either side of the model to insert
-			whitespace = modelFactory.createModel(modelFactory.createText('\n\t'))
+			whitespace = modelFactory.createModel(modelFactory.createText("${System.lineSeparator()}\t"))
 			self.insertModel(pos, whitespace)
 			self.insertModel(pos, model)
 			self.insertModel(pos, whitespace)
@@ -302,29 +304,14 @@ class IModelExtensions {
 	}
 
 	/**
-	 * Returns whether or not this model represents an element with potential
-	 * child elements.
+	 * Returns whether or not this model represents a single HTML element.
 	 * 
 	 * @param self
 	 * @return {@code true} if the first event in this model is an opening tag
 	 *         and the last event is the matching closing tag.
 	 */
 	static boolean isElement(IModel self) {
-		return self.first().openingElement && self.last().closingElement
-	}
-
-	/**
-	 * Returns whether or not this model represents an element of the given
-	 * name.
-	 * 
-	 * @param self
-	 * @param tagName
-	 * @return {@code true} if the first event in this model is an opening tag,
-	 *         the last event is the matching closing tag, and  whether the
-	 *         element has the given tag name.
-	 */
-	static boolean isElementOf(IModel self, String tagName) {
-		return self.element && self.first().elementCompleteName == tagName
+		return self.sizeOfModelAt(0) == self.size()
 	}
 
 	/**
@@ -343,7 +330,7 @@ class IModelExtensions {
 	 * @param self
 	 * @return A new iterator over the events of this model.
 	 */
-	static EventIterator iterator(IModel self) {
+	static Iterator<ITemplateEvent> iterator(IModel self) {
 		return new EventIterator(self)
 	}
 
@@ -366,7 +353,9 @@ class IModelExtensions {
 	 * @param self
 	 * @param closure
 	 */
-	static void removeAllModels(IModel self, Closure closure) {
+	static void removeAllModels(IModel self,
+		@ClosureParams(value = SimpleType, options = "org.thymeleaf.model.ITemplateEvent")
+		Closure<Boolean> closure) {
 		while (true) {
 			def modelIndex = self.findIndexOf(closure)
 			if (modelIndex == -1) {

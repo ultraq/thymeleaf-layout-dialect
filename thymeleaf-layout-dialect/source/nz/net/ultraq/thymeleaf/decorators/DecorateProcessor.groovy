@@ -164,11 +164,9 @@ class DecorateProcessor extends AbstractAttributeModelProcessor {
 	 *         with the exception of XML namespace declarations and Thymeleaf's
 	 *         {@code th:with} attribute processor.
 	 */
-	private static boolean rootElementsEqual(IProcessableElementTag element1,
-		IProcessableElementTag element2, IContext context) {
+	private static boolean rootElementsEqual(IProcessableElementTag element1, IProcessableElementTag element2, IContext context) {
 
-		if (element1 instanceof IProcessableElementTag && element2 instanceof IProcessableElementTag &&
-			element1.elementDefinition == element2.elementDefinition) {
+		if (element1.elementDefinition == element2.elementDefinition) {
 			def difference = element1.attributeMap - element2.attributeMap
 			return difference.size() == 0 || difference
 				.collect { key, value -> key.startsWith('xmlns:') || key == "${context.getPrefixForDialect(StandardDialect)}:with" }

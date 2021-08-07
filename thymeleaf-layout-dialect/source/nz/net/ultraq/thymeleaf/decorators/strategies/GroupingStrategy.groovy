@@ -24,6 +24,9 @@ import org.thymeleaf.model.IModel
 import org.thymeleaf.model.IOpenElementTag
 import org.thymeleaf.model.IProcessableElementTag
 
+import groovy.transform.stc.ClosureParams
+import groovy.transform.stc.SimpleType
+
 /**
  * The {@code <head>} merging strategy which groups like elements together.
  * 
@@ -85,14 +88,16 @@ class GroupingStrategy implements SortingStrategy {
 			return event instanceof IElementTag
 		})
 
-		private final Closure determinant
+		private final Closure<Boolean> determinant
 
 		/**
 		 * Constructor, set the test that matches this type of head node.
 		 * 
 		 * @param determinant
 		 */
-		private HeadEventTypes(Closure determinant) {
+		private HeadEventTypes(
+			@ClosureParams(value = SimpleType, options = "org.thymeleaf.model.ITemplateEvent")
+			Closure<Boolean> determinant) {
 
 			this.determinant = determinant
 		}

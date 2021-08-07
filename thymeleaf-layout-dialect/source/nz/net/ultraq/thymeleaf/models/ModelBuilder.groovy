@@ -83,7 +83,7 @@ class ModelBuilder extends BuilderSupport {
 	 * @param definition
 	 * @return The model built using the closure definition.
 	 */
-	IModel build(Closure definition) {
+	IModel build(Closure<IModel> definition) {
 
 		setClosureDelegate(definition, null)
 		return definition.call()
