@@ -70,9 +70,9 @@ class ChildModelIteratorTests extends Specification {
 			def childModelIterator = model.childModelIterator()
 
 		then:
-			childModelIterator.next().equalsIgnoreWhitespace(pModel1)
-			childModelIterator.next().equalsIgnoreWhitespace(hrModel)
-			childModelIterator.next().equalsIgnoreWhitespace(pModel2)
+			childModelIterator.next() == pModel1
+			childModelIterator.next() == hrModel
+			childModelIterator.next() == pModel2
 			!childModelIterator.hasNext()
 	}
 }

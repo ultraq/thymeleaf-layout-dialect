@@ -84,23 +84,6 @@ class IModelExtensions {
 	}
 
 	/**
-	 * Compare 2 models, returning {@code true} if all of the model's events
-	 * non-whitespace events are equal.
-	 * 
-	 * @param self
-	 * @param other
-	 * @return {@code true} if this model is the same (barring whitespace) as
-	 *         the other one.
-	 */
-	static boolean equalsIgnoreWhitespace(IModel self, IModel other) {
-		if (other instanceof IModel) {
-			def nonWhitespaceEvents = { event -> !event.whitespace }
-			return self.findAll(nonWhitespaceEvents) == other.findAll(nonWhitespaceEvents)
-		}
-		return false
-	}
-
-	/**
 	 * Return {@code true} only if all the events in the model return
 	 * {@code true} for the given closure.
 	 * 

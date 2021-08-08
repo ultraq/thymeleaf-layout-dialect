@@ -100,6 +100,7 @@ class ModelBuilderTests extends Specification {
 			}
 
 		then:
-			modelFromBuilder.equalsIgnoreWhitespace(modelFromTemplate)
+			def nonWhitespaceEvents = { event -> !event.whitespace }
+			assert modelFromBuilder.findAll(nonWhitespaceEvents) == modelFromTemplate.findAll(nonWhitespaceEvents)
 	}
 }
