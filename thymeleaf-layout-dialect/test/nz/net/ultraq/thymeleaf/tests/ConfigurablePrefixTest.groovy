@@ -48,7 +48,7 @@ class ConfigurablePrefixTest extends Specification {
 		given:
 			def processingResultAsTokens = { template ->
 				def result = templateEngine.process(template, new Context())
-				return result.split(/(\t|\n)/).findAll { token -> token.size() > 0 }
+				return result.split(/\s*/).findAll { token -> token.size() > 0 }
 			}
 
 		when:
