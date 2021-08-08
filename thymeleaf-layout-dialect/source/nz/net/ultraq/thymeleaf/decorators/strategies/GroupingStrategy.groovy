@@ -51,13 +51,19 @@ class GroupingStrategy implements SortingStrategy {
 			return -1
 		}
 
+		// Find the last element of the same type, and return the point after that
 		def type = HeadEventTypes.findMatchingType(childModel)
 		def matchingModel = headModel.childModelIterator().reverse().find { headSubModel ->
 			return type == HeadEventTypes.findMatchingType(headSubModel)
 		}
-		return matchingModel ? headModel.findIndexOfModel(matchingModel) + matchingModel.size() : 1
-	}
+		if (matchingModel) {
+			return headModel.findIndexOfModel(matchingModel) + matchingModel.size()
+		}
 
+		// Otherwise, do what the AppendingStrategy does
+		def positions = headModel.size()
+		return positions - (positions > 2 ? 2 : 1)
+	}
 
 	/**
 	 * Enum for the types of elements in the {@code <head>} section that we might

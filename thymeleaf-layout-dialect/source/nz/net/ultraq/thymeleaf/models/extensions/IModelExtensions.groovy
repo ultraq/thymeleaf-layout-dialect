@@ -215,8 +215,11 @@ class IModelExtensions {
 	}
 
 	/**
-	 * Inserts a model, creating whitespace events either side of it so that it
-	 * appears in line with all the existing events.
+	 * Inserts a model, creating whitespace events around it so that it appears in
+	 * line with all the existing events.
+	 * <p>
+	 * This is currently only targeting uses in the layout dialect so doesn't work
+	 * very well as a general-purpose whitespace generator.
 	 * 
 	 * @param self
 	 * @param pos          A valid index within the current model.
@@ -227,27 +230,26 @@ class IModelExtensions {
 
 		if (0 <= pos && pos <= self.size()) {
 
-			// Use existing whitespace found at or before the insertion point
-			def whitespace = self.getModel(pos)
-			if (whitespace?.whitespace) {
-				self.insertModel(pos, model)
-				self.insertModel(pos, whitespace)
-				return
-			}
+			// Derive the amount of whitespace to apply by finding the first
+			// whitespace event before the insertion point.  Defaults to a single tab.
+			def whitespace = '\t'
 			if (pos > 0) {
-				whitespace = self.getModel(pos - 1)
-				if (whitespace?.whitespace) {
-					self.insertModel(pos, whitespace)
-					self.insertModel(pos, model)
-					return
+				for (def i = pos - 1; i >= 0; i--) {
+					def event = self.get(i)
+					if (event.whitespace && !event.text.empty) {
+						whitespace = event.text.replaceAll(~/[\r\n]/, '')
+						break
+					}
 				}
 			}
 
-			// Generate whitespace on either side of the model to insert
-			whitespace = modelFactory.createModel(modelFactory.createText("${System.lineSeparator()}\t"))
-			self.insertModel(pos, whitespace)
+			// Insert an extra whitespace event for when adding to an immediately-closed
+			// element, eg: <div></div>
+			if (pos > 0 && self.get(pos - 1) instanceof IOpenElementTag && self.get(pos) instanceof ICloseElementTag) {
+				self.insertModel(pos, modelFactory.createModel(modelFactory.createText(System.lineSeparator())))
+			}
 			self.insertModel(pos, model)
-			self.insertModel(pos, whitespace)
+			self.insertModel(pos, modelFactory.createModel(modelFactory.createText(System.lineSeparator() + whitespace)))
 		}
 	}
 
