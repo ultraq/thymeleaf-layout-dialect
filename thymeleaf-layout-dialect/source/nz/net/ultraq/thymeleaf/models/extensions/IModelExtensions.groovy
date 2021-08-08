@@ -62,7 +62,7 @@ class IModelExtensions {
 	 * @param closure
 	 */
 	static void each(IModel self,
-		@ClosureParams(value = SimpleType, options = "org.thymeleaf.model.ITemplateEvent")
+		@ClosureParams(value = SimpleType, options = 'org.thymeleaf.model.ITemplateEvent')
 		Closure closure) {
 		self.iterator().each(closure)
 	}
@@ -109,7 +109,7 @@ class IModelExtensions {
 	 * @return {@code true} if every event satisfies the closure.
 	 */
 	static boolean everyWithIndex(IModel self,
-		@ClosureParams(value = SimpleType, options = ["org.thymeleaf.model.ITemplateEvent", "int"])
+		@ClosureParams(value = SimpleType, options = ['org.thymeleaf.model.ITemplateEvent', 'int'])
 		Closure<Boolean> closure) {
 		for (def i = 0; i < self.size(); i++) {
 			if (!closure(self.get(i), i)) {
@@ -129,7 +129,7 @@ class IModelExtensions {
 	 *         if nothing matched.
 	 */
 	static ITemplateEvent find(IModel self,
-		@ClosureParams(value = SimpleType, options = "org.thymeleaf.model.ITemplateEvent")
+		@ClosureParams(value = SimpleType, options = 'org.thymeleaf.model.ITemplateEvent')
 		Closure<Boolean> closure) {
 		return self.iterator().find(closure)
 	}
@@ -142,7 +142,7 @@ class IModelExtensions {
 	 * @return A list of matched events.
 	 */
 	static List<ITemplateEvent> findAll(IModel self,
-		@ClosureParams(value = SimpleType, options = "org.thymeleaf.model.ITemplateEvent")
+		@ClosureParams(value = SimpleType, options = 'org.thymeleaf.model.ITemplateEvent')
 		Closure<Boolean> closure) {
 		return self.iterator().findAll(closure)
 	}
@@ -157,7 +157,7 @@ class IModelExtensions {
 	 *         {@code -1} if nothing matched.
 	 */
 	static int findIndexOf(IModel self,
-		@ClosureParams(value = SimpleType, options = "org.thymeleaf.model.ITemplateEvent")
+		@ClosureParams(value = SimpleType, options = 'org.thymeleaf.model.ITemplateEvent')
 		Closure<Boolean> closure) {
 		return self.iterator().findIndexOf(closure)
 	}
@@ -190,7 +190,7 @@ class IModelExtensions {
 	 *         {@code null} if nothing matched.
 	 */
 	static IModel findModel(IModel self,
-		@ClosureParams(value = SimpleType, options = "org.thymeleaf.model.ITemplateEvent")
+		@ClosureParams(value = SimpleType, options = 'org.thymeleaf.model.ITemplateEvent')
 		Closure<Boolean> closure) {
 		return self.getModel(self.findIndexOf(closure))
 	}
@@ -354,7 +354,7 @@ class IModelExtensions {
 	 * @param closure
 	 */
 	static void removeAllModels(IModel self,
-		@ClosureParams(value = SimpleType, options = "org.thymeleaf.model.ITemplateEvent")
+		@ClosureParams(value = SimpleType, options = 'org.thymeleaf.model.ITemplateEvent')
 		Closure<Boolean> closure) {
 		while (true) {
 			def modelIndex = self.findIndexOf(closure)

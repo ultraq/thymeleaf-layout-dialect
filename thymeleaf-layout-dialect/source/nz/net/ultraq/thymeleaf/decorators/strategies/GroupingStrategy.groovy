@@ -96,7 +96,7 @@ class GroupingStrategy implements SortingStrategy {
 		 * @param determinant
 		 */
 		private HeadEventTypes(
-			@ClosureParams(value = SimpleType, options = "org.thymeleaf.model.ITemplateEvent")
+			@ClosureParams(value = SimpleType, options = 'org.thymeleaf.model.ITemplateEvent')
 			Closure<Boolean> determinant) {
 
 			this.determinant = determinant
