@@ -32,7 +32,7 @@ task serveDocs(
 	type: Exec,
 	dependsOn: copyGroovyDocs
 ) {
-	commandLine 'bundle', 'exec', 'jekyll', 'serve', '--baseurl', ""
+	commandLine 'bundle', 'exec', 'jekyll', 'serve'
 }
 
 task publishDocs(
