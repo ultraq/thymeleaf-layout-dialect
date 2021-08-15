@@ -273,7 +273,7 @@ Result:
 The Layout dialect can be configured to support either use case, with the
 ability for developers to define their own sorting.
 
-This sorting is exposed by the [`SortingStrategy`](/thymeleaf-layout-dialect/groovydoc/nz/net/ultraq/thymeleaf/decorators/SortingStrategy.html)
+This sorting is exposed by the [`SortingStrategy`](/thymeleaf-layout-dialect/groovydoc/nz/net/ultraq/thymeleaf/layoutdialect/decorators/SortingStrategy.html)
 interface and the layout dialect provides 2 implementations to choose from:
 
  - `nz.net.ultraq.thymeleaf.decorators.strategies.AppendingStrategy`, the
@@ -298,7 +298,7 @@ TemplateEngine templateEngine = new TemplateEngine();
 templateEngine.addDialect(new LayoutDialect(new GroupingStrategy()));
 ```
 
-If neither strategy suits your needs, you can implement your own [`SortingStrategy`](/thymeleaf-layout-dialect/groovydoc/nz/net/ultraq/thymeleaf/decorators/SortingStrategy.html)
+If neither strategy suits your needs, you can implement your own [`SortingStrategy`](/thymeleaf-layout-dialect/groovydoc/nz/net/ultraq/thymeleaf/layoutdialect/decorators/SortingStrategy.html)
 and pass it along to the layout dialect like above.
 
 
