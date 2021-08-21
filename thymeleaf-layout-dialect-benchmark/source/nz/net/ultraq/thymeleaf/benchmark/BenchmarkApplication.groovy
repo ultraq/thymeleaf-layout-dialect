@@ -16,8 +16,11 @@
 
 package nz.net.ultraq.thymeleaf.benchmark
 
+import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect
+
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.context.annotation.Bean
 
 /**
  * Configuration for the benchmarking application.
@@ -26,6 +29,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
  */
 @SpringBootApplication
 class BenchmarkApplication {
+
+	@Bean
+	LayoutDialect layoutDialect() {
+
+		return new LayoutDialect()
+	}
 
 	/**
 	 * Run the website as Spring Boot application!
