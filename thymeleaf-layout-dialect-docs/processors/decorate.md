@@ -276,10 +276,9 @@ ability for developers to define their own sorting.
 This sorting is exposed by the [`SortingStrategy`](/thymeleaf-layout-dialect/groovydoc/nz/net/ultraq/thymeleaf/layoutdialect/decorators/SortingStrategy.html)
 interface and the layout dialect provides 2 implementations to choose from:
 
- - `nz.net.ultraq.thymeleaf.decorators.strategies.AppendingStrategy`, the
-   default, appends content `<head>` elements after layout ones.
- - `nz.net.ultraq.thymeleaf.decorators.strategies.GroupingStrategy`, groups like
-   elements together.
+ - `AppendingStrategy`, the default, appends content `<head>` elements after
+    layout ones.
+ - `GroupingStrategy`, groups like elements together.
 
 To change to the grouping strategy, configure the Layout dialect using one of
 the methods below:

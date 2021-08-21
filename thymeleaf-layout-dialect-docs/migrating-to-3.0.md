@@ -11,8 +11,8 @@ Migrating to 3.0
 Version 3.0 of the layout dialect is largely an upgrade to use Groovy 3.0 which
 removes the 'reflective access warning' in Java (which is set to become an error
 in Java 17) and the deletion of code that has been deprecated in version 2.x.
-As such, if you never encountered logs about deprecations using version 2.x,
-then there's likely nothing you need to do to upgrade to version 3.0!
+It's also a step towards becoming a full Java module, applying an automatic
+module name and doing some reorganizing of packages in the interim.
 
 All the changes are listed below to help make the assessment on what an upgrade
 would entail for you.
@@ -66,3 +66,29 @@ This was a feature added in 2.3.0 ([#166](https://github.com/ultraq/thymeleaf-la
 However, it has complicated the maintenance of the layout dialect, and, after
 some time with it, feels like a very special purpose tool that this library
 doesn't need to cover.  As such, I am deprecating this feature.
+
+
+Automatic module name and package restructure
+---------------------------------------------
+
+As part of the work to convert the layout dialect into a full Java module ([#171](https://github.com/ultraq/thymeleaf-layout-dialect/issues/171)),
+I've taken the intermediate step of setting an `Automatic-Module-Name` value of
+`nz.net.ultraq.thymeleaf.layoutdialect` in the manifest file.
+
+In preparation for becoming a full Java module in the future, I've had to
+reorganize the package names so everything now lives under the `nz.net.ultraq.thymeleaf.layoutdialect`
+package.  For example, if you imported `nz.net.ultraq.thymeleaf.LayoutDialect`,
+you'll now have to update that import to be `nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect`.
+
+As a consequence of this move, if you use Spring Boot and let it automatically
+include the layout dialect for you, you will now need to specify it yourself
+until Spring Boot is updated to support version 3 of the layout dialect.  To do
+that, add the following to your application configuration class to register the
+layout dialect:
+
+```java
+@Bean
+public LayoutDialect layoutDialect() {
+  return new LayoutDialect();
+}
+```
