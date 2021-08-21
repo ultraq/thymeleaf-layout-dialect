@@ -16,7 +16,7 @@
 
 package nz.net.ultraq.thymeleaf.includes
 
-import nz.net.ultraq.thymeleaf.expressions.ExpressionProcessor
+import nz.net.ultraq.thymeleaf.expressionprocessor.ExpressionProcessor
 import nz.net.ultraq.thymeleaf.fragments.FragmentFinder
 import nz.net.ultraq.thymeleaf.fragments.FragmentParameterNamesExtractor
 import nz.net.ultraq.thymeleaf.fragments.FragmentProcessor

@@ -38,8 +38,8 @@ dependencies {
 		'org.codehaus.groovy:groovy:3.0.8'
 	)
 	implementation(
-		'nz.net.ultraq.extensions:groovy-extensions:1.0.0',
-		'nz.net.ultraq.thymeleaf:thymeleaf-expression-processor:2.0.1',
+		'nz.net.ultraq.extensions:groovy-extensions:1.1.0',
+		'nz.net.ultraq.thymeleaf:thymeleaf-expression-processor:3.0.0',
 		'org.thymeleaf:thymeleaf:3.0.12.RELEASE'
 	)
 	testImplementation(
