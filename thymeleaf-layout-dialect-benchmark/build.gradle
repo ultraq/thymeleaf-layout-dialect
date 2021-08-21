@@ -30,18 +30,12 @@ archivesBaseName = 'thymeleaf-layout-dialect-benchmark'
 sourceCompatibility = 1.8
 
 dependencies {
-	implementation(project(':thymeleaf-layout-dialect')) {
-		exclude module: 'groovy'
-	}
 	implementation(
-		'org.codehaus.groovy:groovy:3.0.8:indy',
+		project(':thymeleaf-layout-dialect'),
+		'org.codehaus.groovy:groovy:3.0.8',
 		'org.springframework.boot:spring-boot-starter-thymeleaf',
 		'org.springframework.boot:spring-boot-starter-web'
 	)
-}
-
-compileGroovy {
-	groovyOptions.optimizationOptions.indy = true
 }
 
 task startWebApp(type: ExecFork, dependsOn: build) {
