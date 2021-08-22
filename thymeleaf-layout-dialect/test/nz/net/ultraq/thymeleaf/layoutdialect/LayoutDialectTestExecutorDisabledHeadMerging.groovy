@@ -16,7 +16,7 @@
 
 package nz.net.ultraq.thymeleaf.layoutdialect
 
-import nz.net.ultraq.thymeleaf.testing.JUnitTestExecutor
+import nz.net.ultraq.thymeleaf.testing.junit.JUnitTestExecutor
 
 import org.reflections.Reflections
 import org.reflections.scanners.ResourcesScanner

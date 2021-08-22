@@ -43,7 +43,7 @@ dependencies {
 		'org.thymeleaf:thymeleaf:3.0.12.RELEASE'
 	)
 	testImplementation(
-		'nz.net.ultraq.thymeleaf:thymeleaf-testing-junit:4.0.0',
+		'nz.net.ultraq.thymeleaf:thymeleaf-testing-junit:5.0.0-SNAPSHOT',
 		'org.reflections:reflections:0.9.12',
 		'org.spockframework:spock-core:2.0-groovy-3.0',
 		'org.thymeleaf:thymeleaf-testing:3.0.4.RELEASE'
