@@ -4,7 +4,7 @@ Changelog
 
 ### 3.0.0
 
- - Now requires Java 8 as the minimum Java version
+ - Minimum supported version of Java is now Java 8
    ([#213](https://github.com/ultraq/thymeleaf-layout-dialect/issues/213))
  - Upgrade Groovy to 3.0.8
    ([#202](https://github.com/ultraq/thymeleaf-layout-dialect/issues/202))
@@ -15,12 +15,14 @@ Changelog
  - `<head>` merging strategies now respect the `<title>` position by default
    ([#177](https://github.com/ultraq/thymeleaf-layout-dialect/issues/177)
  - Deprecated `layout:collect`
+ - Added an `Automatic-Module-Name` of `nz.net.ultraq.thymeleaf.layoutdialect`
+   ([#171](https://github.com/ultraq/thymeleaf-layout-dialect/issues/171)
 
 Version 3.0 of the layout dialect is largely an upgrade to use Groovy 3.0 which
 removes the 'reflective access warning' in Java (which is set to become an error
 in Java 17) and the deletion of code that has been deprecated in version 2.x.
-As such, if you never encountered logs about deprecations using version 2.x,
-then there's likely nothing you need to do to upgrade to version 3.0!
+It's also a step towards becoming a full Java module, applying an automatic
+module name and doing some reorganizing of packages in the interim.
 
 I've written a migration guide to help make the assessment of what an upgrade to
 3.0 would entail for you.  Check it out on the documentation site:
@@ -168,7 +170,7 @@ https://ultraq.github.io/thymeleaf-layout-dialect/migrating-to-3.0/
    ([#102](https://github.com/ultraq/thymeleaf-layout-dialect/issues/102),
    [#139](https://github.com/ultraq/thymeleaf-layout-dialect/issues/139))
 
-What follows is a summary of the performance imrovements in 2.1.0.  For details
+What follows is a summary of the performance improvements in 2.1.0.  For details
 such as the test methodology and changes made, see the full release notes at:
 https://github.com/ultraq/thymeleaf-layout-dialect/releases/tag/2.1.0
 
