@@ -14,8 +14,8 @@ in Java 17) and the deletion of code that has been deprecated in version 2.x.
 It's also a step towards becoming a full Java module, applying an automatic
 module name and doing some reorganizing of packages in the interim.
 
-All the changes are listed below to help make the assessment on what an upgrade
-would entail for you.
+All the changes are listed below to help you make an assessment of what an
+upgrade would entail.
 
 On this page
 ------------
@@ -72,19 +72,16 @@ Automatic module name and package restructure
 ---------------------------------------------
 
 As part of the work to convert the layout dialect into a full Java module ([#171](https://github.com/ultraq/thymeleaf-layout-dialect/issues/171)),
-I've taken the intermediate step of setting an `Automatic-Module-Name` value of
-`nz.net.ultraq.thymeleaf.layoutdialect` in the manifest file.
+I've taken the steps of setting an `Automatic-Module-Name` in the manifest file,
+and reorganizing packages to meet the standards set out by Java modules.
 
-In preparation for becoming a full Java module in the future, I've had to
-reorganize the package names so everything now lives under the `nz.net.ultraq.thymeleaf.layoutdialect`
-package.  For example, if you imported `nz.net.ultraq.thymeleaf.LayoutDialect`,
-you'll now have to update that import to be `nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect`.
+This module now has the name of `nz.net.ultraq.thymeleaf.layoutdialect`, and the
+base package (previously `nz.net.ultraq.thymeleaf`) has been changed to match.
 
-As a consequence of this move, if you use Spring Boot and let it automatically
-include the layout dialect for you, you will now need to specify it yourself
-until Spring Boot is updated to support version 3 of the layout dialect.  To do
-that, add the following to your application configuration class to register the
-layout dialect:
+As a consequence of this move, if you use Spring Boot to automatically configure
+the layout dialect, you will now need to specify it yourself until Spring Boot
+is updated to support version 3 of the layout dialect.  To do that, add the
+following to any of your Spring Boot configuration classes:
 
 ```java
 @Bean
