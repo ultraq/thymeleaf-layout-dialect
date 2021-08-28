@@ -13,10 +13,10 @@ Changelog
  - Deprecated `$DECORATOR_TITLE` constant has been deleted
    ([#95](https://github.com/ultraq/thymeleaf-layout-dialect/issues/95))
  - `<head>` merging strategies now respect the `<title>` position by default
-   ([#177](https://github.com/ultraq/thymeleaf-layout-dialect/issues/177)
+   ([#177](https://github.com/ultraq/thymeleaf-layout-dialect/issues/177))
  - Deprecated `layout:collect`
  - Added an `Automatic-Module-Name` of `nz.net.ultraq.thymeleaf.layoutdialect`
-   ([#171](https://github.com/ultraq/thymeleaf-layout-dialect/issues/171)
+   ([#171](https://github.com/ultraq/thymeleaf-layout-dialect/issues/171))
 
 Version 3.0 of the layout dialect is largely an upgrade to use Groovy 3.0 which
 removes the 'reflective access warning' in Java (which is set to become an error
