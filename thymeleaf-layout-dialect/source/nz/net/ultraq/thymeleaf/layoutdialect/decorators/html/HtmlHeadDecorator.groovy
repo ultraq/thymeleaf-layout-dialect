@@ -64,12 +64,14 @@ class HtmlHeadDecorator implements Decorator {
 		}
 
 		// Replace <title>s in the result with a proper merge of the source and target <title> elements
-		def indexOfTitle = resultHeadModel.findIndexOf { event -> event.isOpeningElementOf('title') }
+		def titleFinder = { event -> event.isOpeningElementOf('title') }
+
+		def indexOfTitle = resultHeadModel.findIndexOf(titleFinder)
 		if (indexOfTitle != -1) {
-			resultHeadModel.removeAllModels { event -> !event.whitespace && event.isOpeningElementOf('title') }
+			resultHeadModel.removeAllModels(titleFinder)
 			def resultTitle = new HtmlTitleDecorator(context).decorate(
-				targetHeadModel?.findModel { event -> event.isOpeningElementOf('title') },
-				sourceHeadModel?.findModel { event -> event.isOpeningElementOf('title') }
+				targetHeadModel?.findModel(titleFinder),
+				sourceHeadModel?.findModel(titleFinder)
 			)
 			resultHeadModel.insertModelWithWhitespace(indexOfTitle, resultTitle, modelFactory)
 		}
