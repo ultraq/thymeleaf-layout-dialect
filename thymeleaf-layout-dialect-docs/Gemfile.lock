@@ -9,7 +9,9 @@ GEM
       eventmachine (>= 0.12.9)
       http_parser.rb (~> 0.6.0)
     eventmachine (1.2.7)
+    eventmachine (1.2.7-x64-mingw32)
     ffi (1.15.3)
+    ffi (1.15.3-x64-mingw32)
     forwardable-extended (2.6.0)
     http_parser.rb (0.6.0)
     i18n (1.8.10)
@@ -64,12 +66,15 @@ GEM
     safe_yaml (1.0.5)
     sassc (2.4.0)
       ffi (~> 1.9)
+    sassc (2.4.0-x64-mingw32)
+      ffi (~> 1.9)
     terminal-table (2.0.0)
       unicode-display_width (~> 1.1, >= 1.1.1)
     unicode-display_width (1.7.0)
     webrick (1.7.0)
 
 PLATFORMS
+  x64-mingw32
   x86_64-darwin-19
 
 DEPENDENCIES
@@ -81,4 +86,4 @@ DEPENDENCIES
   webrick
 
 BUNDLED WITH
-   2.2.24
+   2.2.26
