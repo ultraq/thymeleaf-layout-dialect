@@ -83,14 +83,14 @@ class TemplateModelFinder {
 			// or starts with layout:fragment="name( or layout:fragment="name ( plus
 			// their data attribute equivalents. See the attoparser API docs for details:
 			// http://www.attoparser.org/apidocs/attoparser/2.0.0.RELEASE/org/attoparser/select/package-summary.html
-			fragmentName && dialectPrefix ? "//[" +
+			fragmentName && dialectPrefix ? '//[' +
 				"${dialectPrefix}:fragment='${fragmentName}' or " +
 				"${dialectPrefix}:fragment^='${fragmentName}(' or " +
 				"${dialectPrefix}:fragment^='${fragmentName} (' or " +
 				"data-${dialectPrefix}-fragment='${fragmentName}' or " +
 				"data-${dialectPrefix}-fragment^='${fragmentName}(' or " +
 				"data-${dialectPrefix}-fragment^='${fragmentName} ('" +
-			"]" : null
+			']' : null
 		)
 	}
 
