@@ -20,7 +20,7 @@ import java.time.LocalDateTime
 plugins {
 	id 'groovy'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-	id 'org.springframework.boot' version '2.5.3'
+	id 'org.springframework.boot' version '2.6.0'
 	id 'com.github.psxpaul.execfork' version '0.1.13'
 }
 apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/3.4.0/gradle-support.gradle'
