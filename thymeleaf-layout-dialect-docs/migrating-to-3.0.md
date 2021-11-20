@@ -78,10 +78,10 @@ and reorganizing packages to meet the standards set out by Java modules.
 This module now has the name of `nz.net.ultraq.thymeleaf.layoutdialect`, and the
 base package (previously `nz.net.ultraq.thymeleaf`) has been changed to match.
 
-As a consequence of this move, if you use Spring Boot to automatically configure
-the layout dialect, you will now need to specify it yourself until Spring Boot
-is updated to support version 3 of the layout dialect.  To do that, add the
-following to any of your Spring Boot configuration classes:
+As a consequence of this move, if you're using Spring Boot versions older than
+2.6.0 to automatically configure the layout dialect, you will now need to
+configure it yourself.  To do that, add the following to any of your Spring Boot
+configuration classes:
 
 ```java
 @Bean
@@ -89,3 +89,6 @@ public LayoutDialect layoutDialect() {
   return new LayoutDialect();
 }
 ```
+
+Spring Boot 2.6.0 includes support for Thymeleaf Layout Dialect 3, and so this
+extra configuration is not necessary from that version on.

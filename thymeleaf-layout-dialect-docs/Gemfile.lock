@@ -76,6 +76,7 @@ GEM
 PLATFORMS
   x64-mingw32
   x86_64-darwin-19
+  x86_64-darwin-20
 
 DEPENDENCIES
   jekyll
