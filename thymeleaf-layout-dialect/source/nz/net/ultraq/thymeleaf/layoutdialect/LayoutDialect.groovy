@@ -50,9 +50,9 @@ class LayoutDialect extends AbstractProcessorDialect {
 	 * Constructor, configure the layout dialect.
 	 * 
 	 * @param sortingStrategy
-	 * @param autoHeadMerging Experimental option, set to {@code false} to skip
-	 *                        the automatic merging of an HTML {@code <head>}
-	 *                        section.
+	 * @param autoHeadMerging
+	 *   Experimental option, set to {@code false} to skip the automatic merging
+	 *   of an HTML {@code <head>} section.
 	 */
 	LayoutDialect(SortingStrategy sortingStrategy = new AppendingStrategy(), boolean autoHeadMerging = true) {
 
