@@ -19,28 +19,30 @@ plugins {
 	id 'groovy'
 	id 'codenarc'
 	id 'jacoco'
-	id 'com.github.kt3k.coveralls' version '2.10.2'
+	id 'com.github.nbaztec.coveralls-jacoco' version '1.2.13'
 	id 'distribution'
 	id 'maven-publish'
 }
-apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/3.4.0/gradle-support.gradle'
-apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/3.4.0/maven-publish-support.gradle'
+apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/4.0.0/gradle-support.gradle'
+apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/4.0.0/maven-publish-support.gradle'
 
 description = 'A dialect for Thymeleaf that allows you to use layout/decorator templates to style your content.'
 sourceCompatibility = 1.8
-
-group    = 'nz.net.ultraq.thymeleaf'
-artifact = 'thymeleaf-layout-dialect'
-year     = '2012'
+group = 'nz.net.ultraq.thymeleaf'
+year = '2012'
 
 dependencies {
 	api(
-		'org.codehaus.groovy:groovy:3.0.8'
+		'org.codehaus.groovy:groovy:3.0.9'
 	)
 	implementation(
 		'nz.net.ultraq.extensions:groovy-extensions:1.1.0',
 		'nz.net.ultraq.thymeleaf:thymeleaf-expression-processor:3.0.0',
-		'org.thymeleaf:thymeleaf:3.0.12.RELEASE'
+		'org.thymeleaf:thymeleaf:3.0.14.RELEASE'
+	)
+	codenarc(
+		'org.codenarc:CodeNarc:2.2.0',
+		'org.codehaus.groovy:groovy-all:3.0.9'
 	)
 	testImplementation(
 		'nz.net.ultraq.thymeleaf:thymeleaf-testing-junit:5.0.0-SNAPSHOT',
@@ -57,14 +59,8 @@ test {
 	useJUnitPlatform()
 }
 
-processResources {
-	expand([
-		moduleVersion: version
-	])
-}
-
 groovydoc {
-	link('http://www.thymeleaf.org/apidocs/thymeleaf/3.0.12.RELEASE/', 'org.thymeleaf.')
+	link('http://www.thymeleaf.org/apidocs/thymeleaf/3.0.14.RELEASE/', 'org.thymeleaf.')
 }
 
 jar {

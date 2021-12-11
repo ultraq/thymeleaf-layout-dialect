@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java-version: [8, 11]
+        java-version: [8, 11, 17]
     steps:
       - uses: actions/checkout@v2
       - uses: gradle/wrapper-validation-action@v1
@@ -15,6 +15,7 @@ jobs:
           distribution: 'adopt'
           java-version: ${{ matrix.java-version }}
       - run: ./gradlew build
-      - run: ./gradlew jacocoTestReport coveralls
+      - run: ./gradlew jacocoTestReport coverallsJacoco
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+          COVERALLS_PARALLEL: true
