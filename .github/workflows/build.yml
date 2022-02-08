@@ -19,5 +19,3 @@ jobs:
       - uses: codecov/codecov-action@v2
         with:
           directory: thymeleaf-layout-dialect/build/reports/jacoco/
-          fail_ci_if_error: true
-          verbose: true
