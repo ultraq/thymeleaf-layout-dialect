@@ -19,7 +19,7 @@ plugins {
 	id 'groovy'
 	id 'codenarc'
 	id 'jacoco'
-	id 'com.github.nbaztec.coveralls-jacoco' version '1.2.13'
+	id 'com.github.nbaztec.coveralls-jacoco' version '1.2.14'
 	id 'distribution'
 	id 'maven-publish'
 }
@@ -57,6 +57,10 @@ dependencies {
 
 test {
 	useJUnitPlatform()
+}
+
+coverallsJacoco {
+	reportPath = 'thymeleaf-layout-dialect/build/reports/jacoco/test/jacocoTestReport.xml'
 }
 
 groovydoc {
