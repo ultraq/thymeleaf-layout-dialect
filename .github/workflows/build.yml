@@ -15,7 +15,9 @@ jobs:
           distribution: 'adopt'
           java-version: ${{ matrix.java-version }}
       - run: ./gradlew build
-      - run: ./gradlew jacocoTestReport coverallsJacoco
-        env:
-          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
-          COVERALLS_PARALLEL: true
+      - run: ./gradlew jacocoTestReport
+      - uses: codecov/codecov-action@v2
+        with:
+          directory: thymeleaf-layout-dialect/build/reports/jacoco/
+          fail_ci_if_error: true
+          verbose: true
