@@ -31,27 +31,23 @@ group = 'nz.net.ultraq.thymeleaf'
 year = '2012'
 
 dependencies {
-	api(
-		'org.codehaus.groovy:groovy:3.0.9'
-	)
-	implementation(
-		'nz.net.ultraq.extensions:groovy-extensions:1.1.0',
-		'nz.net.ultraq.thymeleaf:thymeleaf-expression-processor:3.0.0',
-		'org.thymeleaf:thymeleaf:3.0.14.RELEASE'
-	)
-	codenarc(
-		'org.codenarc:CodeNarc:2.2.0',
-		'org.codehaus.groovy:groovy-all:3.0.9'
-	)
-	testImplementation(
-		'nz.net.ultraq.thymeleaf:thymeleaf-testing-junit:5.0.0-M1',
-		'org.reflections:reflections:0.9.12',
-		'org.spockframework:spock-core:2.0-groovy-3.0',
-		'org.thymeleaf:thymeleaf-testing:3.0.4.RELEASE'
-	)
-	testRuntimeOnly(
-		'org.slf4j:slf4j-simple:1.7.32'
-	)
+	api 'org.apache.groovy:groovy:4.0.0'
+	implementation 'nz.net.ultraq.extensions:groovy-extensions:2.0.0-SNAPSHOT'
+	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-expression-processor:3.1.0-SNAPSHOT'
+	implementation 'org.thymeleaf:thymeleaf:3.0.15.RELEASE'
+
+	codenarc('org.codenarc:CodeNarc:2.2.0') {
+		exclude group: 'org.codehaus.groovy'
+	}
+	codenarc 'org.apache.groovy:groovy-all:4.0.0'
+
+	testImplementation 'nz.net.ultraq.thymeleaf:thymeleaf-testing-junit:5.0.0-SNAPSHOT'
+	testImplementation 'org.reflections:reflections:0.9.12'
+	testImplementation('org.spockframework:spock-core:2.1-groovy-3.0-SNAPSHOT') {
+		exclude module: 'groovy'
+	}
+	testImplementation 'org.thymeleaf:thymeleaf-testing:3.0.4.RELEASE'
+	testRuntimeOnly 'org.slf4j:slf4j-simple:1.7.35'
 }
 
 test {
@@ -59,7 +55,7 @@ test {
 }
 
 groovydoc {
-	link('http://www.thymeleaf.org/apidocs/thymeleaf/3.0.14.RELEASE/', 'org.thymeleaf.')
+	link('https://www.thymeleaf.org/apidocs/thymeleaf/3.0.15.RELEASE/', 'org.thymeleaf.')
 }
 
 jar {
