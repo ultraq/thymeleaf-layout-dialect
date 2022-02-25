@@ -44,7 +44,7 @@ dependencies {
 		'org.codehaus.groovy:groovy-all:3.0.9'
 	)
 	testImplementation(
-		'nz.net.ultraq.thymeleaf:thymeleaf-testing-junit:5.0.0-SNAPSHOT',
+		'nz.net.ultraq.thymeleaf:thymeleaf-testing-junit:5.0.0-M1',
 		'org.reflections:reflections:0.9.12',
 		'org.spockframework:spock-core:2.0-groovy-3.0',
 		'org.thymeleaf:thymeleaf-testing:3.0.4.RELEASE'
