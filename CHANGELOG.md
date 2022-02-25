@@ -2,6 +2,11 @@
 Changelog
 =========
 
+### 3.1.0
+ - Upgrade Groovy to 4.0.0
+ - The `javadoc` artifact in Maven downloads now includes this project's
+   groovydocs, which have been missing thus far
+
 ### 3.0.0
 
  - Minimum supported version of Java is now Java 8
