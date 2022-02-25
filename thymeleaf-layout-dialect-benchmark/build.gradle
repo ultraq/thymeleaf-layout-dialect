@@ -15,13 +15,15 @@
  */
 
 import com.github.psxpaul.task.ExecFork
+import org.gradle.internal.jvm.Jvm
+
 import java.time.LocalDateTime
 
 plugins {
 	id 'groovy'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'org.springframework.boot' version '2.6.0'
-	id 'com.github.psxpaul.execfork' version '0.1.13'
+	id 'com.github.psxpaul.execfork' version '0.1.15'
 }
 apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/3.4.0/gradle-support.gradle'
 
@@ -39,7 +41,7 @@ dependencies {
 }
 
 task startWebApp(type: ExecFork, dependsOn: build) {
-	executable = 'java'
+	executable = Jvm.current().javaExecutable.absolutePath
 	args = [
 	  '-jar', "build/libs/thymeleaf-layout-dialect-benchmark-${version}.jar",
 		'-Xmx512m'
@@ -49,16 +51,16 @@ task startWebApp(type: ExecFork, dependsOn: build) {
 
 task benchmark(type: Exec, dependsOn: startWebApp) {
 	def dateTimeString = LocalDateTime.now().format('yyyy-MM-dd_HHmmss')
-	def resultsDir = "build/results/${version}"
-	def reportsDir = "build/reports/${version}"
+	def resultsDir = "${buildDir}/results/${version}"
+	def reportsDir = "${buildDir}/reports/${version}"
 	doFirst {
 		mkdir resultsDir
 		mkdir reportsDir
 	}
-	executable = 'jmeter'
+	executable = "${System.getenv("JMETER_HOME")}/bin/jmeter.sh"
 	args = [
 		'-n',
-		'-t', 'test/simulate-load.jmx',
+		'-t', "${projectDir}/test/simulate-load.jmx",
 		'-l', "${resultsDir}/${dateTimeString}.csv",
 		'-e',
 		'-o', "${reportsDir}/${dateTimeString}"
