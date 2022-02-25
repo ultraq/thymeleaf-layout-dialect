@@ -16,6 +16,7 @@
 
 import com.github.psxpaul.task.ExecFork
 import org.gradle.internal.jvm.Jvm
+import org.gradle.internal.os.OperatingSystem
 
 import java.time.LocalDateTime
 
@@ -50,6 +51,7 @@ task startWebApp(type: ExecFork, dependsOn: build) {
 }
 
 task benchmark(type: Exec, dependsOn: startWebApp) {
+	def os = OperatingSystem.current()
 	def dateTimeString = LocalDateTime.now().format('yyyy-MM-dd_HHmmss')
 	def resultsDir = "${buildDir}/results/${version}"
 	def reportsDir = "${buildDir}/reports/${version}"
@@ -57,7 +59,7 @@ task benchmark(type: Exec, dependsOn: startWebApp) {
 		mkdir resultsDir
 		mkdir reportsDir
 	}
-	executable = "${System.getenv("JMETER_HOME")}/bin/jmeter.sh"
+	executable = "${System.getenv("JMETER_HOME")}/bin/jmeter.${os == OperatingSystem.WINDOWS ? 'bat' : 'sh'}"
 	args = [
 		'-n',
 		'-t', "${projectDir}/test/simulate-load.jmx",
