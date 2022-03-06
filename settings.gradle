@@ -14,6 +14,17 @@
  * limitations under the License.
  */
 
+// Need to use an older version of execfork for Java 8
+pluginManagement {
+	resolutionStrategy {
+		eachPlugin {
+			if (requested.id.name == 'execfork' && JavaVersion.current() == JavaVersion.VERSION_1_8) {
+				useModule('com.github.psxpaul.execfork:com.github.psxpaul.execfork.gradle.plugin:0.1.13')
+			}
+		}
+	}
+}
+
 include(
 	'thymeleaf-layout-dialect',
 	'thymeleaf-layout-dialect-benchmark',
