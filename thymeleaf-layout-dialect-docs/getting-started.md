@@ -28,7 +28,7 @@ co-ordinates:
 
  - GroupId: `nz.net.ultraq.thymeleaf`
  - ArtifactId: `thymeleaf-layout-dialect`
- - Version: `3.0.0`
+ - Version: `3.1.0`
 
 Check the [project releases](https://github.com/ultraq/thymeleaf-layout-dialect/releases)
 for a list of available versions.  Each release page also includes a
