@@ -4,6 +4,7 @@ Changelog
 
 ### 3.1.0
  - Upgrade Groovy to 4.0.0
+	 ([#224](https://github.com/ultraq/thymeleaf-layout-dialect/issues/224))
  - The `javadoc` artifact in Maven downloads now includes this project's
    groovydocs, which have been missing in recent releases
 
