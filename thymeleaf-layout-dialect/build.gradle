@@ -22,8 +22,8 @@ plugins {
 	id 'distribution'
 	id 'maven-publish'
 }
-apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/4.0.1/gradle-support.gradle'
-apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/4.0.1/maven-publish-support.gradle'
+apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/4.1.0/gradle-support.gradle'
+apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/4.1.0/maven-publish-support.gradle'
 
 description = 'A dialect for Thymeleaf that allows you to use layout/decorator templates to style your content.'
 sourceCompatibility = 1.8
@@ -58,18 +58,5 @@ groovydoc {
 jar {
 	manifest {
 		attributes('Automatic-Module-Name': 'nz.net.ultraq.thymeleaf.layoutdialect')
-	}
-}
-
-distributions {
-	main {
-		contents {
-			// Have to mention explicitly because of the subproject layout
-			from('..') {
-				include 'CHANGELOG.md'
-				include 'LICENSE.txt'
-				include 'README.md'
-			}
-		}
 	}
 }
