@@ -36,8 +36,8 @@ dependencies {
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-expression-processor:3.1.0'
 	implementation 'org.thymeleaf:thymeleaf:3.0.15.RELEASE'
 
-	testImplementation 'nz.net.ultraq.thymeleaf:thymeleaf-testing-junit:5.0.0'
-	testImplementation 'org.reflections:reflections:0.9.12'
+	testImplementation 'nz.net.ultraq.thymeleaf:thymeleaf-testing-junit:5.1.0-SNAPSHOT'
+	testImplementation 'org.reflections:reflections:0.10.2'
 	testImplementation 'org.spockframework:spock-core:2.2-M1-groovy-4.0'
 	testImplementation 'org.thymeleaf:thymeleaf-testing:3.0.4.RELEASE'
 	testRuntimeOnly 'org.slf4j:slf4j-simple:1.7.36'

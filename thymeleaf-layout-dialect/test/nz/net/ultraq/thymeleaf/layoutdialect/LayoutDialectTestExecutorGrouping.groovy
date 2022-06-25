@@ -20,9 +20,9 @@ import nz.net.ultraq.thymeleaf.layoutdialect.decorators.strategies.GroupingStrat
 import nz.net.ultraq.thymeleaf.testing.junit.JUnitTestExecutor
 
 import org.reflections.Reflections
-import org.reflections.scanners.ResourcesScanner
 import org.thymeleaf.dialect.IDialect
 import org.thymeleaf.standard.StandardDialect
+import static org.reflections.scanners.Scanners.Resources
 
 /**
  * A parameterized JUnit test class that is run over just the files involved in
@@ -46,7 +46,8 @@ class LayoutDialectTestExecutorGrouping extends JUnitTestExecutor {
 	 */
 	static List<String> getThymeleafTestFiles() {
 
-		return new Reflections('', new ResourcesScanner())
-			.getResources(~/GroupingStrategy.*\.thtest/) as List
+		return new Reflections('nz.net.ultraq.thymeleaf.layoutdialect', Resources)
+			.getResources(~/GroupingStrategy.*\.thtest/)
+			.asList()
 	}
 }

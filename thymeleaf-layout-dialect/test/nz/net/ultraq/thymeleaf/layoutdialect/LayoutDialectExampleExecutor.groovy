@@ -19,9 +19,9 @@ package nz.net.ultraq.thymeleaf.layoutdialect
 import nz.net.ultraq.thymeleaf.testing.junit.JUnitTestExecutor
 
 import org.reflections.Reflections
-import org.reflections.scanners.ResourcesScanner
 import org.thymeleaf.dialect.IDialect
 import org.thymeleaf.standard.StandardDialect
+import static org.reflections.scanners.Scanners.Resources
 
 /**
  * A test executor for just the example Thymeleaf test files in this package.
@@ -42,7 +42,8 @@ class LayoutDialectExampleExecutor extends JUnitTestExecutor {
 	 */
 	static List<String> getThymeleafTestFiles() {
 
-		return new Reflections('', new ResourcesScanner())
-			.getResources(~/Examples.*\.thtest/) as List
+		return new Reflections('nz.net.ultraq.thymeleaf.layoutdialect', Resources)
+			.getResources(~/Examples.*\.thtest/)
+			.asList()
 	}
 }

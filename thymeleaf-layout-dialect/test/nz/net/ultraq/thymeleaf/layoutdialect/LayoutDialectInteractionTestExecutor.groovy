@@ -20,13 +20,13 @@ import nz.net.ultraq.thymeleaf.layoutdialect.decorators.strategies.GroupingStrat
 import nz.net.ultraq.thymeleaf.testing.junit.JUnitTestExecutor
 
 import org.reflections.Reflections
-import org.reflections.scanners.ResourcesScanner
 import org.thymeleaf.dialect.AbstractProcessorDialect
 import org.thymeleaf.dialect.IDialect
 import org.thymeleaf.processor.IProcessor
 import org.thymeleaf.standard.StandardDialect
 import org.thymeleaf.standard.processor.StandardXmlNsTagProcessor
 import org.thymeleaf.templatemode.TemplateMode
+import static org.reflections.scanners.Scanners.Resources
 
 /**
  * Special test executor for testing interaction of the layout dialect with
@@ -50,8 +50,9 @@ class LayoutDialectInteractionTestExecutor extends JUnitTestExecutor {
 	 */
 	static List<String> getThymeleafTestFiles() {
 
-		return new Reflections('', new ResourcesScanner())
-			.getResources(~/Interaction.*\.thtest/) as List
+		return new Reflections('nz.net.ultraq.thymeleaf.layoutdialect', Resources)
+			.getResources(~/Interaction.*\.thtest/)
+			.asList()
 	}
 
 

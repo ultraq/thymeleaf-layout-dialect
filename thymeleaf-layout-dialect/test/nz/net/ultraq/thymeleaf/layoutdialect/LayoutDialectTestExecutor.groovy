@@ -20,9 +20,9 @@ import nz.net.ultraq.thymeleaf.layoutdialect.decorators.strategies.AppendingStra
 import nz.net.ultraq.thymeleaf.testing.junit.JUnitTestExecutor
 
 import org.reflections.Reflections
-import org.reflections.scanners.ResourcesScanner
 import org.thymeleaf.dialect.IDialect
 import org.thymeleaf.standard.StandardDialect
+import static org.reflections.scanners.Scanners.Resources
 
 /**
  * A parameterized JUnit test class that is run over every Thymeleaf testing
@@ -47,8 +47,9 @@ class LayoutDialectTestExecutor extends JUnitTestExecutor {
 	 */
 	static List<String> getThymeleafTestFiles() {
 
-		def tests = new Reflections('', new ResourcesScanner())
-			.getResources(~/(?!Examples|GroupingStrategy|Interaction).*\.thtest/) as List
+		def tests = new Reflections('nz.net.ultraq.thymeleaf.layoutdialect', Resources)
+			.getResources(~/(?!Examples|GroupingStrategy|Interaction).*\.thtest/)
+			.asList()
 		def exclusions = [
 			'nz/net/ultraq/thymeleaf/layoutdialect/decorators/Decorate-DisabledHead.thtest',
 			'nz/net/ultraq/thymeleaf/layoutdialect/decorators/html/TitlePattern-AllowOtherProcessors.thtest',

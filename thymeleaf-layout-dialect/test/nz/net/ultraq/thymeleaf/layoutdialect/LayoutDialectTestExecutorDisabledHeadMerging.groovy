@@ -19,9 +19,9 @@ package nz.net.ultraq.thymeleaf.layoutdialect
 import nz.net.ultraq.thymeleaf.testing.junit.JUnitTestExecutor
 
 import org.reflections.Reflections
-import org.reflections.scanners.ResourcesScanner
 import org.thymeleaf.dialect.IDialect
 import org.thymeleaf.standard.StandardDialect
+import static org.reflections.scanners.Scanners.Resources
 
 /**
  * A parameterized JUnit test class that is run over just the files involved in
@@ -44,7 +44,8 @@ class LayoutDialectTestExecutorDisabledHeadMerging extends JUnitTestExecutor {
 	 */
 	static List<String> getThymeleafTestFiles() {
 
-		return new Reflections('', new ResourcesScanner())
-			.getResources(~/Decorate-DisabledHead\.thtest/) as List
+		return new Reflections('nz.net.ultraq.thymeleaf.layoutdialect', Resources)
+			.getResources(~/Decorate-DisabledHead\.thtest/)
+			.asList()
 	}
 }
