@@ -41,10 +41,8 @@ dependencies {
 	testImplementation 'org.spockframework:spock-core:2.2-M1-groovy-4.0'
 	testImplementation 'org.thymeleaf:thymeleaf-testing:3.0.4.RELEASE'
 	testRuntimeOnly 'org.slf4j:slf4j-simple:1.7.36'
-}
 
-codenarc {
-	toolVersion = '3.1.0'
+	codenarc 'org.codenarc:CodeNarc-Groovy4:3.1.0'
 }
 
 test {
