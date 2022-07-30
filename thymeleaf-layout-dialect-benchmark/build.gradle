@@ -23,10 +23,10 @@ import java.time.LocalDateTime
 plugins {
 	id 'groovy'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-	id 'org.springframework.boot' version '2.6.3'
+	id 'org.springframework.boot' version '2.7.2'
 	id 'com.github.psxpaul.execfork' version '0.1.15'
 }
-apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/4.1.0/gradle-support.gradle'
+apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/4.3.0/gradle-support.gradle'
 
 description = 'A basic web application to test the performance of the Thymeleaf Layout Dialect'
 archivesBaseName = 'thymeleaf-layout-dialect-benchmark'
@@ -34,7 +34,7 @@ sourceCompatibility = 1.8
 
 dependencies {
 	implementation project(':thymeleaf-layout-dialect')
-	implementation 'org.apache.groovy:groovy:4.0.0'
+	implementation 'org.apache.groovy:groovy:4.0.4'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 }
