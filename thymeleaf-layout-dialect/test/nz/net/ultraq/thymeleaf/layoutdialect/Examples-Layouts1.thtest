@@ -38,7 +38,7 @@
   <footer>
     <p>My footer</p>
     <p layout:fragment="custom-footer">Custom footer here</p>
-  </footer>  
+  </footer>
 </body>
 </html>
 
