@@ -3,10 +3,12 @@ Changelog
 =========
 
 ### 3.1.0
+
  - Upgrade Groovy to 4.0.0
 	 ([#224](https://github.com/ultraq/thymeleaf-layout-dialect/issues/224))
  - The `javadoc` artifact in Maven downloads now includes this project's
    groovydocs, which have been missing in recent releases
+
 
 ### 3.0.0
 
@@ -36,6 +38,7 @@ https://ultraq.github.io/thymeleaf-layout-dialect/migrating-to-3.0/
 
 
 ### 2.5.3
+
  - Upgrade Groovy to 2.5.14 
    ([#214](https://github.com/ultraq/thymeleaf-layout-dialect/issues/214))
 
@@ -83,6 +86,7 @@ https://ultraq.github.io/thymeleaf-layout-dialect/migrating-to-3.0/
 
 
 ### 2.4.0
+
  - Allow passing of values up to layout templates using fragment parameters
    ([#157](https://github.com/ultraq/thymeleaf-layout-dialect/issues/157))
  - Updated how `<head>` element sorting was done so that the `<title>` can now
