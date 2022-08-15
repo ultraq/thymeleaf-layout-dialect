@@ -2,6 +2,13 @@
 Changelog
 =========
 
+### 3.2.0
+
+ - Remove old log warning about `layout:fragment` in the `<head>` section
+   ([#225](https://github.com/ultraq/thymeleaf-layout-dialect/issues/225))
+ - Upgrade Groovy to 4.0.4
+
+
 ### 3.1.0
 
  - Upgrade Groovy to 4.0.0
