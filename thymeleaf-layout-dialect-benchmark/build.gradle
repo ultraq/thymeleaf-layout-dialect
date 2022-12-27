@@ -34,7 +34,7 @@ sourceCompatibility = 1.8
 
 dependencies {
 	implementation project(':thymeleaf-layout-dialect')
-	implementation 'org.apache.groovy:groovy:4.0.4'
+	implementation "org.apache.groovy:groovy:${groovyVersion}"
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 }

@@ -8,7 +8,7 @@ Changelog
    ([#225](https://github.com/ultraq/thymeleaf-layout-dialect/issues/225))
  - Workaround for Groovy 4 + Zulu 7 issues
    ([#230](https://github.com/ultraq/thymeleaf-layout-dialect/issues/230))
-- Upgrade Groovy to 4.0.4
+- Upgrade Groovy to 4.0.7
 
 
 ### 3.1.0

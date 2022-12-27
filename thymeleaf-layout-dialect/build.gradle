@@ -31,7 +31,7 @@ group = 'nz.net.ultraq.thymeleaf'
 year = '2012'
 
 dependencies {
-	api 'org.apache.groovy:groovy:4.0.4'
+	api "org.apache.groovy:groovy:${groovyVersion}"
 	implementation 'nz.net.ultraq.groovy:groovy-extensions:2.1.0'
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-expression-processor:3.1.0'
 	implementation 'org.thymeleaf:thymeleaf:3.0.15.RELEASE'
