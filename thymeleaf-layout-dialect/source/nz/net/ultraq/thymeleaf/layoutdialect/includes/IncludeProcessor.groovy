@@ -17,13 +17,13 @@
 package nz.net.ultraq.thymeleaf.layoutdialect.includes
 
 import nz.net.ultraq.thymeleaf.expressionprocessor.ExpressionProcessor
+import nz.net.ultraq.thymeleaf.layoutdialect.PojoLoggerFactory
 import nz.net.ultraq.thymeleaf.layoutdialect.fragments.FragmentFinder
 import nz.net.ultraq.thymeleaf.layoutdialect.fragments.FragmentParameterNamesExtractor
 import nz.net.ultraq.thymeleaf.layoutdialect.fragments.FragmentProcessor
 import nz.net.ultraq.thymeleaf.layoutdialect.models.TemplateModelFinder
 
 import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.engine.AttributeName
 import org.thymeleaf.model.IModel
@@ -43,7 +43,7 @@ import org.thymeleaf.templatemode.TemplateMode
 @Deprecated
 class IncludeProcessor extends AbstractAttributeModelProcessor {
 
-	private static final Logger logger = LoggerFactory.getLogger(IncludeProcessor)
+	private static final Logger logger = new PojoLoggerFactory().getLogger(IncludeProcessor)
 
 	private static boolean warned = false
 

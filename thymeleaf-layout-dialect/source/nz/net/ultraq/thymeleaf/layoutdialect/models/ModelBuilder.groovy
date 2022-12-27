@@ -16,8 +16,9 @@
 
 package nz.net.ultraq.thymeleaf.layoutdialect.models
 
+import nz.net.ultraq.thymeleaf.layoutdialect.PojoLoggerFactory
+
 import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.engine.ElementDefinitions
 import org.thymeleaf.engine.HTMLElementType
@@ -33,7 +34,7 @@ import org.thymeleaf.templatemode.TemplateMode
  */
 class ModelBuilder extends BuilderSupport {
 
-	private static final Logger logger = LoggerFactory.getLogger(ModelBuilder)
+	private static final Logger logger = new PojoLoggerFactory().getLogger(ModelBuilder)
 
 	@SuppressWarnings('FieldName')
 	private static final HashSet<String> encounteredVoidTags = []
