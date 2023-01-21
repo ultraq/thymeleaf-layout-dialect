@@ -6,7 +6,7 @@ Changelog
 
  - Remove old log warning about `layout:fragment` in the `<head>` section
    ([#225](https://github.com/ultraq/thymeleaf-layout-dialect/issues/225))
- - Workaround for Groovy 4 + Zulu 7 issues
+ - Workaround for Groovy 4 + Zulu 8 on Apple Silicon issues
    ([#230](https://github.com/ultraq/thymeleaf-layout-dialect/issues/230))
 - Upgrade Groovy to 4.0.7
 
