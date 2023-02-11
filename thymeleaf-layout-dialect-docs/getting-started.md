@@ -22,7 +22,7 @@ On this page
 Installation
 ------------
 
-A minimum of Java 8 and Thymeleaf 3.0 is required.  Add the layout dialect by
+A minimum of Java 8 and Thymeleaf 3.x is required.  Add the layout dialect by
 configuring Maven or your Maven-compatible dependency manager to the following
 co-ordinates:
 
@@ -40,7 +40,7 @@ Usage
 
 Configure Thymeleaf to include the layout dialect using one of the methods below:
 
- - Spring or Spring Boot 2 w/ Java/annotation config:
+ - Spring or Spring Boot w/ Java/annotation config:
    ```java
    @Bean
    public LayoutDialect layoutDialect() {
