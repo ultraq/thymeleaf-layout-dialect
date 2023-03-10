@@ -14,7 +14,8 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: ${{ matrix.java-version }}
-      - run: ./gradlew build
+#      - run: ./gradlew build
+      - run: ./gradlew :thymeleaf-layout-dialect:build
       - run: ./gradlew jacocoTestReport
       - uses: codecov/codecov-action@v3
         with:
