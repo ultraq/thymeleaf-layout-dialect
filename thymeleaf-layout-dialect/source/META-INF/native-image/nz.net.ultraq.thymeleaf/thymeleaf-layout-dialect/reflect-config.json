@@ -1,0 +1,437 @@
+[
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[
+    {"name":"getDIALECT_NAME","parameterTypes":[] }, 
+    {"name":"getDIALECT_PRECEDENCE","parameterTypes":[] }, 
+    {"name":"getDIALECT_PREFIX","parameterTypes":[] }, 
+    {"name":"getMetaClass","parameterTypes":[] }, 
+    {"name":"getProcessors","parameterTypes":["java.lang.String"] }, 
+    {"name":"setMetaClass","parameterTypes":["groovy.lang.MetaClass"] }
+  ]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.PojoLoggerFactory",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[
+    {"name":"<init>","parameterTypes":[] }, 
+    {"name":"getLogger","parameterTypes":["java.lang.Class"] }
+  ]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.context.extensions.IContextExtensions",
+  "queryAllDeclaredMethods":true,
+  "methods":[
+    {"name":"getAt","parameterTypes":["org.thymeleaf.context.IContext","java.lang.String"] }, 
+    {"name":"getPrefixForDialect","parameterTypes":["org.thymeleaf.context.IContext","java.lang.Class"] }, 
+    {"name":"putAt","parameterTypes":["org.thymeleaf.context.IContext","java.lang.String","java.lang.Object"] }
+  ]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.context.extensions.IContextExtensions$_getPrefixForDialect_closure1",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"doCall","parameterTypes":[] }]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.context.extensions.IContextExtensions$_getPrefixForDialect_closure1$_closure2",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"doCall","parameterTypes":["java.lang.Object"] }]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.decorators.DecorateProcessor",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[
+    {"name":"<init>","parameterTypes":["org.thymeleaf.templatemode.TemplateMode","java.lang.String","nz.net.ultraq.thymeleaf.layoutdialect.decorators.SortingStrategy","boolean"] }, 
+    {"name":"getPROCESSOR_NAME","parameterTypes":[] }, 
+    {"name":"getPROCESSOR_PRECEDENCE","parameterTypes":[] }
+  ]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.decorators.DecorateProcessor$_doProcess_closure1",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"doCall","parameterTypes":["java.lang.Object"] }]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.decorators.DecorateProcessor$_doProcess_closure2",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"doCall","parameterTypes":["java.lang.Object"] }]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.decorators.Decorator",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "methods":[{"name":"decorate","parameterTypes":["org.thymeleaf.model.IModel","org.thymeleaf.model.IModel"] }]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.decorators.SortingStrategy",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "methods":[{"name":"findPositionForModel","parameterTypes":["org.thymeleaf.model.IModel","org.thymeleaf.model.IModel"] }]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.decorators.TitlePatternProcessor",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[
+    {"name":"<init>","parameterTypes":["org.thymeleaf.templatemode.TemplateMode","java.lang.String"] }, 
+    {"name":"getCONTENT_TITLE_KEY","parameterTypes":[] }, 
+    {"name":"getLAYOUT_TITLE_KEY","parameterTypes":[] }, 
+    {"name":"getPROCESSOR_NAME","parameterTypes":[] }, 
+    {"name":"getPROCESSOR_PRECEDENCE","parameterTypes":[] }
+  ]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.decorators.html.HtmlBodyDecorator",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["org.thymeleaf.context.ITemplateContext"] }]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.decorators.html.HtmlDocumentDecorator",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[
+    {"name":"<init>","parameterTypes":["org.thymeleaf.context.ITemplateContext","nz.net.ultraq.thymeleaf.layoutdialect.decorators.SortingStrategy","boolean"] }, 
+    {"name":"super$2$decorate","parameterTypes":["org.thymeleaf.model.IModel","org.thymeleaf.model.IModel"] }
+  ]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.decorators.html.HtmlDocumentDecorator$_decorate_closure1",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"doCall","parameterTypes":["java.lang.Object"] }]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.decorators.html.HtmlDocumentDecorator$_decorate_closure3",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"doCall","parameterTypes":["java.lang.Object"] }]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.decorators.html.HtmlHeadDecorator",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[
+    {"name":"<init>","parameterTypes":["org.thymeleaf.context.ITemplateContext","nz.net.ultraq.thymeleaf.layoutdialect.decorators.SortingStrategy"] }, 
+    {"name":"getSortingStrategy","parameterTypes":[] }
+  ]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.decorators.html.HtmlHeadDecorator$_decorate_closure1",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"doCall","parameterTypes":["java.lang.Object"] }]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.decorators.html.HtmlHeadDecorator$_decorate_closure2",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"doCall","parameterTypes":["java.lang.Object"] }]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.decorators.html.HtmlTitleDecorator",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[
+    {"name":"<init>","parameterTypes":["org.thymeleaf.context.ITemplateContext"] }, 
+    {"name":"getContext","parameterTypes":[] }
+  ]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.decorators.html.HtmlTitleDecorator$_decorate_closure1",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"doCall","parameterTypes":["java.lang.Object"] }]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.decorators.html.HtmlTitleDecorator$_decorate_closure2",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"doCall","parameterTypes":["java.lang.Object","java.lang.Object"] }]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.decorators.strategies.AppendingStrategy",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.decorators.xml.XmlDocumentDecorator",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "methods":[{"name":"getContext","parameterTypes":[] }]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.decorators.xml.XmlDocumentDecorator$_decorate_closure1",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"doCall","parameterTypes":["java.lang.Object"] }]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.decorators.xml.XmlDocumentDecorator$_decorate_closure1$_closure3",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"doCall","parameterTypes":["java.lang.Object"] }]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.decorators.xml.XmlDocumentDecorator$_decorate_closure2",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"doCall","parameterTypes":["org.thymeleaf.model.IModel"] }]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.fragments.CollectFragmentProcessor",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[
+    {"name":"<init>","parameterTypes":["org.thymeleaf.templatemode.TemplateMode","java.lang.String"] }, 
+    {"name":"getPROCESSOR_COLLECT","parameterTypes":[] }, 
+    {"name":"getPROCESSOR_DEFINE","parameterTypes":[] }, 
+    {"name":"getPROCESSOR_PRECEDENCE","parameterTypes":[] }
+  ]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.fragments.FragmentFinder",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[
+    {"name":"<init>","parameterTypes":["java.lang.String"] }, 
+    {"name":"findFragments","parameterTypes":["org.thymeleaf.model.IModel"] }
+  ]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.fragments.FragmentProcessor",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[
+    {"name":"<init>","parameterTypes":["org.thymeleaf.templatemode.TemplateMode","java.lang.String"] }, 
+    {"name":"getPROCESSOR_NAME","parameterTypes":[] }, 
+    {"name":"getPROCESSOR_PRECEDENCE","parameterTypes":[] }
+  ]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.fragments.extensions.FragmentExtensions",
+  "queryAllDeclaredMethods":true,
+  "methods":[
+    {"name":"getFragmentCollection","parameterTypes":["org.thymeleaf.context.ITemplateContext"] }, 
+    {"name":"getFragmentCollection","parameterTypes":["org.thymeleaf.context.ITemplateContext","boolean"] }, 
+    {"name":"setLocalFragmentCollection","parameterTypes":["org.thymeleaf.processor.element.IElementModelStructureHandler","org.thymeleaf.context.ITemplateContext","java.util.Map","boolean"] }
+  ]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.fragments.extensions.FragmentExtensions$_setLocalFragmentCollection_closure1",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.includes.IncludeProcessor",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[
+    {"name":"<init>","parameterTypes":["org.thymeleaf.templatemode.TemplateMode","java.lang.String"] }, 
+    {"name":"getPROCESSOR_NAME","parameterTypes":[] }, 
+    {"name":"getPROCESSOR_PRECEDENCE","parameterTypes":[] }
+  ]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.includes.InsertProcessor",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[
+    {"name":"<init>","parameterTypes":["org.thymeleaf.templatemode.TemplateMode","java.lang.String"] }, 
+    {"name":"getPROCESSOR_NAME","parameterTypes":[] }, 
+    {"name":"getPROCESSOR_PRECEDENCE","parameterTypes":[] }
+  ]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.includes.ReplaceProcessor",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[
+    {"name":"<init>","parameterTypes":["org.thymeleaf.templatemode.TemplateMode","java.lang.String"] }, 
+    {"name":"getPROCESSOR_NAME","parameterTypes":[] }, 
+    {"name":"getPROCESSOR_PRECEDENCE","parameterTypes":[] }
+  ]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.models.AttributeMerger",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[
+    {"name":"<init>","parameterTypes":["org.thymeleaf.context.ITemplateContext"] }, 
+    {"name":"getContext","parameterTypes":[] }
+  ]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.models.AttributeMerger$_merge_closure1",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"doCall","parameterTypes":["java.lang.Object"] }]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.models.AttributeMerger$_merge_closure2",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"doCall","parameterTypes":["java.lang.Object"] }]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.models.ElementMerger",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["org.thymeleaf.context.ITemplateContext"] }]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.models.ModelMerger",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "methods":[{"name":"merge","parameterTypes":["org.thymeleaf.model.IModel","org.thymeleaf.model.IModel"] }]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.models.SimpleModelBuilder",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[
+    {"name":"<init>","parameterTypes":["org.thymeleaf.model.IModelFactory"] }, 
+    {"name":"createModel","parameterTypes":["java.lang.String","java.util.Map"] }
+  ]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.models.TemplateModelFinder",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[
+    {"name":"<init>","parameterTypes":["org.thymeleaf.context.ITemplateContext"] }, 
+    {"name":"find","parameterTypes":["java.lang.String"] }, 
+    {"name":"findTemplate","parameterTypes":["java.lang.String"] }, 
+    {"name":"findTemplate","parameterTypes":["org.thymeleaf.standard.expression.FragmentExpression"] }
+  ]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.models.extensions.ChildModelIterator",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["org.thymeleaf.model.IModel"] }]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.models.extensions.EventIterator",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["org.thymeleaf.model.IModel"] }]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.models.extensions.IAttributeExtensions",
+  "queryAllDeclaredMethods":true,
+  "methods":[{"name":"equalsName","parameterTypes":["org.thymeleaf.model.IAttribute","java.lang.String","java.lang.String"] }]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.models.extensions.ICloseElementTagExtensions",
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.models.extensions.IModelExtensions",
+  "queryAllDeclaredMethods":true,
+  "methods":[
+    {"name":"asBoolean","parameterTypes":["org.thymeleaf.model.IModel"] }, 
+    {"name":"childModelIterator","parameterTypes":["org.thymeleaf.model.IModel"] }, 
+    {"name":"find","parameterTypes":["org.thymeleaf.model.IModel","groovy.lang.Closure"] }, 
+    {"name":"findIndexOf","parameterTypes":["org.thymeleaf.model.IModel","groovy.lang.Closure"] }, 
+    {"name":"findIndexOfModel","parameterTypes":["org.thymeleaf.model.IModel","org.thymeleaf.model.IModel"] }, 
+    {"name":"findModel","parameterTypes":["org.thymeleaf.model.IModel","groovy.lang.Closure"] }, 
+    {"name":"first","parameterTypes":["org.thymeleaf.model.IModel"] }, 
+    {"name":"getModel","parameterTypes":["org.thymeleaf.model.IModel","int"] }, 
+    {"name":"insertModelWithWhitespace","parameterTypes":["org.thymeleaf.model.IModel","int","org.thymeleaf.model.IModel","org.thymeleaf.model.IModelFactory"] }, 
+    {"name":"isElement","parameterTypes":["org.thymeleaf.model.IModel"] }, 
+    {"name":"isWhitespace","parameterTypes":["org.thymeleaf.model.IModel"] }, 
+    {"name":"iterator","parameterTypes":["org.thymeleaf.model.IModel"] }, 
+    {"name":"removeAllModels","parameterTypes":["org.thymeleaf.model.IModel","groovy.lang.Closure"] }, 
+    {"name":"removeFirst","parameterTypes":["org.thymeleaf.model.IModel"] }, 
+    {"name":"removeLast","parameterTypes":["org.thymeleaf.model.IModel"] }, 
+    {"name":"removeModel","parameterTypes":["org.thymeleaf.model.IModel","int"] }, 
+    {"name":"replaceModel","parameterTypes":["org.thymeleaf.model.IModel","int","org.thymeleaf.model.IModel"] }, 
+    {"name":"sizeOfModelAt","parameterTypes":["org.thymeleaf.model.IModel","int"] }
+  ]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.models.extensions.IModelExtensions$_findIndexOfModel_closure2",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"doCall","parameterTypes":["java.lang.Object"] }]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.models.extensions.IProcessableElementTagExtensions",
+  "queryAllDeclaredMethods":true,
+  "methods":[{"name":"equalsIgnoreXmlnsAndWith","parameterTypes":["org.thymeleaf.model.IProcessableElementTag","org.thymeleaf.model.IProcessableElementTag","org.thymeleaf.context.IContext"] }]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.models.extensions.IStandaloneElementTagExtensions",
+  "queryAllDeclaredMethods":true
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.models.extensions.ITemplateEventExtensions",
+  "queryAllDeclaredMethods":true,
+  "methods":[
+    {"name":"isOpeningElement","parameterTypes":["org.thymeleaf.model.ITemplateEvent"] }, 
+    {"name":"isOpeningElementOf","parameterTypes":["org.thymeleaf.model.ITemplateEvent","java.lang.String"] }, 
+    {"name":"isWhitespace","parameterTypes":["org.thymeleaf.model.ITemplateEvent"] }
+  ]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.models.extensions.ITextExtensions",
+  "queryAllDeclaredMethods":true,
+  "methods":[{"name":"isWhitespace","parameterTypes":["org.thymeleaf.model.IText"] }]
+}
+]

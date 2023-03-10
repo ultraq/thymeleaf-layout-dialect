@@ -33,7 +33,7 @@ year = '2012'
 dependencies {
 	api "org.apache.groovy:groovy:${groovyVersion}"
 	implementation 'nz.net.ultraq.groovy:groovy-extensions:2.1.0'
-	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-expression-processor:3.1.0'
+	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-expression-processor:3.1.1-SNAPSHOT'
 	implementation 'org.thymeleaf:thymeleaf:3.0.15.RELEASE'
 	implementation 'org.slf4j:slf4j-api:1.7.36'
 

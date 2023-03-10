@@ -2,13 +2,21 @@
 Changelog
 =========
 
+### 3.2.1
+
+ - Upgrade Groovy to 4.0.9
+ - Bundle native-image metadata for developers creating GraalVM native images
+	 ([#232](https://github.com/ultraq/thymeleaf-layout-dialect/issues/232))
+ - Updated [thymeleaf-expression-processor](https://github.com/ultraq/thymeleaf-expression-processor),
+   which also contains GraalVM native-image metadata
+
 ### 3.2.0
 
  - Remove old log warning about `layout:fragment` in the `<head>` section
    ([#225](https://github.com/ultraq/thymeleaf-layout-dialect/issues/225))
  - Workaround for Groovy 4 + Zulu 8 on Apple Silicon issues
    ([#230](https://github.com/ultraq/thymeleaf-layout-dialect/issues/230))
-- Upgrade Groovy to 4.0.7
+ - Upgrade Groovy to 4.0.7
 
 
 ### 3.1.0
