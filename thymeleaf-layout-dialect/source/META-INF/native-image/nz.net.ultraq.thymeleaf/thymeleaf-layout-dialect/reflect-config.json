@@ -159,6 +159,7 @@
   "queryAllPublicMethods":true,
   "queryAllDeclaredConstructors":true,
   "methods":[
+    {"name":"$getLookup","parameterTypes":[] }, 
     {"name":"<init>","parameterTypes":["org.thymeleaf.context.ITemplateContext"] }, 
     {"name":"getContext","parameterTypes":[] }
   ]
@@ -174,6 +175,18 @@
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true,
   "methods":[{"name":"doCall","parameterTypes":["java.lang.Object","java.lang.Object"] }]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.decorators.html.HtmlTitleDecorator$_decorate_closure2$_closure6",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"doCall","parameterTypes":["java.lang.Object"] }]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.decorators.html.HtmlTitleDecorator$_decorate_closure3",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"doCall","parameterTypes":[] }]
 },
 {
   "name":"nz.net.ultraq.thymeleaf.layoutdialect.decorators.strategies.AppendingStrategy",
@@ -233,6 +246,22 @@
   ]
 },
 {
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.fragments.FragmentParameterVariableUpdater",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[
+    {"name":"<init>","parameterTypes":["java.lang.String","org.thymeleaf.context.ITemplateContext"] }, 
+    {"name":"updateLocalVariables","parameterTypes":["org.thymeleaf.standard.expression.FragmentExpression","org.thymeleaf.model.IModel","org.thymeleaf.processor.element.IElementModelStructureHandler"] }
+  ]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.fragments.FragmentParameterVariableUpdater$_updateLocalVariables_closure2",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
+},
+{
   "name":"nz.net.ultraq.thymeleaf.layoutdialect.fragments.FragmentProcessor",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
@@ -250,13 +279,15 @@
   "methods":[
     {"name":"getFragmentCollection","parameterTypes":["org.thymeleaf.context.ITemplateContext"] }, 
     {"name":"getFragmentCollection","parameterTypes":["org.thymeleaf.context.ITemplateContext","boolean"] }, 
+    {"name":"setLocalFragmentCollection","parameterTypes":["org.thymeleaf.processor.element.IElementModelStructureHandler","org.thymeleaf.context.ITemplateContext","java.util.Map"] }, 
     {"name":"setLocalFragmentCollection","parameterTypes":["org.thymeleaf.processor.element.IElementModelStructureHandler","org.thymeleaf.context.ITemplateContext","java.util.Map","boolean"] }
   ]
 },
 {
   "name":"nz.net.ultraq.thymeleaf.layoutdialect.fragments.extensions.FragmentExtensions$_setLocalFragmentCollection_closure1",
   "queryAllDeclaredMethods":true,
-  "queryAllDeclaredConstructors":true
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"doCall","parameterTypes":["java.lang.Object","java.lang.Object","java.lang.Object"] }]
 },
 {
   "name":"nz.net.ultraq.thymeleaf.layoutdialect.includes.IncludeProcessor",
@@ -269,6 +300,17 @@
     {"name":"getPROCESSOR_NAME","parameterTypes":[] }, 
     {"name":"getPROCESSOR_PRECEDENCE","parameterTypes":[] }
   ]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.includes.IncludeProcessor$_doProcess_closure1",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"doCall","parameterTypes":["java.lang.Object"] }]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.includes.IncludeProcessor$_doProcess_closure3",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true
 },
 {
   "name":"nz.net.ultraq.thymeleaf.layoutdialect.includes.InsertProcessor",
@@ -326,22 +368,30 @@
   "methods":[{"name":"<init>","parameterTypes":["org.thymeleaf.context.ITemplateContext"] }]
 },
 {
-  "name":"nz.net.ultraq.thymeleaf.layoutdialect.models.ModelMerger",
-  "allDeclaredFields":true,
-  "queryAllDeclaredMethods":true,
-  "queryAllPublicMethods":true,
-  "methods":[{"name":"merge","parameterTypes":["org.thymeleaf.model.IModel","org.thymeleaf.model.IModel"] }]
-},
-{
-  "name":"nz.net.ultraq.thymeleaf.layoutdialect.models.SimpleModelBuilder",
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.models.ModelBuilder",
   "allDeclaredFields":true,
   "queryAllDeclaredMethods":true,
   "queryAllPublicMethods":true,
   "queryAllDeclaredConstructors":true,
   "methods":[
-    {"name":"<init>","parameterTypes":["org.thymeleaf.model.IModelFactory"] }, 
-    {"name":"createModel","parameterTypes":["java.lang.String","java.util.Map"] }
+    {"name":"$getLookup","parameterTypes":[] }, 
+    {"name":"<init>","parameterTypes":["org.thymeleaf.context.ITemplateContext"] }, 
+    {"name":"build","parameterTypes":["groovy.lang.Closure"] }, 
+    {"name":"createNode","parameterTypes":["java.lang.Object","java.util.Map","java.lang.Object"] }
   ]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.models.ModelBuilder$_createNode_closure1",
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"doCall","parameterTypes":["java.lang.Object"] }]
+},
+{
+  "name":"nz.net.ultraq.thymeleaf.layoutdialect.models.ModelMerger",
+  "allDeclaredFields":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllPublicMethods":true,
+  "methods":[{"name":"merge","parameterTypes":["org.thymeleaf.model.IModel","org.thymeleaf.model.IModel"] }]
 },
 {
   "name":"nz.net.ultraq.thymeleaf.layoutdialect.models.TemplateModelFinder",
@@ -352,6 +402,9 @@
   "methods":[
     {"name":"<init>","parameterTypes":["org.thymeleaf.context.ITemplateContext"] }, 
     {"name":"find","parameterTypes":["java.lang.String"] }, 
+    {"name":"find","parameterTypes":["java.lang.String","java.lang.String"] }, 
+    {"name":"findFragment","parameterTypes":["java.lang.String","java.lang.String","java.lang.String"] }, 
+    {"name":"findFragment","parameterTypes":["org.thymeleaf.standard.expression.FragmentExpression"] }, 
     {"name":"findTemplate","parameterTypes":["java.lang.String"] }, 
     {"name":"findTemplate","parameterTypes":["org.thymeleaf.standard.expression.FragmentExpression"] }
   ]
@@ -397,12 +450,15 @@
     {"name":"isElement","parameterTypes":["org.thymeleaf.model.IModel"] }, 
     {"name":"isWhitespace","parameterTypes":["org.thymeleaf.model.IModel"] }, 
     {"name":"iterator","parameterTypes":["org.thymeleaf.model.IModel"] }, 
+    {"name":"last","parameterTypes":["org.thymeleaf.model.IModel"] }, 
     {"name":"removeAllModels","parameterTypes":["org.thymeleaf.model.IModel","groovy.lang.Closure"] }, 
+    {"name":"removeChildren","parameterTypes":["org.thymeleaf.model.IModel"] }, 
     {"name":"removeFirst","parameterTypes":["org.thymeleaf.model.IModel"] }, 
     {"name":"removeLast","parameterTypes":["org.thymeleaf.model.IModel"] }, 
     {"name":"removeModel","parameterTypes":["org.thymeleaf.model.IModel","int"] }, 
     {"name":"replaceModel","parameterTypes":["org.thymeleaf.model.IModel","int","org.thymeleaf.model.IModel"] }, 
-    {"name":"sizeOfModelAt","parameterTypes":["org.thymeleaf.model.IModel","int"] }
+    {"name":"sizeOfModelAt","parameterTypes":["org.thymeleaf.model.IModel","int"] }, 
+    {"name":"trim","parameterTypes":["org.thymeleaf.model.IModel"] }
   ]
 },
 {
