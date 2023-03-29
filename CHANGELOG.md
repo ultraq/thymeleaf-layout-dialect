@@ -4,7 +4,7 @@ Changelog
 
 ### 3.2.1
 
- - Upgrade Groovy to 4.0.9
+ - Upgrade Groovy to 4.0.10
  - Bundle native-image metadata for developers creating GraalVM native images
 	 ([#232](https://github.com/ultraq/thymeleaf-layout-dialect/issues/232))
  - Updated [thymeleaf-expression-processor](https://github.com/ultraq/thymeleaf-expression-processor),

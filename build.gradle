@@ -18,6 +18,6 @@ allprojects {
 	version = '3.2.1-SNAPSHOT'
 
 	ext {
-		groovyVersion = '4.0.9'
+		groovyVersion = '4.0.10'
 	}
 }
