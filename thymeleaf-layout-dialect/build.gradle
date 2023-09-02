@@ -34,10 +34,10 @@ dependencies {
 	api "org.apache.groovy:groovy:${groovyVersion}"
 	implementation 'nz.net.ultraq.groovy:groovy-extensions:2.1.0'
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-expression-processor:3.1.1'
-	implementation 'org.thymeleaf:thymeleaf:3.0.15.RELEASE'
+	implementation "org.thymeleaf:thymeleaf:${thymeleafVersion}"
 	implementation 'org.slf4j:slf4j-api:1.7.36'
 
-	codenarc 'org.codenarc:CodeNarc-Groovy4:3.1.0'
+	codenarc 'org.codenarc:CodeNarc:3.3.0-groovy-4.0'
 	testImplementation 'nz.net.ultraq.thymeleaf:thymeleaf-testing-junit:5.1.0'
 	testImplementation 'org.reflections:reflections:0.10.2'
 	testImplementation 'org.spockframework:spock-core:2.3-groovy-4.0'
@@ -50,7 +50,7 @@ test {
 }
 
 groovydoc {
-	link('https://www.thymeleaf.org/apidocs/thymeleaf/3.0.15.RELEASE/', 'org.thymeleaf.')
+	link("https://www.thymeleaf.org/apidocs/thymeleaf/${thymeleafVersion}/", 'org.thymeleaf.')
 }
 
 jar {

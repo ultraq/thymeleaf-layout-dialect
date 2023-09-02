@@ -18,6 +18,7 @@ allprojects {
 	version = '3.2.1'
 
 	ext {
-		groovyVersion = '4.0.10'
+		groovyVersion = '4.0.14'
+		thymeleafVersion = '3.0.15.RELEASE'
 	}
 }
