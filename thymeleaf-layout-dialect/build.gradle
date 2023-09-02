@@ -53,7 +53,10 @@ java {
 
 test {
 	useJUnitPlatform()
-	jvmArgs '--add-opens=java.base/java.lang=ALL-UNNAMED'
+	// On CI, when running Java LTS versions > 8
+	if (JavaVersion.current() != JavaVersion.VERSION_1_8) {
+		jvmArgs '--add-opens=java.base/java.lang=ALL-UNNAMED'
+	}
 }
 
 groovydoc {
