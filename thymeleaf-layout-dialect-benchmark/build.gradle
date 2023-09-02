@@ -29,8 +29,10 @@ apply plugin: 'io.spring.dependency-management'
 apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/4.3.1/gradle-support.gradle'
 
 description = 'A basic web application to test the performance of the Thymeleaf Layout Dialect'
-archivesBaseName = 'thymeleaf-layout-dialect-benchmark'
-sourceCompatibility = 17
+
+base {
+	archivesName = 'thymeleaf-layout-dialect-benchmark'
+}
 
 dependencies {
 	implementation project(':thymeleaf-layout-dialect')
@@ -39,16 +41,22 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 }
 
-task startWebApp(type: ExecFork, dependsOn: build) {
+java {
+	sourceCompatibility = JavaVersion.VERSION_17
+}
+
+tasks.register('startWebApp', ExecFork) {
+	dependsOn build
 	executable = Jvm.current().javaExecutable.absolutePath
 	args = [
-	  '-jar', "build/libs/thymeleaf-layout-dialect-benchmark-${version}.jar",
+		'-jar', "build/libs/thymeleaf-layout-dialect-benchmark-${version}.jar",
 		'-Xmx512m'
 	]
 	waitForOutput = 'Started BenchmarkApplication'
 }
 
-task benchmark(type: Exec, dependsOn: startWebApp) {
+tasks.register('benchmark', Exec) {
+	dependsOn startWebApp
 	def os = OperatingSystem.current()
 	def dateTimeString = LocalDateTime.now().format('yyyy-MM-dd_HHmmss')
 	def resultsDir = "${buildDir}/results/${version}"

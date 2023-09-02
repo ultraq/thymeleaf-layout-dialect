@@ -26,7 +26,6 @@ apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/4.3.1/gradl
 apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/4.3.1/maven-publish-support.gradle'
 
 description = 'A dialect for Thymeleaf that allows you to use layout/decorator templates to style your content.'
-sourceCompatibility = 1.8
 group = 'nz.net.ultraq.thymeleaf'
 year = '2012'
 
@@ -38,15 +37,23 @@ dependencies {
 	implementation 'org.slf4j:slf4j-api:1.7.36'
 
 	codenarc 'org.codenarc:CodeNarc:3.3.0-groovy-4.0'
+	testImplementation 'net.bytebuddy:byte-buddy:1.14.7'
 	testImplementation 'nz.net.ultraq.thymeleaf:thymeleaf-testing-junit:5.1.0'
+	testImplementation 'org.objenesis:objenesis:3.3'
 	testImplementation 'org.reflections:reflections:0.10.2'
 	testImplementation 'org.spockframework:spock-core:2.3-groovy-4.0'
 	testImplementation 'org.thymeleaf:thymeleaf-testing:3.0.4.RELEASE'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	testRuntimeOnly 'org.slf4j:slf4j-simple:1.7.36'
+}
+
+java {
+	sourceCompatibility = JavaVersion.VERSION_1_8
 }
 
 test {
 	useJUnitPlatform()
+	jvmArgs '--add-opens=java.base/java.lang=ALL-UNNAMED'
 }
 
 groovydoc {

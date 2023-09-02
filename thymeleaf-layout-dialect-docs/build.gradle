@@ -20,24 +20,19 @@ plugins {
 
 description = 'Documentation for the Thymeleaf Layout Dialect'
 
-task copyGroovyDocs(
-	type: Copy,
-	dependsOn: ':thymeleaf-layout-dialect:groovydoc'
-) {
+tasks.register('copyGroovyDocs', Copy) {
+	dependsOn ':thymeleaf-layout-dialect:groovydoc'
 	from '../thymeleaf-layout-dialect/build/docs/groovydoc/'
 	into './groovydoc'
 }
 
-task serveDocs(
-	type: Exec,
-	dependsOn: copyGroovyDocs
-) {
+tasks.register('serveDocs', Exec) {
+	dependsOn copyGroovyDocs
 	commandLine 'bundle', 'exec', 'jekyll', 'serve', '--baseurl', ""
 }
 
-task publishDocs(
-	dependsOn: copyGroovyDocs
-) {
+tasks.register('publishDocs') {
+	dependsOn copyGroovyDocs
 	doLast {
 		execute(["git", "init"])
 		execute(["git", "checkout", "-b", "gh-pages"])
@@ -68,9 +63,7 @@ def execute(command) {
 	}
 }
 
-task cleanDocs(
-	type: Exec
-) {
+tasks.register('cleanDocs', Exec) {
 	commandLine 'bundle', 'exec', 'jekyll', 'clean'
 }
 
