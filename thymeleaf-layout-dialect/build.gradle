@@ -29,6 +29,12 @@ description = 'A dialect for Thymeleaf that allows you to use layout/decorator t
 group = 'nz.net.ultraq.thymeleaf'
 year = '2012'
 
+configurations.all {
+	resolutionStrategy.dependencySubstitution {
+		substitute module('org.mockito:mockito-core') using module('org.mockito:mockito-core:4.11.0') because 'Still supporting Java 8'
+	}
+}
+
 dependencies {
 	api "org.apache.groovy:groovy:${groovyVersion}"
 	implementation 'nz.net.ultraq.groovy:groovy-extensions:2.1.0'
