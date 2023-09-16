@@ -2,6 +2,12 @@
 Changelog
 =========
 
+### 3.3.0
+
+ - Upgrade Groovy to 4.0.14
+ - Upgrade Thymeleaf to 3.1.2.RELEASE
+
+
 ### 3.2.1
 
  - Upgrade Groovy to 4.0.10
@@ -9,6 +15,7 @@ Changelog
 	 ([#232](https://github.com/ultraq/thymeleaf-layout-dialect/issues/232))
  - Updated [thymeleaf-expression-processor](https://github.com/ultraq/thymeleaf-expression-processor),
    which also contains GraalVM native-image metadata
+
 
 ### 3.2.0
 

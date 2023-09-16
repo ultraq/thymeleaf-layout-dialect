@@ -32,19 +32,19 @@ year = '2012'
 dependencies {
 	api "org.apache.groovy:groovy:${groovyVersion}"
 	implementation 'nz.net.ultraq.groovy:groovy-extensions:2.1.0'
-	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-expression-processor:3.1.1'
+	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-expression-processor:3.2.0-SNAPSHOT'
 	implementation "org.thymeleaf:thymeleaf:${thymeleafVersion}"
-	implementation 'org.slf4j:slf4j-api:1.7.36'
+	implementation 'org.slf4j:slf4j-api:2.0.9'
 
 	codenarc 'org.codenarc:CodeNarc:3.3.0-groovy-4.0'
 	testImplementation 'net.bytebuddy:byte-buddy:1.14.7'
-	testImplementation 'nz.net.ultraq.thymeleaf:thymeleaf-testing-junit:5.1.0'
+	testImplementation 'nz.net.ultraq.thymeleaf:thymeleaf-testing-junit:5.2.0-SNAPSHOT'
 	testImplementation 'org.objenesis:objenesis:3.3'
 	testImplementation 'org.reflections:reflections:0.10.2'
 	testImplementation 'org.spockframework:spock-core:2.3-groovy-4.0'
-	testImplementation 'org.thymeleaf:thymeleaf-testing:3.0.4.RELEASE'
+	testImplementation "org.thymeleaf.testing:thymeleaf-testing:${thymeleafVersion}"
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-	testRuntimeOnly 'org.slf4j:slf4j-simple:1.7.36'
+	testRuntimeOnly 'org.slf4j:slf4j-simple:2.0.9'
 }
 
 java {
