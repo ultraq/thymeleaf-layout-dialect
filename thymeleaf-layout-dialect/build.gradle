@@ -38,13 +38,13 @@ configurations.all {
 dependencies {
 	api "org.apache.groovy:groovy:${groovyVersion}"
 	implementation 'nz.net.ultraq.groovy:groovy-extensions:2.1.0'
-	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-expression-processor:3.2.0-SNAPSHOT'
+	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-expression-processor:3.2.0'
 	implementation "org.thymeleaf:thymeleaf:${thymeleafVersion}"
 	implementation 'org.slf4j:slf4j-api:2.0.9'
 
 	codenarc 'org.codenarc:CodeNarc:3.3.0-groovy-4.0'
 	testImplementation 'net.bytebuddy:byte-buddy:1.14.7'
-	testImplementation 'nz.net.ultraq.thymeleaf:thymeleaf-testing-junit:5.2.0-SNAPSHOT'
+	testImplementation 'nz.net.ultraq.thymeleaf:thymeleaf-testing-junit:5.2.0'
 	testImplementation 'org.objenesis:objenesis:3.3'
 	testImplementation 'org.reflections:reflections:0.10.2'
 	testImplementation 'org.spockframework:spock-core:2.3-groovy-4.0'
