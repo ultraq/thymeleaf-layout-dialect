@@ -6,6 +6,7 @@ Changelog
 
  - Upgrade Groovy to 4.0.14
  - Upgrade Thymeleaf to 3.1.2.RELEASE
+ - Upgrade SLF4J to 2.0.9
 
 
 ### 3.2.1
