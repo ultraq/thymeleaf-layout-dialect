@@ -61,10 +61,6 @@ java {
 
 test {
 	useJUnitPlatform()
-	// On CI, when running Java LTS versions > 8
-	if (JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_11)) {
-		jvmArgs '--add-opens=java.base/java.lang=ALL-UNNAMED'
-	}
 }
 
 groovydoc {
