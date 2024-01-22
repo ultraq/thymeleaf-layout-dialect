@@ -1,12 +1,12 @@
-/* 
+/*
  * Copyright 2012, Emanuel Rabina (http://www.ultraq.net.nz/)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,6 +15,8 @@
  */
 
 package nz.net.ultraq.thymeleaf.layoutdialect.decorators
+
+import nz.net.ultraq.thymeleaf.expressionprocessor.ExpressionProcessor
 
 import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.engine.AttributeName
@@ -30,7 +32,7 @@ import java.util.regex.Pattern
  * specifying a pattern with some special tokens.  This can be used to extend
  * the layout's title with the content's one, instead of simply overriding
  * it.
- * 
+ *
  * @author Emanuel Rabina
  */
 class TitlePatternProcessor extends AbstractAttributeTagProcessor {
@@ -42,24 +44,30 @@ class TitlePatternProcessor extends AbstractAttributeTagProcessor {
 	static final String PROCESSOR_NAME = 'title-pattern'
 	static final int PROCESSOR_PRECEDENCE = 1
 
-	static final String CONTENT_TITLE_KEY = 'LayoutDialect::ContentTitle'
-	static final String LAYOUT_TITLE_KEY  = 'LayoutDialect::LayoutTitle'
+	static final String CONTENT_TITLE_KEY = 'layoutDialectContentTitle'
+	static final String LAYOUT_TITLE_KEY = 'layoutDialectLayoutTitle'
+	static final String CONTENT_TITLE_KEY_OLD = 'LayoutDialect::ContentTitle'
+	static final String LAYOUT_TITLE_KEY_OLD = 'LayoutDialect::LayoutTitle'
+
+	final boolean newTitleTokens
 
 	/**
 	 * Constructor, sets this processor to work on the 'title-pattern' attribute.
-	 * 
+	 *
 	 * @param templateMode
 	 * @param dialectPrefix
 	 */
-	TitlePatternProcessor(TemplateMode templateMode, String dialectPrefix) {
+	TitlePatternProcessor(TemplateMode templateMode, String dialectPrefix, boolean newTitleTokens) {
 
 		super(templateMode, dialectPrefix, null, false, PROCESSOR_NAME, true, PROCESSOR_PRECEDENCE, true)
+
+		this.newTitleTokens = newTitleTokens
 	}
 
 	/**
 	 * Process the {@code layout:title-pattern} directive, replaces the title text
 	 * with the titles from the content and layout pages.
-	 * 
+	 *
 	 * @param context
 	 * @param tag
 	 * @param attributeName
@@ -76,15 +84,21 @@ class TitlePatternProcessor extends AbstractAttributeTagProcessor {
 			throw new IllegalArgumentException("${attributeName} processor should only appear in a <title> element")
 		}
 
-		def titlePattern = attributeValue
 		def modelFactory = context.modelFactory
+		def titleModel = modelFactory.createModel()
 
-		def contentTitle = context[CONTENT_TITLE_KEY]
-		def layoutTitle = context[LAYOUT_TITLE_KEY]
+		// TODO: Experimental title tokens branch
+		if (newTitleTokens) {
+			structureHandler.setBody(new ExpressionProcessor(context).processAsString(attributeValue), false)
+			return
+		}
+
+		def contentTitle = context[CONTENT_TITLE_KEY_OLD]
+		def layoutTitle = context[LAYOUT_TITLE_KEY_OLD]
 
 		// Break the title pattern up into tokens to map to their respective models
-		def titleModel = modelFactory.createModel()
 		if (layoutTitle && contentTitle) {
+			def titlePattern = attributeValue
 			def matcher = TOKEN_PATTERN.matcher(titlePattern)
 			while (matcher.find()) {
 				def text = titlePattern.substring(matcher.regionStart(), matcher.start())

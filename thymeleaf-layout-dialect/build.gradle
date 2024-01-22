@@ -21,6 +21,7 @@ plugins {
 	id 'jacoco'
 	id 'distribution'
 	id 'maven-publish'
+	id 'idea'
 }
 apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/4.3.1/gradle-support.gradle'
 apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/4.3.1/maven-publish-support.gradle'

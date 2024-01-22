@@ -1,12 +1,12 @@
-/* 
+/*
  * Copyright 2012, Emanuel Rabina (http://www.ultraq.net.nz/)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -34,7 +34,7 @@ import org.thymeleaf.templatemode.TemplateMode
 /**
  * A dialect for Thymeleaf that lets you build layouts and reusable templates in
  * order to improve code reuse
- * 
+ *
  * @author Emanuel Rabina
  */
 class LayoutDialect extends AbstractProcessorDialect {
@@ -43,28 +43,34 @@ class LayoutDialect extends AbstractProcessorDialect {
 	static final String DIALECT_PREFIX = 'layout'
 	static final int DIALECT_PRECEDENCE = 10
 
-	private final boolean autoHeadMerging
 	private final SortingStrategy sortingStrategy
+	private final boolean autoHeadMerging
+	private final boolean newTitleTokens
 
 	/**
 	 * Constructor, configure the layout dialect.
-	 * 
+	 *
 	 * @param sortingStrategy
 	 * @param autoHeadMerging
 	 *   Experimental option, set to {@code false} to skip the automatic merging
 	 *   of an HTML {@code <head>} section.
+	 * @param newTitleTokens
+	 *   Experimental option, set to {@code true} to use standard Thymeleaf
+	 *   expression syntax for title patterns.
 	 */
-	LayoutDialect(SortingStrategy sortingStrategy = new AppendingStrategy(), boolean autoHeadMerging = true) {
+	LayoutDialect(SortingStrategy sortingStrategy = new AppendingStrategy(), boolean autoHeadMerging = true,
+		boolean newTitleTokens = false) {
 
 		super(DIALECT_NAME, DIALECT_PREFIX, DIALECT_PRECEDENCE)
 
 		this.sortingStrategy = sortingStrategy
 		this.autoHeadMerging = autoHeadMerging
+		this.newTitleTokens = newTitleTokens
 	}
 
 	/**
 	 * Returns the layout dialect's processors.
-	 * 
+	 *
 	 * @param dialectPrefix
 	 * @return All of the processors for HTML and XML template modes.
 	 */
@@ -80,7 +86,7 @@ class LayoutDialect extends AbstractProcessorDialect {
 			new ReplaceProcessor(TemplateMode.HTML, dialectPrefix),
 			new FragmentProcessor(TemplateMode.HTML, dialectPrefix),
 			new CollectFragmentProcessor(TemplateMode.HTML, dialectPrefix),
-			new TitlePatternProcessor(TemplateMode.HTML, dialectPrefix),
+			new TitlePatternProcessor(TemplateMode.HTML, dialectPrefix, newTitleTokens),
 
 			// Processors available in the XML template mode
 			new StandardXmlNsTagProcessor(TemplateMode.XML, dialectPrefix),

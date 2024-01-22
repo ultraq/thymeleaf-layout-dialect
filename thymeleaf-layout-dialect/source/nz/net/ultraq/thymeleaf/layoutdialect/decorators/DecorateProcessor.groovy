@@ -1,12 +1,12 @@
-/* 
+/*
  * Copyright 2012, Emanuel Rabina (http://www.ultraq.net.nz/)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,6 +21,7 @@ import nz.net.ultraq.thymeleaf.layoutdialect.decorators.html.HtmlDocumentDecorat
 import nz.net.ultraq.thymeleaf.layoutdialect.decorators.xml.XmlDocumentDecorator
 import nz.net.ultraq.thymeleaf.layoutdialect.fragments.FragmentFinder
 import nz.net.ultraq.thymeleaf.layoutdialect.models.TemplateModelFinder
+import nz.net.ultraq.thymeleaf.layoutdialect.models.TitleExtractor
 
 import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.engine.AttributeName
@@ -32,7 +33,7 @@ import org.thymeleaf.templatemode.TemplateMode
 
 /**
  * Specifies the name of the template to decorate using the current template.
- * 
+ *
  * @author Emanuel Rabina
  */
 class DecorateProcessor extends AbstractAttributeModelProcessor {
@@ -40,13 +41,13 @@ class DecorateProcessor extends AbstractAttributeModelProcessor {
 	static final String PROCESSOR_NAME = 'decorate'
 	static final int PROCESSOR_PRECEDENCE = 0
 
-	private final boolean autoHeadMerging
 	private final SortingStrategy sortingStrategy
+	private final boolean autoHeadMerging
 
 	/**
 	 * Constructor, configure this processor to work on the 'decorate' attribute
 	 * and to use the given sorting strategy.
-	 * 
+	 *
 	 * @param templateMode
 	 * @param dialectPrefix
 	 * @param sortingStrategy
@@ -61,7 +62,7 @@ class DecorateProcessor extends AbstractAttributeModelProcessor {
 	/**
 	 * Constructor, configurable processor name for the purposes of the
 	 * deprecated {@code layout:decorator} alias.
-	 * 
+	 *
 	 * @param templateMode
 	 * @param dialectPrefix
 	 * @param sortingStrategy
@@ -80,7 +81,7 @@ class DecorateProcessor extends AbstractAttributeModelProcessor {
 	/**
 	 * Locates the template to decorate and, once decorated, inserts it into the
 	 * processing chain.
-	 * 
+	 *
 	 * @param context
 	 * @param model
 	 * @param attributeName
@@ -116,6 +117,11 @@ class DecorateProcessor extends AbstractAttributeModelProcessor {
 		def decorateTemplate = templateModelFinder.findTemplate(decorateTemplateExpression)
 		def decorateTemplateData = decorateTemplate.templateData
 		decorateTemplate = decorateTemplate.cloneModel()
+
+		// Extract titles from content and layout templates and save to the template context
+		def titleExtractor = new TitleExtractor(context)
+		titleExtractor.extract(contentTemplate, TitlePatternProcessor.CONTENT_TITLE_KEY)
+		titleExtractor.extract(decorateTemplate, TitlePatternProcessor.LAYOUT_TITLE_KEY)
 
 		// Gather all fragment parts from this page to apply to the new document
 		// after decoration has taken place
