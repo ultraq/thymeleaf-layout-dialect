@@ -80,7 +80,7 @@ class LayoutDialect extends AbstractProcessorDialect {
 		return [
 			// Processors available in the HTML template mode
 			new StandardXmlNsTagProcessor(TemplateMode.HTML, dialectPrefix),
-			new DecorateProcessor(TemplateMode.HTML, dialectPrefix, sortingStrategy, autoHeadMerging),
+			new DecorateProcessor(TemplateMode.HTML, dialectPrefix, sortingStrategy, autoHeadMerging, newTitleTokens),
 			new IncludeProcessor(TemplateMode.HTML, dialectPrefix),
 			new InsertProcessor(TemplateMode.HTML, dialectPrefix),
 			new ReplaceProcessor(TemplateMode.HTML, dialectPrefix),
@@ -90,7 +90,7 @@ class LayoutDialect extends AbstractProcessorDialect {
 
 			// Processors available in the XML template mode
 			new StandardXmlNsTagProcessor(TemplateMode.XML, dialectPrefix),
-			new DecorateProcessor(TemplateMode.XML, dialectPrefix, sortingStrategy, autoHeadMerging),
+			new DecorateProcessor(TemplateMode.XML, dialectPrefix, sortingStrategy, autoHeadMerging, newTitleTokens),
 			new IncludeProcessor(TemplateMode.XML, dialectPrefix),
 			new InsertProcessor(TemplateMode.XML, dialectPrefix),
 			new ReplaceProcessor(TemplateMode.XML, dialectPrefix),

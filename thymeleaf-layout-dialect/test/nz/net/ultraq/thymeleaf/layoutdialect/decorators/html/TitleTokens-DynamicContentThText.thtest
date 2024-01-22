@@ -3,15 +3,20 @@
 
 %TEMPLATE_MODE HTML
 
+%CONTEXT
+layoutTitle  = "My website"
+contentTitle = "My blog"
+
 %INPUT
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{Layout}">
 <head>
-	<title layout:title-pattern="|${layoutDialectContentTitle} - ${layoutDialectLayoutTitle}|">Content title</title>
+	<title th:text="${contentTitle}" layout:title-pattern="|${layoutDialectContentTitle} - ${layoutDialectLayoutTitle}|">Content title</title>
 </head>
 <body>
   <p th:text="${layoutDialectContentTitle}">I can use the content title here too!</p>
+  <p th:text="${layoutDialectLayoutTitle}">I can use the layout title here too!</p>
 </body>
 </html>
 
@@ -19,7 +24,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Layout title</title>
+	<title th:text="${layoutTitle}">Layout title</title>
 </head>
 </html>
 
@@ -27,9 +32,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Content title - Layout title</title>
+	<title>My blog - My website</title>
 </head>
 <body>
-  <p>Content title</p>
+  <p>My blog</p>
+  <p>My website</p>
 </body>
 </html>

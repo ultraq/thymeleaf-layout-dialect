@@ -39,22 +39,35 @@ import spock.lang.Specification
  */
 class TitleTokens extends Specification {
 
-	def "New title tokens"() {
-		given:
-			def testExecutor = new TestExecutor(
-				'TitleTokens',
-				new WebProcessingContextBuilder(JavaxServletTestWebExchangeBuilder.create())
-			)
-			testExecutor.with {
-				dialects = [
-					new StandardDialect(),
-					new LayoutDialect(new AppendingStrategy(), true, true)
-				]
-				reporter = new JUnitTestReporter(new ConsoleTestReporter())
-			}
+	TestExecutor testExecutor
 
+	def setup() {
+		testExecutor = new TestExecutor(
+			'TitleTokens',
+			new WebProcessingContextBuilder(JavaxServletTestWebExchangeBuilder.create())
+		)
+		testExecutor.with {
+			dialects = [
+				new StandardDialect(),
+				new LayoutDialect(new AppendingStrategy(), true, true)
+			]
+			reporter = new JUnitTestReporter(new ConsoleTestReporter())
+		}
+	}
+
+	def "New title tokens - static content"() {
 		when:
-			testExecutor.execute('classpath:nz/net/ultraq/thymeleaf/layoutdialect/decorators/html/TitleTokens.thtest')
+			testExecutor.execute(
+				'classpath:nz/net/ultraq/thymeleaf/layoutdialect/decorators/html/TitleTokens-StaticContent.thtest')
+
+		then:
+			assert testExecutor.reporter.lastResult.ok
+	}
+
+	def "New title tokens - dynamic content w/ th:text"() {
+		when:
+			testExecutor.execute(
+				'classpath:nz/net/ultraq/thymeleaf/layoutdialect/decorators/html/TitleTokens-DynamicContentThText.thtest')
 
 		then:
 			assert testExecutor.reporter.lastResult.ok

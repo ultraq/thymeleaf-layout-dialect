@@ -43,39 +43,30 @@ class DecorateProcessor extends AbstractAttributeModelProcessor {
 
 	private final SortingStrategy sortingStrategy
 	private final boolean autoHeadMerging
+	private final boolean newTitleTokens
 
 	/**
 	 * Constructor, configure this processor to work on the 'decorate' attribute
 	 * and to use the given sorting strategy.
-	 *
-	 * @param templateMode
-	 * @param dialectPrefix
-	 * @param sortingStrategy
-	 * @param autoHeadMerging
 	 */
 	DecorateProcessor(TemplateMode templateMode, String dialectPrefix, SortingStrategy sortingStrategy,
-		boolean autoHeadMerging) {
+		boolean autoHeadMerging, boolean newTitleTokens) {
 
-		this(templateMode, dialectPrefix, sortingStrategy, autoHeadMerging, PROCESSOR_NAME)
+		this(templateMode, dialectPrefix, sortingStrategy, autoHeadMerging, newTitleTokens, PROCESSOR_NAME)
 	}
 
 	/**
 	 * Constructor, configurable processor name for the purposes of the
 	 * deprecated {@code layout:decorator} alias.
-	 *
-	 * @param templateMode
-	 * @param dialectPrefix
-	 * @param sortingStrategy
-	 * @param autoHeadMerging
-	 * @param attributeName
 	 */
 	protected DecorateProcessor(TemplateMode templateMode, String dialectPrefix, SortingStrategy sortingStrategy,
-		boolean autoHeadMerging, String attributeName) {
+		boolean autoHeadMerging, boolean newTitleTokens, String attributeName) {
 
 		super(templateMode, dialectPrefix, null, false, attributeName, true, PROCESSOR_PRECEDENCE, false)
 
 		this.sortingStrategy = sortingStrategy
 		this.autoHeadMerging = autoHeadMerging
+		this.newTitleTokens = newTitleTokens
 	}
 
 	/**
@@ -119,7 +110,7 @@ class DecorateProcessor extends AbstractAttributeModelProcessor {
 		decorateTemplate = decorateTemplate.cloneModel()
 
 		// Extract titles from content and layout templates and save to the template context
-		def titleExtractor = new TitleExtractor(context)
+		def titleExtractor = new TitleExtractor(context, newTitleTokens)
 		titleExtractor.extract(contentTemplate, TitlePatternProcessor.CONTENT_TITLE_KEY)
 		titleExtractor.extract(decorateTemplate, TitlePatternProcessor.LAYOUT_TITLE_KEY)
 

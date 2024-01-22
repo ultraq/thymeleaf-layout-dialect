@@ -16,8 +16,11 @@
 
 package nz.net.ultraq.thymeleaf.layoutdialect.models
 
+import nz.net.ultraq.thymeleaf.expressionprocessor.ExpressionProcessor
+
 import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.model.IModel
+import org.thymeleaf.model.IProcessableElementTag
 import org.thymeleaf.standard.StandardDialect
 import org.thymeleaf.standard.processor.StandardTextTagProcessor
 import org.thymeleaf.standard.processor.StandardUtextTagProcessor
@@ -29,10 +32,11 @@ import groovy.transform.TupleConstructor
  *
  * @author Emanuel Rabina
  */
-@TupleConstructor(defaults = false)
+@TupleConstructor
 class TitleExtractor {
 
 	final ITemplateContext context
+	final boolean newTitleTokens
 
 	/**
 	 * Locate and extract title data from the given template model, saving it to
@@ -49,28 +53,36 @@ class TitleExtractor {
 			return
 		}
 
+		def expressionProcessor = new ExpressionProcessor(context)
 		def titleModel = template?.findModel { event ->
 			return event.isOpeningElementOf('title')
 		}
 
 		if (titleModel) {
 			def titleTag = titleModel.first()
+			assert titleTag instanceof IProcessableElementTag
 			def modelBuilder = new ModelBuilder(context)
 			def standardDialectPrefix = context.getPrefixForDialect(StandardDialect)
 
 			// Escapable title from a th:text attribute on the title tag
 			if (titleTag.hasAttribute(standardDialectPrefix, StandardTextTagProcessor.ATTR_NAME)) {
-				context[(contextKey)] = modelBuilder.build {
-					'th:block'('th:text': titleTag.getAttributeValue(standardDialectPrefix, StandardTextTagProcessor.ATTR_NAME))
-				}
+				def titleExpression = titleTag.getAttributeValue(standardDialectPrefix, StandardTextTagProcessor.ATTR_NAME)
+				context[(contextKey)] = newTitleTokens ?
+					expressionProcessor.processAsString(titleExpression) :
+					modelBuilder.build {
+						'th:block'('th:text': titleExpression)
+					}
 			}
 
 			// Unescaped title from a th:utext attribute on the title tag, or
 			// whatever happens to be within the title tag
 			else if (titleTag.hasAttribute(standardDialectPrefix, StandardUtextTagProcessor.ATTR_NAME)) {
-				context[(contextKey)] = modelBuilder.build {
-					'th:block'('th:utext': titleTag.getAttributeValue(standardDialectPrefix, StandardUtextTagProcessor.ATTR_NAME))
-				}
+				def titleExpression = titleTag.getAttributeValue(standardDialectPrefix, StandardUtextTagProcessor.ATTR_NAME)
+				context[(contextKey)] = newTitleTokens ?
+					expressionProcessor.processAsString(titleExpression) :
+					modelBuilder.build {
+						'th:block'('th:utext': titleExpression)
+					}
 			}
 
 			// Title value exists within the <title>...</title> tags
