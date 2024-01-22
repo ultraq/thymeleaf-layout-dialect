@@ -39,7 +39,8 @@ class ITemplateEventExtensions {
 	 *         tag name.
 	 */
 	static boolean isClosingElementOf(ITemplateEvent self, String tagName) {
-		return (self instanceof ICloseElementTag || self instanceof IStandaloneElementTag) && self.elementCompleteName == tagName
+		return (self instanceof ICloseElementTag || self instanceof IStandaloneElementTag) &&
+			self.elementCompleteName == tagName
 	}
 
 	/**
@@ -52,7 +53,8 @@ class ITemplateEventExtensions {
 	 *         tag name.
 	 */
 	static boolean isOpeningElementOf(ITemplateEvent self, String tagName) {
-		return (self instanceof IOpenElementTag || self instanceof IStandaloneElementTag) && self.elementCompleteName == tagName
+		return (self instanceof IOpenElementTag || self instanceof IStandaloneElementTag) &&
+			self.elementCompleteName == tagName
 	}
 
 	/**

@@ -41,7 +41,10 @@ class TitleTokens extends Specification {
 
 	def "New title tokens"() {
 		given:
-			def testExecutor = new TestExecutor('TitleTokens', new WebProcessingContextBuilder(JavaxServletTestWebExchangeBuilder.create()))
+			def testExecutor = new TestExecutor(
+				'TitleTokens',
+				new WebProcessingContextBuilder(JavaxServletTestWebExchangeBuilder.create())
+			)
 			testExecutor.with {
 				dialects = [
 					new StandardDialect(),
