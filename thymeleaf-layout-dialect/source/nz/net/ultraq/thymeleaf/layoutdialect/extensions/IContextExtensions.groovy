@@ -1,12 +1,12 @@
-/* 
+/*
  * Copyright 2016, Emanuel Rabina (http://www.ultraq.net.nz/)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package nz.net.ultraq.thymeleaf.layoutdialect.context.extensions
+package nz.net.ultraq.thymeleaf.layoutdialect.extensions
 
 import org.thymeleaf.context.IContext
 import org.thymeleaf.dialect.IProcessorDialect
 
 /**
  * Meta-programming extensions to the {@link IContext} class.
- * 
+ *
  * @author Emanuel Rabina
  */
 class IContextExtensions {
@@ -31,7 +31,7 @@ class IContextExtensions {
 	/**
 	 * Enables use of the {@code value = context[key]} syntax over the context
 	 * object, is a synonym for the {@code getVariable} method.
-	 * 
+	 *
 	 * @param self
 	 * @param name Name of the variable on the context to retrieve.
 	 * @return The variable value, or {@code null} if the variable isn't
@@ -44,7 +44,7 @@ class IContextExtensions {
 	/**
 	 * Returns the configured prefix for the given dialect.  If the dialect
 	 * prefix has not been configured.
-	 * 
+	 *
 	 * @param self
 	 * @param dialectClass
 	 * @return The configured prefix for the dialect, or {@code null} if the
@@ -64,7 +64,7 @@ class IContextExtensions {
 	/**
 	 * Enables use of the {@code context[key] = value} syntax over the context
 	 * object, is a synonym for the {@code setVariable} method.
-	 * 
+	 *
 	 * @param self
 	 * @param name Name of the variable to map the value to.
 	 * @param value The value to set.

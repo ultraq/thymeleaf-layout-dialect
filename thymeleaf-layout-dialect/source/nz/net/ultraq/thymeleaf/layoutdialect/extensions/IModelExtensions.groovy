@@ -1,12 +1,12 @@
-/* 
+/*
  * Copyright 2016, Emanuel Rabina (http://www.ultraq.net.nz/)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-package nz.net.ultraq.thymeleaf.layoutdialect.models.extensions
+package nz.net.ultraq.thymeleaf.layoutdialect.extensions
+
+import nz.net.ultraq.thymeleaf.layoutdialect.models.ChildModelIterator
+import nz.net.ultraq.thymeleaf.layoutdialect.models.EventIterator
 
 import org.thymeleaf.engine.TemplateModel
 import org.thymeleaf.model.ICloseElementTag
@@ -28,14 +31,14 @@ import groovy.transform.stc.SimpleType
 
 /**
  * Meta-programming extensions to the {@link IModel} class.
- * 
+ *
  * @author Emanuel Rabina
  */
 class IModelExtensions {
 
 	/**
 	 * Set that a model evaluates to 'false' if it has no events.
-	 * 
+	 *
 	 * @param self
 	 * @return {@code true} if this model has events.
 	 */
@@ -46,7 +49,7 @@ class IModelExtensions {
 	/**
 	 * If this model represents an element, then this method returns an
 	 * iterator over any potential child items as models of their own.
-	 * 
+	 *
 	 * @param self
 	 * @param modelFactory
 	 * @return New model iterator.
@@ -57,7 +60,7 @@ class IModelExtensions {
 
 	/**
 	 * Iterate through each event in the model.
-	 * 
+	 *
 	 * @param self
 	 * @param closure
 	 */
@@ -70,7 +73,7 @@ class IModelExtensions {
 	/**
 	 * Compare 2 models, returning {@code true} if all of the model's events
 	 * are equal.
-	 * 
+	 *
 	 * @param self
 	 * @param other
 	 * @return {@code true} if this model is the same as the other one.
@@ -86,7 +89,7 @@ class IModelExtensions {
 	/**
 	 * Return {@code true} only if all the events in the model return
 	 * {@code true} for the given closure.
-	 * 
+	 *
 	 * @param self
 	 * @param closure
 	 * @return {@code true} if every event satisfies the closure.
@@ -105,7 +108,7 @@ class IModelExtensions {
 	/**
 	 * Returns the first event in the model that meets the criteria of the
 	 * given closure.
-	 * 
+	 *
 	 * @param self
 	 * @param closure
 	 * @return The first event to match the closure criteria, or {@code null}
@@ -119,7 +122,7 @@ class IModelExtensions {
 
 	/**
 	 * Find all events in the model that match the given closure.
-	 * 
+	 *
 	 * @param self
 	 * @param closure
 	 * @return A list of matched events.
@@ -133,7 +136,7 @@ class IModelExtensions {
 	/**
 	 * Returns the index of the first event in the model that meets the
 	 * criteria of the given closure.
-	 * 
+	 *
 	 * @param self
 	 * @param closure
 	 * @return The index of the first event to match the closure criteria, or
@@ -148,12 +151,12 @@ class IModelExtensions {
 	/**
 	 * A special variant of {@code findIndexOf} that uses models, as I seem to
 	 * be using those a lot.
-	 * 
+	 *
 	 * This doesn't use an equality check, but an object reference check, so
 	 * if a submodel is ever located from a parent (eg: any of the {@code find}
 	 * methods, you can use this method to find the location of that submodel
 	 * within the event queue.
-	 * 
+	 *
 	 * @param self
 	 * @param model
 	 * @return Index of an extracted submodel within this model.
@@ -166,7 +169,7 @@ class IModelExtensions {
 	/**
 	 * Returns the first instance of a model that meets the given closure
 	 * criteria.
-	 * 
+	 *
 	 * @param self
 	 * @param closure
 	 * @return A model over the event that matches the closure criteria, or
@@ -180,7 +183,7 @@ class IModelExtensions {
 
 	/**
 	 * Returns the first event on the model.
-	 * 
+	 *
 	 * @param self
 	 * @return The model's first event.
 	 */
@@ -192,7 +195,7 @@ class IModelExtensions {
 	 * Returns the model at the given index.  If the event at the index is an
 	 * opening element, then the returned model will consist of that element
 	 * and all the way through to the matching closing element.
-	 * 
+	 *
 	 * @param self
 	 * @param pos A valid index within the current model.
 	 * @return Model at the given position, or `null` if the position is
@@ -220,7 +223,7 @@ class IModelExtensions {
 	 * <p>
 	 * This is currently only targeting uses in the layout dialect so doesn't work
 	 * very well as a general-purpose whitespace generator.
-	 * 
+	 *
 	 * @param self
 	 * @param pos          A valid index within the current model.
 	 * @param model
@@ -256,7 +259,7 @@ class IModelExtensions {
 	/**
 	 * Inserts an event, creating a whitespace event before it so that it
 	 * appears in line with all the existing events.
-	 * 
+	 *
 	 * @param self
 	 * @param pos          A valid index within the current model.
 	 * @param event
@@ -290,7 +293,7 @@ class IModelExtensions {
 
 	/**
 	 * Returns whether or not this model represents a single HTML element.
-	 * 
+	 *
 	 * @param self
 	 * @return {@code true} if the first event in this model is an opening tag
 	 *         and the last event is the matching closing tag.
@@ -301,7 +304,7 @@ class IModelExtensions {
 
 	/**
 	 * Returns whether or not this model represents collapsible whitespace.
-	 * 
+	 *
 	 * @param self
 	 * @return {@code true} if this is a collapsible text model.
 	 */
@@ -311,7 +314,7 @@ class IModelExtensions {
 
 	/**
 	 * Used to make this class iterable as an event queue.
-	 * 
+	 *
 	 * @param self
 	 * @return A new iterator over the events of this model.
 	 */
@@ -321,7 +324,7 @@ class IModelExtensions {
 
 	/**
 	 * Returns the last event on the model.
-	 * 
+	 *
 	 * @param self
 	 * @return The model's last event.
 	 */
@@ -334,7 +337,7 @@ class IModelExtensions {
 	 * Remove a model identified by an event matched by the given closure.  Note
 	 * that this closure can match any event in the model, including the top-level
 	 * model itself.
-	 * 
+	 *
 	 * @param self
 	 * @param closure
 	 */
@@ -353,7 +356,7 @@ class IModelExtensions {
 	/**
 	 * If the model represents an element open to close tags, then this method
 	 * removes all of the inner events.
-	 * 
+	 *
 	 * @param self
 	 */
 	static void removeChildren(IModel self) {
@@ -366,7 +369,7 @@ class IModelExtensions {
 
 	/**
 	 * Removes the first event on the model.
-	 * 
+	 *
 	 * @param self
 	 */
 	static void removeFirst(IModel self) {
@@ -375,7 +378,7 @@ class IModelExtensions {
 
 	/**
 	 * Removes the last event on the model.
-	 * 
+	 *
 	 * @param self
 	 */
 	static void removeLast(IModel self) {
@@ -387,7 +390,7 @@ class IModelExtensions {
 	 * this means is that, if the event at the position is an opening element,
 	 * then it, and everything up to and including its matching end element,
 	 * is removed.
-	 * 
+	 *
 	 * @param self
 	 * @param pos A valid index within the current model.
 	 */
@@ -403,7 +406,7 @@ class IModelExtensions {
 
 	/**
 	 * Replaces the model at the specified index with the given model.
-	 * 
+	 *
 	 * @param self
 	 * @param pos   A valid index within the current model.
 	 * @param model
@@ -419,7 +422,7 @@ class IModelExtensions {
 	 * If an opening element exists at the given position, this method will
 	 * return the 'size' of that element (number of events from here to its
 	 * matching closing tag).
-	 * 
+	 *
 	 * @param self
 	 * @param model
 	 * @param index
@@ -461,7 +464,7 @@ class IModelExtensions {
 	/**
 	 * Removes whitespace events from the head and tail of the model's
 	 * underlying event queue.
-	 * 
+	 *
 	 * @param self
 	 */
 	static void trim(IModel self) {

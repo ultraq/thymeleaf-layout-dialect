@@ -1,11 +1,11 @@
 moduleName = thymeleaf-layout-dialect-extensions
 moduleVersion = ${moduleVersion}
-extensionClasses = nz.net.ultraq.thymeleaf.layoutdialect.context.extensions.IContextExtensions,\
-                   nz.net.ultraq.thymeleaf.layoutdialect.fragments.extensions.FragmentExtensions,\
-                   nz.net.ultraq.thymeleaf.layoutdialect.models.extensions.IAttributeExtensions,\
-                   nz.net.ultraq.thymeleaf.layoutdialect.models.extensions.ICloseElementTagExtensions,\
-                   nz.net.ultraq.thymeleaf.layoutdialect.models.extensions.IModelExtensions,\
-                   nz.net.ultraq.thymeleaf.layoutdialect.models.extensions.IProcessableElementTagExtensions,\
-                   nz.net.ultraq.thymeleaf.layoutdialect.models.extensions.IStandaloneElementTagExtensions,\
-                   nz.net.ultraq.thymeleaf.layoutdialect.models.extensions.ITemplateEventExtensions,\
-                   nz.net.ultraq.thymeleaf.layoutdialect.models.extensions.ITextExtensions
+extensionClasses = nz.net.ultraq.thymeleaf.layoutdialect.extensions.FragmentExtensions,\
+                   nz.net.ultraq.thymeleaf.layoutdialect.extensions.IAttributeExtensions,\
+                   nz.net.ultraq.thymeleaf.layoutdialect.extensions.ICloseElementTagExtensions,\
+                   nz.net.ultraq.thymeleaf.layoutdialect.extensions.IContextExtensions,\
+                   nz.net.ultraq.thymeleaf.layoutdialect.extensions.IModelExtensions,\
+                   nz.net.ultraq.thymeleaf.layoutdialect.extensions.IProcessableElementTagExtensions,\
+                   nz.net.ultraq.thymeleaf.layoutdialect.extensions.IStandaloneElementTagExtensions,\
+                   nz.net.ultraq.thymeleaf.layoutdialect.extensions.ITemplateEventExtensions,\
+                   nz.net.ultraq.thymeleaf.layoutdialect.extensions.ITextExtensions

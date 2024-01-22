@@ -1,12 +1,12 @@
 /*
  * Copyright 2015, Emanuel Rabina (http://www.ultraq.net.nz/)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package nz.net.ultraq.thymeleaf.layoutdialect.fragments.extensions
+package nz.net.ultraq.thymeleaf.layoutdialect.extensions
 
 import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.model.IModel
@@ -22,7 +22,7 @@ import org.thymeleaf.processor.element.IElementModelStructureHandler
 
 /**
  * Extensions to Thymeleaf for working with fragments.
- * 
+ *
  * @author Emanuel Rabina
  */
 class FragmentExtensions {
@@ -31,7 +31,7 @@ class FragmentExtensions {
 
 	/**
 	 * Retrieves the fragment collection for the current context.
-	 * 
+	 *
 	 * @param self
 	 * @param fromDecorator
 	 * @return A new or existing fragment collection.
@@ -55,7 +55,7 @@ class FragmentExtensions {
 	/**
 	 * Set a fragment cache to contain any existing fragments, plus the given new
 	 * fragments, with the same scope as setting a local variable.
-	 * 
+	 *
 	 * @param self
 	 * @param context
 	 * @param fragments

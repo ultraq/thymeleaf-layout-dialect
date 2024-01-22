@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package nz.net.ultraq.thymeleaf.layoutdialect.models.extensions
+package nz.net.ultraq.thymeleaf.layoutdialect.extensions
 
 import org.thymeleaf.model.ICloseElementTag
 import org.thymeleaf.model.IOpenElementTag
