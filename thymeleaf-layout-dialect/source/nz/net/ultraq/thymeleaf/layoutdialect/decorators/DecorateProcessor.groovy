@@ -86,22 +86,18 @@ class DecorateProcessor extends AbstractAttributeModelProcessor {
 		def templateModelFinder = new TemplateModelFinder(context)
 
 		// Load the entirety of this template so we can access items outside of the root element
-		def contentTemplateName = context.templateData.template
-		def contentTemplate = templateModelFinder.findTemplate(contentTemplateName).cloneModel()
+		def contentTemplate = templateModelFinder.findTemplate(context.templateData.template).cloneModel()
 
 		// Check that the root element is the same as the one currently being processed
-		def contentRootEvent = contentTemplate.find { event -> event instanceof IProcessableElementTag }
-		def rootElement = model.first()
-		if (!contentRootEvent.equalsIgnoreXmlnsAndWith(rootElement, context)) {
+		def indexOfRootElement = contentTemplate.findIndexOf { it instanceof IProcessableElementTag }
+		def contentRootEvent = contentTemplate.get(indexOfRootElement)
+		if (!contentRootEvent.equalsIgnoreXmlnsAndWith(model.first(), context)) {
 			throw new IllegalArgumentException('layout:decorate/data-layout-decorate must appear in the root element of your template')
 		}
 
 		// Remove the decorate processor from the root element
-		if (rootElement.hasAttribute(attributeName)) {
-			rootElement = context.modelFactory.removeAttribute(rootElement, attributeName)
-			model.replace(0, rootElement)
-		}
-		contentTemplate.replaceModel(contentTemplate.findIndexOf { event -> event instanceof IProcessableElementTag }, model)
+		model.replace(0, context.modelFactory.removeAttribute(contentTemplate.get(indexOfRootElement), attributeName))
+		contentTemplate.replaceModel(indexOfRootElement, model)
 
 		// Locate the template to decorate
 		def decorateTemplateExpression = new ExpressionProcessor(context).parseFragmentExpression(attributeValue)
@@ -114,26 +110,19 @@ class DecorateProcessor extends AbstractAttributeModelProcessor {
 		titleExtractor.extract(contentTemplate, TitlePatternProcessor.CONTENT_TITLE_KEY)
 		titleExtractor.extract(decorateTemplate, TitlePatternProcessor.LAYOUT_TITLE_KEY)
 
-		// Gather all fragment parts from this page to apply to the new document
-		// after decoration has taken place
-		def pageFragments = new FragmentFinder(dialectPrefix).findFragments(model)
+		// Gather all content template fragments to apply to the new document after decoration has taken place
+		structureHandler.setLocalFragmentCollection(context, new FragmentFinder(dialectPrefix).findFragments(contentTemplate))
 
 		// Choose the decorator to use based on template mode, then apply it
-		def decorator =
-			templateMode == TemplateMode.HTML ? new HtmlDocumentDecorator(context, sortingStrategy, autoHeadMerging) :
-			templateMode == TemplateMode.XML  ? new XmlDocumentDecorator(context) :
-			null
-		if (!decorator) {
-			throw new IllegalArgumentException(
+		def decorator = switch (templateMode) {
+			case TemplateMode.HTML -> new HtmlDocumentDecorator(context, sortingStrategy, autoHeadMerging)
+			case TemplateMode.XML -> new XmlDocumentDecorator(context)
+			default -> throw new IllegalArgumentException(
 				"Layout dialect cannot be applied to the ${templateMode} template mode, only HTML and XML template modes are currently supported"
 			)
 		}
-		def resultTemplate = decorator.decorate(decorateTemplate, contentTemplate)
-		model.replaceModel(0, resultTemplate)
+		model.replaceModel(0, decorator.decorate(decorateTemplate, contentTemplate))
 		structureHandler.templateData = decorateTemplateData
-
-		// Save layout fragments for use later by layout:fragment processors
-		structureHandler.setLocalFragmentCollection(context, pageFragments, true)
 
 		// Scope variables in fragment definition to template.  Parameters *must* be
 		// named as there is no mechanism for setting their name at the target
@@ -143,7 +132,7 @@ class DecorateProcessor extends AbstractAttributeModelProcessor {
 				throw new IllegalArgumentException('Fragment parameters must be named when used with layout:decorate/data-layout-decorate')
 			}
 			decorateTemplateExpression.parameters.each { parameter ->
-				structureHandler.setLocalVariable(parameter.left.execute(context), parameter.right.execute(context))
+				structureHandler.setLocalVariable(parameter.left.execute(context).toString(), parameter.right.execute(context))
 			}
 		}
 	}
