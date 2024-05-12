@@ -44,9 +44,9 @@ class LayoutDialect extends AbstractProcessorDialect {
 	static final String DIALECT_PREFIX = 'layout'
 	static final int DIALECT_PRECEDENCE = 10
 
-	private final SortingStrategy sortingStrategy
-	private final boolean autoHeadMerging
-	private final boolean newTitleTokens
+	SortingStrategy sortingStrategy
+	boolean autoHeadMerging
+	boolean newTitleTokens
 
 	/**
 	 * Constructor, configure the layout dialect.
