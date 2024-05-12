@@ -69,6 +69,7 @@ class LayoutDialect extends AbstractProcessorDialect {
 	 *   Experimental option, set to {@code true} to use standard Thymeleaf
 	 *   expression syntax for title patterns.
 	 */
+	@Deprecated
 	LayoutDialect(SortingStrategy sortingStrategy, boolean autoHeadMerging = true) {
 
 		super(DIALECT_NAME, DIALECT_PREFIX, DIALECT_PRECEDENCE)
