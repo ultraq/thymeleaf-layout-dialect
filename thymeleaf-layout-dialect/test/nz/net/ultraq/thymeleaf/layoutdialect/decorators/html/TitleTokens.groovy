@@ -17,7 +17,6 @@
 package nz.net.ultraq.thymeleaf.layoutdialect.decorators.html
 
 import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect
-import nz.net.ultraq.thymeleaf.layoutdialect.decorators.strategies.AppendingStrategy
 import nz.net.ultraq.thymeleaf.testing.junit.JUnitTestReporter
 
 import org.thymeleaf.standard.StandardDialect
@@ -49,7 +48,7 @@ class TitleTokens extends Specification {
 		testExecutor.with {
 			dialects = [
 				new StandardDialect(),
-				new LayoutDialect(new AppendingStrategy(), true, true)
+				new LayoutDialect(experimentalTitleTokens: true)
 			]
 			reporter = new JUnitTestReporter(new ConsoleTestReporter())
 		}

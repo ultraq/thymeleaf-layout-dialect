@@ -44,29 +44,37 @@ class LayoutDialect extends AbstractProcessorDialect {
 	static final String DIALECT_PREFIX = 'layout'
 	static final int DIALECT_PRECEDENCE = 10
 
-	SortingStrategy sortingStrategy
-	boolean autoHeadMerging
-	boolean newTitleTokens
+	SortingStrategy sortingStrategy = new AppendingStrategy()
+	boolean autoHeadMerging = true
+	boolean experimentalTitleTokens = false
+
+	/**
+	 * Constructor, create the layout dialect in the default configuration.
+	 */
+	LayoutDialect() {
+
+		super(DIALECT_NAME, DIALECT_PREFIX, DIALECT_PRECEDENCE)
+	}
 
 	/**
 	 * Constructor, configure the layout dialect.
 	 *
+	 * @deprecated
+	 *   Use the appropriate setters to configure the layout dialect instead.
 	 * @param sortingStrategy
 	 * @param autoHeadMerging
 	 *   Experimental option, set to {@code false} to skip the automatic merging
 	 *   of an HTML {@code <head>} section.
-	 * @param newTitleTokens
+	 * @param experimentalTitleTokens
 	 *   Experimental option, set to {@code true} to use standard Thymeleaf
 	 *   expression syntax for title patterns.
 	 */
-	LayoutDialect(SortingStrategy sortingStrategy = new AppendingStrategy(), boolean autoHeadMerging = true,
-		boolean newTitleTokens = false) {
+	LayoutDialect(SortingStrategy sortingStrategy, boolean autoHeadMerging = true) {
 
 		super(DIALECT_NAME, DIALECT_PREFIX, DIALECT_PRECEDENCE)
 
 		this.sortingStrategy = sortingStrategy
 		this.autoHeadMerging = autoHeadMerging
-		this.newTitleTokens = newTitleTokens
 	}
 
 	/**
@@ -81,7 +89,7 @@ class LayoutDialect extends AbstractProcessorDialect {
 		return [
 			// Processors available in the HTML template mode
 			new StandardXmlNsTagProcessor(TemplateMode.HTML, dialectPrefix),
-			new DecorateProcessor(TemplateMode.HTML, dialectPrefix, sortingStrategy, autoHeadMerging, newTitleTokens),
+			new DecorateProcessor(TemplateMode.HTML, dialectPrefix, sortingStrategy, autoHeadMerging, experimentalTitleTokens),
 			new IncludeProcessor(TemplateMode.HTML, dialectPrefix),
 			new InsertProcessor(TemplateMode.HTML, dialectPrefix),
 			new ReplaceProcessor(TemplateMode.HTML, dialectPrefix),
@@ -92,7 +100,7 @@ class LayoutDialect extends AbstractProcessorDialect {
 
 			// Processors available in the XML template mode
 			new StandardXmlNsTagProcessor(TemplateMode.XML, dialectPrefix),
-			new DecorateProcessor(TemplateMode.XML, dialectPrefix, sortingStrategy, autoHeadMerging, newTitleTokens),
+			new DecorateProcessor(TemplateMode.XML, dialectPrefix, sortingStrategy, autoHeadMerging, experimentalTitleTokens),
 			new IncludeProcessor(TemplateMode.XML, dialectPrefix),
 			new InsertProcessor(TemplateMode.XML, dialectPrefix),
 			new ReplaceProcessor(TemplateMode.XML, dialectPrefix),
