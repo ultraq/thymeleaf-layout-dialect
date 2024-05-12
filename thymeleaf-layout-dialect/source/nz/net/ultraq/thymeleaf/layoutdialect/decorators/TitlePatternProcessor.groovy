@@ -16,8 +16,6 @@
 
 package nz.net.ultraq.thymeleaf.layoutdialect.decorators
 
-import nz.net.ultraq.thymeleaf.expressionprocessor.ExpressionProcessor
-
 import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.engine.AttributeName
 import org.thymeleaf.model.IProcessableElementTag
@@ -38,44 +36,28 @@ import java.util.regex.Pattern
 class TitlePatternProcessor extends AbstractAttributeTagProcessor {
 
 //	private static final String TOKEN_CONTENT_TITLE   = '$CONTENT_TITLE'
-	private static final String TOKEN_LAYOUT_TITLE    = '$LAYOUT_TITLE'
+	private static final String TOKEN_LAYOUT_TITLE = '$LAYOUT_TITLE'
 	private static final Pattern TOKEN_PATTERN = ~/(\$(LAYOUT|CONTENT)_TITLE)/
 
 	static final String PROCESSOR_NAME = 'title-pattern'
 	static final int PROCESSOR_PRECEDENCE = 1
 
-	static final String CONTENT_TITLE_KEY = 'layoutDialectContentTitle'
-	static final String LAYOUT_TITLE_KEY = 'layoutDialectLayoutTitle'
-	static final String CONTENT_TITLE_KEY_OLD = 'LayoutDialect::ContentTitle'
-	static final String LAYOUT_TITLE_KEY_OLD = 'LayoutDialect::LayoutTitle'
-
-	final boolean newTitleTokens
+	static final String CONTENT_TITLE_KEY = 'LayoutDialect::ContentTitle'
+	static final String LAYOUT_TITLE_KEY = 'LayoutDialect::LayoutTitle'
 
 	/**
 	 * Constructor, sets this processor to work on the 'title-pattern' attribute.
-	 *
-	 * @param templateMode
-	 * @param dialectPrefix
 	 */
-	TitlePatternProcessor(TemplateMode templateMode, String dialectPrefix, boolean newTitleTokens) {
+	TitlePatternProcessor(TemplateMode templateMode, String dialectPrefix) {
 
 		super(templateMode, dialectPrefix, null, false, PROCESSOR_NAME, true, PROCESSOR_PRECEDENCE, true)
-
-		this.newTitleTokens = newTitleTokens
 	}
 
 	/**
 	 * Process the {@code layout:title-pattern} directive, replaces the title text
 	 * with the titles from the content and layout pages.
-	 *
-	 * @param context
-	 * @param tag
-	 * @param attributeName
-	 * @param attributeValue
-	 * @param structureHandler
 	 */
 	@Override
-	@SuppressWarnings('AssignmentToStaticFieldFromInstanceMethod')
 	protected void doProcess(ITemplateContext context, IProcessableElementTag tag,
 		AttributeName attributeName, String attributeValue, IElementTagStructureHandler structureHandler) {
 
@@ -86,15 +68,8 @@ class TitlePatternProcessor extends AbstractAttributeTagProcessor {
 
 		def modelFactory = context.modelFactory
 		def titleModel = modelFactory.createModel()
-
-		// TODO: Experimental title tokens branch
-		if (newTitleTokens) {
-			structureHandler.setBody(new ExpressionProcessor(context).processAsString(attributeValue), false)
-			return
-		}
-
-		def contentTitle = context[CONTENT_TITLE_KEY_OLD]
-		def layoutTitle = context[LAYOUT_TITLE_KEY_OLD]
+		def contentTitle = context[CONTENT_TITLE_KEY]
+		def layoutTitle = context[LAYOUT_TITLE_KEY]
 
 		// Break the title pattern up into tokens to map to their respective models
 		if (layoutTitle && contentTitle) {

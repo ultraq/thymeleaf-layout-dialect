@@ -59,12 +59,12 @@ class HtmlDocumentDecoratorTests extends Specification {
 		mockContext.metaClass {
 			getPrefixForDialect = { Class<IProcessorDialect> dialectClass ->
 				return dialectClass == StandardDialect ? 'th' :
-				       dialectClass == LayoutDialect ? 'layout' :
-				       'mock-prefix'
+					dialectClass == LayoutDialect ? 'layout' :
+						'mock-prefix'
 			}
 		}
 
-		htmlDocumentDecorator = new HtmlDocumentDecorator(mockContext, new AppendingStrategy(), true)
+		htmlDocumentDecorator = new HtmlDocumentDecorator(mockContext, new AppendingStrategy(), true, false)
 	}
 
 	/**

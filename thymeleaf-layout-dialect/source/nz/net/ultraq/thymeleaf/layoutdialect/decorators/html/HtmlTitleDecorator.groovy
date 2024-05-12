@@ -19,6 +19,7 @@ package nz.net.ultraq.thymeleaf.layoutdialect.decorators.html
 import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect
 import nz.net.ultraq.thymeleaf.layoutdialect.decorators.Decorator
 import nz.net.ultraq.thymeleaf.layoutdialect.decorators.TitlePatternProcessor
+import nz.net.ultraq.thymeleaf.layoutdialect.decorators.TitleProcessor
 import nz.net.ultraq.thymeleaf.layoutdialect.models.ElementMerger
 import nz.net.ultraq.thymeleaf.layoutdialect.models.ModelBuilder
 import nz.net.ultraq.thymeleaf.layoutdialect.models.TitleExtractor
@@ -30,7 +31,8 @@ import groovy.transform.TupleConstructor
 
 /**
  * Decorator for the {@code <title>} part of the template to handle the special
- * processing required for the {@code layout:title-pattern} processor.
+ * processing required for the {@code layout:title-pattern} and
+ * {@code layout:title} processors.
  *
  * @author Emanuel Rabina
  */
@@ -38,18 +40,9 @@ import groovy.transform.TupleConstructor
 class HtmlTitleDecorator implements Decorator {
 
 	final ITemplateContext context
+	final boolean newTitleTokens
 
-	/**
-	 * Special decorator for the {@code <title>} part, accumulates the important
-	 * processing parts for the {@code layout:title-pattern} processor.
-	 *
-	 * @param targetTitleModel
-	 * @param sourceTitleModel
-	 * @return A new {@code <title>} model that is the result of decorating the
-	 *   {@code <title>}s.
-	 */
 	@Override
-	@SuppressWarnings('SpaceAroundOperator')
 	IModel decorate(IModel targetTitleModel, IModel sourceTitleModel) {
 
 		def modelBuilder = new ModelBuilder(context)
@@ -59,9 +52,17 @@ class HtmlTitleDecorator implements Decorator {
 		def titlePatternProcessorRetriever = { titleModel ->
 			return titleModel?.first()?.getAttribute(layoutDialectPrefix, TitlePatternProcessor.PROCESSOR_NAME)
 		}
+		def titleProcessorRetriever = { titleModel ->
+			return titleModel?.first()?.getAttribute(layoutDialectPrefix, TitleProcessor.PROCESSOR_NAME)
+		}
 		def titlePatternProcessor =
 			titlePatternProcessorRetriever(sourceTitleModel) ?:
-			titlePatternProcessorRetriever(targetTitleModel) ?:
+				titlePatternProcessorRetriever(targetTitleModel) ?:
+					null
+		def titleProcessor = newTitleTokens ?
+			titleProcessorRetriever(sourceTitleModel) ?:
+				titleProcessorRetriever(targetTitleModel) ?:
+					null :
 			null
 
 		def resultTitle
@@ -70,11 +71,20 @@ class HtmlTitleDecorator implements Decorator {
 		// title result parts that we want to use on the pattern.
 		if (titlePatternProcessor) {
 			def titleExtractor = new TitleExtractor(context)
-			titleExtractor.extract(sourceTitleModel, TitlePatternProcessor.CONTENT_TITLE_KEY_OLD)
-			titleExtractor.extract(targetTitleModel, TitlePatternProcessor.LAYOUT_TITLE_KEY_OLD)
+			titleExtractor.extract(sourceTitleModel, TitlePatternProcessor.CONTENT_TITLE_KEY)
+			titleExtractor.extract(targetTitleModel, TitlePatternProcessor.LAYOUT_TITLE_KEY)
 
 			resultTitle = modelBuilder.build {
 				title((titlePatternProcessor.attributeCompleteName): titlePatternProcessor.value)
+			}
+		}
+		else if (titleProcessor) {
+			def titleExtractor = new TitleExtractor(context, true)
+			titleExtractor.extract(sourceTitleModel, TitleProcessor.CONTENT_TITLE_KEY)
+			titleExtractor.extract(targetTitleModel, TitleProcessor.LAYOUT_TITLE_KEY)
+
+			resultTitle = modelBuilder.build {
+				title((titleProcessor.attributeCompleteName): titleProcessor.value)
 			}
 		}
 		else {

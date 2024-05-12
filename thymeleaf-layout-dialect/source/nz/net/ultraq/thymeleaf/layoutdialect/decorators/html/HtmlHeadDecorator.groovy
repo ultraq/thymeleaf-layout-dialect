@@ -1,12 +1,12 @@
-/* 
+/*
  * Copyright 2013, Emanuel Rabina (http://www.ultraq.net.nz/)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,7 +27,7 @@ import groovy.transform.TupleConstructor
 
 /**
  * A decorator specific to processing an HTML {@code <head>} element.
- * 
+ *
  * @author Emanuel Rabina
  */
 @TupleConstructor(defaults = false)
@@ -35,14 +35,8 @@ class HtmlHeadDecorator implements Decorator {
 
 	final ITemplateContext context
 	final SortingStrategy sortingStrategy
+	final boolean newTitleTokens
 
-	/**
-	 * Decorate the {@code <head>} part.
-	 * 
-	 * @param targetHeadModel
-	 * @param sourceHeadModel
-	 * @return Result of the decoration.
-	 */
 	@Override
 	IModel decorate(IModel targetHeadModel, IModel sourceHeadModel) {
 
@@ -69,7 +63,7 @@ class HtmlHeadDecorator implements Decorator {
 		def indexOfTitle = resultHeadModel.findIndexOf(titleFinder)
 		if (indexOfTitle != -1) {
 			resultHeadModel.removeAllModels(titleFinder)
-			def resultTitle = new HtmlTitleDecorator(context).decorate(
+			def resultTitle = new HtmlTitleDecorator(context, newTitleTokens).decorate(
 				targetHeadModel?.findModel(titleFinder),
 				sourceHeadModel?.findModel(titleFinder)
 			)

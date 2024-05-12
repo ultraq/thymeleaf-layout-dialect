@@ -1,12 +1,12 @@
-/* 
+/*
  * Copyright 2013, Emanuel Rabina (http://www.ultraq.net.nz/)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,7 +31,7 @@ import groovy.transform.TupleConstructor
 
 /**
  * A decorator made to work over an XML document.
- * 
+ *
  * @author Emanuel Rabina
  */
 @TupleConstructor(defaults = false)
@@ -39,13 +39,6 @@ class XmlDocumentDecorator implements Decorator {
 
 	final ITemplateContext context
 
-	/**
-	 * Decorates the target XML document with the source one.
-	 * 
-	 * @param targetDocumentModel
-	 * @param sourceDocumentModel
-	 * @return Result of the decoration.
-	 */
 	@Override
 	IModel decorate(IModel targetDocumentModel, IModel sourceDocumentModel) {
 

@@ -21,7 +21,6 @@ import nz.net.ultraq.thymeleaf.layoutdialect.decorators.html.HtmlDocumentDecorat
 import nz.net.ultraq.thymeleaf.layoutdialect.decorators.xml.XmlDocumentDecorator
 import nz.net.ultraq.thymeleaf.layoutdialect.fragments.FragmentFinder
 import nz.net.ultraq.thymeleaf.layoutdialect.models.TemplateModelFinder
-import nz.net.ultraq.thymeleaf.layoutdialect.models.TitleExtractor
 
 import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.engine.AttributeName
@@ -72,12 +71,6 @@ class DecorateProcessor extends AbstractAttributeModelProcessor {
 	/**
 	 * Locates the template to decorate and, once decorated, inserts it into the
 	 * processing chain.
-	 *
-	 * @param context
-	 * @param model
-	 * @param attributeName
-	 * @param attributeValue
-	 * @param structureHandler
 	 */
 	@Override
 	protected void doProcess(ITemplateContext context, IModel model, AttributeName attributeName,
@@ -110,9 +103,9 @@ class DecorateProcessor extends AbstractAttributeModelProcessor {
 		decorateTemplate = decorateTemplate.cloneModel()
 
 		// Extract titles from content and layout templates and save to the template context
-		def titleExtractor = new TitleExtractor(context, newTitleTokens)
-		titleExtractor.extract(contentTemplate, TitlePatternProcessor.CONTENT_TITLE_KEY)
-		titleExtractor.extract(decorateTemplate, TitlePatternProcessor.LAYOUT_TITLE_KEY)
+//		def titleExtractor = new TitleExtractor(context, newTitleTokens)
+//		titleExtractor.extract(contentTemplate, TitlePatternProcessor.CONTENT_TITLE_KEY)
+//		titleExtractor.extract(decorateTemplate, TitlePatternProcessor.LAYOUT_TITLE_KEY)
 
 		// Gather all fragment parts from this page to apply to the new document
 		// after decoration has taken place
@@ -120,9 +113,11 @@ class DecorateProcessor extends AbstractAttributeModelProcessor {
 
 		// Choose the decorator to use based on template mode, then apply it
 		def decorator =
-			templateMode == TemplateMode.HTML ? new HtmlDocumentDecorator(context, sortingStrategy, autoHeadMerging) :
-			templateMode == TemplateMode.XML  ? new XmlDocumentDecorator(context) :
-			null
+			templateMode == TemplateMode.HTML ?
+				new HtmlDocumentDecorator(context, sortingStrategy, autoHeadMerging, newTitleTokens) :
+				templateMode == TemplateMode.XML ?
+					new XmlDocumentDecorator(context) :
+					null
 		if (!decorator) {
 			throw new IllegalArgumentException(
 				"Layout dialect cannot be applied to the ${templateMode} template mode, only HTML and XML template modes are currently supported"

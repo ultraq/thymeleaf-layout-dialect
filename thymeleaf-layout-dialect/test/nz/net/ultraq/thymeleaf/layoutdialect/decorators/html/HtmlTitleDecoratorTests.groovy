@@ -58,12 +58,12 @@ class HtmlTitleDecoratorTests extends Specification {
 		mockContext.metaClass {
 			getPrefixForDialect = { Class<IProcessorDialect> dialectClass ->
 				return dialectClass == StandardDialect ? 'th' :
-				       dialectClass == LayoutDialect ? 'layout' :
-				       'mock-prefix'
+					dialectClass == LayoutDialect ? 'layout' :
+						'mock-prefix'
 			}
 		}
 
-		htmlTitleDecorator = new HtmlTitleDecorator(mockContext)
+		htmlTitleDecorator = new HtmlTitleDecorator(mockContext, false)
 	}
 
 	def "Doesn't modify source parameters"() {

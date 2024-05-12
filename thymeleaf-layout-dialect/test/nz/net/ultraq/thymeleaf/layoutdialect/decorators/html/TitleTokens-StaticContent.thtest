@@ -8,7 +8,7 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{Layout}">
 <head>
-	<title layout:title-pattern="|${layoutDialectContentTitle} - ${layoutDialectLayoutTitle}|">Content title</title>
+	<title layout:title="|${layoutDialectContentTitle} - ${layoutDialectLayoutTitle}|">Content title</title>
 </head>
 <body>
   <p th:text="${layoutDialectContentTitle}">I can use the content title here too!</p>

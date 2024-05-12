@@ -1,12 +1,12 @@
-/* 
+/*
  * Copyright 2013, Emanuel Rabina (http://www.ultraq.net.nz/)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -28,35 +28,27 @@ import org.thymeleaf.model.IOpenElementTag
  * A decorator made to work over an HTML document.  Decoration for a document
  * involves 2 sub-decorators: a special one for the {@code <head>} element, and
  * a standard one for the {@code <body>} element.
- * 
+ *
  * @author Emanuel Rabina
  */
 class HtmlDocumentDecorator extends XmlDocumentDecorator {
 
 	final SortingStrategy sortingStrategy
 	final boolean autoHeadMerging
+	final boolean newTitleTokens
 
 	/**
 	 * Constructor, builds a decorator with the given configuration.
-	 * 
-	 * @param context
-	 * @param sortingStrategy
-	 * @param autoHeadMerging
 	 */
-	HtmlDocumentDecorator(ITemplateContext context, SortingStrategy sortingStrategy, boolean autoHeadMerging) {
+	HtmlDocumentDecorator(ITemplateContext context, SortingStrategy sortingStrategy, boolean autoHeadMerging,
+		boolean newTitleTokens) {
 
 		super(context)
 		this.sortingStrategy = sortingStrategy
 		this.autoHeadMerging = autoHeadMerging
+		this.newTitleTokens = newTitleTokens
 	}
 
-	/**
-	 * Decorate an entire HTML page.
-	 * 
-	 * @param targetDocumentModel
-	 * @param sourceDocumentModel
-	 * @return Result of the decoration.
-	 */
 	@Override
 	IModel decorate(IModel targetDocumentModel, IModel sourceDocumentModel) {
 
@@ -67,7 +59,7 @@ class HtmlDocumentDecorator extends XmlDocumentDecorator {
 		def headModelFinder = { event -> event.isOpeningElementOf('head') }
 		if (autoHeadMerging) {
 			def targetHeadModel = resultDocumentModel.findModel(headModelFinder)
-			def resultHeadModel = new HtmlHeadDecorator(context, sortingStrategy)
+			def resultHeadModel = new HtmlHeadDecorator(context, sortingStrategy, newTitleTokens)
 				.decorate(targetHeadModel, sourceDocumentModel.findModel(headModelFinder))
 			if (resultHeadModel) {
 				if (targetHeadModel) {
@@ -76,7 +68,7 @@ class HtmlDocumentDecorator extends XmlDocumentDecorator {
 				else {
 					resultDocumentModel.insertModelWithWhitespace(resultDocumentModel.findIndexOf { event ->
 						return (event instanceof IOpenElementTag && event.elementCompleteName == 'body') ||
-						       (event instanceof ICloseElementTag && event.elementCompleteName == 'html')
+							(event instanceof ICloseElementTag && event.elementCompleteName == 'html')
 					} - 1, resultHeadModel, modelFactory)
 				}
 			}
