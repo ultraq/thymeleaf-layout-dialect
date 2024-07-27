@@ -45,7 +45,19 @@ class LayoutDialect extends AbstractProcessorDialect {
 	static final int DIALECT_PRECEDENCE = 10
 
 	SortingStrategy sortingStrategy = new AppendingStrategy()
+
+	/**
+	 * Experimental option, set to {@code false} to skip the automatic merging
+	 * of an HTML {@code <head>} section.
+	 */
 	boolean autoHeadMerging = true
+
+	/**
+	 * Experimental option, set to {@code true} to use standard Thymeleaf
+	 * expression syntax for title patterns and to have access to the title parts
+	 * in templates as the variables {@code layoutDialectContentTitle} and
+	 * {@code layoutDialectLayoutTitle}.
+	 */
 	boolean experimentalTitleTokens = false
 
 	/**
@@ -53,7 +65,20 @@ class LayoutDialect extends AbstractProcessorDialect {
 	 */
 	LayoutDialect() {
 
-		super(DIALECT_NAME, DIALECT_PREFIX, DIALECT_PRECEDENCE)
+		this(new AppendingStrategy(), true)
+	}
+
+	/**
+	 * Constructor, create the layout dialect with the specified {@code <head>}
+	 * sorting strategy.
+	 *
+	 * @deprecated
+	 *   Use the appropriate setters to configure the layout dialect instead.
+	 */
+	@Deprecated
+	LayoutDialect(SortingStrategy sortingStrategy) {
+
+		this(sortingStrategy, true)
 	}
 
 	/**
@@ -65,12 +90,9 @@ class LayoutDialect extends AbstractProcessorDialect {
 	 * @param autoHeadMerging
 	 *   Experimental option, set to {@code false} to skip the automatic merging
 	 *   of an HTML {@code <head>} section.
-	 * @param experimentalTitleTokens
-	 *   Experimental option, set to {@code true} to use standard Thymeleaf
-	 *   expression syntax for title patterns.
 	 */
 	@Deprecated
-	LayoutDialect(SortingStrategy sortingStrategy, boolean autoHeadMerging = true) {
+	LayoutDialect(SortingStrategy sortingStrategy, boolean autoHeadMerging) {
 
 		super(DIALECT_NAME, DIALECT_PREFIX, DIALECT_PRECEDENCE)
 
