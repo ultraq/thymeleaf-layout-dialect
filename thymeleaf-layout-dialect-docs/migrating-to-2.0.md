@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Migrating to 2.0
-nav_order: 4
+nav_order: 5
 redirect_from:
   - /MigrationGuide.html
 ---

@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Migrating to 3.0
-nav_order: 5
+nav_order: 6
 ---
 
 Migrating to 3.0
@@ -16,6 +16,7 @@ module name and doing some reorganizing of packages in the interim.
 
 All the changes are listed below to help you make an assessment of what an
 upgrade would entail.
+
 
 On this page
 ------------
