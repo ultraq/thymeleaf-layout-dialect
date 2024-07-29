@@ -27,7 +27,7 @@ The Thymeleaf Layout Dialect adds the ability to decorate templates -
 automatically for the `<head>` section of an HTML template, and explicitly
 through extension points that developers can add to their templates.  This all
 adds up to create layouts that can be extended in a manner similar to classical
-inheritence.
+inheritance.
 
 For example, given a common `layout.html` file, set some shared static assets in
 the `<head>` and define extension points in the body with the `layout:fragment`
