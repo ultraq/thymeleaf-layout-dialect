@@ -32,9 +32,6 @@ import org.thymeleaf.processor.IProcessor
 import org.thymeleaf.standard.processor.StandardXmlNsTagProcessor
 import org.thymeleaf.templatemode.TemplateMode
 
-import groovy.transform.builder.Builder
-import groovy.transform.builder.SimpleStrategy
-
 /**
  * A dialect for Thymeleaf that lets you build layouts and reusable templates in
  * order to improve code reuse.
@@ -51,24 +48,19 @@ import groovy.transform.builder.SimpleStrategy
  *
  * @author Emanuel Rabina
  */
-@Builder(
-	builderStrategy = SimpleStrategy,
-	includes = ['sortingStrategy', 'autoHeadMerging', 'experimentalTitleTokens'],
-	prefix = 'with'
-)
 class LayoutDialect extends AbstractProcessorDialect {
 
 	static final String DIALECT_NAME = 'Layout'
 	static final String DIALECT_PREFIX = 'layout'
 	static final int DIALECT_PRECEDENCE = 10
 
-	SortingStrategy sortingStrategy = new AppendingStrategy()
+	private SortingStrategy sortingStrategy = new AppendingStrategy()
 
 	/**
 	 * Experimental option, set to {@code false} to skip the automatic merging
 	 * of an HTML {@code <head>} section.
 	 */
-	boolean autoHeadMerging = true
+	private boolean autoHeadMerging = true
 
 	/**
 	 * Experimental option, set to {@code true} to use standard Thymeleaf
@@ -76,7 +68,7 @@ class LayoutDialect extends AbstractProcessorDialect {
 	 * in templates as the variables {@code layoutDialectContentTitle} and
 	 * {@code layoutDialectLayoutTitle}.
 	 */
-	boolean experimentalTitleTokens = false
+	private boolean experimentalTitleTokens = false
 
 	/**
 	 * Constructor, configure the layout dialect.
@@ -124,5 +116,34 @@ class LayoutDialect extends AbstractProcessorDialect {
 			new FragmentProcessor(TemplateMode.XML, dialectPrefix),
 			new CollectFragmentProcessor(TemplateMode.XML, dialectPrefix)
 		]
+	}
+
+	/**
+	 * Configure this instance of the layout dialect with the given {@code autoHeadMerging}
+	 * value.
+	 */
+	LayoutDialect withAutoHeadMerging(boolean autoHeadMerging) {
+
+		this.autoHeadMerging = autoHeadMerging
+		return this
+	}
+
+	/**
+	 * Configure this instance of the layout dialect with the given {@code experimentalTitleTokens}
+	 * value.
+	 */
+	LayoutDialect withExperimentalTitleTokens(boolean experimentalTitleTokens) {
+
+		this.experimentalTitleTokens = experimentalTitleTokens
+		return this
+	}
+
+	/**
+	 * Configure this instance of the layout dialect with the given {@code sortingStrategy}.
+	 */
+	LayoutDialect withSortingStrategy(SortingStrategy sortingStrategy) {
+
+		this.sortingStrategy = sortingStrategy
+		return this
 	}
 }
