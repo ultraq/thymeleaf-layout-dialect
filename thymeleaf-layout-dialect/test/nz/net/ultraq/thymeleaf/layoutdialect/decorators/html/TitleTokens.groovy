@@ -48,7 +48,7 @@ class TitleTokens extends Specification {
 		testExecutor.with {
 			dialects = [
 				new StandardDialect(),
-				new LayoutDialect(experimentalTitleTokens: true)
+				new LayoutDialect().withExperimentalTitleTokens(true)
 			]
 			reporter = new JUnitTestReporter(new ConsoleTestReporter())
 		}

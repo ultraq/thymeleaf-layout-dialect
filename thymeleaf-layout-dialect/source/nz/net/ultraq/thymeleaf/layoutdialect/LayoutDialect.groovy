@@ -32,25 +32,39 @@ import org.thymeleaf.processor.IProcessor
 import org.thymeleaf.standard.processor.StandardXmlNsTagProcessor
 import org.thymeleaf.templatemode.TemplateMode
 
+import groovy.transform.builder.Builder
+import groovy.transform.builder.SimpleStrategy
+
 /**
  * A dialect for Thymeleaf that lets you build layouts and reusable templates in
- * order to improve code reuse
+ * order to improve code reuse.
+ * <p>
+ * To configure the layout dialect, you have 2 options:
+ * <ul>
+ *   <li>the constructor with arguments {@code LayoutDialect(SortingStrategy, boolean)}</li>
+ *   <li>the fluent API methods {@link #withAutoHeadMerging}, {@link #withExperimentalTitleTokens},
+ *    and {@link #withSortingStrategy}</li>
+ * </ul>
+ * <p>Note that the fluent API is currently the only way to enable the {@code experimentatlTitleTokens}
+ * setting.  With the number of options growing, the constructor might be
+ * deprecated in favour of the fluent API methods.
  *
  * @author Emanuel Rabina
  */
+@Builder(builderStrategy = SimpleStrategy, prefix = 'with')
 class LayoutDialect extends AbstractProcessorDialect {
 
 	static final String DIALECT_NAME = 'Layout'
 	static final String DIALECT_PREFIX = 'layout'
 	static final int DIALECT_PRECEDENCE = 10
 
-	SortingStrategy sortingStrategy = new AppendingStrategy()
+	private SortingStrategy sortingStrategy = new AppendingStrategy()
 
 	/**
 	 * Experimental option, set to {@code false} to skip the automatic merging
 	 * of an HTML {@code <head>} section.
 	 */
-	boolean autoHeadMerging = true
+	private boolean autoHeadMerging = true
 
 	/**
 	 * Experimental option, set to {@code true} to use standard Thymeleaf
@@ -58,41 +72,17 @@ class LayoutDialect extends AbstractProcessorDialect {
 	 * in templates as the variables {@code layoutDialectContentTitle} and
 	 * {@code layoutDialectLayoutTitle}.
 	 */
-	boolean experimentalTitleTokens = false
-
-	/**
-	 * Constructor, create the layout dialect in the default configuration.
-	 */
-	LayoutDialect() {
-
-		this(new AppendingStrategy(), true)
-	}
-
-	/**
-	 * Constructor, create the layout dialect with the specified {@code <head>}
-	 * sorting strategy.
-	 *
-	 * @deprecated
-	 *   Use the appropriate setters to configure the layout dialect instead.
-	 */
-	@Deprecated
-	LayoutDialect(SortingStrategy sortingStrategy) {
-
-		this(sortingStrategy, true)
-	}
+	private boolean experimentalTitleTokens = false
 
 	/**
 	 * Constructor, configure the layout dialect.
 	 *
-	 * @deprecated
-	 *   Use the appropriate setters to configure the layout dialect instead.
 	 * @param sortingStrategy
 	 * @param autoHeadMerging
 	 *   Experimental option, set to {@code false} to skip the automatic merging
 	 *   of an HTML {@code <head>} section.
 	 */
-	@Deprecated
-	LayoutDialect(SortingStrategy sortingStrategy, boolean autoHeadMerging) {
+	LayoutDialect(SortingStrategy sortingStrategy = new AppendingStrategy(), boolean autoHeadMerging = true) {
 
 		super(DIALECT_NAME, DIALECT_PREFIX, DIALECT_PRECEDENCE)
 
