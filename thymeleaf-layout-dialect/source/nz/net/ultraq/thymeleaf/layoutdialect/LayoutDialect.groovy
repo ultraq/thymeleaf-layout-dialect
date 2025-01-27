@@ -51,20 +51,24 @@ import groovy.transform.builder.SimpleStrategy
  *
  * @author Emanuel Rabina
  */
-@Builder(builderStrategy = SimpleStrategy, prefix = 'with')
+@Builder(
+	builderStrategy = SimpleStrategy,
+	includes = ['sortingStrategy', 'autoHeadMerging', 'experimentalTitleTokens'],
+	prefix = 'with'
+)
 class LayoutDialect extends AbstractProcessorDialect {
 
 	static final String DIALECT_NAME = 'Layout'
 	static final String DIALECT_PREFIX = 'layout'
 	static final int DIALECT_PRECEDENCE = 10
 
-	private SortingStrategy sortingStrategy = new AppendingStrategy()
+	SortingStrategy sortingStrategy = new AppendingStrategy()
 
 	/**
 	 * Experimental option, set to {@code false} to skip the automatic merging
 	 * of an HTML {@code <head>} section.
 	 */
-	private boolean autoHeadMerging = true
+	boolean autoHeadMerging = true
 
 	/**
 	 * Experimental option, set to {@code true} to use standard Thymeleaf
@@ -72,7 +76,7 @@ class LayoutDialect extends AbstractProcessorDialect {
 	 * in templates as the variables {@code layoutDialectContentTitle} and
 	 * {@code layoutDialectLayoutTitle}.
 	 */
-	private boolean experimentalTitleTokens = false
+	boolean experimentalTitleTokens = false
 
 	/**
 	 * Constructor, configure the layout dialect.
