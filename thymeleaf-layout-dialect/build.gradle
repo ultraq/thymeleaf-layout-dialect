@@ -23,8 +23,8 @@ plugins {
 	id 'maven-publish'
 	id 'idea'
 }
-apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/4.3.1/gradle-support.gradle'
-apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/4.3.1/maven-publish-support.gradle'
+apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/4.3.2/gradle-support.gradle'
+apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/4.3.2/maven-publish-support.gradle'
 
 description = 'A dialect for Thymeleaf that allows you to use layout/decorator templates to style your content.'
 group = 'nz.net.ultraq.thymeleaf'
@@ -38,20 +38,20 @@ configurations.all {
 
 dependencies {
 	api "org.apache.groovy:groovy:${groovyVersion}"
-	implementation 'nz.net.ultraq.groovy:groovy-extensions:2.2.0'
+	implementation 'nz.net.ultraq.groovy:groovy-extensions:2.3.3'
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-expression-processor:3.2.0'
 	implementation "org.thymeleaf:thymeleaf:${thymeleafVersion}"
-	implementation 'org.slf4j:slf4j-api:2.0.11'
+	implementation 'org.slf4j:slf4j-api:2.0.16'
 
-	codenarc 'org.codenarc:CodeNarc:3.4.0-groovy-4.0'
-	testImplementation 'net.bytebuddy:byte-buddy:1.14.11'
+	codenarc 'org.codenarc:CodeNarc:3.5.0-groovy-4.0'
+	testImplementation 'net.bytebuddy:byte-buddy:1.16.1'
 	testImplementation 'nz.net.ultraq.thymeleaf:thymeleaf-testing-junit:5.2.0'
-	testImplementation 'org.objenesis:objenesis:3.3'
+	testImplementation 'org.objenesis:objenesis:3.4'
 	testImplementation 'org.reflections:reflections:0.10.2'
 	testImplementation 'org.spockframework:spock-core:2.3-groovy-4.0'
 	testImplementation "org.thymeleaf.testing:thymeleaf-testing:${thymeleafVersion}"
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-	testRuntimeOnly 'org.slf4j:slf4j-simple:2.0.11'
+	testRuntimeOnly 'org.slf4j:slf4j-simple:2.0.16'
 }
 
 java {
