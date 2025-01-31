@@ -7,6 +7,10 @@ Changelog
  - Added experimental option, `experimentalTitleTokens`, to allow access to the
    layout/content/resulting titles outside of the `layout:title` processor
    ([#172](https://github.com/ultraq/thymeleaf-layout-dialect/issues/172))
+ - Fix a bug where `th:with` values containing `=` in them (eg: `==`, `!=`, etc),
+   wouldn't transfer correctly to the resulting template
+	 ([#244](https://github.com/ultraq/thymeleaf-layout-dialect/issues/244))
+	 ([#224](https://github.com/ultraq/thymeleaf-layout-dialect/issues/224))
  - Upgrade Groovy to 4.0.25
  - Upgrade SLF4J to 2.0.16
  - Upgrade Thymeleaf to 3.1.3.RELEASE
