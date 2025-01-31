@@ -141,6 +141,7 @@ class AttributeMergerTests extends Specification {
 			}
 	}
 
+	@SuppressWarnings('GStringExpressionWithinString')
 	def "Parses declarations with '=' symbols in them"() {
 		given:
 			def source = modelBuilder.build {
