@@ -1,12 +1,12 @@
-/* 
+/*
  * Copyright 2016, Emanuel Rabina (http://www.ultraq.net.nz/)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,7 +23,7 @@ import org.thymeleaf.standard.expression.Assignation
  * attributes.  This is really a wrapper around Thymeleaf's {@link Assignation}
  * class, but simplified to just the left and right hand components in string
  * form.
- * 
+ *
  * @author Emanuel Rabina
  */
 class VariableDeclaration {
@@ -33,18 +33,19 @@ class VariableDeclaration {
 
 	/**
 	 * Constructor, create an instance from a Thymeleaf assignation.
-	 * 
+	 *
 	 * @param assignation
 	 */
 	VariableDeclaration(Assignation assignation) {
 
-		(name, value) = assignation.stringRepresentation.split('=')
+		name = assignation.left.toString()
+		value = assignation.right.toString()
 	}
 
 	/**
 	 * Reconstructs the variable for use with {@code th:with}.
-	 * 
-	 * @return {name}=${value}
+	 *
+	 * @return {@code name=value}
 	 */
 	@Override
 	String toString() {
