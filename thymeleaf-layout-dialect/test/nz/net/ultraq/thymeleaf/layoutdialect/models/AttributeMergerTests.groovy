@@ -140,4 +140,22 @@ class AttributeMergerTests extends Specification {
 				div('th:with': "value1='Hello!',value2='World!'")
 			}
 	}
+
+	def "Parses declarations with '=' symbols in them"() {
+		given:
+			def source = modelBuilder.build {
+				div('th:with': "isA=\${ a == b ? true : false}")
+			}
+			def target = modelBuilder.build {
+				div('th:with': "message='Hello!'")
+			}
+
+		when:
+			def result = attributeMerger.merge(target, source)
+
+		then:
+			result == modelBuilder.build {
+				div('th:with': "isA=\${ a == b ? true : false},message='Hello!'")
+			}
+	}
 }
