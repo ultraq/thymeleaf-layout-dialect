@@ -11,4 +11,9 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: 21
+      - name: Install JMeter
+        run: |
+          curl https://dlcdn.apache.org//jmeter/binaries/apache-jmeter-5.6.3.tgz --output /tmp/apache-jmeter-5.6.3.tgz
+          tar -xvf /tmp/apache-jmeter-5.6.3.tgz
+          JMETER_HOME=/tmp/apache-jmeter-5.6.3
       - run: ./gradlew benchmark
