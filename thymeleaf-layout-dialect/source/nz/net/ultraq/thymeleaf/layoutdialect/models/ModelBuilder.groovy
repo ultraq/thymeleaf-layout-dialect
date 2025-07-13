@@ -1,12 +1,12 @@
-/* 
+/*
  * Copyright 2016, Emanuel Rabina (http://www.ultraq.net.nz/)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,9 +16,8 @@
 
 package nz.net.ultraq.thymeleaf.layoutdialect.models
 
-import nz.net.ultraq.thymeleaf.layoutdialect.PojoLoggerFactory
-
 import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.engine.ElementDefinitions
 import org.thymeleaf.engine.HTMLElementType
@@ -29,12 +28,12 @@ import org.thymeleaf.templatemode.TemplateMode
 
 /**
  * Create Thymeleaf 3 models using the Groovy builder syntax.
- * 
+ *
  * @author Emanuel Rabina
  */
 class ModelBuilder extends BuilderSupport {
 
-	private static final Logger logger = new PojoLoggerFactory().getLogger(ModelBuilder)
+	private static final Logger logger = LoggerFactory.getLogger(ModelBuilder)
 
 	@SuppressWarnings('FieldName')
 	private static final HashSet<String> encounteredVoidTags = []
@@ -45,7 +44,7 @@ class ModelBuilder extends BuilderSupport {
 
 	/**
 	 * Constructor, create a new model builder.
-	 * 
+	 *
 	 * @param context
 	 */
 	ModelBuilder(ITemplateContext context) {
@@ -55,21 +54,21 @@ class ModelBuilder extends BuilderSupport {
 
 	/**
 	 * Constructor, create a new model builder.
-	 * 
+	 *
 	 * @param modelFactory
 	 * @param elementDefinitions
 	 * @param templateMode
 	 */
 	ModelBuilder(IModelFactory modelFactory, ElementDefinitions elementDefinitions, TemplateMode templateMode) {
 
-		this.modelFactory       = modelFactory
+		this.modelFactory = modelFactory
 		this.elementDefinitions = elementDefinitions
-		this.templateMode       = templateMode
+		this.templateMode = templateMode
 	}
 
 	/**
 	 * Appends an existing model to the model being built.
-	 * 
+	 *
 	 * @param model
 	 */
 	void add(IModel model) {
@@ -80,7 +79,7 @@ class ModelBuilder extends BuilderSupport {
 	/**
 	 * Captures the top `build` call so that it doesn't end up as a node in the
 	 * final model.
-	 * 
+	 *
 	 * @param definition
 	 * @return The model built using the closure definition.
 	 */
@@ -92,7 +91,7 @@ class ModelBuilder extends BuilderSupport {
 
 	/**
 	 * Create a model for the given element.
-	 * 
+	 *
 	 * @param name Element name.
 	 * @return New model representing an element with the given name.
 	 */
@@ -104,7 +103,7 @@ class ModelBuilder extends BuilderSupport {
 
 	/**
 	 * Create a model for the given element and inner text content.
-	 * 
+	 *
 	 * @param name  Element name.
 	 * @param value Text content.
 	 * @return New model representing an element with the given name and content.
@@ -117,7 +116,7 @@ class ModelBuilder extends BuilderSupport {
 
 	/**
 	 * Create a model for the given element and attributes.
-	 * 
+	 *
 	 * @param name       Element name.
 	 * @param attributes Element attributes.
 	 * @return New model representing an element with the given name and
@@ -131,7 +130,7 @@ class ModelBuilder extends BuilderSupport {
 
 	/**
 	 * Create a model for the given element, attributes, and inner text content.
-	 * 
+	 *
 	 * @param name       Element name.
 	 * @param attributes Element attributes.
 	 * @param value      Text content.
@@ -202,7 +201,7 @@ class ModelBuilder extends BuilderSupport {
 	/**
 	 * Link a parent and child node.  A child node is appended to a parent by
 	 * being the last sub-model before the parent close tag.
-	 * 
+	 *
 	 * @param parent
 	 * @param child
 	 */

@@ -1,12 +1,12 @@
-/* 
+/*
  * Copyright 2012, Emanuel Rabina (http://www.ultraq.net.nz/)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,13 +17,13 @@
 package nz.net.ultraq.thymeleaf.layoutdialect.includes
 
 import nz.net.ultraq.thymeleaf.expressionprocessor.ExpressionProcessor
-import nz.net.ultraq.thymeleaf.layoutdialect.PojoLoggerFactory
 import nz.net.ultraq.thymeleaf.layoutdialect.fragments.FragmentFinder
 import nz.net.ultraq.thymeleaf.layoutdialect.fragments.FragmentParameterNamesExtractor
 import nz.net.ultraq.thymeleaf.layoutdialect.fragments.FragmentProcessor
 import nz.net.ultraq.thymeleaf.layoutdialect.models.TemplateModelFinder
 
 import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.engine.AttributeName
 import org.thymeleaf.model.IModel
@@ -36,14 +36,14 @@ import org.thymeleaf.templatemode.TemplateMode
  * element fragments to the included template.  Useful if you have some HTML
  * that you want to reuse, but whose contents are too complex to determine or
  * construct with context variables alone.
- * 
+ *
  * @author Emanuel Rabina
  * @deprecated Use {@link InsertProcessor} ({@code layout:insert}) instead.
  */
 @Deprecated
 class IncludeProcessor extends AbstractAttributeModelProcessor {
 
-	private static final Logger logger = new PojoLoggerFactory().getLogger(IncludeProcessor)
+	private static final Logger logger = LoggerFactory.getLogger(IncludeProcessor)
 
 	private static boolean warned = false
 
@@ -52,7 +52,7 @@ class IncludeProcessor extends AbstractAttributeModelProcessor {
 
 	/**
 	 * Constructor, sets this processor to work on the 'include' attribute.
-	 * 
+	 *
 	 * @param templateMode
 	 * @param dialectPrefix
 	 */
@@ -63,7 +63,7 @@ class IncludeProcessor extends AbstractAttributeModelProcessor {
 
 	/**
 	 * Locates a page fragment and includes it in the current template.
-	 * 
+	 *
 	 * @param context
 	 * @param model
 	 * @param attributeName

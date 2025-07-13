@@ -16,10 +16,10 @@
 
 package nz.net.ultraq.thymeleaf.layoutdialect.fragments
 
-import nz.net.ultraq.thymeleaf.layoutdialect.PojoLoggerFactory
 import nz.net.ultraq.thymeleaf.layoutdialect.models.ElementMerger
 
 import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.thymeleaf.context.ITemplateContext
 import org.thymeleaf.engine.AttributeName
 import org.thymeleaf.engine.Text
@@ -37,7 +37,7 @@ import org.thymeleaf.templatemode.TemplateMode
 @Deprecated
 class CollectFragmentProcessor extends AbstractAttributeTagProcessor {
 
-	private static final Logger logger = new PojoLoggerFactory().getLogger(CollectFragmentProcessor)
+	private static final Logger logger = LoggerFactory.getLogger(CollectFragmentProcessor)
 
 	private static boolean warned = false
 	private static boolean deprecationWarned = false
@@ -48,7 +48,7 @@ class CollectFragmentProcessor extends AbstractAttributeTagProcessor {
 
 	/**
 	 * Constructor, sets this processor to work on the 'collect' attribute.
-	 * 
+	 *
 	 * @param templateMode
 	 * @param dialectPrefix
 	 */
@@ -60,7 +60,7 @@ class CollectFragmentProcessor extends AbstractAttributeTagProcessor {
 	/**
 	 * Inserts the content of <code>:define</code> fragments into the encountered
 	 * collect placeholder.
-	 * 
+	 *
 	 * @param context
 	 * @param model
 	 * @param attributeName
