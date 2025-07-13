@@ -15,10 +15,10 @@
  */
 
 allprojects {
-	version = '3.4.0'
+	version = '4.0.0-SNAPSHOT'
 
 	ext {
-		groovyVersion = '4.0.25'
+		groovyVersion = '4.0.27'
 		thymeleafVersion = '3.1.3.RELEASE'
 	}
 }

@@ -23,18 +23,12 @@ plugins {
 	id 'maven-publish'
 	id 'idea'
 }
-apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/4.3.2/gradle-support.gradle'
-apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/4.3.2/maven-publish-support.gradle'
+apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/4.4.1/gradle-support.gradle'
+apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/4.4.1/maven-publish-support.gradle'
 
 description = 'A dialect for Thymeleaf that allows you to use layout/decorator templates to style your content.'
 group = 'nz.net.ultraq.thymeleaf'
 year = '2012'
-
-configurations.all {
-	resolutionStrategy.dependencySubstitution {
-		substitute module('org.mockito:mockito-core') using module('org.mockito:mockito-core:4.11.0') because 'Still supporting Java 8'
-	}
-}
 
 dependencies {
 	api "org.apache.groovy:groovy:${groovyVersion}"
@@ -56,7 +50,7 @@ dependencies {
 
 java {
 	toolchain {
-		languageVersion = JavaLanguageVersion.of(8)
+		languageVersion = JavaLanguageVersion.of(17)
 	}
 }
 

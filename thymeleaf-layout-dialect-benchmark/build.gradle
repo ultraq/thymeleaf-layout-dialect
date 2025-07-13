@@ -26,7 +26,7 @@ plugins {
 	id 'com.github.psxpaul.execfork' version '0.2.2'
 }
 apply plugin: 'io.spring.dependency-management'
-apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/4.3.2/gradle-support.gradle'
+apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/4.4.1/gradle-support.gradle'
 
 description = 'A basic web application to test the performance of the Thymeleaf Layout Dialect'
 
@@ -43,7 +43,7 @@ dependencies {
 
 java {
 	toolchain {
-		languageVersion = JavaLanguageVersion.of(21)
+		languageVersion = JavaLanguageVersion.of(17)
 	}
 }
 
