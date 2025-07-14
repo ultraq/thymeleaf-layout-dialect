@@ -21,30 +21,34 @@ import org.gradle.internal.os.OperatingSystem
 import java.time.LocalDateTime
 
 plugins {
-	id 'groovy'
-	id 'org.springframework.boot' version '3.4.2'
 	id 'com.github.psxpaul.execfork' version '0.2.2'
+	id 'org.springframework.boot' version '3.4.2'
+	id 'nz.net.ultraq.gradle.fluent-configuration' version '0.3.0-SNAPSHOT'
 }
 apply plugin: 'io.spring.dependency-management'
-apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/4.4.1/gradle-support.gradle'
 
 description = 'A basic web application to test the performance of the Thymeleaf Layout Dialect'
 
+// @formatter:off
+configure {
+	createGroovyProject()
+		.useJavaVersion(17)
+		.useMavenCentralRepositories()
+		.configureSource()
+			.withSourceDirectory('source')
+			.withDependencies() {
+				implementation project(':thymeleaf-layout-dialect')
+				implementation "org.apache.groovy:groovy:${groovyVersion}"
+				implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+				implementation 'org.springframework.boot:spring-boot-starter-web'
+			}
+		.configureTesting()
+			.withTestDirectory('test')
+}
+// @formatter:on
+
 base {
 	archivesName = 'thymeleaf-layout-dialect-benchmark'
-}
-
-dependencies {
-	implementation project(':thymeleaf-layout-dialect')
-	implementation "org.apache.groovy:groovy:${groovyVersion}"
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-}
-
-java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(17)
-	}
 }
 
 tasks.register('startWebApp', ExecFork) {
@@ -59,10 +63,10 @@ tasks.register('startWebApp', ExecFork) {
 
 tasks.register('benchmark', Exec) {
 	dependsOn startWebApp
-	def os = OperatingSystem.current()
-	def dateTimeString = LocalDateTime.now().format('yyyy-MM-dd_HHmmss')
-	def resultsDir = "${buildDir}/results/${version}"
-	def reportsDir = "${buildDir}/reports/${version}"
+	var os = OperatingSystem.current()
+	var dateTimeString = LocalDateTime.now().format('yyyy-MM-dd_HHmmss')
+	var resultsDir = "${layout.buildDirectory}/results/${version}"
+	var reportsDir = "${layout.buildDirectory}/reports/${version}"
 	doFirst {
 		mkdir resultsDir
 		mkdir reportsDir

@@ -15,55 +15,69 @@
  */
 
 plugins {
-	id 'java-library'
-	id 'groovy'
 	id 'codenarc'
-	id 'jacoco'
 	id 'distribution'
-	id 'maven-publish'
 	id 'idea'
+	id 'nz.net.ultraq.gradle.fluent-configuration' version '0.3.0-SNAPSHOT'
 }
-apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/4.4.1/gradle-support.gradle'
-apply from: 'https://raw.githubusercontent.com/ultraq/gradle-support/4.4.1/maven-publish-support.gradle'
 
 description = 'A dialect for Thymeleaf that allows you to use layout/decorator templates to style your content.'
 group = 'nz.net.ultraq.thymeleaf'
-year = '2012'
 
-dependencies {
-	api "org.apache.groovy:groovy:${groovyVersion}"
-	implementation 'nz.net.ultraq.groovy:groovy-extensions:2.3.3'
-	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-expression-processor:3.2.0'
-	implementation "org.thymeleaf:thymeleaf:${thymeleafVersion}"
-	implementation 'org.slf4j:slf4j-api:2.0.16'
-
-	codenarc 'org.codenarc:CodeNarc:3.5.0-groovy-4.0'
-	testImplementation 'net.bytebuddy:byte-buddy:1.16.1'
-	testImplementation 'nz.net.ultraq.thymeleaf:thymeleaf-testing-junit:5.2.0'
-	testImplementation 'org.objenesis:objenesis:3.4'
-	testImplementation 'org.reflections:reflections:0.10.2'
-	testImplementation 'org.spockframework:spock-core:2.3-groovy-4.0'
-	testImplementation "org.thymeleaf.testing:thymeleaf-testing:${thymeleafVersion}"
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-	testRuntimeOnly 'org.slf4j:slf4j-simple:2.0.16'
+// @formatter:off
+configure {
+	createGroovyLibrary()
+		.useJavaVersion(17)
+		.useMavenCentralRepositories()
+		.withGroovydocOptions {
+			link("https://www.thymeleaf.org/apidocs/thymeleaf/${thymeleafVersion}/", 'org.thymeleaf.')
+		}
+		.configureSource()
+			.withSourceDirectory('source')
+			.withDependencies() {
+				api "org.apache.groovy:groovy:${groovyVersion}"
+				implementation 'nz.net.ultraq.groovy:groovy-extensions:2.3.3'
+				implementation 'nz.net.ultraq.thymeleaf:thymeleaf-expression-processor:3.2.0'
+				implementation "org.thymeleaf:thymeleaf:${thymeleafVersion}"
+				implementation 'org.slf4j:slf4j-api:2.0.16'
+			}
+			.expandExtensionModuleVersion()
+		.configureTesting()
+			.withTestDirectory('test')
+			.withTestDependencies() {
+				codenarc 'org.codenarc:CodeNarc:3.5.0-groovy-4.0'
+				testImplementation 'net.bytebuddy:byte-buddy:1.16.1'
+				testImplementation 'nz.net.ultraq.thymeleaf:thymeleaf-testing-junit:5.2.0'
+				testImplementation 'org.objenesis:objenesis:3.4'
+				testImplementation 'org.reflections:reflections:0.10.2'
+				testImplementation 'org.spockframework:spock-core:2.3-groovy-4.0'
+				testImplementation "org.thymeleaf.testing:thymeleaf-testing:${thymeleafVersion}"
+				testRuntimeOnly 'org.slf4j:slf4j-simple:2.0.16'
+			}
+			.useJUnitJupiter()
+			.useJacoco()
+	createMavenPublication()
+		.addJar() {
+			manifest {
+				attributes('Automatic-Module-Name': 'nz.net.ultraq.thymeleaf.layoutdialect')
+			}
+		}
+		.addSourcesJar()
+		.addGroovydocJar()
+		.configurePom() {
+			url = 'https://ultraq.github.io/thymeleaf-layout-dialect/'
+			inceptionYear = '2012'
+		}
+			.useApache20License()
+			.withGitHubScm('ultraq')
+			.withDevelopers([
+			  name: 'Emanuel Rabina',
+				email: 'emanuelrabina@gmail.com',
+				url: 'https://www.ultraq.net.nz'
+			])
+		.publishToMavenCentral(
+			property('mavenCentral.publisher.username'),
+			property('mavenCentral.publisher.password')
+		)
 }
-
-java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(17)
-	}
-}
-
-test {
-	useJUnitPlatform()
-}
-
-groovydoc {
-	link("https://www.thymeleaf.org/apidocs/thymeleaf/${thymeleafVersion}/", 'org.thymeleaf.')
-}
-
-jar {
-	manifest {
-		attributes('Automatic-Module-Name': 'nz.net.ultraq.thymeleaf.layoutdialect')
-	}
-}
+// @formatter:on
