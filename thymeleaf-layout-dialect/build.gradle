@@ -18,7 +18,7 @@ plugins {
 	id 'codenarc'
 	id 'distribution'
 	id 'idea'
-	id 'nz.net.ultraq.gradle.fluent-configuration' version '0.3.0-SNAPSHOT'
+	id 'nz.net.ultraq.gradle.fluent-configuration' version '0.3.0'
 }
 
 description = 'A dialect for Thymeleaf that allows you to use layout/decorator templates to style your content.'
@@ -81,3 +81,7 @@ configure {
 		)
 }
 // @formatter:on
+
+codenarc {
+	config = resources.text.fromUri('https://raw.githubusercontent.com/ultraq/codenarc-config-ultraq/master/codenarc.groovy')
+}

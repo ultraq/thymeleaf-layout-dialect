@@ -23,7 +23,7 @@ import java.time.LocalDateTime
 plugins {
 	id 'com.github.psxpaul.execfork' version '0.2.2'
 	id 'org.springframework.boot' version '3.4.2'
-	id 'nz.net.ultraq.gradle.fluent-configuration' version '0.3.0-SNAPSHOT'
+	id 'nz.net.ultraq.gradle.fluent-configuration' version '0.3.0'
 }
 apply plugin: 'io.spring.dependency-management'
 
