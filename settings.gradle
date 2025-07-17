@@ -14,15 +14,6 @@
  * limitations under the License.
  */
 
-pluginManagement {
-	repositories {
-		gradlePluginPortal()
-		maven {
-			url = file('../test-maven-repository')
-		}
-	}
-}
-
 rootProject.name = 'thymeleaf-layout-dialect'
 
 include 'thymeleaf-layout-dialect'

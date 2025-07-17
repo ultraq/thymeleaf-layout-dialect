@@ -15,9 +15,8 @@
  */
 
 plugins {
-	id 'distribution'
 	id 'idea'
-	id 'nz.net.ultraq.gradle.fluent-configuration' version '0.3.1'
+	id 'nz.net.ultraq.gradle.fluent-configuration' version '0.4.0'
 }
 
 description = 'A dialect for Thymeleaf that allows you to use layout/decorator templates to style your content.'
@@ -55,6 +54,7 @@ configure {
 			.useCodenarc(resources.text.fromUri('https://raw.githubusercontent.com/ultraq/codenarc-config-ultraq/master/codenarc.groovy'))
 			.useJUnitJupiter()
 			.useJacoco()
+
 	createMavenPublication()
 		.addJar() {
 			manifest {
@@ -78,5 +78,10 @@ configure {
 			property('mavenCentral.publisher.username'),
 			property('mavenCentral.publisher.password')
 		)
+
+	createZipDistribution()
+		.withDependenciesIn('libraries')
+		.withSourcesIn('source')
+		.withGroovydocsIn('groovydoc')
 }
 // @formatter:on
