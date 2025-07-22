@@ -23,7 +23,7 @@ import java.time.LocalDateTime
 plugins {
 	id 'com.github.psxpaul.execfork' version '0.2.2'
 	id 'org.springframework.boot' version '3.4.2'
-	id 'nz.net.ultraq.gradle.fluent-configuration' version '0.3.1'
+	id 'nz.net.ultraq.gradle.fluent-configuration' version '0.5.2'
 }
 apply plugin: 'io.spring.dependency-management'
 
@@ -42,7 +42,7 @@ configure {
 				implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 				implementation 'org.springframework.boot:spring-boot-starter-web'
 			}
-		.configureTesting()
+		.configureVerification()
 			.withTestDirectory('test')
 }
 // @formatter:on
