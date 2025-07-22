@@ -16,7 +16,7 @@
 
 plugins {
 	id 'idea'
-	id 'nz.net.ultraq.gradle.fluent-configuration' version '0.4.0'
+	id 'nz.net.ultraq.gradle.fluent-configuration' version '0.5.2'
 }
 
 description = 'A dialect for Thymeleaf that allows you to use layout/decorator templates to style your content.'
@@ -24,12 +24,19 @@ group = 'nz.net.ultraq.thymeleaf'
 
 // @formatter:off
 configure {
-	createGroovyLibrary()
+	createGroovyLibraryProject()
 		.useJavaVersion(17)
 		.useMavenCentralRepositories()
-		.withGroovydocOptions {
+		.withGroovydocOptions() {
 			link("https://www.thymeleaf.org/apidocs/thymeleaf/${thymeleafVersion}/", 'org.thymeleaf.')
 		}
+		.withJarOptions() {
+			manifest {
+				attributes('Automatic-Module-Name': 'nz.net.ultraq.thymeleaf.layoutdialect')
+			}
+		}
+		.withSourcesJar()
+		.withGroovydocJar()
 		.configureSource()
 			.withSourceDirectory('source')
 			.withDependencies() {
@@ -40,7 +47,7 @@ configure {
 				implementation 'org.slf4j:slf4j-api:2.0.16'
 			}
 			.expandExtensionModuleVersion()
-		.configureTesting()
+		.configureVerification()
 			.withTestDirectory('test')
 			.withTestDependencies() {
 				testImplementation 'net.bytebuddy:byte-buddy:1.16.1'
@@ -56,13 +63,7 @@ configure {
 			.useJacoco()
 
 	createMavenPublication()
-		.addJar() {
-			manifest {
-				attributes('Automatic-Module-Name': 'nz.net.ultraq.thymeleaf.layoutdialect')
-			}
-		}
-		.addSourcesJar()
-		.addGroovydocJar()
+		.withArtifacts(jar, sourcesJar, groovydocJar)
 		.configurePom() {
 			url = 'https://ultraq.github.io/thymeleaf-layout-dialect/'
 			inceptionYear = '2012'
@@ -75,8 +76,8 @@ configure {
 				url: 'https://www.ultraq.net.nz'
 			])
 		.publishToMavenCentral(
-			property('mavenCentral.publisher.username'),
-			property('mavenCentral.publisher.password')
+			findProperty('mavenCentral.publisher.username') ?: '',
+			findProperty('mavenCentral.publisher.password') ?: ''
 		)
 
 	createZipDistribution()
