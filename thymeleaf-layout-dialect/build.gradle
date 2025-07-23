@@ -76,8 +76,8 @@ configure {
 				url: 'https://www.ultraq.net.nz'
 			])
 		.publishToMavenCentral(
-			findProperty('mavenCentral.publisher.username') ?: '',
-			findProperty('mavenCentral.publisher.password') ?: ''
+			findProperty('mavenCentral.publisher.username'),
+			findProperty('mavenCentral.publisher.password')
 		)
 
 	createZipDistribution()
