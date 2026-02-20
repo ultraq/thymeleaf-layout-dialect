@@ -77,9 +77,9 @@ class IncludeProcessor extends AbstractAttributeModelProcessor {
 
 		if (!warned) {
 			logger.warn(
-				'The layout:include/data-layout-include processor is deprecated and will be removed in the next major version of the layout dialect.  ' +
-				'Use the layout:insert/data-layout-insert processor instead.  ' +
-				'See https://github.com/ultraq/thymeleaf-layout-dialect/issues/107 for more information.'
+				'The layout:include/data-layout-include processor is deprecated and will be removed in a future version of the layout dialect.  ' +
+					'Use the layout:insert/data-layout-insert processor instead.  ' +
+					'See https://github.com/ultraq/thymeleaf-layout-dialect/issues/107 for more information.'
 			)
 			warned = true
 		}
