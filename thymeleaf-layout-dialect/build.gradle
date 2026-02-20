@@ -42,9 +42,9 @@ configure {
 			.withDependencies() {
 				api "org.apache.groovy:groovy:${groovyVersion}"
 				implementation 'nz.net.ultraq.groovy:groovy-extensions:4.0.0-SNAPSHOT'
-				implementation 'nz.net.ultraq.thymeleaf:thymeleaf-expression-processor:3.2.0'
+				implementation 'nz.net.ultraq.thymeleaf:thymeleaf-expression-processor:4.0.0-SNAPSHOT'
 				implementation "org.thymeleaf:thymeleaf:${thymeleafVersion}"
-				implementation 'org.slf4j:slf4j-api:2.0.16'
+				implementation 'org.slf4j:slf4j-api:2.0.17'
 			}
 			.expandExtensionModuleVersion()
 		.configureVerification()
@@ -55,7 +55,7 @@ configure {
 				testImplementation 'org.reflections:reflections:0.10.2'
 				testImplementation 'org.spockframework:spock-core:2.4-groovy-5.0'
 				testImplementation "org.thymeleaf.testing:thymeleaf-testing:${thymeleafVersion}"
-				testRuntimeOnly 'org.slf4j:slf4j-simple:2.0.16'
+				testRuntimeOnly 'org.slf4j:slf4j-simple:2.0.17'
 			}
 			.useCodenarc(resources.text.fromUri('https://raw.githubusercontent.com/ultraq/codenarc-config-ultraq/master/codenarc.groovy'))
 			.useJUnitJupiter()
