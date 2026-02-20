@@ -65,8 +65,8 @@ tasks.register('benchmark', Exec) {
 	dependsOn startWebApp
 	var os = OperatingSystem.current()
 	var dateTimeString = LocalDateTime.now().format('yyyy-MM-dd_HHmmss')
-	var resultsDir = "${layout.buildDirectory.get().dir('results').asFile}/${version}"
-	var reportsDir = "${layout.buildDirectory.get().dir('reports').asFile}/${version}"
+	var resultsDir = "${layout.buildDirectory.dir("results/${version}").get()}"
+	var reportsDir = "${layout.buildDirectory.dir("reports/${version}").get()}"
 	doFirst {
 		mkdir resultsDir
 		mkdir reportsDir
