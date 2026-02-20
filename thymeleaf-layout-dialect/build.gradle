@@ -50,11 +50,10 @@ configure {
 		.configureVerification()
 			.withTestDirectory('test')
 			.withTestDependencies() {
-				testImplementation 'net.bytebuddy:byte-buddy:1.16.1'
 				testImplementation 'nz.net.ultraq.thymeleaf:thymeleaf-testing-junit:5.2.0'
-				testImplementation 'org.objenesis:objenesis:3.4'
+				testImplementation 'org.mockito:mockito-core:5.21.0'
 				testImplementation 'org.reflections:reflections:0.10.2'
-				testImplementation 'org.spockframework:spock-core:2.4-groovy-5.0-SNAPSHOT'
+				testImplementation 'org.spockframework:spock-core:2.4-groovy-5.0'
 				testImplementation "org.thymeleaf.testing:thymeleaf-testing:${thymeleafVersion}"
 				testRuntimeOnly 'org.slf4j:slf4j-simple:2.0.16'
 			}
