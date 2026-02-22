@@ -1,12 +1,12 @@
-/* 
+/*
  * Copyright 2012, Emanuel Rabina (http://www.ultraq.net.nz/)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -28,7 +28,7 @@ import org.thymeleaf.templatemode.TemplateMode
 /**
  * This processor serves a dual purpose: to mark sections of the template that
  * can be replaced, and to do the replacing when they're encountered.
- * 
+ *
  * @author Emanuel Rabina
  */
 class FragmentProcessor extends AbstractAttributeTagProcessor {
@@ -38,7 +38,7 @@ class FragmentProcessor extends AbstractAttributeTagProcessor {
 
 	/**
 	 * Constructor, sets this processor to work on the 'fragment' attribute.
-	 * 
+	 *
 	 * @param templateMode
 	 * @param dialectPrefix
 	 */
@@ -49,7 +49,7 @@ class FragmentProcessor extends AbstractAttributeTagProcessor {
 
 	/**
 	 * Inserts the content of fragments into the encountered fragment placeholder.
-	 * 
+	 *
 	 * @param context
 	 * @param model
 	 * @param attributeName
@@ -57,18 +57,16 @@ class FragmentProcessor extends AbstractAttributeTagProcessor {
 	 * @param structureHandler
 	 */
 	@Override
-	@SuppressWarnings('AssignmentToStaticFieldFromInstanceMethod')
 	protected void doProcess(ITemplateContext context, IProcessableElementTag tag,
 		AttributeName attributeName, String attributeValue, IElementTagStructureHandler structureHandler) {
 
 		// Locate the fragment that corresponds to this decorator/include fragment
-		def fragments = context.fragmentCollection[attributeValue]
+		var fragment = context.fragmentCollection[attributeValue]
 
 		// Replace the tag body with the fragment
-		if (fragments) {
-			def fragment = fragments.last()
-			def modelFactory = context.modelFactory
-			def replacementModel = new ElementMerger(context).merge(modelFactory.createModel(tag), fragment)
+		if (fragment) {
+			var modelFactory = context.modelFactory
+			var replacementModel = new ElementMerger(context).merge(modelFactory.createModel(tag), fragment)
 
 			// Remove the layout:fragment attribute - Thymeleaf won't do it for us
 			// when using StructureHandler.replaceWith(...)

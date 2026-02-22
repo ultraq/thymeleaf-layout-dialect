@@ -1,12 +1,12 @@
-/* 
+/*
  * Copyright 2015, Emanuel Rabina (http://www.ultraq.net.nz/)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,7 +24,7 @@ import groovy.transform.TupleConstructor
 /**
  * Searches for and returns layout dialect fragments within a given
  * scope/element.
- * 
+ *
  * @author Emanuel Rabina
  */
 @TupleConstructor(defaults = false)
@@ -36,38 +36,29 @@ class FragmentFinder {
 	 * Find and return models for layout dialect fragments within the scope of the
 	 * given model, without delving into {@code layout:insert} or
 	 * {@code layout:replace} elements, mapped by the name of each fragment.
-	 * 
+	 *
 	 * @param model Model whose events are to be searched.
 	 * @return Map of fragment names and their elements.
 	 */
-	Map<String,List<IModel>> findFragments(IModel model) {
+	Map<String, IModel> findFragments(IModel model) {
 
-		def fragmentsMap = [:]
+		LinkedHashMap<String, IModel> fragments = [:]
 
-		def eventIndex = 0
+		var eventIndex = 0
 		while (eventIndex < model.size()) {
-			def event = model.get(eventIndex)
+			var event = model.get(eventIndex)
 			if (event instanceof IOpenElementTag) {
-				def fragmentName = event.getAttributeValue(dialectPrefix, FragmentProcessor.PROCESSOR_NAME)
-				def collect = false
-				if (!fragmentName) {
-					collect = true
-					fragmentName = event.getAttributeValue(dialectPrefix, CollectFragmentProcessor.PROCESSOR_DEFINE) ?: 
-						event.getAttributeValue(dialectPrefix, CollectFragmentProcessor.PROCESSOR_COLLECT)
-				}
+				var fragmentName = event.getAttributeValue(dialectPrefix, FragmentProcessor.PROCESSOR_NAME)
 				if (fragmentName) {
-					def fragment = model.getModel(eventIndex)
-					fragmentsMap[fragmentName] = fragmentsMap[fragmentName] ?: []
-					fragmentsMap[fragmentName] << fragment
-					if (!collect) {
-						eventIndex += fragment.size()
-						continue
-					}
+					var fragment = model.getModel(eventIndex)
+					fragments << [(fragmentName): fragment]
+					eventIndex += fragment.size()
+					continue
 				}
 			}
 			eventIndex++
 		}
 
-		return fragmentsMap
+		return fragments
 	}
 }

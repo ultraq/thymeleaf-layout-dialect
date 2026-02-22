@@ -36,7 +36,7 @@ class FragmentExtensions {
 	 * @param fromDecorator
 	 * @return A new or existing fragment collection.
 	 */
-	static Map<String,List<IModel>> getFragmentCollection(ITemplateContext self, boolean fromDecorator = false) {
+	static Map<String, IModel> getFragmentCollection(ITemplateContext self, boolean fromDecorator = false) {
 
 		// If the template stack contains only 1 template and we've been called from
 		// the decorator, then always return a new fragment collection.  This seems
@@ -48,7 +48,7 @@ class FragmentExtensions {
 			return [:]
 		}
 
-		def fragmentCollection = self[FRAGMENT_COLLECTION_KEY]
+		var fragmentCollection = self[FRAGMENT_COLLECTION_KEY] as Map<String, IModel>
 		return fragmentCollection != null ? fragmentCollection : [:]
 	}
 
@@ -66,18 +66,17 @@ class FragmentExtensions {
 	 *   fragments.
 	 */
 	static void setLocalFragmentCollection(IElementModelStructureHandler self, ITemplateContext context,
-		Map<String,List<IModel>> fragments, boolean fromDecorator = false) {
+		Map<String, IModel> fragments, boolean fromDecorator = false) {
 
 		self.setLocalVariable(FRAGMENT_COLLECTION_KEY,
-			context.getFragmentCollection(fromDecorator).inject(fragments) { accumulator, fragmentName, fragmentList ->
+			context.getFragmentCollection(fromDecorator).inject(fragments) { accumulator, fragmentName, fragment ->
 				if (accumulator[fragmentName]) {
-					accumulator[fragmentName] += fragmentList
-					if (!fromDecorator) {
-						accumulator[fragmentName].reverse(true)
+					if (fromDecorator) {
+						accumulator[fragmentName] = fragment
 					}
 				}
 				else {
-					accumulator[fragmentName] = fragmentList
+					accumulator[fragmentName] = fragment
 				}
 				return accumulator
 			}

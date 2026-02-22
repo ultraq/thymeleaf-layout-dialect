@@ -21,7 +21,6 @@ import nz.net.ultraq.thymeleaf.layoutdialect.decorators.SortingStrategy
 import nz.net.ultraq.thymeleaf.layoutdialect.decorators.TitlePatternProcessor
 import nz.net.ultraq.thymeleaf.layoutdialect.decorators.TitleProcessor
 import nz.net.ultraq.thymeleaf.layoutdialect.decorators.strategies.AppendingStrategy
-import nz.net.ultraq.thymeleaf.layoutdialect.fragments.CollectFragmentProcessor
 import nz.net.ultraq.thymeleaf.layoutdialect.fragments.FragmentProcessor
 import nz.net.ultraq.thymeleaf.layoutdialect.includes.IncludeProcessor
 import nz.net.ultraq.thymeleaf.layoutdialect.includes.InsertProcessor
@@ -103,7 +102,6 @@ class LayoutDialect extends AbstractProcessorDialect {
 			new InsertProcessor(TemplateMode.HTML, dialectPrefix),
 			new ReplaceProcessor(TemplateMode.HTML, dialectPrefix),
 			new FragmentProcessor(TemplateMode.HTML, dialectPrefix),
-			new CollectFragmentProcessor(TemplateMode.HTML, dialectPrefix),
 			new TitlePatternProcessor(TemplateMode.HTML, dialectPrefix),
 			new TitleProcessor(TemplateMode.HTML, dialectPrefix),
 
@@ -113,8 +111,7 @@ class LayoutDialect extends AbstractProcessorDialect {
 			new IncludeProcessor(TemplateMode.XML, dialectPrefix),
 			new InsertProcessor(TemplateMode.XML, dialectPrefix),
 			new ReplaceProcessor(TemplateMode.XML, dialectPrefix),
-			new FragmentProcessor(TemplateMode.XML, dialectPrefix),
-			new CollectFragmentProcessor(TemplateMode.XML, dialectPrefix)
+			new FragmentProcessor(TemplateMode.XML, dialectPrefix)
 		]
 	}
 

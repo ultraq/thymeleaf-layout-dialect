@@ -1,12 +1,12 @@
-/* 
+/*
  * Copyright 2015, Emanuel Rabina (http://www.ultraq.net.nz/)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,7 +17,6 @@
 package nz.net.ultraq.thymeleaf.layoutdialect.models
 
 import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect
-import nz.net.ultraq.thymeleaf.layoutdialect.fragments.CollectFragmentProcessor
 import nz.net.ultraq.thymeleaf.layoutdialect.fragments.FragmentProcessor
 
 import org.thymeleaf.context.ITemplateContext
@@ -29,7 +28,7 @@ import groovy.transform.TupleConstructor
 
 /**
  * Merges attributes from one element into another.
- * 
+ *
  * @author Emanuel Rabina
  */
 @TupleConstructor(defaults = false)
@@ -43,7 +42,7 @@ class AttributeMerger implements ModelMerger {
 	 * with those in the target model, overwriting any attributes that have the
 	 * same name, except for the case of {@code th:with} where variable
 	 * declarations are preserved, only overwriting same-named declarations.
-	 * 
+	 *
 	 * @param sourceModel
 	 * @param targetModel
 	 * @return New element with the merged attributes.
@@ -66,8 +65,7 @@ class AttributeMerger implements ModelMerger {
 
 			// Don't include layout:fragment processors
 			.findAll { sourceAttribute ->
-				return !sourceAttribute.equalsName(layoutDialectPrefix, FragmentProcessor.PROCESSOR_NAME) &&
-					!sourceAttribute.equalsName(layoutDialectPrefix, CollectFragmentProcessor.PROCESSOR_DEFINE)
+				return !sourceAttribute.equalsName(layoutDialectPrefix, FragmentProcessor.PROCESSOR_NAME)
 			}
 
 			.each { sourceAttribute ->
