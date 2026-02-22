@@ -1,12 +1,12 @@
-/* 
+/*
  * Copyright 2017, Emanuel Rabina (http://www.ultraq.net.nz/)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,21 +31,22 @@ import static org.reflections.scanners.Scanners.Resources
 /**
  * Special test executor for testing interaction of the layout dialect with
  * other dialects.
- * 
+ *
  * @author Emanuel Rabina
  */
 class LayoutDialectInteractionTestExecutor extends JUnitTestExecutor {
 
 	final List<? extends IDialect> testDialects = [
 		new StandardDialect(),
-		new LayoutDialect(new GroupingStrategy()),
+		new LayoutDialect()
+			.withSortingStrategy(new GroupingStrategy()),
 		new HighPriorityDialect()
 	]
 
 	/**
 	 * Return only Thymeleaf testing files involved in the testing of dialect
 	 * interaction.
-	 * 
+	 *
 	 * @return List of all the Thymeleaf testing files for dialect interaction.
 	 */
 	static List<String> getThymeleafTestFiles() {
@@ -54,7 +55,6 @@ class LayoutDialectInteractionTestExecutor extends JUnitTestExecutor {
 			.getResources(~/Interaction.*\.thtest/)
 			.asList()
 	}
-
 
 	/**
 	 * A do-nothing high-priority dialect.

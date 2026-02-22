@@ -34,16 +34,10 @@ import org.thymeleaf.templatemode.TemplateMode
 /**
  * A dialect for Thymeleaf that lets you build layouts and reusable templates in
  * order to improve code reuse.
- * <p>
- * To configure the layout dialect, you have 2 options:
- * <ul>
- *   <li>the constructor with arguments {@code LayoutDialect(SortingStrategy, boolean)}</li>
- *   <li>the fluent API methods {@link #withAutoHeadMerging}, {@link #withExperimentalTitleTokens},
- *    and {@link #withSortingStrategy}</li>
- * </ul>
- * <p>Note that the fluent API is currently the only way to enable the {@code experimentatlTitleTokens}
- * setting.  With the number of options growing, the constructor might be
- * deprecated in favour of the fluent API methods.
+ *
+ * <p>To configure the layout dialect, use the fluent API methods:
+ * {@link #withAutoHeadMerging}, {@link #withExperimentalTitleTokens}, and
+ * {@link #withSortingStrategy}.
  *
  * @author Emanuel Rabina
  */
@@ -70,17 +64,28 @@ class LayoutDialect extends AbstractProcessorDialect {
 	private boolean experimentalTitleTokens = false
 
 	/**
+	 * Constructor, create a new layout dialect with the default options.
+	 */
+	LayoutDialect() {
+
+		super(DIALECT_NAME, DIALECT_PREFIX, DIALECT_PRECEDENCE)
+	}
+
+	/**
 	 * Constructor, configure the layout dialect.
 	 *
 	 * @param sortingStrategy
 	 * @param autoHeadMerging
 	 *   Experimental option, set to {@code false} to skip the automatic merging
 	 *   of an HTML {@code <head>} section.
+	 * @deprecated
+	 *   Use the fluent configuration methods, each starting with {@code with}, to
+	 *   configure the layout dialect instead.
 	 */
-	LayoutDialect(SortingStrategy sortingStrategy = new AppendingStrategy(), boolean autoHeadMerging = true) {
+	@Deprecated(since = "4.0.0", forRemoval = true)
+	LayoutDialect(SortingStrategy sortingStrategy, boolean autoHeadMerging = true) {
 
-		super(DIALECT_NAME, DIALECT_PREFIX, DIALECT_PRECEDENCE)
-
+		this()
 		this.sortingStrategy = sortingStrategy
 		this.autoHeadMerging = autoHeadMerging
 	}
