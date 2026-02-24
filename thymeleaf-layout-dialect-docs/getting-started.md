@@ -2,8 +2,6 @@
 layout: default
 title: Getting started
 nav_order: 2
-redirect_from:
-  - /Installation.html
 ---
 
 Getting started
@@ -22,13 +20,16 @@ On this page
 Installation
 ------------
 
-A minimum of Java 8 and Thymeleaf 3.x is required.  Add the layout dialect by
+A minimum of Java 17 and Thymeleaf 3.1 is required.  Add the layout dialect by
 configuring Maven or your Maven-compatible dependency manager to the following
 co-ordinates:
 
  - GroupId: `nz.net.ultraq.thymeleaf`
  - ArtifactId: `thymeleaf-layout-dialect`
- - Version: `3.4.0`
+ - Version: `4.0.0`
+
+If using Spring Boot, the version is optional as Spring Boot includes a managed
+version of the layout dialect.
 
 Check the [project releases](https://github.com/ultraq/thymeleaf-layout-dialect/releases)
 for a list of available versions.  Each release page also includes a
@@ -41,6 +42,11 @@ Usage
 Configure Thymeleaf to include the layout dialect using one of the methods below:
 
  - Spring or Spring Boot w/ Java/annotation config:
+
+   > The following is only needed if you wish to configure the layout dialect
+   > from its default options - the layout dialect is autoconfigured if detected
+   > in your project
+
    ```java
    @Bean
    public LayoutDialect layoutDialect() {
@@ -49,6 +55,7 @@ Configure Thymeleaf to include the layout dialect using one of the methods below
    ```
 
  - DIY management of the Thymeleaf template engine:
+
    ```java
    TemplateEngine templateEngine = new TemplateEngine();
    templateEngine.addDialect(new LayoutDialect());

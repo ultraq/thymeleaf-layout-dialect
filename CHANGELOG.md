@@ -2,6 +2,18 @@
 Changelog
 =========
 
+### 4.0.0
+
+ - Made to align with Spring Boot 4 ([#246](https://github.com/ultraq/thymeleaf-layout-dialect/issues/246))
+   this changes the minimum support targets to:
+    - Java 17
+    - Groovy 5
+    - Gradle 9 (for building the project)
+ - Any workarounds made for older versions of Java have been removed from the
+   codebase
+ - Remove deprecated `layout:collect` processor
+
+
 ### 3.4.0
 
  - Added experimental option, `experimentalTitleTokens`, to allow access to the

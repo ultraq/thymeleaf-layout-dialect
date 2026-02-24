@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Migrating to 3.0
-nav_order: 6
+nav_order: 5
 ---
 
 Migrating to 3.0

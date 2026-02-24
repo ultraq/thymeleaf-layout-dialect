@@ -3,8 +3,6 @@ layout: default
 title: decorate
 parent: Processors
 nav_order: 1
-redirect_from:
-  - /Configuration.html
 ---
 
 decorate
@@ -15,7 +13,7 @@ decorate
  - Data attribute: `data-layout-decorate`
 
 Used in your content templates and declared in the root tag (usually `<html>`),
-this processor takes a [fragment expression](https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html#fragments)
+this processor takes a [fragment expression](https://www.thymeleaf.org/doc/tutorials/3.1/usingthymeleaf.html#fragments)
 that specifies the layout template to decorate with the content template.
 
 ```html
@@ -235,8 +233,9 @@ Result:
 </head>
 ```
 
-However, sometimes we need a smarter merging of elements, such as grouping like
-elements together (having scripts with scripts and stylesheets with stylesheets).
+However, sometimes we need a smarter merging of elements, such as grouping
+similar elements together (having scripts with scripts and stylesheets with
+stylesheets).
 
 ```html
 Content.html
@@ -280,21 +279,11 @@ interface and the layout dialect provides 2 implementations to choose from:
     layout ones.
  - `GroupingStrategy`, groups like elements together.
 
-To change to the grouping strategy, configure the Layout dialect using one of
-the methods below:
+And can be applied like so:
 
- - Spring or Spring Boot 2 w/ Java/annotation config:
 ```java
-@Bean
-public LayoutDialect layoutDialect() {
-  return new LayoutDialect(new GroupingStrategy());
-}
-```
-
- - DIY management of the Thymeleaf template engine:
-```java
-TemplateEngine templateEngine = new TemplateEngine();
-templateEngine.addDialect(new LayoutDialect(new GroupingStrategy()));
+new LayoutDialect()
+  .withSortingStrategy(new GroupingStrategy());
 ```
 
 If neither strategy suits your needs, you can implement your own [`SortingStrategy`](/thymeleaf-layout-dialect/groovydoc/nz/net/ultraq/thymeleaf/layoutdialect/decorators/SortingStrategy.html)
@@ -304,28 +293,12 @@ and pass it along to the layout dialect like above.
 Bypassing `<head>` element merging altogether
 ---------------------------------------------
 
-From version 2.4.0, an experimental option was added to skip the special `<head>`
-merging entirely.  Reasons for this might be that you wish to manage that
-section yourself so are using things like Thymeleaf's `th:replace` to fill that
-special part of your HTML document in.
+The layout dialect has an option to skip the special `<head>` merging entirely,
+which can be applied by setting `autoHeadMerging` to `false`:
 
-To bypass the layout dialect's `<head>` element merging, the second optional
-parameter to the `LayoutDialect` constructor should be set to `false`.  (The
-first parameter can be set to `null` as a merging strategy isn't really relevant
-when `<head>` element merging is disabled.)
-
- - Spring or Spring Boot 2 w/ Java/annotation config:
 ```java
-@Bean
-public LayoutDialect layoutDialect() {
-  return new LayoutDialect(null, false);
-}
-```
-
- - DIY management of the Thymeleaf template engine:
-```java
-TemplateEngine templateEngine = new TemplateEngine();
-templateEngine.addDialect(new LayoutDialect(null, false));
+new LayoutDialect()
+  .withAutoHeadMerging(false);
 ```
 
 When disabled, the `<head>` element will be whatever it was in the content
@@ -356,15 +329,6 @@ Parent/layout template:
 > Parameters passed this way *must* be named - an exception will be thrown if
 > names are missing.
 
-### Workaround for Thymeleaf Layout Dialect 2.3.0 and older
-
-Parameterized fragments was made available from Thymeleaf Layout Dialect 2.4.0.
-For older versions, you can continue to use `th:with`:
-
-```html
-<html layout:decorate="~{your-layout}" th:with="greeting='Hello!'">
-```
-
 ### Attributes in the element with `layout:decorate` will also get copied over
 
 Say you have a content template like so:
@@ -373,8 +337,8 @@ Say you have a content template like so:
 <div class="container" layout:decorate="~{layout}">
 ```
 
-Notice the `class` attribute alongside `layout:decorate`.  That attribute will
-be copied over to the root element of the template you are decorating.
+The `class` attribute alongside `layout:decorate` will be copied over to the
+root element of the template you are decorating.
 
 This behaviour has been around since the beginning when Thymeleaf was a bit more
 limited in supported template types (ie: when it *had* to have a root element
