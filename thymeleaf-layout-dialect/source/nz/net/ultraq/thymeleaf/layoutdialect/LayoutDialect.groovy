@@ -82,7 +82,7 @@ class LayoutDialect extends AbstractProcessorDialect {
 	 *   Use the fluent configuration methods, each starting with {@code with}, to
 	 *   configure the layout dialect instead.
 	 */
-	@Deprecated(since = "4.0.0", forRemoval = true)
+	@Deprecated(since = '4.0.0', forRemoval = true)
 	LayoutDialect(SortingStrategy sortingStrategy, boolean autoHeadMerging = true) {
 
 		this()
