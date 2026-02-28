@@ -1,0 +1,44 @@
+name: publish docs
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: gradle/actions/wrapper-validation@v5
+      - uses: actions/setup-java@v5
+        with:
+          distribution: 'temurin'
+          java-version: 25
+      - run: ./gradlew :thymeleaf-layout-dialect-docs:copyGroovyDocs
+      - uses: ruby/setup-ruby@4a9ddd6f338a97768b8006bf671dfbad383215f4 # https://github.com/ruby/setup-ruby/releases/tag/v1.207.0
+        with:
+          ruby-version: '3.1'
+          bundler-cache: true
+          cache-version: 0 # Increment this number if you need to re-download cached gems
+      - run: bundle install
+        working-directory: ./thymeleaf-layout-dialect-docs
+      - run: bundle exec jekyll build --baseurl thymeleaf-layout-dialect
+        working-directory: ./thymeleaf-layout-dialect-docs
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: './thymeleaf-layout-dialect-docs/_site'
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/deploy-pages@v4
+        id: deployment
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}

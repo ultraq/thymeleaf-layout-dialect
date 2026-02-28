@@ -28,7 +28,7 @@ new LayoutDialect()
 ```
 
 Sets how `<head>` elements will be sorted when combined from the layout and
-content templates.  See [`<head>` element merging]({{ site.baseurl }}{% link processors/decorate.md %}#head-element-merging)
+content templates.  See [`<head>` element merging]({% link processors/decorate.md %}#head-element-merging)
 for more details and examples.
 
 
@@ -43,7 +43,7 @@ new LayoutDialect()
 ```
 
 Bypass the layout dialect prforming any `<head>` element merging altogether.
-See [Bypassing <head> element merging altogether]({{ site.baseurl }}{% link processors/decorate.md %}#bypassing-head-element-merging-altogether)
+See [Bypassing <head> element merging altogether]({% link processors/decorate.md %}#bypassing-head-element-merging-altogether)
 for more details.
 
 
@@ -59,5 +59,5 @@ new LayoutDialect()
 
 An experimental option added in 3.4.0 to use standard Thymeleaf expression
 syntax for title patterns instead of special tokens.  See
-[Using standard Thymeleaf expression variables instead of special tokens]({{ site.baseurl }}{% link processors/title-pattern.md %}#using-standard-thymeleaf-expression-variables-instead-of-special-tokens)
+[Using standard Thymeleaf expression variables instead of special tokens]({% link processors/title-pattern.md %}#using-standard-thymeleaf-expression-variables-instead-of-special-tokens)
 for more details.

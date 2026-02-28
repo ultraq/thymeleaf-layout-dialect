@@ -1,12 +1,12 @@
-/* 
+/*
  * Copyright 2019, Emanuel Rabina (http://www.ultraq.net.nz/)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -28,39 +28,7 @@ tasks.register('copyGroovyDocs', Copy) {
 
 tasks.register('serveDocs', Exec) {
 	dependsOn copyGroovyDocs
-	commandLine 'bundle', 'exec', 'jekyll', 'serve', '--baseurl', ""
-}
-
-tasks.register('publishDocs') {
-	dependsOn copyGroovyDocs
-	doLast {
-		execute(["git", "init"])
-		execute(["git", "checkout", "-b", "gh-pages"])
-		execute(["git", "add", "_sass"])
-		execute(["git", "add", "groovydoc", "--force"]) // Is in .gitignore but needed for docs
-		execute(["git", "add", "processors"])
-		execute(["git", "add", "_config.yml"])
-		execute(["git", "add", "favicon.ico"])
-		execute(["git", "add", "Gemfile*"])
-		execute(["git", "add", "*.md"])
-		execute(["git", "commit", "-m", "'Update docs'"])
-		execute(["git", "push", "git@github.com:ultraq/thymeleaf-layout-dialect", "gh-pages", "--force"])
-		execute(["rm", "-rf", ".git"])
-	}
-}
-
-/**
- * Execute an individual command and wait for the process to complete.
- * 
- * @param command
- */
-def execute(command) {
-	println "Executing: ${command.join(" ")}"
-	def proc = command.execute(null, projectDir)
-	proc.waitForProcessOutput(System.out, System.err)
-	if (proc.exitValue() > 0) {
-		println "${proc.err.text}"
-	}
+	commandLine 'bundle', 'exec', 'jekyll', 'serve'
 }
 
 tasks.register('cleanDocs', Exec) {

@@ -98,8 +98,8 @@ When Thymeleaf processes your content template, the resulting HTML will be:
 Learn more
 ----------
 
-Check out the [getting started]({{ site.baseurl }}{% link getting-started.md %})
+Check out the [getting started]({% link getting-started.md %})
 guide to learn how to add the layout dialect to your Thymeleaf project, or the
-[processors]({{ site.baseurl}}{% link processors/index.md %}) pages for in-depth
+[processors]({% link processors/index.md %}) pages for in-depth
 examples of each of the layout dialect features and how they can help you build
 your templates.
