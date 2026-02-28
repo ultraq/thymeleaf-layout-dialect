@@ -41,8 +41,8 @@ configure {
 			.withSourceDirectory('source')
 			.withDependencies() {
 				api "org.apache.groovy:groovy:${groovyVersion}"
-				implementation 'nz.net.ultraq.groovy:groovy-extensions:4.0.0-SNAPSHOT'
-				implementation 'nz.net.ultraq.thymeleaf:thymeleaf-expression-processor:4.0.0-SNAPSHOT'
+				implementation 'nz.net.ultraq.groovy:groovy-extensions:4.0.0'
+				implementation 'nz.net.ultraq.thymeleaf:thymeleaf-expression-processor:4.0.0'
 				implementation "org.thymeleaf:thymeleaf:${thymeleafVersion}"
 				implementation 'org.slf4j:slf4j-api:2.0.17'
 			}
