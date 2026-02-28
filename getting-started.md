@@ -1,0 +1,69 @@
+---
+layout: default
+title: Getting started
+nav_order: 2
+---
+
+Getting started
+===============
+{: .no_toc }
+
+
+On this page
+------------
+{: .no_toc .text-delta }
+
+1. TOC
+{:toc}
+
+
+Installation
+------------
+
+A minimum of Java 17 and Thymeleaf 3.1 is required.  Add the layout dialect by
+configuring Maven or your Maven-compatible dependency manager to the following
+co-ordinates:
+
+ - GroupId: `nz.net.ultraq.thymeleaf`
+ - ArtifactId: `thymeleaf-layout-dialect`
+ - Version: `4.0.0`
+
+If using Spring Boot, the version is optional as Spring Boot includes a managed
+version of the layout dialect.
+
+Check the [project releases](https://github.com/ultraq/thymeleaf-layout-dialect/releases)
+for a list of available versions.  Each release page also includes a
+downloadable JAR if you want to manually add it to your project classpath.
+
+
+Usage
+-----
+
+Configure Thymeleaf to include the layout dialect using one of the methods below:
+
+ - Spring or Spring Boot w/ Java/annotation config:
+
+   > The following is only needed if you wish to configure the layout dialect
+   > from its default options - the layout dialect is autoconfigured if detected
+   > in your project
+
+   ```java
+   @Bean
+   public LayoutDialect layoutDialect() {
+     return new LayoutDialect();
+   }
+   ```
+
+ - DIY management of the Thymeleaf template engine:
+
+   ```java
+   TemplateEngine templateEngine = new TemplateEngine();
+   templateEngine.addDialect(new LayoutDialect());
+   ```
+
+This will introduce the `layout` namespace, and 5 new attribute processors that
+you can use in your templates: `decorate`, `title-pattern`, `insert`, `replace`,
+and `fragment`.
+
+Continue on to the [processors]({{ site.baseurl }}{% link processors/index.md %})
+section to learn how to use these in your templates.
