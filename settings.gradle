@@ -17,5 +17,5 @@
 rootProject.name = 'thymeleaf-layout-dialect'
 
 include 'thymeleaf-layout-dialect'
-include 'thymeleaf-layout-dialect-docs'
 include 'thymeleaf-layout-dialect-benchmark'
+include 'thymeleaf-layout-dialect-docs'
