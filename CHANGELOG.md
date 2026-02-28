@@ -13,6 +13,13 @@ Changelog
    codebase
  - Remove deprecated `layout:collect` processor
 
+Version 4.0 of the layout dialect is made to align with Spring Boot 4's build
+and dependency targets, and so is built for Java 17, Groovy 5, and Gradle 9 (for
+building the project).
+
+A migration guide can be found on the documentation site:
+https://ultraq.github.io/thymeleaf-layout-dialect/migrating-to-4.0/
+
 
 ### 3.4.0
 
