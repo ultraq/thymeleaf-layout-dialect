@@ -2,6 +2,13 @@
 Changelog
 =========
 
+### 4.0.1
+
+ - Fixed the `new LayoutDialect(SortingStrategy)` configuration constructor
+   failing to report as deprecated - all configuration constructors were
+   deprecated in 4.0.0
+
+
 ### 4.0.0
 
  - Made to align with Spring Boot 4 ([#246](https://github.com/ultraq/thymeleaf-layout-dialect/issues/246))

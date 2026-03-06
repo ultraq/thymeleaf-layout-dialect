@@ -75,6 +75,20 @@ class LayoutDialect extends AbstractProcessorDialect {
 	 * Constructor, configure the layout dialect.
 	 *
 	 * @param sortingStrategy
+	 * @deprecated
+	 *   Use the fluent configuration methods, each starting with {@code with}, to
+	 *   configure the layout dialect instead.
+	 */
+	@Deprecated(since = '4.0.0', forRemoval = true)
+	LayoutDialect(SortingStrategy sortingStrategy) {
+
+		this(sortingStrategy, true)
+	}
+
+	/**
+	 * Constructor, configure the layout dialect.
+	 *
+	 * @param sortingStrategy
 	 * @param autoHeadMerging
 	 *   Experimental option, set to {@code false} to skip the automatic merging
 	 *   of an HTML {@code <head>} section.
@@ -83,7 +97,7 @@ class LayoutDialect extends AbstractProcessorDialect {
 	 *   configure the layout dialect instead.
 	 */
 	@Deprecated(since = '4.0.0', forRemoval = true)
-	LayoutDialect(SortingStrategy sortingStrategy, boolean autoHeadMerging = true) {
+	LayoutDialect(SortingStrategy sortingStrategy, boolean autoHeadMerging) {
 
 		this()
 		this.sortingStrategy = sortingStrategy
