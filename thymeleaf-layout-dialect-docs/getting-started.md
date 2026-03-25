@@ -26,7 +26,7 @@ co-ordinates:
 
  - GroupId: `nz.net.ultraq.thymeleaf`
  - ArtifactId: `thymeleaf-layout-dialect`
- - Version: `4.0.0`
+ - Version: `4.0.1`
 
 If using Spring Boot, the version is optional as Spring Boot includes a managed
 version of the layout dialect.
